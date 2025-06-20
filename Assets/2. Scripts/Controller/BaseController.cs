@@ -6,24 +6,21 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
-[RequireComponent(typeof(NavMeshAgent))]
 public abstract class BaseController<TController, TState> : MonoBehaviour where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
     public StatManager         StatManager         { get; private set; }
     public StatusEffectManager StatusEffectManager { get; private set; }
-    public NavMeshAgent        Agent               { get; private set; }
 
     private StateMachine<TController, TState> stateMachine;
     private IState<TController, TState>[] states;
-    protected TState CurrentState;
+    public TState CurrentState { get; protected set; }
 
     protected virtual void Awake()
     {
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
-        Agent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine<TController, TState>();
     }
 
@@ -75,10 +72,4 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
     }
 
     protected abstract IState<TController, TState> GetState(TState state);
-
-    public abstract void FindTarget();
-
-    public virtual void Movement()
-    {
-    }
 }
