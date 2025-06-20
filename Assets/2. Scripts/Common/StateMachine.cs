@@ -1,13 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum PlayerState
-{
-    Idle,
-    Move,
-    Run,
-    Attack
-}
+
 
 
 
