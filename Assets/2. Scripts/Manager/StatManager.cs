@@ -9,11 +9,14 @@ public class StatManager : MonoBehaviour
     public Dictionary<StatType, StatBase> Stats { get; private set; } = new Dictionary<StatType, StatBase>();
 
     public event Action OnStatChanged;
-    public IDamageable Owner { get; private set; }
+    public IDamageable  Owner { get; private set; }
+
+
     /// <summary>
-    /// 스탯을 초기화 시켜주는 코드
+    /// 스탯 매니저를 초기화하고 기본 스탯들을 설정하는 메서드
     /// </summary>
-    /// <param name="statProvider"></param>
+    /// <param name="statProvider">스탯 정보를 제공하는 객체</param>
+    /// <param name="owner">스탯의 소유자</param>
     public void Initialize(IStatProvider statProvider, IDamageable owner = null)
     {
         Owner = owner;
@@ -21,9 +24,10 @@ public class StatManager : MonoBehaviour
         {
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
-        
+
         OnStatChanged?.Invoke();
     }
+
     /// <summary>
     /// Stat을 생성해주는 팩토리
     /// </summary>
@@ -41,16 +45,33 @@ public class StatManager : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// 특정 타입의 스탯을 가져오는 메서드
+    /// </summary>
+    /// <typeparam name="T">반환할 스탯의 타입</typeparam>
+    /// <param name="type">가져올 스탯의 종류</param>
+    /// <returns>요청한 타입의 스탯 객체</returns>
     public T GetStat<T>(StatType type) where T : StatBase
     {
         return Stats[type] as T;
     }
 
+    /// <summary>
+    /// 특정 스탯의 현재 값을 반환하는 메서드
+    /// </summary>
+    /// <param name="type">값을 확인할 스탯의 종류</param>
+    /// <returns>해당 스탯의 현재 값</returns>
     public float GetValue(StatType type)
     {
         return Stats[type].GetCurrent();
     }
 
+    /// <summary>
+    /// 리소스 타입 스탯(HP, MP 등)을 회복시키는 메서드
+    /// </summary>
+    /// <param name="statType">회복할 스탯의 종류</param>
+    /// <param name="modifierType">회복량 적용 방식(기본값 또는 퍼센트)</param>
+    /// <param name="value">회복량</param>
     public void Recover(StatType statType, StatModifierType modifierType, float value)
     {
         if (Stats[statType] is ResourceStat res)
@@ -66,11 +87,18 @@ public class StatManager : MonoBehaviour
                         res.RecoverPercent(value);
                         break;
                 }
+
                 Debug.Log($"Recover : {statType} : {value} RemainValue: {res.CurrentValue}");
             }
         }
     }
 
+    /// <summary>
+    /// 리소스 타입 스탯(HP, MP 등)을 소모시키는 메서드
+    /// </summary>
+    /// <param name="statType">소모할 스탯의 종류</param>
+    /// <param name="modifierType">소모량 적용 방식(기본값 또는 퍼센트)</param>
+    /// <param name="value">소모량</param>
     public void Consume(StatType statType, StatModifierType modifierType, float value)
     {
         if (Stats[statType] is ResourceStat res)
@@ -86,11 +114,6 @@ public class StatManager : MonoBehaviour
                         res.ConsumePercent(value);
                         break;
                 }
-
-                if (statType == StatType.CurHp && res.CurrentValue <= 0)
-                {
-                    Owner?.Dead();
-                }
             }
         }
     }
@@ -98,9 +121,9 @@ public class StatManager : MonoBehaviour
     /// <summary>
     /// 증가되는 스탯에 따라 해당 스탯을 증감시켜주는 메서드
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="valueType"></param>
-    /// <param name="value"></param>
+    /// <param name="type">증감 시켜줄 스탯의 종류</param>
+    /// <param name="valueType">적용 방식(베이스, 버프(상수 or 퍼센트),장비)</param>
+    /// <param name="value">적용 값</param>
     public void ApplyStatEffect(StatType type, StatModifierType valueType, float value)
     {
         if (Stats[type] is not CalculatedStat stat) return;

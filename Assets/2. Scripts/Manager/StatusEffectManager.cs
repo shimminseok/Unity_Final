@@ -7,15 +7,20 @@ public class StatusEffectManager : MonoBehaviour
 {
     private List<StatusEffect> activeEffects = new List<StatusEffect>();
     private StatManager statManager;
+    public IDamageable Owner { get; private set; }
 
     private void Start()
     {
         statManager = GetComponent<StatManager>();
+        Owner = statManager.Owner;
     }
 
+    /// <summary>
+    /// 상태 효과를 적용합니다. 중첩 불가능한 효과의 경우 기존 효과와 비교하여 더 강한 효과만 적용됩니다.
+    /// </summary>
+    /// <param name="effect">적용할 상태 효과</param>
     public void ApplyEffect(StatusEffect effect)
     {
-
         if (!effect.IsStackable)
         {
             var existing = activeEffects.Find(x =>
@@ -34,11 +39,18 @@ public class StatusEffectManager : MonoBehaviour
                 }
             }
         }
+
         Coroutine co = StartCoroutine(effect.Apply(this));
         effect.CoroutineRef = co;
         activeEffects.Add(effect);
     }
 
+    /// <summary>
+    /// 스탯에 버프 효과를 적용합니다.
+    /// </summary>
+    /// <param name="statType">대상 스탯 타입</param>
+    /// <param name="modifierType">수정자 타입</param>
+    /// <param name="value">적용할 값</param>
     public void ModifyBuffStat(StatType statType, StatModifierType modifierType, float value)
     {
         switch (modifierType)
@@ -52,16 +64,32 @@ public class StatusEffectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 스탯을 회복시키는 효과를 적용합니다.
+    /// </summary>
+    /// <param name="statType">회복할 스탯 타입</param>
+    /// <param name="modifierType">수정자 타입</param>
+    /// <param name="value">회복량</param>
     public void RecoverEffect(StatType statType, StatModifierType modifierType, float value)
     {
         statManager.Recover(statType, modifierType, value);
     }
 
+    /// <summary>
+    /// 스탯을 소모하는 효과를 적용합니다.
+    /// </summary>
+    /// <param name="statType">소모할 스탯 타입</param>
+    /// <param name="modifierType">수정자 타입</param>
+    /// <param name="value">소모량</param>
     public void ConsumeEffect(StatType statType, StatModifierType modifierType, float value)
     {
         statManager.Consume(statType, modifierType, value);
     }
 
+    /// <summary>
+    /// 특정 상태 효과를 제거합니다.
+    /// </summary>
+    /// <param name="effect">제거할 상태 효과</param>
     public void RemoveEffect(StatusEffect effect)
     {
         activeEffects.Remove(effect);
@@ -72,6 +100,10 @@ public class StatusEffectManager : MonoBehaviour
 
         effect.OnEffectRemoved(this);
     }
+
+    /// <summary>
+    /// 모든 상태 효과를 제거합니다.
+    /// </summary>
     public void RemoveAllEffects()
     {
         foreach (StatusEffect effect in activeEffects)

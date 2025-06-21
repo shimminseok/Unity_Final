@@ -22,10 +22,6 @@
         float finalDam = attacker.AttackStat.Value;
         var   curHp    = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         StatManager.Consume(StatType.CurHp, StatModifierType.Base, finalDam);
-        if (curHp.Value <= 0)
-        {
-            Dead();
-        }
     }
 
     public override void Dead()

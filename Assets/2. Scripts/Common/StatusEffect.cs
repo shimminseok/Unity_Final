@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 상태 효과의 기본 클래스. 모든 버프와 디버프의 기초가 되는 추상 클래스
+/// </summary>
 public abstract class StatusEffect
 {
     public int StatusEffectID;
@@ -22,7 +25,9 @@ public abstract class StatusEffect
     }
 }
 
-//즉발 버프(패시브)
+/// <summary>
+/// 즉시 적용되는 일회성 버프. 스탯을 즉시 증가시키고 효과가 바로 제거됨
+/// </summary>
 public class InstantBuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -30,11 +35,12 @@ public class InstantBuff : StatusEffect
         manager.ModifyBuffStat(StatType, ModifierType, Value);
         yield return null;
         manager.RemoveEffect(this);
-
     }
 }
 
-//지속시간동안 증가 버프
+/// <summary>
+/// 시간에 따라 지속적으로 적용되는 버프. 설정된 시간 동안 주기적으로 스탯을 증가시킴
+/// </summary>
 public class OverTimeBuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -51,7 +57,9 @@ public class OverTimeBuff : StatusEffect
     }
 }
 
-// 즉발 디버프(패시브 디버프)
+/// <summary>
+/// 즉시 적용되는 일회성 디버프. 스탯을 즉시 감소시키고 효과가 바로 제거됨
+/// </summary>
 public class InstantDebuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -60,10 +68,11 @@ public class InstantDebuff : StatusEffect
         yield return null;
         manager.RemoveEffect(this);
     }
-    
 }
 
-//지속시간 디버프(지속시간동안 깍는 버프)
+/// <summary>
+/// 시간에 따라 지속적으로 적용되는 디버프. 설정된 시간 동안 주기적으로 스탯을 감소시킴
+/// </summary>
 public class OverTimeDebuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -80,7 +89,9 @@ public class OverTimeDebuff : StatusEffect
     }
 }
 
-//기존 버프
+/// <summary>
+/// 일정 시간 동안 지속되는 버프. 효과가 제거될 때 자동으로 스탯이 원래대로 복구됨
+/// </summary>
 public class TimedModifierBuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -100,7 +111,9 @@ public class TimedModifierBuff : StatusEffect
     }
 }
 
-//즉시 회복
+/// <summary>
+/// 즉시 회복 효과. 스탯을 즉시 회복시키고 효과가 바로 제거됨
+/// </summary>
 public class RecoverEffect : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -110,7 +123,10 @@ public class RecoverEffect : StatusEffect
         manager.RemoveEffect(this);
     }
 }
-//지속 시간 회복
+
+/// <summary>
+/// 지속적인 회복 효과. 설정된 시간 동안 주기적으로 스탯을 회복시킴
+/// </summary>
 public class RecoverOverTime : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -127,7 +143,9 @@ public class RecoverOverTime : StatusEffect
     }
 }
 
-//틱 데미지(독뎀, 화상뎀 등등)
+/// <summary>
+/// 주기적인 데미지 디버프. 설정된 시간 동안 주기적으로 데미지를 입힘 (독, 화상 등)
+/// </summary>
 public class PeriodicDamageDebuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -143,7 +161,10 @@ public class PeriodicDamageDebuff : StatusEffect
         manager.RemoveEffect(this);
     }
 }
-// 데미지
+
+/// <summary>
+/// 즉시 데미지를 주는 디버프. 한 번의 데미지를 입히고 효과가 바로 제거됨
+/// </summary>
 public class DamageDebuff : StatusEffect
 {
     public override IEnumerator Apply(StatusEffectManager manager)
@@ -153,4 +174,3 @@ public class DamageDebuff : StatusEffect
         manager.RemoveEffect(this);
     }
 }
-

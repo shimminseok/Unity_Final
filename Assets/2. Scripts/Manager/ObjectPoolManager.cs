@@ -95,7 +95,6 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
     /// <returns></returns>
     public GameObject GetObject(string poolId)
     {
-        string poolName = poolId.ToString();
         if (!poolObjects.TryGetValue(poolId, out Queue<IPoolObject> pool))
         {
             Debug.LogWarning($"등록된 풀이 없습니다. : {poolId}");
@@ -113,11 +112,9 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         {
             GameObject prefab = registeredObj[poolId];
             GameObject newObj = Instantiate(prefab, parentCache[poolId]);
-            newObj.name = poolName;
+            newObj.name = poolId;
             newObj.SetActive(true);
             return newObj;
-
-            return null;
         }
     }
 
