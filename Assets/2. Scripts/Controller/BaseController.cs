@@ -80,7 +80,7 @@ public abstract class BaseController<TController, TState> : MonoBehaviour, IAtta
     protected abstract IState<TController, TState> GetState(TState state);
 
     public abstract void Attack();
-    public abstract void TakeDamage(IAttackable attacker);
+    public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
 }
