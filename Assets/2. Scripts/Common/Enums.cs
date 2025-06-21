@@ -26,11 +26,23 @@ public enum StatModifierType
     BasePercent
 }
 
-public enum PlayerState
+public enum PlayerUnitState
 {
     Idle,
     Move,
-    Attack
+    Attack,
+    Hit,
+    Skill,
+    Die
+}
+
+public enum EnemyUnitState
+{
+    Idle,
+    Move,
+    Attack,
+    Hit,
+    Die
 }
 
 public enum StatusEffectType

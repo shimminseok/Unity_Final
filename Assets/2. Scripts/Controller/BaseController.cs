@@ -5,7 +5,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
-public abstract class BaseController<TController, TState> : MonoBehaviour where TController : BaseController<TController, TState>
+[RequireComponent(typeof(Collider))]
+public abstract class BaseController<TController, TState> : MonoBehaviour, IAttackable, IDamageable where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
@@ -14,18 +15,24 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
 
     private StateMachine<TController, TState> stateMachine;
     private IState<TController, TState>[] states;
-    public TState CurrentState { get; protected set; }
+    public          TState      CurrentState { get; protected set; }
+    public          bool        IsDead       { get; protected set; }
+    public          Collider    Collider     { get; protected set; }
+    public abstract StatBase    AttackStat   { get; protected set; }
+    public abstract IDamageable Target       { get; protected set; }
 
     protected virtual void Awake()
     {
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
+        Collider = GetComponent<CapsuleCollider>();
     }
 
     protected virtual void Start()
     {
         SetupState();
+        AttackStat = StatManager.GetStat<ResourceStat>(StatType.AttackPow);
     }
 
     protected virtual void Update()
@@ -71,4 +78,9 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
     }
 
     protected abstract IState<TController, TState> GetState(TState state);
+
+    public abstract void Attack();
+    public abstract void TakeDamage(IAttackable attacker);
+
+    public abstract void Dead();
 }

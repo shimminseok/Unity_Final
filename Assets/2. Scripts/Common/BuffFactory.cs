@@ -15,7 +15,8 @@
 
             _ => null
         };
-        if (effect == null) return null;
+        if (effect == null) 
+            return null;
 
         effect.StatusEffectID = data.ID;
         effect.StatType = data.Stat.StatType;
