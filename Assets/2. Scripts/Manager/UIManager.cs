@@ -8,21 +8,13 @@ public class UIManager : Singleton<UIManager>
     private readonly Dictionary<Type, UIBase> UIDict = new();
     private List<UIBase> openedUIList = new();
 
-    protected override void Awake()
-    {
-        base.Awake();
-        if (IsDuplicate)
-            return;
-
-        DontDestroyOnLoad(gameObject); // 씬 전환 시 살아있도록 유지
-    }
 
     private void Start()
     {
         InitializeUIRoot();
     }
 
-    private void InitializeUIRoot()
+    public void InitializeUIRoot()
     {
         UIDict.Clear();
 

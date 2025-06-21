@@ -1,49 +1,60 @@
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+    private static readonly object lockObject = new object();
+    private static bool isShuttingDown;
 
     public static T Instance
     {
         get
         {
-            if (instance == null)
+            if (isShuttingDown) return null;
+
+            lock (lockObject)
             {
-                instance = FindAnyObjectByType(typeof(T)) as T;
                 if (instance == null)
                 {
-                    SetupInstance();
-                }
+                    instance = (T)FindObjectOfType(typeof(T));
 
-                DontDestroyOnLoad(instance.gameObject);
+                    if (instance == null)
+                    {
+                        GameObject singletonObj = new GameObject($"[{typeof(T).Name}]");
+                        instance = singletonObj.AddComponent<T>();
+                        DontDestroyOnLoad(singletonObj);
+                    }
+                }
             }
 
             return instance;
         }
     }
 
-    protected bool IsDuplicate { get; private set; }
     protected virtual void Awake()
     {
-        RemoveDuplicates();
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning($"Another instance of {typeof(T).Name} already exists! Destroying duplicate.");
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this as T;
+        DontDestroyOnLoad(gameObject);
     }
 
-    private void RemoveDuplicates()
+    private void OnDestroy()
     {
-        if (Instance == null)
-            SetupInstance();
-        else if (instance != null && instance != this as T)
+        if (instance == this)
         {
-            Destroy(gameObject);
-            IsDuplicate = true;
+            instance = null;
         }
     }
 
-    private static void SetupInstance()
+    protected virtual void OnApplicationQuit()
     {
-        GameObject gameObj = new GameObject();
-        gameObj.name = typeof(T).Name;
-        instance = gameObj.AddComponent<T>();
+        isShuttingDown = true;
+        instance = null;
     }
 }
