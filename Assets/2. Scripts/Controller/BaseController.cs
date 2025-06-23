@@ -10,7 +10,7 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     where TState : Enum
 
 {
-    [SerializeField] AttackType attackType;
+    [SerializeField] AttackTypeSO attackTypeSo;
     public StatManager         StatManager         { get; private set; }
     public StatusEffectManager StatusEffectManager { get; private set; }
     public BaseEmotion         CurrentEmotion      { get; private set; }
@@ -25,7 +25,7 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     public abstract StatBase    AttackStat   { get; protected set; }
     public abstract IDamageable Target       { get; protected set; }
 
-    protected AttackType AttackType => attackType;
+    protected AttackTypeSO AttackTypeSo => attackTypeSo;
 
     protected virtual void Awake()
     {

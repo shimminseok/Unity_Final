@@ -30,7 +30,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
 
         //이모션따라서
-        AttackType.Attack();
+        AttackTypeSo.Attack();
     }
 
     public void UseSkill()
