@@ -86,7 +86,9 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     public void ChangeEmotion(Emotion emotion)
     {
         if (CurrentEmotion.EmotionType != emotion)
-            CurrentEmotion = EmotionFactory(emotion);
+        {
+            CurrentEmotion = EmotionFactory.CreateEmotion(emotion);
+        }
         else
         {
             CurrentEmotion.Stack++;
@@ -100,41 +102,4 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
-
-    public abstract class BaseEmotion
-    {
-        public Emotion EmotionType;
-        public int Stack;
-
-        public abstract void Execute();
-    }
-
-    public class AngerEmotion : BaseEmotion
-    {
-        public AngerEmotion()
-        {
-            EmotionType = Emotion.Anger;
-            Stack = 0;
-        }
-
-        public override void Execute()
-        {
-            //실행되는걸 해줌
-            //확률 높여준다거나
-            //뭔짓을 한다.
-            //감정에 맞는 이상한짓을 할꺼임.
-            Stack++;
-        }
-    }
-
-    public BaseEmotion EmotionFactory(Emotion emotion)
-    {
-        return emotion switch
-        {
-            Emotion.Anger => new AngerEmotion(),
-
-
-            _ => null
-        };
-    }
 }
