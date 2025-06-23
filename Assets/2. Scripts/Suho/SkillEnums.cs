@@ -5,9 +5,9 @@ using UnityEngine;
 public enum SelectTargetType
 {
     EnemySingle,
-    EnemyConShaped,
+    //EnemyConShaped,
     EnemyAll,
     PlayerSingle,
-    PlayerConShaped,
+    //PlayerConShaped,
     PlayerAll,
 }
