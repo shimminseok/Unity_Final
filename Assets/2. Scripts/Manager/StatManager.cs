@@ -22,6 +22,28 @@ public class StatManager : MonoBehaviour
         Owner = owner;
         foreach (StatData stat in statProvider.Stats)
         {
+            // stat.Value *= //스테이지 보정값.
+
+            Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
+        }
+
+        OnStatChanged?.Invoke();
+    }
+
+    //몬스터 전용 Initialize
+    public void Initialize(IStatProvider statProvider, IDamageable owner, StageSO stageSo)
+    {
+        Owner = owner;
+        foreach (StatData stat in statProvider.Stats)
+        {
+            foreach (StatData data in stageSo.MonsterIncrease.IncreaseStats)
+            {
+                if (data.StatType == stat.StatType)
+                {
+                    stat.Value += (data.Value * stageSo.MonsterLevel);
+                }
+            }
+
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
 

@@ -11,9 +11,11 @@ public enum StatType
     CurMp,
 
     AttackPow,
-    AttackRange,
-
+    Counter,
     Defense,
+
+    CriticalDam,
+    CriticalRate,
 }
 
 public enum StatModifierType
