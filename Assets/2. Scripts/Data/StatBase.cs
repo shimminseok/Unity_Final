@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class StatBase
 {
-    public          StatType Type  { get; protected set; }
+    public StatType Type  { get; protected set; }
     public abstract float    Value { get; }
     public Action<float> OnValueChanged;
 
