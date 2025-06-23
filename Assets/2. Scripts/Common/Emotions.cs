@@ -6,6 +6,19 @@
     public abstract void Execute();
 }
 
+public class JoyEmotion : BaseEmotion
+{
+    public JoyEmotion()
+    {
+        EmotionType = Emotion.Joy;
+        Stack = 0;
+    }
+
+    public override void Execute()
+    {
+    }
+}
+
 public class AngerEmotion : BaseEmotion
 {
     public AngerEmotion()
@@ -16,10 +29,31 @@ public class AngerEmotion : BaseEmotion
 
     public override void Execute()
     {
-        //실행되는걸 해줌
-        //확률 높여준다거나
-        //뭔짓을 한다.
-        //감정에 맞는 이상한짓을 할꺼임.
-        Stack++;
+    }
+}
+
+public class NeutralEmotion : BaseEmotion
+{
+    public NeutralEmotion()
+    {
+        EmotionType = Emotion.Neutral;
+        Stack = 0;
+    }
+
+    public override void Execute()
+    {
+    }
+}
+
+public class DepressionEmotion : BaseEmotion
+{
+    public DepressionEmotion()
+    {
+        EmotionType = Emotion.Depression;
+        Stack = 0;
+    }
+
+    public override void Execute()
+    {
     }
 }

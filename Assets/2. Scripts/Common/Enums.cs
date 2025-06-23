@@ -61,9 +61,8 @@ public enum StatusEffectType
 
 public enum Emotion
 {
-    Nomal,
-    Anger,
-    Sadness,
-    Happy,
-    Surprise,
+    Neutral,    //일반
+    Anger,      //분노
+    Depression, //우울
+    Joy         // 기쁨
 }
