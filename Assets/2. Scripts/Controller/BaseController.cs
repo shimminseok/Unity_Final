@@ -6,20 +6,26 @@ using UnityEngine;
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
-public abstract class BaseController<TController, TState> : MonoBehaviour, IAttackable, IDamageable where TController : BaseController<TController, TState>
+public abstract class BaseController<TController, TState> : Unit, IAttackable, IDamageable where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
+    [SerializeField] AttackType attackType;
     public StatManager         StatManager         { get; private set; }
     public StatusEffectManager StatusEffectManager { get; private set; }
-
+    public BaseEmotion         CurrentEmotion      { get; private set; }
     private StateMachine<TController, TState> stateMachine;
+
     private IState<TController, TState>[] states;
+
     public          TState      CurrentState { get; protected set; }
+    public          int         Index        { get; protected set; }
     public          bool        IsDead       { get; protected set; }
     public          Collider    Collider     { get; protected set; }
     public abstract StatBase    AttackStat   { get; protected set; }
     public abstract IDamageable Target       { get; protected set; }
+
+    protected AttackType AttackType => attackType;
 
     protected virtual void Awake()
     {
@@ -77,10 +83,58 @@ public abstract class BaseController<TController, TState> : MonoBehaviour, IAtta
         }
     }
 
+    public void ChangeEmotion(Emotion emotion)
+    {
+        if (CurrentEmotion.EmotionType != emotion)
+            CurrentEmotion = EmotionFactory(emotion);
+        else
+        {
+            CurrentEmotion.Stack++;
+            //어쩌구 저쩌구 스택을 올려준다~
+        }
+    }
+
     protected abstract IState<TController, TState> GetState(TState state);
 
     public abstract void Attack();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
+
+    public abstract class BaseEmotion
+    {
+        public Emotion EmotionType;
+        public int Stack;
+
+        public abstract void Execute();
+    }
+
+    public class AngerEmotion : BaseEmotion
+    {
+        public AngerEmotion()
+        {
+            EmotionType = Emotion.Anger;
+            Stack = 0;
+        }
+
+        public override void Execute()
+        {
+            //실행되는걸 해줌
+            //확률 높여준다거나
+            //뭔짓을 한다.
+            //감정에 맞는 이상한짓을 할꺼임.
+            Stack++;
+        }
+    }
+
+    public BaseEmotion EmotionFactory(Emotion emotion)
+    {
+        return emotion switch
+        {
+            Emotion.Anger => new AngerEmotion(),
+
+
+            _ => null
+        };
+    }
 }
