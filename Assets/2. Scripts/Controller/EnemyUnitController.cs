@@ -62,4 +62,12 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override void Dead()
     {
     }
+
+    public override void StartTurn()
+    {
+    }
+
+    public override void EndTurn()
+    {
+    }
 }
