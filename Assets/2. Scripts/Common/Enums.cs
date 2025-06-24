@@ -61,6 +61,7 @@ public enum StatusEffectType
     Recover,              //회복
     RecoverOverTime,      // 지속 시간 동안 회복
     Damege,               // 즉발 대미지
+    TurnBasedModifierBuff,
 }
 
 public enum Emotion
@@ -90,11 +91,13 @@ public enum EquipmentType
 public enum SelectTargetType
 {
     EnemySingle,
+
     //EnemyConShaped,
     EnemyTwoRandom,
     EnemyAll,
     PlayerSingle,
     PlayerTwoRandom,
+
     //PlayerConShaped,
     PlayerAll,
 }

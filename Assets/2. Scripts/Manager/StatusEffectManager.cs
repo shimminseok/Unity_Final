@@ -118,4 +118,15 @@ public class StatusEffectManager : MonoBehaviour
 
         activeEffects.Clear();
     }
+
+    public void OnTurnPassed()
+    {
+        foreach (StatusEffect effect in activeEffects)
+        {
+            if (effect is TurnBasedModifierBuff turnEffect)
+            {
+                turnEffect.OnTurnPassed(this);
+            }
+        }
+    }
 }

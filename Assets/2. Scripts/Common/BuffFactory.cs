@@ -4,18 +4,18 @@
     {
         StatusEffect effect = data.EffectType switch
         {
-            StatusEffectType.InstantBuff          => new InstantBuff(),
-            StatusEffectType.OverTimeBuff         => new OverTimeBuff(),
-            StatusEffectType.InstantDebuff        => new InstantDebuff(),
-            StatusEffectType.OverTimeDebuff       => new OverTimeDebuff(),
-            StatusEffectType.TimedModifierBuff    => new TimedModifierBuff(),
-            StatusEffectType.Recover              => new RecoverEffect(),
-            StatusEffectType.RecoverOverTime      => new RecoverOverTime(),
-            StatusEffectType.PeriodicDamageDebuff => new PeriodicDamageDebuff(),
-
-            _ => null
+            StatusEffectType.InstantBuff           => new InstantBuff(),
+            StatusEffectType.OverTimeBuff          => new OverTimeBuff(),
+            StatusEffectType.InstantDebuff         => new InstantDebuff(),
+            StatusEffectType.OverTimeDebuff        => new OverTimeDebuff(),
+            StatusEffectType.TimedModifierBuff     => new TimedModifierBuff(),
+            StatusEffectType.Recover               => new RecoverEffect(),
+            StatusEffectType.RecoverOverTime       => new RecoverOverTime(),
+            StatusEffectType.PeriodicDamageDebuff  => new PeriodicDamageDebuff(),
+            StatusEffectType.TurnBasedModifierBuff => new TurnBasedModifierBuff(),
+            _                                      => null
         };
-        if (effect == null) 
+        if (effect == null)
             return null;
 
         effect.StatusEffectID = data.ID;

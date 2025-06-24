@@ -162,6 +162,31 @@ public class PeriodicDamageDebuff : StatusEffect
     }
 }
 
+public class TurnBasedModifierBuff : StatusEffect
+{
+    public override IEnumerator Apply(StatusEffectManager manager)
+    {
+        //효과 적용
+        manager.ModifyBuffStat(StatType, ModifierType, Value);
+        yield return null;
+    }
+
+    public override void OnEffectRemoved(StatusEffectManager manager)
+    {
+        manager.ModifyBuffStat(StatType, ModifierType, -Value);
+    }
+
+    public void OnTurnPassed(StatusEffectManager manager)
+    {
+        Duration--;
+
+        if (Duration <= 0)
+        {
+            manager.RemoveEffect(this);
+        }
+    }
+}
+
 /// <summary>
 /// 즉시 데미지를 주는 디버프. 한 번의 데미지를 입히고 효과가 바로 제거됨
 /// </summary>

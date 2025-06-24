@@ -1,28 +1,54 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.UIElements;
 
 public class TurnHandler
 {
     private Queue<Unit> turnQueue = new Queue<Unit>();
 
+    private Unit currentTurnUnit;
 
-    public void Initialize(List<Unit> unitList)
+    private List<Unit> unitList;
+
+    public void Initialize(List<Unit> units)
     {
-        //속도 같다.
-        //에너미, 다 똑같을꺼다.
-        turnQueue = new Queue<Unit>(unitList.OrderByDescending(u => u.StatManager.GetValue(StatType.Speed)));
+        unitList = units.Where(u => !u.IsDead)
+            .OrderByDescending(u => u.StatManager.GetValue(StatType.Speed))
+            .ToList();
+
+        turnQueue = new Queue<Unit>(unitList);
+        StartNextTurn();
     }
 
     public void StartNextTurn()
     {
+        if (turnQueue.Count == 0)
+        {
+            BattleManager.Instance.EndTurn();
+            return;
+        }
+
+        currentTurnUnit = turnQueue.Dequeue();
+        currentTurnUnit.StartTurn();
     }
 
-    public void EndTurn()
+    public void OnUnitTurnEnd()
     {
+        currentTurnUnit.EndTurn();
+
+        if (turnQueue.Count > 0)
+        {
+            StartNextTurn();
+        }
+        else
+        {
+            // 전체 라운드 종료
+            BattleManager.Instance.EndTurn();
+        }
     }
 
     public void RefillTurnQueue()
     {
+        unitList.RemoveAll(u => u.IsDead);
+        turnQueue = new Queue<Unit>(unitList);
     }
 }
