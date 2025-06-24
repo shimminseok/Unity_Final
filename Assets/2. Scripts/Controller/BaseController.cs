@@ -18,6 +18,7 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     private IState<TController, TState>[] states;
 
     public          TState      CurrentState { get; protected set; }
+    public          Collider    Collider     { get; protected set; }
     public          int         Index        { get; protected set; }
     public          bool        IsDead       { get; protected set; }
     public abstract StatBase    AttackStat   { get; protected set; }
@@ -30,6 +31,7 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
+        Collider = GetComponent<CapsuleCollider>();
     }
 
     protected virtual void Start()

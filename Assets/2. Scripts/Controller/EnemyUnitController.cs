@@ -37,6 +37,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (Target == null || Target.IsDead)
             return;
 
+        AttackTypeSo.Attack();
         Target.TakeDamage(StatManager.GetValue(StatType.AttackPow));
     }
 
