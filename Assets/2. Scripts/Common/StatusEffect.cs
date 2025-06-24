@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 /// <summary>
@@ -159,6 +161,58 @@ public class PeriodicDamageDebuff : StatusEffect
         }
 
         manager.RemoveEffect(this);
+    }
+}
+
+public abstract class TurnBasedBuff : StatusEffect
+{
+    public void OnTurnPassed(StatusEffectManager manager)
+    {
+        Duration--;
+        if (Duration <= 0)
+        {
+            manager.RemoveEffect(this);
+        }
+    }
+}
+
+public class TurnBasedModifierBuff : TurnBasedBuff
+{
+    public override IEnumerator Apply(StatusEffectManager manager)
+    {
+        //효과 적용
+        manager.ModifyBuffStat(StatType, ModifierType, Value);
+        yield return null;
+    }
+
+    public override void OnEffectRemoved(StatusEffectManager manager)
+    {
+        manager.ModifyBuffStat(StatType, ModifierType, -Value);
+    }
+}
+
+public class TriggerBuff : TurnBasedBuff
+{
+    public TriggerEventType TriggerEvent;
+    public Func<StatusEffectManager, bool> TriggerCondition;
+    public Action<StatusEffectManager> OnTriggered;
+
+    public override IEnumerator Apply(StatusEffectManager manager)
+    {
+        manager.RegisterTriggerBuff(this);
+        yield return null;
+    }
+
+    public void TryTrigger(StatusEffectManager manager, TriggerEventType eventType)
+    {
+        if (eventType != TriggerEvent)
+            return;
+
+        if (TriggerCondition?.Invoke(manager) == true)
+        {
+            OnTriggered?.Invoke(manager);
+            manager.RemoveEffect(this);
+        }
     }
 }
 
