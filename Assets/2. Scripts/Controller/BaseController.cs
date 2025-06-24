@@ -11,7 +11,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
 
 {
     [SerializeField] AttackTypeSO attackTypeSo;
-    public BaseEmotion CurrentEmotion { get; private set; }
     private StateMachine<TController, TState> stateMachine;
 
     private IState<TController, TState>[] states;
@@ -38,8 +37,8 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
 
     protected virtual void Update()
     {
-        TryStateTransition();
-        stateMachine?.Update();
+        //TryStateTransition();
+        //stateMachine?.Update();
     }
 
     protected virtual void FixedUpdate()
@@ -78,17 +77,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
         }
     }
 
-    public void ChangeEmotion(Emotion emotion)
-    {
-        if (CurrentEmotion.EmotionType != emotion)
-        {
-            CurrentEmotion = EmotionFactory.CreateEmotion(emotion);
-        }
-        else
-        {
-            CurrentEmotion.Stack++;
-        }
-    }
 
     protected abstract IState<TController, TState> GetState(TState state);
 
