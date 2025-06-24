@@ -5,7 +5,7 @@ using UnityEngine;
 // 스킬을 적용할 타겟을 정하는 역할을 해주는 클래스
 public class TargetSelect
 {
-
+    private SelectTargetType targetType;
     public List<IDamageable> ConedShapeTargets(List<IDamageable> enemise, IDamageable target) // 리스트에서 타겟이 정해지면, 부채꼴 형태로 타겟들을 지정
     {
         List<IDamageable> targets = new List<IDamageable>();
@@ -16,8 +16,9 @@ public class TargetSelect
         }
         
         return targets;
-        
     }
+    
+    
     
     
     
