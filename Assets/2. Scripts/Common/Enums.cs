@@ -14,6 +14,8 @@ public enum StatType
     Counter,
     Defense,
 
+    Speed,
+
     CriticalDam,
     CriticalRate,
 }
@@ -67,4 +69,12 @@ public enum Emotion
     Anger,      //분노
     Depression, //우울
     Joy         // 기쁨
+}
+
+public enum ItemType
+{
+}
+
+public enum EquipmentType
+{
 }

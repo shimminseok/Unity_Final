@@ -6,7 +6,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override StatBase    AttackStat { get; protected set; }
     public override IDamageable Target     { get; protected set; }
     public Animator Animator;
-
+    public EquipmentManager EquipmentManager { get; private set; }
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -15,21 +15,17 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     protected override void Awake()
     {
+        base.Awake();
         Animator.runtimeAnimatorController = ChangeClip();
+        EquipmentManager = new EquipmentManager(this);
     }
-    // public override void Attack()
-    // {
-
-    //     
-    //
-    // }
 
     public override void Attack()
     {
         if (Target == null || Target.IsDead)
             return;
 
-        //이모션따라서
+        //어택 타입에 따라서
         AttackTypeSo.Attack();
     }
 
@@ -59,10 +55,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         float finalDam = amount;
 
-        if (StatManager.GetValue(StatType.Defense) < Random.Range(0, 100)) //반격 로직
+        if (StatManager.GetValue(StatType.Counter) < Random.Range(0, 1f)) //반격 로직
         {
             //반격을 한다.
-            //확 올려버린다.
             return;
         }
 
