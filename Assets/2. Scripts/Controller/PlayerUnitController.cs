@@ -1,13 +1,22 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    public override StatBase    AttackStat { get; protected set; }
-    public override IDamageable Target     { get; protected set; }
+    public PlayerUnitSO PlayerUnitSo;
+
+    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
     public Animator Animator;
+    public PassiveSO PassiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
+
+    public override IDamageable Target     { get; protected set; }
+    public override StatBase    AttackStat { get; protected set; }
+
+    private HPBarUI hpBar;
+    public EmotionType CurrentEmotionType;
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -25,16 +34,42 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     protected override void Awake()
     {
         base.Awake();
-        Animator.runtimeAnimatorController = ChangeClip();
         EquipmentManager = new EquipmentManager(this);
+        StatManager.Initialize(PlayerUnitSo);
+        PassiveSo.Initialize(this);
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+
+        CurrentEmotionType = CurrentEmotion.EmotionType;
     }
 
     public override void Attack()
     {
-        if (Target == null || Target.IsDead)
-            return;
+        // if (Target == null || Target.IsDead)
+        //     return;
 
-        //어택 타입에 따라서
+        //어택 타입에 따라서 공격 방식을 다르게 적용
+        IDamageable finalTarget = Target;
+
+
+        float hitRate = StatManager.GetValue(StatType.HitRate);
+        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+            emotionOnAttack.OnBeforeAttack(ref finalTarget);
+
+        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+            emotionOnHit.OnCalculateHitChance(ref hitRate);
+
+        bool isHit = Random.value < hitRate;
+        if (!isHit)
+        {
+            Debug.Log("빗나갔지롱");
+            return;
+        }
+
         AttackTypeSo.Attack();
     }
 
@@ -62,11 +97,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
+
         float finalDam = amount;
 
+        //이게 반격 스킬에 대한거임.
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
-        if (StatManager.GetValue(StatType.Counter) < Random.Range(0, 1f)) //반격 로직
+
+        if (StatManager.GetValue(StatType.Counter) < Random.value) //반격 로직
         {
             //반격을 한다.
             return;
@@ -91,8 +129,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (CurrentState == PlayerUnitState.Stun) //스턴이다
-            return;
+        if (IsDead || IsStunned)
+        {
+            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+        }
+
+        if (PassiveSo is ITurnStartTrigger turnStartTrigger)
+        {
+            turnStartTrigger.OnTurnStart(this);
+        }
 
         //선택한 행동에 따라서 실행되는 메서드를 구분
         // 기본공격이면
@@ -105,6 +150,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        CurrentEmotion.Execute();
+        if (PassiveSo is IEmotionStackApplier stackPassive)
+        {
+            stackPassive.ApplyStack(CurrentEmotion);
+        }
+
+        if (!IsDead)
+            CurrentEmotion.AddStack();
     }
 }
