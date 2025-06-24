@@ -1,13 +1,21 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    public override StatBase    AttackStat { get; protected set; }
-    public override IDamageable Target     { get; protected set; }
+    public PlayerUnitSO PlayerUnitSo;
+
+    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
     public Animator Animator;
+    public PassiveSO PassiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
+
+    public override IDamageable Target     { get; protected set; }
+    public override StatBase    AttackStat { get; protected set; }
+
+    private HPBarUI hpBar;
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -25,16 +33,31 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     protected override void Awake()
     {
         base.Awake();
-        Animator.runtimeAnimatorController = ChangeClip();
+        // Animator.runtimeAnimatorController = ChangeClip();
         EquipmentManager = new EquipmentManager(this);
+        // PassiveSo = PlayerUnitSo.PassiveSkill;
+        // PassiveSo.Initialize(this);
     }
+
+    protected override void Start()
+    {
+        hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+    }
+
+    public void RegisterSkill(int index, SkillData skillData)
+    {
+        SkillDatas[index] = skillData;
+    }
+
 
     public override void Attack()
     {
         if (Target == null || Target.IsDead)
             return;
 
-        //어택 타입에 따라서
+        //어택 타입에 따라서 공격 방식을 다르게 적용
+
+
         AttackTypeSo.Attack();
     }
 
@@ -61,6 +84,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         if (IsDead)
             return;
+
+        if (PassiveSo is IDamageReaction attackPassive)
+        {
+            attackPassive.OnDamageReceived();
+        }
+
 
         float finalDam = amount;
 
@@ -91,8 +120,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (CurrentState == PlayerUnitState.Stun) //스턴이다
-            return;
+        if (IsDead || IsStunned)
+        {
+            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+        }
+
+        if (PassiveSo is ITurnStartTrigger turnStartTrigger)
+        {
+            turnStartTrigger.OnTurnStart(this);
+        }
 
         //선택한 행동에 따라서 실행되는 메서드를 구분
         // 기본공격이면
@@ -105,6 +141,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
+        if (PassiveSo is IEmotionStackApplier stackPassive)
+        {
+            stackPassive.ApplyStack(CurrentEmotion);
+        }
+
         CurrentEmotion.Execute();
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro.EditorUtilities;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -188,6 +189,15 @@ public class TurnBasedModifierBuff : TurnBasedBuff
     public override void OnEffectRemoved(StatusEffectManager manager)
     {
         manager.ModifyBuffStat(StatType, ModifierType, -Value);
+    }
+}
+
+public class StunDebuff : TurnBasedBuff
+{
+    public override IEnumerator Apply(StatusEffectManager manager)
+    {
+        manager.Owner.Setstunned(true);
+        yield return null;
     }
 }
 
