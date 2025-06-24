@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -15,6 +16,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
 
     [SerializeField] Vector3 offset;
 
+    [SerializeField] private TextMeshProUGUI speedText;
+
     public GameObject GameObject => gameObject;
     public string     PoolID     => poolId;
     public int        PoolSize   => poolSize;
@@ -24,7 +27,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     private Camera mainCamera;
     private float heightOffset;
 
-    StatManager statManager;
+    private StatManager statManager;
+    private CalculatedStat speedStat;
 
     private void Awake()
     {
@@ -36,6 +40,9 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         target = owner;
         OnSpawnFromPool();
         statManager = target.Collider.GetComponent<StatManager>();
+        speedStat = statManager.GetStat<CalculatedStat>(StatType.Speed);
+
+        speedStat.OnValueChanged += UpdateSpeedText;
     }
 
     public void UpdatePosion()
@@ -47,6 +54,11 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     public void UpdateHealthBarWrapper(float cur)
     {
         UpdateFill(cur, statManager.GetValue(StatType.MaxHp));
+    }
+
+    private void UpdateSpeedText(float curSpeed)
+    {
+        speedText.text = $"{curSpeed:N0}";
     }
 
     /// <summary>
@@ -62,6 +74,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     public void UnLink()
     {
         HealthBarManager.Instance.DespawnHealthBar(this);
+        speedStat.OnValueChanged -= UpdateSpeedText;
     }
 
     public void OnSpawnFromPool()
