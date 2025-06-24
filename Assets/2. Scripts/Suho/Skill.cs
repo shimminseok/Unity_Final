@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Skill
 {
-    public Skill(SelectCampType camp, SelectTargetType selectType, List<StatusEffectData> mainAffect, List<StatusEffectData> subAffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public Skill(SelectCampType camp, SelectTargetType selectType, List<StatBaseSkillEffect> mainEffect, List<StatBaseSkillEffect> subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
     {
         this.selectedCamp = camp;
         this.selectedType = selectType;
-        this.mainAffect = mainAffect;
-        this.subAffect = subAffect;
+        this.mainEffect = mainEffect;
+        this.subEffect = subEffect;
         this.jobType = jobType;
         this.reuseMaxNumber = reuseMaxNumber;
         this.maxCost = maxCost;
@@ -20,8 +20,8 @@ public class Skill
 
     public SelectCampType selectedCamp;
     public SelectTargetType selectedType = SelectTargetType.Single;
-    public List<StatusEffectData> mainAffect;
-    public List<StatusEffectData> subAffect;
+    public List<StatBaseSkillEffect> mainEffect;
+    public List<StatBaseSkillEffect> subEffect;
     public JobType jobType;
     public int reuseNumber = 0;
     public int cost = 0;

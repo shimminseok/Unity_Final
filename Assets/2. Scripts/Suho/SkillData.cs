@@ -18,8 +18,8 @@ public class SkillData : ScriptableObject
 {
     public SelectCampType selectCamp;
     public SelectTargetType selectType;
-    public List<StatusEffectData> mainAffect;
-    public List<StatusEffectData> subAffect;
+    public List<StatBaseSkillEffect> mainSkillEffect;
+    public List<StatBaseSkillEffect> subSkillEffect;
     public JobType jobType;
     public int reuseMaxNumber;
     public int maxCost;

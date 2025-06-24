@@ -20,6 +20,11 @@ using UnityEngine;
  */
 public class PlayerSkillController : BaseSkillController
 {
+    protected override void Awake()
+    {
+        base.Awake();
+        mainTarget = GameObject.FindWithTag("Finish").GetComponent<StatManager>().Owner;
+    }
     public override void SelectTargets(IDamageable target)
     {
         this.mainTarget = target;
@@ -37,10 +42,13 @@ public class PlayerSkillController : BaseSkillController
     {
         currentSkill.cost = 0;
         currentSkill.reuseNumber++;
-
         if (mainTarget != null)
         {
-            
+            foreach (var effect in currentSkill.mainEffect)
+            {
+                effect.owner = this.owner;
+                effect.UseSkill(mainTarget);
+            }
         }
         // 메인타겟에 메인효과 적용
         

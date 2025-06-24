@@ -16,8 +16,8 @@ public class SkillManager : MonoBehaviour
          Skill skill = new Skill
             (  skillData.selectCamp,
                skillData.selectType,
-               skillData.mainAffect,
-               skillData.subAffect,
+               skillData.mainSkillEffect,
+               skillData.subSkillEffect,
                skillData.jobType,
                skillData.reuseMaxNumber,
                skillData.maxCost,
