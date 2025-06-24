@@ -29,6 +29,15 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
     {
+        // return unitState switch
+        // {
+        //     EnemyUnitState.Idle   => new IdleState(),
+        //     EnemyUnitState.Move   => new MoveState(),
+        //     EnemyUnitState.Attack => new AttackState(weaponController.StatManager.GetValue(StatType.AttackSpd), weaponController.StatManager.GetValue(StatType.AttackRange)),
+        //     EnemyUnitState.Die    => new DieState(),
+        //     _                     => null
+        // };
+
         return null;
     }
 

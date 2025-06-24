@@ -6,21 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
-public abstract class BaseController<TController, TState> : Unit, IAttackable, IDamageable where TController : BaseController<TController, TState>
+public abstract class BaseController<TController, TState> : Unit, IAttackable where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
     [SerializeField] AttackTypeSO attackTypeSo;
-    public StatusEffectManager StatusEffectManager { get; private set; }
-    public BaseEmotion         CurrentEmotion      { get; private set; }
     private StateMachine<TController, TState> stateMachine;
 
     private IState<TController, TState>[] states;
 
     public          TState      CurrentState { get; protected set; }
-    public          Collider    Collider     { get; protected set; }
-    public          int         Index        { get; protected set; }
-    public          bool        IsDead       { get; protected set; }
     public abstract StatBase    AttackStat   { get; protected set; }
     public abstract IDamageable Target       { get; protected set; }
 
@@ -42,8 +37,8 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
 
     protected virtual void Update()
     {
-        TryStateTransition();
-        stateMachine?.Update();
+        //TryStateTransition();
+        //stateMachine?.Update();
     }
 
     protected virtual void FixedUpdate()
@@ -82,23 +77,8 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
         }
     }
 
-    public void ChangeEmotion(Emotion emotion)
-    {
-        if (CurrentEmotion.EmotionType != emotion)
-        {
-            CurrentEmotion = EmotionFactory.CreateEmotion(emotion);
-        }
-        else
-        {
-            CurrentEmotion.Stack++;
-            //어쩌구 저쩌구 스택을 올려준다~
-        }
-    }
 
     protected abstract IState<TController, TState> GetState(TState state);
 
     public abstract void Attack();
-    public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
-
-    public abstract void Dead();
 }
