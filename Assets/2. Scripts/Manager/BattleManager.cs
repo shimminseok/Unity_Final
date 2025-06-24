@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class BattleManager : SceneOnlySingleton<BattleManager>
 {
-    private TurnHandler turnHandler;
+    public TurnHandler TurnHandler { get; private set; }
+
+
+    private List<Unit> allUnits = new List<Unit>();
 
     protected override void Awake()
     {
@@ -13,18 +16,21 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
-        turnHandler = new TurnHandler();
+        TurnHandler = new TurnHandler();
         //
-        turnHandler.Initialize(null);
-    }
-
-    private void Update()
-    {
+        TurnHandler.Initialize(allUnits);
     }
 
     public void EndTurn()
     {
-        turnHandler.Initialize(null);
+        foreach (Unit unit in allUnits)
+        {
+            if (unit.IsDead) continue;
+            unit.StatusEffectManager?.OnTurnPassed();
+        }
+
+        allUnits.RemoveAll(u => u.IsDead);
+        TurnHandler.Initialize(allUnits);
     }
 
     protected override void OnDestroy()
