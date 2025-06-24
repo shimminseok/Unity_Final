@@ -1,5 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using PlayerState;
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
@@ -10,7 +11,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
-        return null;
+        return state switch
+        {
+            PlayerUnitState.Idle    => new IdleState(),
+            PlayerUnitState.Attack  => new AttackState(),
+            PlayerUnitState.Die     => new DeadState(),
+            PlayerUnitState.EndTurn => new EndTurnState(),
+            PlayerUnitState.Skill   => new SkillState(),
+            _                       => null
+        };
     }
 
     protected override void Awake()
@@ -55,6 +64,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         float finalDam = amount;
 
+        StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
+
         if (StatManager.GetValue(StatType.Counter) < Random.Range(0, 1f)) //반격 로직
         {
             //반격을 한다.
@@ -87,14 +98,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         // 기본공격이면
         Attack();
         //스킬이면
-        UseSkill();
+        // UseSkill();
     }
 
 
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        //내 상태에 따라서 스택을 쌓는다.
         CurrentEmotion.Execute();
     }
 }

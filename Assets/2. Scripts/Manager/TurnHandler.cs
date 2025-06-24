@@ -16,7 +16,6 @@ public class TurnHandler
             .ToList();
 
         turnQueue = new Queue<Unit>(unitList);
-        StartNextTurn();
     }
 
     public void StartNextTurn()
