@@ -1,0 +1,89 @@
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class EquipmentItem : InventoryItem
+{
+    public bool IsEquipped;
+    public int EnhanceLevel;
+
+    // public InventorySlot LinkedSlot;
+
+    public EquipmentItemSO EquipmentItemSo => base.ItemSo as EquipmentItemSO;
+
+    public EquipmentItem(EquipmentItemSO itemSo) : base(itemSo, 1)
+    {
+        IsEquipped = false;
+        EnhanceLevel = 0;
+    }
+
+    public override InventoryItem Clone() => new EquipmentItem(EquipmentItemSo);
+
+    public void Enhancement()
+    {
+        EnhanceLevel++;
+        ItemChanged();
+    }
+
+    public string GetEnhanceLevelString()
+    {
+        return EnhanceLevel > 0 ? $"+{EnhanceLevel}" : string.Empty;
+    }
+}
+
+public class EquipmentManager
+{
+    public PlayerUnitController PlayerUnitController { get; private set; }
+
+
+    public EquipmentManager(PlayerUnitController playerUnitController)
+    {
+        PlayerUnitController = playerUnitController;
+    }
+
+    public Dictionary<EquipmentType, EquipmentItem> EquipmentItems { get; private set; } = new();
+
+    public event Action<EquipmentType> OnEquipmentChanged;
+
+    public void EquipItem(EquipmentItem item)
+    {
+        EquipmentType type = item.EquipmentItemSo.EquipmentType;
+        if (item.IsEquipped)
+        {
+            UnequipItem(type);
+            return;
+        }
+
+        if (EquipmentItems.ContainsKey(type))
+        {
+            UnequipItem(type);
+        }
+
+        EquipmentItems[type] = item;
+        foreach (StatData stat in item.EquipmentItemSo.Stats)
+        {
+            PlayerUnitController.StatManager.ApplyStatEffect(stat.StatType, StatModifierType.Equipment, stat.Value);
+        }
+
+        item.IsEquipped = true;
+        // item.LinkedSlot.SetEquipMark(true);
+        OnEquipmentChanged?.Invoke(type);
+    }
+
+    public void UnequipItem(EquipmentType equipmentType)
+    {
+        if (!EquipmentItems.TryGetValue(equipmentType, out var item) || item == null)
+            return;
+
+        foreach (StatData stat in item.EquipmentItemSo.Stats)
+        {
+            PlayerUnitController.StatManager.ApplyStatEffect(stat.StatType, StatModifierType.Equipment, -stat.Value);
+        }
+
+        item.IsEquipped = false;
+        // item.LinkedSlot.SetEquipMark(false);
+        EquipmentItems[equipmentType] = null;
+        Debug.Log($"아이템 장착 해제 : {item.ItemSo.ItemName}");
+        OnEquipmentChanged?.Invoke(equipmentType);
+    }
+}
