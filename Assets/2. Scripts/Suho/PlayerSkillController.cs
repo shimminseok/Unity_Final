@@ -23,9 +23,12 @@ public class PlayerSkillController : BaseSkillController
     protected override void Awake()
     {
         base.Awake();
+        /*  임시코드    */
         mainTarget = GameObject.Find("Enemy").GetComponent<PlayerUnitController>();
         PlayerUnitController ec = mainTarget.Collider.GetComponent<PlayerUnitController>();
+        currentSkill = skills[0];
         Debug.Log(ec.StatManager.GetValue(StatType.CurHp));
+        /*  임시코드    */
     }
 
     public override void SelectTargets(IDamageable target)
@@ -47,13 +50,7 @@ public class PlayerSkillController : BaseSkillController
         currentSkill.reuseNumber++;
         if (mainTarget != null)
         {
-            foreach (var effect in currentSkill.mainEffect)
-            {
-                effect.owner = this.owner;
-                effect.UseSkill(mainTarget);
-                PlayerUnitController ec = mainTarget.Collider.GetComponent<PlayerUnitController>();
-                Debug.Log(ec.StatManager.GetValue(StatType.CurHp));
-            }
+            
         }
         // 메인타겟에 메인효과 적용
         

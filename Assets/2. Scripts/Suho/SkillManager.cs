@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,10 @@ public class SkillManager : MonoBehaviour
    public List<SkillData> selectedSkill;
    public BaseSkillController skillController;
 
-
+   private void Awake()
+   {
+      InitializeSkillManager();
+   }
 
 
    public void InitializeSkillManager()
