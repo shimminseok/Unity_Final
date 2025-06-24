@@ -31,6 +31,7 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
+        Collider = GetComponent<CapsuleCollider>();
     }
 
     protected virtual void Start()
