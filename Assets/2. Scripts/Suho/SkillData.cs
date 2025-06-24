@@ -16,12 +16,13 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "New SkillData", menuName = "ScriptableObjects/New SkillData")]
 public class SkillData : ScriptableObject
 {
+    public SelectCampType selectCamp;
     public SelectTargetType selectType;
     public List<StatusEffectData> mainAffect;
     public List<StatusEffectData> subAffect;
     public JobType jobType;
-    public int reuseNumber;
-    public int cost;
+    public int reuseMaxNumber;
+    public int maxCost;
     public Sprite skillIcon;
     public ParticleSystem.Particle SkillVFX;
     public AnimationClip skillAnimation;
