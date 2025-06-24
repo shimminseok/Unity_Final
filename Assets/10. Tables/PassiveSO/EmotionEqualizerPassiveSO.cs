@@ -13,6 +13,6 @@ public class EmotionEqualizerPassiveSO : PassiveSO, IEmotionDamageModifier
 
     public float ModifyEmotionDamage(float baseDamage)
     {
-        return CanTrigger(Owner.CurrentEmotion) ? baseDamage * fixedMutiplier : EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, Owner.Target.CurrentEmotion.EmotionType);
+        return CanTrigger(Owner.CurrentEmotion) ? baseDamage * fixedMutiplier : 0.7f;
     }
 }

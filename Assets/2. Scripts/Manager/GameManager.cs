@@ -20,5 +20,31 @@ public class GameManager : Singleton<GameManager>
         {
             unit.Attack();
         }
+
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 1), buttonWidth, buttonHeight), "EndTurn"))
+        {
+            unit.EndTurn();
+        }
+
+        if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 0), buttonWidth, buttonHeight), "노말"))
+        {
+            unit.ChangeEmotion(EmotionType.None);
+        }
+
+        if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 1), buttonWidth, buttonHeight), "분노"))
+        {
+            unit.ChangeEmotion(EmotionType.Anger);
+        }
+
+        if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "기쁨"))
+        {
+            unit.ChangeEmotion(EmotionType.Joy);
+        }
+
+
+        if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 3), buttonWidth, buttonHeight), "우울"))
+        {
+            unit.ChangeEmotion(EmotionType.Depression);
+        }
     }
 }

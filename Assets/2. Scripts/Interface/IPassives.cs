@@ -1,4 +1,4 @@
-﻿public interface IAttackRepeat
+﻿public interface IPassives
 {
     void OnAttackRepeat();
 }

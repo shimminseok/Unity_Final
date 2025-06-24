@@ -53,7 +53,18 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         //     return;
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
-        if (StatManager.GetValue(StatType.HitRate) < Random.Range(0, 1f))
+        IDamageable finalTarget = Target;
+
+
+        float hitRate = StatManager.GetValue(StatType.HitRate);
+        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+            emotionOnAttack.OnBeforeAttack(ref finalTarget);
+
+        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+            emotionOnHit.OnCalculateHitChance(ref hitRate);
+
+        bool isHit = Random.value < hitRate;
+        if (!isHit)
         {
             Debug.Log("빗나갔지롱");
             return;
@@ -86,13 +97,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
+
         float finalDam = amount;
 
         //이게 반격 스킬에 대한거임.
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
 
-        if (StatManager.GetValue(StatType.Counter) < Random.Range(0, 1f)) //반격 로직
+        if (StatManager.GetValue(StatType.Counter) < Random.value) //반격 로직
         {
             //반격을 한다.
             return;
@@ -143,6 +155,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             stackPassive.ApplyStack(CurrentEmotion);
         }
 
-        CurrentEmotion.Execute(this);
+        if (!IsDead)
+            CurrentEmotion.AddStack();
     }
 }

@@ -2,7 +2,7 @@
 
 
 [CreateAssetMenu(fileName = "DoubleAttack", menuName = "ScriptableObject/PassiveSkill/DoubleAttack", order = 0)]
-public class DoubleAttackRepeatPassive : PassiveSO, IAttackRepeat
+public class DoublePassivesPassive : PassiveSO, IPassives
 {
     public int RequiredStack;
 

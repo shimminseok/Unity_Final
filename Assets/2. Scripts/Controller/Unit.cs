@@ -36,7 +36,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
             Emotions[i] = EmotionFactory.CreateEmotion((EmotionType)i);
         }
 
-        CurrentEmotion = Emotions[0];
+        CurrentEmotion = Emotions[(int)EmotionType.None];
     }
 
     public void ChangeEmotion(EmotionType newType)
@@ -44,7 +44,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
         if (CurrentEmotion.EmotionType != newType)
         {
             CurrentEmotion.Exit(this);
-            CurrentEmotion = EmotionFactory.CreateEmotion(newType);
+            CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
         }
         else
