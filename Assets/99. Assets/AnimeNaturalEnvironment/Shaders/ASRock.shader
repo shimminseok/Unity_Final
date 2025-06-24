@@ -3639,7 +3639,7 @@ Shader "AwaiiStudio/URP_RockShader"
 		
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraphLitGUI"
+//	CustomEditor "UnityEditor.ShaderGraphLitGUI"
 	FallBack "Hidden/Shader Graph/FallbackError"
 	
 	Fallback "Hidden/InternalErrorShader"
