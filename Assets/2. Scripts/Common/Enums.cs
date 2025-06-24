@@ -39,6 +39,8 @@ public enum PlayerUnitState
     Skill,
     Die,
     Stun,
+
+    EndTurn,
 }
 
 public enum EnemyUnitState
@@ -62,6 +64,7 @@ public enum StatusEffectType
     RecoverOverTime,      // 지속 시간 동안 회복
     Damege,               // 즉발 대미지
     TurnBasedModifierBuff,
+    Trigger,
 }
 
 public enum Emotion
@@ -70,6 +73,11 @@ public enum Emotion
     Anger,      //분노
     Depression, //우울
     Joy         // 기쁨
+}
+
+public enum TriggerEventType
+{
+    OnAttacked, //피격 당했을때
 }
 
 public enum ItemType

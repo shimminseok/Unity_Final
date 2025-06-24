@@ -17,9 +17,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
     private IState<TController, TState>[] states;
 
     public          TState      CurrentState { get; protected set; }
-    public          Collider    Collider     { get; protected set; }
-    public          int         Index        { get; protected set; }
-    public          bool        IsDead       { get; protected set; }
     public abstract StatBase    AttackStat   { get; protected set; }
     public abstract IDamageable Target       { get; protected set; }
 
@@ -90,7 +87,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
         else
         {
             CurrentEmotion.Stack++;
-            //어쩌구 저쩌구 스택을 올려준다~
         }
     }
 

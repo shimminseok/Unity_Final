@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BattleManager : SceneOnlySingleton<BattleManager>
@@ -18,19 +19,30 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         TurnHandler = new TurnHandler();
         //
+    }
+
+    public void SetAllUnits(List<Unit> units)
+    {
+        allUnits = units;
         TurnHandler.Initialize(allUnits);
+    }
+
+    public void StartTurn()
+    {
+        TurnHandler.StartNextTurn();
     }
 
     public void EndTurn()
     {
         foreach (Unit unit in allUnits)
         {
-            if (unit.IsDead) continue;
+            if (unit.IsDead)
+                continue;
             unit.StatusEffectManager?.OnTurnPassed();
         }
 
         allUnits.RemoveAll(u => u.IsDead);
-        TurnHandler.Initialize(allUnits);
+        TurnHandler.RefillTurnQueue();
     }
 
     protected override void OnDestroy()

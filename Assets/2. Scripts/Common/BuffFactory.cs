@@ -13,6 +13,7 @@
             StatusEffectType.RecoverOverTime       => new RecoverOverTime(),
             StatusEffectType.PeriodicDamageDebuff  => new PeriodicDamageDebuff(),
             StatusEffectType.TurnBasedModifierBuff => new TurnBasedModifierBuff(),
+            StatusEffectType.Trigger               => new TriggerBuff(),
             _                                      => null
         };
         if (effect == null)
