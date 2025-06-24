@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
-public abstract class BaseController<TController, TState> : Unit, IAttackable where TController : BaseController<TController, TState>
+public abstract class BaseController<TController, TState> : Unit where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
@@ -27,18 +27,20 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
         Collider = GetComponent<CapsuleCollider>();
+        attackTypeSo.Initialize(this);
+        CreateEmotion();
+        SetupState();
     }
 
     protected virtual void Start()
     {
-        SetupState();
         AttackStat = StatManager.GetStat<ResourceStat>(StatType.AttackPow);
     }
 
     protected virtual void Update()
     {
-        //TryStateTransition();
-        //stateMachine?.Update();
+        TryStateTransition();
+        stateMachine?.Update();
     }
 
     protected virtual void FixedUpdate()
@@ -79,6 +81,4 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
 
 
     protected abstract IState<TController, TState> GetState(TState state);
-
-    public abstract void Attack();
 }
