@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BattleManager : SceneOnlySingleton<BattleManager>
 {
-    private TurnHandler turnHandler;
+    public TurnHandler TurnHandler { get; private set; }
+
+
+    private List<Unit> allUnits = new List<Unit>();
 
     protected override void Awake()
     {
@@ -13,18 +17,32 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
-        turnHandler = new TurnHandler();
+        TurnHandler = new TurnHandler();
         //
-        turnHandler.Initialize(null);
     }
 
-    private void Update()
+    public void SetAllUnits(List<Unit> units)
     {
+        allUnits = units;
+        TurnHandler.Initialize(allUnits);
+    }
+
+    public void StartTurn()
+    {
+        TurnHandler.StartNextTurn();
     }
 
     public void EndTurn()
     {
-        turnHandler.Initialize(null);
+        foreach (Unit unit in allUnits)
+        {
+            if (unit.IsDead)
+                continue;
+            unit.StatusEffectManager?.OnTurnPassed();
+        }
+
+        allUnits.RemoveAll(u => u.IsDead);
+        TurnHandler.RefillTurnQueue();
     }
 
     protected override void OnDestroy()
