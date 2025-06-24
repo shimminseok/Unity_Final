@@ -47,7 +47,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         AttackTypeSo.Attack();
-        Target.TakeDamage(StatManager.GetValue(StatType.AttackPow));
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)

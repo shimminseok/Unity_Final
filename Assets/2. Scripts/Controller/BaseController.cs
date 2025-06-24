@@ -6,12 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
-public abstract class BaseController<TController, TState> : Unit, IAttackable where TController : BaseController<TController, TState>
+public abstract class BaseController<TController, TState> : Unit where TController : BaseController<TController, TState>
     where TState : Enum
 
 {
     [SerializeField] AttackTypeSO attackTypeSo;
-    public BaseEmotion CurrentEmotion { get; private set; }
     private StateMachine<TController, TState> stateMachine;
 
     private IState<TController, TState>[] states;
@@ -28,11 +27,13 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
         Collider = GetComponent<CapsuleCollider>();
+        attackTypeSo.Initialize(this);
+        CreateEmotion();
+        SetupState();
     }
 
     protected virtual void Start()
     {
-        SetupState();
         AttackStat = StatManager.GetStat<ResourceStat>(StatType.AttackPow);
     }
 
@@ -78,19 +79,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable wh
         }
     }
 
-    public void ChangeEmotion(Emotion emotion)
-    {
-        if (CurrentEmotion.EmotionType != emotion)
-        {
-            CurrentEmotion = EmotionFactory.CreateEmotion(emotion);
-        }
-        else
-        {
-            CurrentEmotion.Stack++;
-        }
-    }
 
     protected abstract IState<TController, TState> GetState(TState state);
-
-    public abstract void Attack();
 }
