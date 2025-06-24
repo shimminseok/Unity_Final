@@ -1,11 +1,13 @@
 ﻿public static class EmotionFactory
 {
-    public static BaseEmotion CreateEmotion(Emotion emotion)
+    public static BaseEmotion CreateEmotion(EmotionType emotionType)
     {
-        return emotion switch
+        return emotionType switch
         {
-            Emotion.Anger => new AngerEmotion(),
-
+            EmotionType.None       => new NeutralEmotion(),
+            EmotionType.Anger      => new AngerEmotion(),
+            EmotionType.Depression => new DepressionEmotion(),
+            EmotionType.Joy        => new JoyEmotion(),
 
             _ => null
         };

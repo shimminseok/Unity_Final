@@ -1,16 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public abstract class Unit : MonoBehaviour, IDamageable
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
 {
+    public BaseEmotion         CurrentEmotion      { get; protected set; }
     public bool                IsStunned           { get; private set; }
     public StatManager         StatManager         { get; protected set; }
     public StatusEffectManager StatusEffectManager { get; protected set; }
-    public BaseEmotion         CurrentEmotion      { get; private set; }
 
+    public          StatBase      AttackStat    { get; protected set; }
+    public          IDamageable   Target        { get; protected set; }
     public          Collider      Collider      { get; protected set; }
     public          int           Index         { get; protected set; }
     public          bool          IsDead        { get; protected set; }
     protected       BattleManager BattleManager => BattleManager.Instance;
+    public          BaseEmotion[] Emotions      { get; private set; }
     public abstract void          StartTurn();
 
     public abstract void EndTurn();
@@ -19,20 +23,36 @@ public abstract class Unit : MonoBehaviour, IDamageable
 
     public abstract void Dead();
 
-    public void Setstunned(bool isStunned)
+    public void SetStunned(bool isStunned)
     {
         IsStunned = isStunned;
     }
 
-    public void ChangeEmotion(Emotion emotion)
+    protected void CreateEmotion()
     {
-        if (CurrentEmotion.EmotionType != emotion)
+        Emotions = new BaseEmotion[Enum.GetValues(typeof(EmotionType)).Length];
+        for (int i = 0; i < Emotions.Length; i++)
         {
-            CurrentEmotion = EmotionFactory.CreateEmotion(emotion);
+            Emotions[i] = EmotionFactory.CreateEmotion((EmotionType)i);
+        }
+
+        CurrentEmotion = Emotions[(int)EmotionType.None];
+    }
+
+    public void ChangeEmotion(EmotionType newType)
+    {
+        if (CurrentEmotion.EmotionType != newType)
+        {
+            CurrentEmotion.Exit(this);
+            CurrentEmotion = Emotions[(int)newType];
+            CurrentEmotion.Enter(this);
         }
         else
         {
-            CurrentEmotion.Stack++;
+            CurrentEmotion.Execute(this); // 같은 감정이면 Execute 호출
         }
     }
+
+
+    public abstract void Attack();
 }

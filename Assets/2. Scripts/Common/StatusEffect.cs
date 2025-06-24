@@ -196,7 +196,7 @@ public class StunDebuff : TurnBasedBuff
 {
     public override IEnumerator Apply(StatusEffectManager manager)
     {
-        manager.Owner.Setstunned(true);
+        manager.Owner.SetStunned(true);
         yield return null;
     }
 }
