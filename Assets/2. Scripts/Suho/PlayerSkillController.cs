@@ -20,14 +20,11 @@ using UnityEngine;
  */
 public class PlayerSkillController : BaseSkillController
 {
-    public List<Skill> skills = new List<Skill>();
-    public Skill currentSkill;
-    
-    public override void SelectTargets(IDamageable mainTarget)
+    public override void SelectTargets(IDamageable target)
     {
-        this.mainTarget = mainTarget;
+        this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(mainTarget,currentSkill.selectedType);
+        subTargets = targetSelect.FindTargets(target,currentSkill.selectedType);
     }
 
     public void ChangeSkill(int index)
