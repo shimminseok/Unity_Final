@@ -5,20 +5,11 @@ public class PlayerSkillManager : MonoBehaviour
 {
    public List<SkillData> selectedSkill;
    public SkillData currentSkillData;
-   
-
-   private void Awake()
-   {
-   }
-
-   public void Initialize()
-   {
-      
-   }
+   public SkillController skillController;
+   public TargetSelectSO targetSelectData;
 
    public void UseSkill()
    {
-      
    }
    
    
