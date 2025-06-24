@@ -1076,7 +1076,7 @@ Shader "AwaiiStudio/URP_BlendingPlant"
 	
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
+//	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
 }
