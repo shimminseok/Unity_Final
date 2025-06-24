@@ -16,6 +16,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override StatBase    AttackStat { get; protected set; }
 
     private HPBarUI hpBar;
+    public EmotionType CurrentEmotionType;
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -33,30 +34,30 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     protected override void Awake()
     {
         base.Awake();
-        // Animator.runtimeAnimatorController = ChangeClip();
         EquipmentManager = new EquipmentManager(this);
-        // PassiveSo = PlayerUnitSo.PassiveSkill;
-        // PassiveSo.Initialize(this);
+        StatManager.Initialize(PlayerUnitSo);
+        PassiveSo.Initialize(this);
     }
 
     protected override void Start()
     {
+        base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
-    }
 
-    public void RegisterSkill(int index, SkillData skillData)
-    {
-        SkillDatas[index] = skillData;
+        CurrentEmotionType = CurrentEmotion.EmotionType;
     }
-
 
     public override void Attack()
     {
-        if (Target == null || Target.IsDead)
-            return;
+        // if (Target == null || Target.IsDead)
+        //     return;
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
-
+        if (StatManager.GetValue(StatType.HitRate) < Random.Range(0, 1f))
+        {
+            Debug.Log("빗나갔지롱");
+            return;
+        }
 
         AttackTypeSo.Attack();
     }
@@ -85,15 +86,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
-        if (PassiveSo is IDamageReaction attackPassive)
-        {
-            attackPassive.OnDamageReceived();
-        }
-
-
         float finalDam = amount;
 
+        //이게 반격 스킬에 대한거임.
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
+
 
         if (StatManager.GetValue(StatType.Counter) < Random.Range(0, 1f)) //반격 로직
         {
@@ -146,6 +143,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             stackPassive.ApplyStack(CurrentEmotion);
         }
 
-        CurrentEmotion.Execute();
+        CurrentEmotion.Execute(this);
     }
 }
