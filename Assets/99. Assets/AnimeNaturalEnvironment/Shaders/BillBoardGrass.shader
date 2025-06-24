@@ -975,7 +975,7 @@ Shader "AwaiiStudio/URP_BillBoardGrass"
 	
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
+//	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
 }

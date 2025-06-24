@@ -11,7 +11,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
 
 {
     [SerializeField] AttackTypeSO attackTypeSo;
-    public StatManager         StatManager         { get; private set; }
     public StatusEffectManager StatusEffectManager { get; private set; }
     public BaseEmotion         CurrentEmotion      { get; private set; }
     private StateMachine<TController, TState> stateMachine;
@@ -21,7 +20,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
     public          TState      CurrentState { get; protected set; }
     public          int         Index        { get; protected set; }
     public          bool        IsDead       { get; protected set; }
-    public          Collider    Collider     { get; protected set; }
     public abstract StatBase    AttackStat   { get; protected set; }
     public abstract IDamageable Target       { get; protected set; }
 
@@ -32,7 +30,6 @@ public abstract class BaseController<TController, TState> : Unit, IAttackable, I
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
-        Collider = GetComponent<CapsuleCollider>();
     }
 
     protected virtual void Start()

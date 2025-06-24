@@ -1895,7 +1895,7 @@ Shader "AwaiiStudio/ASFolliage"
 	
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraphUnlitGUI"
+//	CustomEditor "UnityEditor.ShaderGraphUnlitGUI"
 	FallBack "Hidden/Shader Graph/FallbackError"
 	
 	Fallback "Hidden/InternalErrorShader"

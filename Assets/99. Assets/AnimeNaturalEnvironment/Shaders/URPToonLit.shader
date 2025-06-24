@@ -916,7 +916,7 @@ Shader "AwaiiStudio/URP_ToonLit"
 	
 	}
 	
-	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
+//	CustomEditor "UnityEditor.ShaderGraph.PBRMasterGUI"
 	Fallback "Hidden/InternalErrorShader"
 	
 }

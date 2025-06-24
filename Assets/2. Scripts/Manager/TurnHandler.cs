@@ -11,7 +11,7 @@ public class TurnHandler
     {
         //속도 같다.
         //에너미, 다 똑같을꺼다.
-        turnQueue = new Queue<Unit>(unitList.OrderByDescending(u => u.Speed));
+        turnQueue = new Queue<Unit>(unitList.OrderByDescending(u => u.StatManager.GetValue(StatType.Speed)));
     }
 
     public void StartNextTurn()

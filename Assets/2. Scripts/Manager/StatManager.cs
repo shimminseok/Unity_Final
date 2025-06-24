@@ -8,8 +8,7 @@ public class StatManager : MonoBehaviour
 {
     public Dictionary<StatType, StatBase> Stats { get; private set; } = new Dictionary<StatType, StatBase>();
 
-    public event Action OnStatChanged;
-    public IDamageable  Owner { get; private set; }
+    public IDamageable Owner { get; private set; }
 
 
     /// <summary>
@@ -26,8 +25,6 @@ public class StatManager : MonoBehaviour
 
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
-
-        OnStatChanged?.Invoke();
     }
 
     //몬스터 전용 Initialize
@@ -46,8 +43,6 @@ public class StatManager : MonoBehaviour
 
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
-
-        OnStatChanged?.Invoke();
     }
 
     /// <summary>
@@ -168,7 +163,6 @@ public class StatManager : MonoBehaviour
                 break;
         }
 
-        OnStatChanged?.Invoke();
         Debug.Log($"Stat : {type} Modify Value {value}, FinalValue : {stat.Value}");
     }
 

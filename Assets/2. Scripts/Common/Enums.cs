@@ -14,6 +14,8 @@ public enum StatType
     Counter,
     Defense,
 
+    Speed,
+
     CriticalDam,
     CriticalRate,
 }
@@ -69,46 +71,10 @@ public enum Emotion
     Joy         // 기쁨
 }
 
-
-
-/*SelectTargetType : 스킬을 사용할 때 적을 선택하는 로직 타입
- * EnemySingle : 적 한명
- * EnemyTwoRandom : 적 한 명 선택, 한 명 랜덤
- * EnemyAll : 적 모두
- * PlayerSingle : 플레이어 한 명
- * PlayerTwoRandom : 플레이어 한 명 선택, 한 명 랜덤
- * PlayerAll : 플레이어 전체
- */
-public enum SelectTargetType
+public enum ItemType
 {
-    EnemySingle,
-    //EnemyConShaped,
-    EnemyTwoRandom,
-    EnemyAll,
-    PlayerSingle,
-    PlayerTwoRandom,
-    //PlayerConShaped,
-    PlayerAll,
 }
 
-/*
- *  Male_Warrior : 남자기사
-    FeMale_Warrior : 여자기사
-    SpearMan : 창술사
-    DragonKnight : 용기사
-    Archer : 궁수
-    Priest : 성직자
-    Mage : 마법사
- *
- */
-
-public enum JobType
+public enum EquipmentType
 {
-    Male_Warrior,
-    FeMale_Warrior,
-    SpearMan,
-    DragonKnight,
-    Archer,
-    Priest,
-    Mage
 }
