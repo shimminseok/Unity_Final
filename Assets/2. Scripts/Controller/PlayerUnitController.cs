@@ -6,17 +6,12 @@ using PlayerState;
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     public PlayerUnitSO PlayerUnitSo;
-
-    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
     public Animator Animator;
     public PassiveSO PassiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
 
-    public override IDamageable Target     { get; protected set; }
-    public override StatBase    AttackStat { get; protected set; }
 
     private HPBarUI hpBar;
-    public EmotionType CurrentEmotionType;
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -37,14 +32,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         EquipmentManager = new EquipmentManager(this);
         StatManager.Initialize(PlayerUnitSo);
         PassiveSo.Initialize(this);
+        PlayerUnitSo.AttackType.Initialize(this);
     }
 
     protected override void Start()
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
-
-        CurrentEmotionType = CurrentEmotion.EmotionType;
     }
 
     public override void Attack()
@@ -70,7 +64,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        AttackTypeSo.Attack();
+        PlayerUnitSo.AttackType.Attack();
     }
 
     public void UseSkill()
@@ -157,5 +151,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (!IsDead)
             CurrentEmotion.AddStack();
+
+        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
     }
 }

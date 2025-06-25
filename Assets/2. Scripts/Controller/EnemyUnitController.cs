@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
+    public EnemyUnitSO MonsterSO;
     // Start is called before the first frame update
-    public override StatBase    AttackStat { get; protected set; }
-    public override IDamageable Target     { get; protected set; }
 
     protected override void Awake()
     {
         base.Awake();
+        MonsterSO.AttackType.Initialize(this);
     }
 
     protected override void Start()
@@ -46,7 +46,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (Target == null || Target.IsDead)
             return;
 
-        AttackTypeSo.Attack();
+        MonsterSO.AttackType.Attack();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
