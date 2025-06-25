@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-
-
 /*
  * 플레이어 스킬 컨트롤러
  *
@@ -18,8 +16,10 @@ using UnityEngine;
  * 스킬 사용 시 효과를 발생시키는 메서드 처리에 대한 고민 중 [2025/06/24]
  * 
  */
+[RequireComponent(typeof(SkillManager))]
 public class PlayerSkillController : BaseSkillController
 {
+
     public override void SelectTargets(IDamageable target)
     {
         this.mainTarget = target;
@@ -37,10 +37,9 @@ public class PlayerSkillController : BaseSkillController
     {
         currentSkill.cost = 0;
         currentSkill.reuseNumber++;
-
         if (mainTarget != null)
         {
-            
+            currentSkill.mainEffect.AffectTargetWithSkill(mainTarget);
         }
         // 메인타겟에 메인효과 적용
         
