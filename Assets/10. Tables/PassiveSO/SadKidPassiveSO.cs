@@ -16,6 +16,6 @@ public class SadKidPassiveSo : PassiveSO, IPassiveChangeEmotionTrigger
         if (!CanTrigger(Owner.CurrentEmotion))
             return;
 
-        Owner.CurrentEmotion.Stack += emotionStackPerChangeEmotion;
+        Owner.CurrentEmotion.AddStack(Owner, emotionStackPerChangeEmotion);
     }
 }
