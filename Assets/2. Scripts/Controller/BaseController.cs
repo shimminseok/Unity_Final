@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Animator))]
 public abstract class BaseController<TController, TState> : Unit where TController : BaseController<TController, TState>
     where TState : Enum
 
@@ -72,6 +73,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         }
     }
 
+    public abstract void Initialize();
 
     protected abstract IState<TController, TState> GetState(TState state);
 }

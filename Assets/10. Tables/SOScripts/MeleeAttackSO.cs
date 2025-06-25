@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObject/AttackType/Melee", order = 0)]
+[CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObjects/AttackType/Melee", order = 0)]
 public class MeleeAttackSO : AttackTypeSO
 {
     public override void Attack()
@@ -11,9 +11,9 @@ public class MeleeAttackSO : AttackTypeSO
 
         if (Owner is PlayerUnitController player)
         {
-            if (player.PassiveSo is IEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
+            if (player.passiveSo is IEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
                 finalValue = modifier.ModifyEmotionDamage(finalValue);
-            else if (player.PassiveSo is IPassives repeatPassive)
+            else if (player.passiveSo is IPassives repeatPassive) //더블어택
                 repeatPassive.OnAttackRepeat();
         }
 

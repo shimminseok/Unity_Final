@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "DragonKnightTransform", menuName = "ScriptableObject/PassiveSkill/DragonKnightTransform", order = 0)]
+[CreateAssetMenu(fileName = "DragonKnightTransform", menuName = "ScriptableObjects/PassiveSkill/DragonKnightTransform", order = 0)]
 public class DragonKnightTransformSO : PassiveSO, ITurnStartTrigger
 {
     public int RequiredStack;
