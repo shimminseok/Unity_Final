@@ -14,6 +14,7 @@ public class EntryDeckData
     public SkillData[] skillDatas = new SkillData[3];
     public SkillData passiveSkill;
 
+    // 딕셔너리로 줘!!! 
     public EquipmentItemSO weapon;
     public EquipmentItemSO armor;
     public EquipmentItemSO accessory;

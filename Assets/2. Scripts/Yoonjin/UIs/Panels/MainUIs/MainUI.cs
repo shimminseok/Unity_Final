@@ -44,7 +44,10 @@ public class MainUI : UIBase
     private void GenerateOwnedCharacterButtons()
     {
         // !!!임시로 더미 전체 캐릭터풀의 데이터 집어넣음!!!
+        // 테이블 데이터에서 get table 로 받아옴
         ownedCharacters = dummyPool.OwnedCharacters;
+
+        
 
         foreach (PlayerUnitSO unit in ownedCharacters)
         {
