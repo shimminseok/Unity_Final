@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PassiveSkillTable", menuName = "Table/PassiveSkillTable", order = 0)]
@@ -9,9 +10,17 @@ public class PassiveSkillTable : BaseTable<int, PassiveSO>
 
     public override void CreateTable()
     {
-        foreach (PassiveSO passiveSo in DataDic.Values)
+        Type = GetType();
+        foreach (PassiveSO passiveSo in dataList)
         {
             DataDic[passiveSo.PassiveID] = passiveSo;
         }
+    }
+
+    public List<PassiveSO> GetPassiveSkillJobs(JobType jobType)
+    {
+        List<PassiveSO> getPassiveSkillJobs = DataDic.Where(s => s.Value.JobType == jobType).Select(s => s.Value).ToList();
+
+        return getPassiveSkillJobs;
     }
 }

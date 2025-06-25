@@ -9,7 +9,8 @@ public class StatgeTable : BaseTable<int, StageSO>
 
     public override void CreateTable()
     {
-        foreach (StageSO data in DataDic.Values)
+        Type = GetType();
+        foreach (StageSO data in dataList)
         {
             DataDic[data.ID] = data;
         }

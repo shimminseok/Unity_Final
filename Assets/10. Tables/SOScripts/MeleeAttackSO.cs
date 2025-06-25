@@ -4,31 +4,31 @@
 [CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObjects/AttackType/Melee", order = 0)]
 public class MeleeAttackSO : AttackTypeSO
 {
-    public override void Attack()
+    public override void Attack(Unit attacker)
     {
-        float baseAttackPow = Owner.StatManager.GetValue(StatType.AttackPow);
+        float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
 
-        if (Owner is PlayerUnitController player)
+        if (attacker is PlayerUnitController player)
         {
-            if (player.passiveSo is IEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
+            if (player.passiveSo is IPassiveEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
                 finalValue = modifier.ModifyEmotionDamage(finalValue);
-            else if (player.passiveSo is IPassives repeatPassive) //더블어택
-                repeatPassive.OnAttackRepeat();
+            else if (player.passiveSo is IPassiveAttackTrigger repeatPassive) //더블어택
+                repeatPassive.OnAttack();
         }
 
         float mutiplier = 0f;
         //Test
-        if (Owner.Target == null)
+        if (attacker.Target == null)
         {
-            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, GameManager.Instance.testEmotion);
+            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, GameManager.Instance.testEmotion);
             Debug.Log(finalValue * mutiplier);
         }
         else
         {
-            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, Owner.Target.CurrentEmotion.EmotionType);
+            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, attacker.Target.CurrentEmotion.EmotionType);
             finalValue *= mutiplier;
-            Owner.Target.TakeDamage(finalValue);
+            attacker.Target.TakeDamage(finalValue);
         }
     }
 }

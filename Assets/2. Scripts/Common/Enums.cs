@@ -51,6 +51,7 @@ public enum EnemyUnitState
     Move,
     Attack,
     Hit,
+    Stun,
     Die
 }
 

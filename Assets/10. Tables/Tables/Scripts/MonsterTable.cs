@@ -9,7 +9,8 @@ public class MonsterTable : BaseTable<int, EnemyUnitSO>
 
     public override void CreateTable()
     {
-        foreach (EnemyUnitSO data in DataDic.Values)
+        Type = GetType();
+        foreach (EnemyUnitSO data in dataList)
         {
             DataDic[data.ID] = data;
         }
