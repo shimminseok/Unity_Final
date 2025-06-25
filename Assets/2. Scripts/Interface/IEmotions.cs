@@ -1,11 +1,11 @@
 ﻿public interface IEmotionOnAttack
 {
-    void OnBeforeAttack(ref IDamageable target);
+    void OnBeforeAttack(Unit attacker, ref IDamageable target);
 }
 
 public interface IEmotionOnTakeDamage
 {
-    void OnBeforeTakeDamage(Unit unit, ref float damage, out bool ignoreDamage);
+    void OnBeforeTakeDamage(Unit unit, out bool ignoreDamage);
 }
 
 public interface IEmotionOnHitChance

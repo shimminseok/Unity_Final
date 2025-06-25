@@ -32,7 +32,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-
         Initialize();
     }
 
@@ -48,15 +47,18 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (PlayerUnitSo == null)
             return;
 
-        PlayerUnitSo.AttackType.Initialize(this);
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
     }
 
     public override void Attack()
     {
-        // if (Target == null || Target.IsDead)
-        //     return;
+        if (Target == null || Target.IsDead)
+        {
+            var enemies = BattleManager.Instance.GetEnemies(this);
+            Target = enemies[Random.Range(0, enemies.Count)];
+            return;
+        }
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;
@@ -64,7 +66,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
-            emotionOnAttack.OnBeforeAttack(ref finalTarget);
+            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
             emotionOnHit.OnCalculateHitChance(ref hitRate);
@@ -76,7 +78,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        PlayerUnitSo.AttackType.Attack();
+        Target = finalTarget;
+        PlayerUnitSo.AttackType.Attack(this);
     }
 
     public void UseSkill()
@@ -103,6 +106,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
+        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
+        {
+            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
+            if (isIgnore)
+                return;
+        }
 
         float finalDam = amount;
 
@@ -110,7 +119,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
 
-        if (StatManager.GetValue(StatType.Counter) < Random.value) //반격 로직
+        if (StatManager.GetValue(StatType.Counter) >= Random.value) //반격 로직
         {
             //반격을 한다.
             return;
@@ -162,7 +171,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         if (!IsDead)
-            CurrentEmotion.AddStack();
+            CurrentEmotion.AddStack(this);
 
         Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
     }
