@@ -40,6 +40,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         target = owner;
         OnSpawnFromPool();
         statManager = target.Collider.GetComponent<StatManager>();
+        statManager.GetStat<ResourceStat>(StatType.CurHp).OnValueChanged += UpdateHealthBarWrapper;
         //speedStat = statManager.GetStat<CalculatedStat>(StatType.Speed);
 
         //speedStat.OnValueChanged += UpdateSpeedText;
