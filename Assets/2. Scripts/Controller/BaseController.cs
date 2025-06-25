@@ -10,16 +10,11 @@ public abstract class BaseController<TController, TState> : Unit where TControll
     where TState : Enum
 
 {
-    [SerializeField] AttackTypeSO attackTypeSo;
     private StateMachine<TController, TState> stateMachine;
 
     private IState<TController, TState>[] states;
 
-    public          TState      CurrentState { get; protected set; }
-    public abstract StatBase    AttackStat   { get; protected set; }
-    public abstract IDamageable Target       { get; protected set; }
-
-    protected AttackTypeSO AttackTypeSo => attackTypeSo;
+    public TState CurrentState { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -27,14 +22,12 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
         Collider = GetComponent<CapsuleCollider>();
-        attackTypeSo.Initialize(this);
         CreateEmotion();
         SetupState();
     }
 
     protected virtual void Start()
     {
-        AttackStat = StatManager.GetStat<ResourceStat>(StatType.AttackPow);
     }
 
     protected virtual void Update()
