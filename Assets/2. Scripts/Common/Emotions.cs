@@ -32,6 +32,7 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
 
     private float critDamUpAmount = 0f;
+    private float hitRateDownAmount = 0f;
 
     public JoyEmotion()
     {
@@ -56,8 +57,17 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
         Debug.Log("기쁨 상태 종료!!");
     }
 
-    public void OnCalculateHitChance(ref float hitRate)
+    public void OnCalculateHitChance(Unit unit, ref float hitRate)
     {
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is ComposurePassiveSo composurePassive)
+            {
+                hitRate = composurePassive.ComposureValue(hitRate);
+                return;
+            }
+        }
+
         float chance = Mathf.Min(Stack * MissChanceAmount, MissChanceMax);
         hitRate = Mathf.Clamp01(hitRate - chance);
     }

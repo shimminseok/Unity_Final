@@ -2,6 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
+using System.Linq;
 using UnityEngine.Serialization;
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
@@ -55,9 +56,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         if (Target == null || Target.IsDead)
         {
+            //Test
             var enemies = BattleManager.Instance.GetEnemies(this);
             Target = enemies[Random.Range(0, enemies.Count)];
-            return;
+            // return;
         }
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
@@ -69,7 +71,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-            emotionOnHit.OnCalculateHitChance(ref hitRate);
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -140,6 +142,22 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void Dead()
     {
+        if (IsDead)
+            return;
+
+        IsDead = true;
+
+
+        //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
+        var allyDeathPassives = BattleManager.Instance.GetAllies(this)
+            .Select(u => (u as PlayerUnitController)?.passiveSo)
+            .OfType<IPassiveAllyDeathTrigger>()
+            .ToList();
+
+        foreach (var unit in allyDeathPassives)
+        {
+            unit.OnAllyDead();
+        }
     }
 
     public override void StartTurn()
@@ -147,9 +165,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead || IsStunned)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+            return;
         }
 
-        if (passiveSo is ITurnStartTrigger turnStartTrigger)
+        if (passiveSo is IPassiveTurnStartTrigger turnStartTrigger)
         {
             turnStartTrigger.OnTurnStart(this);
         }
@@ -165,9 +184,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        if (passiveSo is IEmotionStackApplier stackPassive)
+        if (passiveSo is IPassiveEmotionStackTrigger stackPassive)
         {
-            stackPassive.ApplyStack(CurrentEmotion);
+            stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
 
         if (!IsDead)

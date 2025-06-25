@@ -62,7 +62,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             //Test
             var enemies = BattleManager.Instance.GetEnemies(this);
             Target = enemies[Random.Range(0, enemies.Count)];
-            return;
+            // return;
         }
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
@@ -74,7 +74,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-            emotionOnHit.OnCalculateHitChance(ref hitRate);
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -112,6 +112,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void StartTurn()
     {
+        if (IsDead || IsStunned)
+            return;
     }
 
     public override void EndTurn()

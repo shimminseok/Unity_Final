@@ -46,6 +46,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
             CurrentEmotion.Exit(this);
             CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
+
+            if (this is PlayerUnitController playerUnit && playerUnit.passiveSo is IPassiveChangeEmotionTrigger passiveChangeEmotion)
+            {
+                passiveChangeEmotion.OnChangeEmotion();
+            }
         }
         else
         {

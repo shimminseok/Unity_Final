@@ -11,10 +11,10 @@ public class MeleeAttackSO : AttackTypeSO
 
         if (attacker is PlayerUnitController player)
         {
-            if (player.passiveSo is IEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
+            if (player.passiveSo is IPassiveEmotionDamageModifier modifier) //여전사 패시브 (상성 관계없이 1.3배)
                 finalValue = modifier.ModifyEmotionDamage(finalValue);
-            else if (player.passiveSo is IPassives repeatPassive) //더블어택
-                repeatPassive.OnAttackRepeat();
+            else if (player.passiveSo is IPassiveAttackTrigger repeatPassive) //더블어택
+                repeatPassive.OnAttack();
         }
 
         float mutiplier = 0f;
