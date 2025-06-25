@@ -15,20 +15,19 @@ MonoBehaviour:
   selectCamp: 1
   selectType: 0
   mainSkillEffect:
-  - owner: {fileID: 0}
-    standardStatType: 4
-    weight: 0.5
+    owner: {fileID: 0}
     effects:
     - ID: 1010101
-      EffectType: 8
-      Stat:
-        StatType: 1
-        ModifierType: 0
-        Value: 0
-      Duration: 1
-      TickInterval: 0
-      IsStackable: 0
-  subSkillEffect: []
+      ownerStatType: 4
+      weight: 5
+      opponentStatType: 1
+      effectType: 9
+      lastTurn: 1
+      isStackable: 1
+      emotionType: 1
+  subSkillEffect:
+    owner: {fileID: 0}
+    effects: []
   jobType: 1
   reuseMaxNumber: 5
   maxCost: 2

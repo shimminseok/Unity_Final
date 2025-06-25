@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Skill
 {
-    public Skill(SelectCampType camp, SelectTargetType selectType, List<StatBaseSkillEffect> mainEffect, List<StatBaseSkillEffect> subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
-    {
+    public Skill(SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    {   
         this.selectedCamp = camp;
         this.selectedType = selectType;
         this.mainEffect = mainEffect;
@@ -20,8 +20,8 @@ public class Skill
 
     public SelectCampType selectedCamp;
     public SelectTargetType selectedType = SelectTargetType.Single;
-    public List<StatBaseSkillEffect> mainEffect;
-    public List<StatBaseSkillEffect> subEffect;
+    public StatBaseSkillEffect mainEffect;
+    public StatBaseSkillEffect subEffect;
     public JobType jobType;
     public int reuseNumber = 0;
     public int cost = 0;
@@ -36,7 +36,7 @@ public class Skill
         cost = Mathf.Min(maxCost, cost + value);
     }
 
-    public bool CheckUseSkill()
+    public bool CheckCanUseSkill()
     {
         if (cost < maxCost)
         {

@@ -6,9 +6,11 @@ public class SkillManager : MonoBehaviour
 {
    public List<SkillData> selectedSkill;
    public BaseSkillController skillController;
-
+   public Unit owner;
    private void Awake()
    {
+      owner = GetComponent<Unit>();
+      skillController = GetComponent<BaseSkillController>();
       InitializeSkillManager();
    }
 
@@ -18,7 +20,8 @@ public class SkillManager : MonoBehaviour
       foreach (SkillData skillData in selectedSkill)
       {
          Skill skill = new Skill
-            (  skillData.selectCamp,
+            (  
+               skillData.selectCamp,
                skillData.selectType,
                skillData.mainSkillEffect,
                skillData.subSkillEffect,
@@ -29,6 +32,8 @@ public class SkillManager : MonoBehaviour
                skillData.SkillVFX,
                skillData.skillAnimation
                );
+         skill.mainEffect.owner = owner;
+         skill.subEffect.owner = owner;
          skillController.skills.Add(skill);
       }
    }
