@@ -11,7 +11,8 @@ public class PlayerUnitTable : BaseTable<int, PlayerUnitSO>
 
     public override void CreateTable()
     {
-        foreach (PlayerUnitSO data in DataDic.Values)
+        Type = GetType();
+        foreach (PlayerUnitSO data in dataList)
         {
             DataDic[data.ID] = data;
         }

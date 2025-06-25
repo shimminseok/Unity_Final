@@ -9,7 +9,8 @@ public class PassiveSkillTable : BaseTable<int, PassiveSO>
 
     public override void CreateTable()
     {
-        foreach (PassiveSO passiveSo in DataDic.Values)
+        Type = GetType();
+        foreach (PassiveSO passiveSo in dataList)
         {
             DataDic[passiveSo.PassiveID] = passiveSo;
         }
