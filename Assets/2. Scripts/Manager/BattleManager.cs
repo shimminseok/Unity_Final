@@ -7,7 +7,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 {
     //Test
     public List<Unit> PartyUnits;
-    public List<Unit> EnumyUnits;
+    public List<Unit> EnemyUnits;
     public TurnHandler TurnHandler { get; private set; }
 
 
@@ -22,7 +22,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         TurnHandler = new TurnHandler();
 
-        allUnits = PartyUnits.Concat(EnumyUnits).ToList();
+        allUnits = PartyUnits.Concat(EnemyUnits).ToList();
         //
     }
 
@@ -55,13 +55,13 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         if (PartyUnits.Contains(unit))
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
-            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+            return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
     }
 
     public List<Unit> GetEnemies(Unit unit)
     {
         if (PartyUnits.Contains(unit))
-            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+            return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
     }

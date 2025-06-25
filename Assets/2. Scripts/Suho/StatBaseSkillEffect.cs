@@ -81,7 +81,18 @@ public class StatBaseSkillEffect // 개편 필요
     }
 }
 //대미지 주는 class 하나
+public class StatBaseDamageSkill
+{
+    public float finalValue; // 최종 공격 
+    
+
+}
 //디버프 주는 class 하나
+public class StatBaseBuffSkill
+{
+    
+    
+}
 
 [System.Serializable]
 public class SkillEffectData
@@ -94,6 +105,5 @@ public class SkillEffectData
     public int lastTurn = 1;        // 영향이 지속되는 턴 ( 턴 마다 지속되는 도트데미지, 디버프 등)
     public bool isStackable = true; // 디버프, 버프의 중첩가능여부
     public EmotionType emotionType;
-
-    public StatusEffectData StatusEffect; //디버프
+    [HideInInspector]public StatusEffectData StatusEffect; //디버프
 }

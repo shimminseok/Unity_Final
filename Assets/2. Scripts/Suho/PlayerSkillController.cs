@@ -24,7 +24,7 @@ public class PlayerSkillController : BaseSkillController
     {
         this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target,currentSkill.selectedType);
+        subTargets = targetSelect.FindTargets(target,currentSkill.selectedType,currentSkill.selectedCamp);
     }
 
     public void ChangeSkill(int index)
@@ -48,7 +48,7 @@ public class PlayerSkillController : BaseSkillController
         {
             foreach (IDamageable subTarget in subTargets)
             {
-                
+                currentSkill.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
         // 서브타겟에 서브효과 적용

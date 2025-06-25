@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 48286552}
   - component: {fileID: 48286551}
   m_Layer: 0
-  m_Name: Button (3)
+  m_Name: Skill3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +205,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 48286552}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2001568784}
+        m_TargetAssemblyTypeName: PlayerSkillController, Assembly-CSharp
+        m_MethodName: ChangeSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &48286552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,6 +273,7 @@ GameObject:
   - component: {fileID: 422812578}
   - component: {fileID: 422812577}
   - component: {fileID: 422812576}
+  - component: {fileID: 422812586}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -280,11 +293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTypeSo: {fileID: 11400000, guid: 7db34b670b3d13d49b975d2564ae81d7, type: 2}
-  PlayerUnitSo: {fileID: 11400000, guid: 5632408ae5c139a4993c890e09a2fff9, type: 2}
-  Animator: {fileID: 0}
-  PassiveSo: {fileID: 11400000, guid: 85416e8c1ea72a4479b9eee4d80a6b8a, type: 2}
-  CurrentEmotionType: 0
+  id: 0
+  animator: {fileID: 0}
+  passiveSo: {fileID: 0}
 --- !u!114 &422812577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,6 +437,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &422812586
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422812575}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &542086904
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,7 +471,7 @@ GameObject:
   - component: {fileID: 542086907}
   - component: {fileID: 542086906}
   m_Layer: 0
-  m_Name: Button
+  m_Name: TargetSelect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -785,7 +817,7 @@ GameObject:
   - component: {fileID: 820615493}
   - component: {fileID: 820615492}
   m_Layer: 0
-  m_Name: Button (1)
+  m_Name: Skill1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -854,7 +886,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 820615493}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2001568784}
+        m_TargetAssemblyTypeName: PlayerSkillController, Assembly-CSharp
+        m_MethodName: ChangeSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &820615493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1776,7 +1820,7 @@ GameObject:
   - component: {fileID: 1766450478}
   - component: {fileID: 1766450477}
   m_Layer: 0
-  m_Name: Button (4)
+  m_Name: Skill4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1897,7 +1941,7 @@ GameObject:
   - component: {fileID: 1999574988}
   - component: {fileID: 1999574987}
   m_Layer: 0
-  m_Name: Button (2)
+  m_Name: Skill2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1966,7 +2010,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1999574988}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2001568784}
+        m_TargetAssemblyTypeName: PlayerSkillController, Assembly-CSharp
+        m_MethodName: ChangeSkill
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1999574988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2022,6 +2078,7 @@ GameObject:
   - component: {fileID: 2001568789}
   - component: {fileID: 2001568791}
   - component: {fileID: 2001568790}
+  - component: {fileID: 2001568792}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2043,6 +2100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedSkill:
   - {fileID: 11400000, guid: 7d95054bda6229b448c25f00e7a7336d, type: 2}
+  - {fileID: 11400000, guid: d28e1459a7737414d98fcfcfe151a797, type: 2}
   skillController: {fileID: 0}
   owner: {fileID: 0}
 --- !u!114 &2001568784
@@ -2170,11 +2228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackTypeSo: {fileID: 11400000, guid: 7db34b670b3d13d49b975d2564ae81d7, type: 2}
-  PlayerUnitSo: {fileID: 11400000, guid: 5632408ae5c139a4993c890e09a2fff9, type: 2}
-  Animator: {fileID: 0}
-  PassiveSo: {fileID: 11400000, guid: 85416e8c1ea72a4479b9eee4d80a6b8a, type: 2}
-  CurrentEmotionType: 0
+  id: 0
+  animator: {fileID: 0}
+  passiveSo: {fileID: 0}
 --- !u!114 &2001568791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2187,6 +2243,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b6f1928fe527c543b673c802595267b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2001568792
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001568782}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2013896512
 GameObject:
   m_ObjectHideFlags: 0

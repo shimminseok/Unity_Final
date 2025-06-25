@@ -16,6 +16,7 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "New SkillData", menuName = "ScriptableObjects/New SkillData")]
 public class SkillData : ScriptableObject
 {
+    public int ID;
     public SelectCampType selectCamp;
     public SelectTargetType selectType;
     public StatBaseSkillEffect mainSkillEffect;
