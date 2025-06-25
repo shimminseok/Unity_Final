@@ -83,6 +83,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
+        //TODO: 크리티컬 구현
         MonsterSO.AttackType.Attack(this);
     }
 
