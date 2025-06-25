@@ -54,7 +54,18 @@ public interface IPassiveAllyDeathTrigger
     void OnAllyDead();
 }
 
+/// <summary>
+/// 감정이 바뀔때 발동되는 패시브
+/// </summary>
 public interface IPassiveChangeEmotionTrigger
 {
     void OnChangeEmotion();
+}
+
+/// <summary>
+/// 감정의 디버프의 수치를 조절해주는 패시브
+/// </summary>
+public interface IPassiveEmotionDebuffReducer
+{
+    void OnDebuffReducer(ref float debuffValue);
 }

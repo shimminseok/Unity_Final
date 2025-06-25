@@ -213,10 +213,19 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 
     public override void OnStackChanged(Unit unit)
     {
+        float perStack = DefenseDownPerStack;
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            {
+                emotionDebuffReducer.OnDebuffReducer(ref perStack);
+            }
+        }
+
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
         // 2. 새 버프 계산
-        defenseDownAmount = Mathf.Min(Stack * DefenseDownPerStack, DefenseDownMax);
+        defenseDownAmount = Mathf.Min(Stack * perStack, DefenseDownMax);
         // 3. 새 버프 적용
         unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, -defenseDownAmount);
     }
