@@ -3672,6 +3672,7 @@ GameObject:
   - component: {fileID: 6581705696015840940}
   - component: {fileID: 9188632111567057319}
   - component: {fileID: 8709066714245545844}
+  - component: {fileID: 8196760287203401367}
   m_Layer: 5
   m_Name: Button (1)
   m_TagString: Untagged
@@ -3781,7 +3782,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8709066714245545844}
+      - m_Target: {fileID: 8196760287203401367}
         m_TargetAssemblyTypeName: SelecCharBtn, Assembly-CSharp
         m_MethodName: OnCharacterClick
         m_Mode: 1
@@ -3794,6 +3795,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &8709066714245545844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680685825523956171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfae451548694954586135bb6e59f369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSO: {fileID: 11400000, guid: 5632408ae5c139a4993c890e09a2fff9, type: 2}
+--- !u!114 &8196760287203401367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7389,6 +7403,7 @@ GameObject:
   - component: {fileID: 6527230208054357610}
   - component: {fileID: 1902285710364663466}
   - component: {fileID: 8637872199662923502}
+  - component: {fileID: 8029194453757133001}
   m_Layer: 5
   m_Name: Button (2)
   m_TagString: Untagged
@@ -7498,7 +7513,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8637872199662923502}
+      - m_Target: {fileID: 8029194453757133001}
         m_TargetAssemblyTypeName: SelecSkillBtn, Assembly-CSharp
         m_MethodName: OnSkillClick
         m_Mode: 1
@@ -7511,6 +7526,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &8637872199662923502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2733681496899576275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b47bca9f0a8e34ab6e361e1d8e6fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: 7d95054bda6229b448c25f00e7a7336d, type: 2}
+  slotIndex: 0
+--- !u!114 &8029194453757133001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10533,6 +10562,7 @@ GameObject:
   - component: {fileID: 3329593594933424565}
   - component: {fileID: 4805315088309754120}
   - component: {fileID: 7231411539226611986}
+  - component: {fileID: 6058258701840772914}
   m_Layer: 5
   m_Name: CharInfoCanvas
   m_TagString: Untagged
@@ -10624,6 +10654,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
 --- !u!114 &7231411539226611986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3790438405508920448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea56196d7cb174b418186ce90b9b78d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: {fileID: 0}
+--- !u!114 &6058258701840772914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17839,6 +17882,7 @@ GameObject:
   - component: {fileID: 1934179477727130152}
   - component: {fileID: 247519851682938463}
   - component: {fileID: 7816462937860141791}
+  - component: {fileID: 541027301896747015}
   m_Layer: 5
   m_Name: Button (4)
   m_TagString: Untagged
@@ -17948,7 +17992,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7816462937860141791}
+      - m_Target: {fileID: 541027301896747015}
         m_TargetAssemblyTypeName: SelecSkillBtn, Assembly-CSharp
         m_MethodName: OnSkillClick
         m_Mode: 1
@@ -17961,6 +18005,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &7816462937860141791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7072463164320466849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b47bca9f0a8e34ab6e361e1d8e6fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: b9ef31837fd292b47a5d5427a5ab62a2, type: 2}
+  slotIndex: 2
+--- !u!114 &541027301896747015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18712,6 +18770,7 @@ GameObject:
   - component: {fileID: 8286047487663947562}
   - component: {fileID: 2302205165300755978}
   - component: {fileID: 1329601963191869397}
+  - component: {fileID: 4971956417956541227}
   m_Layer: 5
   m_Name: Button (3)
   m_TagString: Untagged
@@ -18821,7 +18880,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1329601963191869397}
+      - m_Target: {fileID: 4971956417956541227}
         m_TargetAssemblyTypeName: SelecSkillBtn, Assembly-CSharp
         m_MethodName: OnSkillClick
         m_Mode: 1
@@ -18834,6 +18893,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1329601963191869397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7341713589124572495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b47bca9f0a8e34ab6e361e1d8e6fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillData: {fileID: 11400000, guid: 14333579e90b5954e88ff8d045c46a7c, type: 2}
+  slotIndex: 1
+--- !u!114 &4971956417956541227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
