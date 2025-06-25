@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewRangeAttack", menuName = "ScriptableObject/AttackType/Range", order = 0)]
+[CreateAssetMenu(fileName = "NewRangeAttack", menuName = "ScriptableObjects/AttackType/Range", order = 0)]
 public class RangeAttackSO : AttackTypeSO
 {
     public override void Attack()

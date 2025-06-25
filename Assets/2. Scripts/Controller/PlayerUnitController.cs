@@ -33,7 +33,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
 
-        Initialized();
+        Initialize();
     }
 
     protected override void Start()
@@ -42,7 +42,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
     }
 
-    private void Initialized()
+    public override void Initialize()
     {
         PlayerUnitSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
         if (PlayerUnitSo == null)

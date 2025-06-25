@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "EmotionEqualizerPassive", menuName = "ScriptableObject/PassiveSkill/EmotionEqualizerPassive", order = 0)]
+[CreateAssetMenu(fileName = "EmotionEqualizerPassive", menuName = "ScriptableObjects/PassiveSkill/EmotionEqualizerPassive", order = 0)]
 public class EmotionEqualizerPassiveSo : PassiveSO, IEmotionDamageModifier
 {
     private const float FixedMutiplier = 1.3f;

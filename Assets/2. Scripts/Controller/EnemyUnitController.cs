@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
-    public EnemyUnitSO MonsterSO;
+    [SerializeField] private int id;
+    public EnemyUnitSO MonsterSO { get; private set; }
     // Start is called before the first frame update
 
     protected override void Awake()
     {
         base.Awake();
-        MonsterSO.AttackType.Initialize(this);
     }
 
     protected override void Start()
@@ -25,6 +25,16 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         base.Update();
+    }
+
+    public override void Initialize()
+    {
+        MonsterSO = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id);
+        if (MonsterSO == null)
+            return;
+
+        MonsterSO.AttackType.Initialize(this);
+        StatManager.Initialize(MonsterSO);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)

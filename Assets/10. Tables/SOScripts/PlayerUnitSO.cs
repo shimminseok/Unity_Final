@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewPlayerUnitSO", menuName = "ScriptableObject/Unit/PlayerUnit", order = 0)]
+[CreateAssetMenu(fileName = "NewPlayerUnitSO", menuName = "ScriptableObjects/Unit/PlayerUnit", order = 0)]
 public class PlayerUnitSO : UnitSO, IStatProvider
 {
     public PassiveSO PassiveSkill;

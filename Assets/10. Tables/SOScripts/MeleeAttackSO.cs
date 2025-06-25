@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObject/AttackType/Melee", order = 0)]
+[CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObjects/AttackType/Melee", order = 0)]
 public class MeleeAttackSO : AttackTypeSO
 {
     public override void Attack()

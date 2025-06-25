@@ -73,6 +73,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         }
     }
 
+    public abstract void Initialize();
 
     protected abstract IState<TController, TState> GetState(TState state);
 }
