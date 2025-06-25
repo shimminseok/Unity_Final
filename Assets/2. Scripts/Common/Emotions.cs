@@ -191,8 +191,7 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
     public override void Exit(Unit unit)
     {
         Stack = 0;
-
-        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, -defenseDownAmount);
+        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
         defenseDownAmount = 0;
         Debug.Log("우울 상태 종료!!");
     }
