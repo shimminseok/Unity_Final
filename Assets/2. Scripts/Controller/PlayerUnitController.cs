@@ -5,16 +5,25 @@ using PlayerState;
 using System.Linq;
 using UnityEngine.Serialization;
 
+
+public enum PlayerActionType
+{
+    None,
+    Attack,
+    SKill
+}
+
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
     public Animator animator;
     public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
-
+    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.None;
 
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
+
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -82,6 +91,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         Target = finalTarget;
         PlayerUnitSo.AttackType.Attack(this);
+    }
+
+    public void SetTarget(IDamageable target)
+    {
+        Target = target;
     }
 
     public void UseSkill()
@@ -162,7 +176,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned)
+        if (IsDead || IsStunned || CurrentAction == PlayerActionType.None)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
@@ -173,11 +187,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
-        //선택한 행동에 따라서 실행되는 메서드를 구분
-        // 기본공격이면
-        Attack();
-        //스킬이면
-        // UseSkill();
+        if (CurrentAction == PlayerActionType.Attack)
+            Attack();
+        else if (CurrentAction == PlayerActionType.SKill)
+            UseSkill();
     }
 
 
@@ -193,5 +206,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             CurrentEmotion.AddStack(this);
 
         Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+    }
+
+    public void ChangeAction(PlayerActionType action)
+    {
+        CurrentAction = action;
     }
 }
