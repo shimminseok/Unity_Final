@@ -56,7 +56,7 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
 {
     private const float AttackUpMin = 0.1f;
     private const float AttackUpMax = 0.3f;
-    private const float AllyHitChanceMax = 0.3f;
+    private const float AllyHitChanceMax = 0.15f;
     private const float attackUpAmount = 0.05f;
 
     private float allyHitChance;
@@ -82,14 +82,16 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
         Debug.Log("분노 상태 종료!!");
     }
 
-    public void OnBeforeAttack(ref IDamageable target)
+    public void OnBeforeAttack(Unit attacker, ref IDamageable target)
     {
         float chance = Mathf.Min(Stack * attackUpAmount, AllyHitChanceMax);
 
         if (Random.value < chance)
         {
             //target을 아군으로 바꿔줌
-            //BattleManager에 있는 아군 리스트를 가져와서 다시 target을 지정해줄꺼..
+            //BattleManager에 있는 아군 리스트를 가져와서 다시 target을 지정해줄꺼
+            var allies = BattleManager.Instance.GetAllies(attacker);
+            target = allies[Random.Range(0, allies.Count)];
             Debug.Log("아군 공격함!");
         }
     }

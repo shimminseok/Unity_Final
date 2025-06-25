@@ -1,6 +1,6 @@
 ﻿public interface IEmotionOnAttack
 {
-    void OnBeforeAttack(ref IDamageable target);
+    void OnBeforeAttack(Unit attacker, ref IDamageable target);
 }
 
 public interface IEmotionOnTakeDamage
