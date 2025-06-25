@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -48,8 +49,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             EntryDeckData newEntry = new EntryDeckData()
             {
                 characterSO = newCharacterSO
-                //skillDatas = null,
-                //passiveSkill = null
             };
 
             selectedDeck.Add(newEntry);
@@ -62,14 +61,36 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     // 캐릭터, 스킬, 스킬 슬롯 번호
     public void SelectSkill(SkillData skill, int slotIndex)
     {
-        switch (slotIndex)
+        if (currentSelectedCharacter == null) return;
+
+        // 이미 선택한 스킬인지
+        bool isAlreadyEquipped = currentSelectedCharacter.skillDatas.Contains(skill);
+
+        if (isAlreadyEquipped)
         {
-            // 최근 선택한 캐릭터의 스킬 데이터 추가
-            case 0: currentSelectedCharacter.skillDatas[0] = skill; break;
-            case 1: currentSelectedCharacter.skillDatas[1] = skill; break;
-            case 2: currentSelectedCharacter.skillDatas[2] = skill; break;
-            case 3: currentSelectedCharacter.passiveSkill = skill; break;
+            currentSelectedCharacter.skillDatas[slotIndex] = null;
+            return;
         }
+
+        // 다른 슬롯에 장착되어 있는 동일한 스킬은 제거
+        for (int i = 0; i < currentSelectedCharacter.skillDatas.Length; i++)
+        {
+            if (currentSelectedCharacter.skillDatas[i] == skill)
+            {
+                currentSelectedCharacter.skillDatas[i] = null;
+                break;
+            }
+        }
+
+        // 최근 선택한 캐릭터의 스킬 추가
+        currentSelectedCharacter.skillDatas[slotIndex] = skill;
+
+    }
+
+    // 캐릭터에 장비 장착
+    public void SelectEquipment (EquipmentItemSO equip)
+    {
+
     }
 
     // 게임 시작 버튼 클릭 시 호출
