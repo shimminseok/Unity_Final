@@ -9,12 +9,12 @@ public class StatusEffectManager : MonoBehaviour
     private List<StatusEffect> activeEffects = new List<StatusEffect>();
     private List<TriggerBuff> triggerBuffs = new List<TriggerBuff>();
     private StatManager statManager;
-    public IDamageable Owner { get; private set; }
+    public Unit Owner { get; private set; }
 
     private void Start()
     {
         statManager = GetComponent<StatManager>();
-        Owner = statManager.Owner;
+        Owner = GetComponent<Unit>();
     }
 
     /// <summary>

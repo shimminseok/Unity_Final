@@ -18,6 +18,8 @@ public enum StatType
 
     CriticalDam,
     CriticalRate,
+
+    HitRate
 }
 
 public enum StatModifierType
@@ -67,9 +69,9 @@ public enum StatusEffectType
     Trigger,
 }
 
-public enum Emotion
+public enum EmotionType
 {
-    Neutral,    //일반
+    None,       //일반
     Anger,      //분노
     Depression, //우울
     Joy         // 기쁨
