@@ -8,6 +8,7 @@ public class UnitSO : ScriptableObject, IStatProvider
     public string UnitName;
     public List<StatData> UnitStats;
     public List<StatData> Stats => UnitStats;
+    public AttackTypeSO AttackType;
 
     public GameObject UnitPrefab;
     public Sprite UnitIcon;

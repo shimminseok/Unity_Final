@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
+    [SerializeField] private int id;
+    public EnemyUnitSO MonsterSO { get; private set; }
     // Start is called before the first frame update
-    public override StatBase    AttackStat { get; protected set; }
-    public override IDamageable Target     { get; protected set; }
 
     protected override void Awake()
     {
@@ -25,6 +25,16 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         base.Update();
+    }
+
+    public override void Initialize()
+    {
+        MonsterSO = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id);
+        if (MonsterSO == null)
+            return;
+
+        MonsterSO.AttackType.Initialize(this);
+        StatManager.Initialize(MonsterSO);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -46,7 +56,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (Target == null || Target.IsDead)
             return;
 
-        AttackTypeSo.Attack();
+        MonsterSO.AttackType.Attack();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)

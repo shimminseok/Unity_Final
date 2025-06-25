@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "DoubleAttack", menuName = "ScriptableObject/PassiveSkill/DoubleAttack", order = 0)]
+[CreateAssetMenu(fileName = "DoubleAttack", menuName = "ScriptableObjects/PassiveSkill/DoubleAttack", order = 0)]
 public class DoublePassivesPassive : PassiveSO, IPassives
 {
     public int RequiredStack;
