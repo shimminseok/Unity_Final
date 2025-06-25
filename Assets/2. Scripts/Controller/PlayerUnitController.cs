@@ -106,6 +106,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
+        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
+        {
+            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
+            if (isIgnore)
+                return;
+        }
 
         float finalDam = amount;
 
@@ -165,7 +171,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         if (!IsDead)
-            CurrentEmotion.AddStack();
+            CurrentEmotion.AddStack(this);
 
         Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
     }

@@ -116,5 +116,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void EndTurn()
     {
+        if (!IsDead)
+            CurrentEmotion.AddStack(this);
     }
 }

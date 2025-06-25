@@ -5,7 +5,7 @@
 
 public interface IEmotionOnTakeDamage
 {
-    void OnBeforeTakeDamage(Unit unit, ref float damage, out bool ignoreDamage);
+    void OnBeforeTakeDamage(Unit unit, out bool ignoreDamage);
 }
 
 public interface IEmotionOnHitChance
