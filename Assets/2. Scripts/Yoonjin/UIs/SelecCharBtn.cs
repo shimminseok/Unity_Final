@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -10,7 +10,7 @@ public class SelecCharBtn : MonoBehaviour
 
     public void OnCharacterClick()
     {
-        // ƒ≥∏Ø≈Õ º±≈√
+        // Ï∫êÎ¶≠ÌÑ∞ ÏÑ†ÌÉù
         DeckSelectManager.Instance.SelectCharacter(characterSO);
     }
 }

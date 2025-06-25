@@ -3,14 +3,9 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "NewPlayerUnitSO", menuName = "ScriptableObject/Unit/PlayerUnit", order = 0)]
-public class PlayerUnitSO : ScriptableObject, IStatProvider
+public class PlayerUnitSO : UnitSO, IStatProvider
 {
-    public int ID;
-    public string UnitName;
-    public List<StatData> UnitStats;
-
     public PassiveSO PassiveSkill;
 
     //TODO : 스킬 리스트 
-    public List<StatData> Stats => UnitStats;
 }
