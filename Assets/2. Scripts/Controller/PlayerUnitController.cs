@@ -2,16 +2,18 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
+using UnityEngine.Serialization;
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    public PlayerUnitSO PlayerUnitSo;
-    public Animator Animator;
-    public PassiveSO PassiveSo;
+    [SerializeField] private int id;
+    public Animator animator;
+    public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
 
 
     private HPBarUI hpBar;
+    public PlayerUnitSO PlayerUnitSo { get; private set; }
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -30,15 +32,25 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        StatManager.Initialize(PlayerUnitSo);
-        PassiveSo.Initialize(this);
-        PlayerUnitSo.AttackType.Initialize(this);
+
+        Initialized();
     }
 
     protected override void Start()
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+    }
+
+    private void Initialized()
+    {
+        PlayerUnitSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
+        if (PlayerUnitSo == null)
+            return;
+
+        PlayerUnitSo.AttackType.Initialize(this);
+        passiveSo.Initialize(this);
+        StatManager.Initialize(PlayerUnitSo);
     }
 
     public override void Attack()
@@ -128,7 +140,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
         }
 
-        if (PassiveSo is ITurnStartTrigger turnStartTrigger)
+        if (passiveSo is ITurnStartTrigger turnStartTrigger)
         {
             turnStartTrigger.OnTurnStart(this);
         }
@@ -144,7 +156,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        if (PassiveSo is IEmotionStackApplier stackPassive)
+        if (passiveSo is IEmotionStackApplier stackPassive)
         {
             stackPassive.ApplyStack(CurrentEmotion);
         }

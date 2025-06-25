@@ -49,7 +49,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
         }
         else
         {
-            CurrentEmotion.Execute(this); // 같은 감정이면 Execute 호출
+            CurrentEmotion.AddStack();
         }
     }
 
