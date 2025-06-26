@@ -21,14 +21,48 @@ namespace PlayerState
         public void OnExit(PlayerUnitController entity)
         {
         }
+    }
 
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
+    public class MoveState : IState<PlayerUnitController, PlayerUnitState>
+    {
+        public void OnEnter(PlayerUnitController owner)
         {
-            if (owner.IsStunned)
-                return PlayerUnitState.Stun;
-            else if (owner.IsDead)
-                return PlayerUnitState.Die;
-            return PlayerUnitState.Idle;
+            Debug.Log("Enter Move State");
+            owner.MoveTo(owner.Target.Collider.transform.position);
+        }
+
+        public void OnUpdate(PlayerUnitController owner)
+        {
+            owner.MoveTo(owner.Target.Collider.transform.position);
+        }
+
+        public void OnFixedUpdate(PlayerUnitController owner)
+        {
+        }
+
+        public void OnExit(PlayerUnitController entity)
+        {
+        }
+    }
+
+    public class ReturnState : IState<PlayerUnitController, PlayerUnitState>
+    {
+        public void OnEnter(PlayerUnitController owner)
+        {
+            Debug.Log("Enter Move State");
+        }
+
+        public void OnUpdate(PlayerUnitController owner)
+        {
+            owner.MoveTo(owner.StartPostion);
+        }
+
+        public void OnFixedUpdate(PlayerUnitController owner)
+        {
+        }
+
+        public void OnExit(PlayerUnitController entity)
+        {
         }
     }
 
@@ -36,6 +70,7 @@ namespace PlayerState
     {
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Attack();
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -48,16 +83,6 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController entity)
         {
-        }
-
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
-        {
-            if (owner.IsStunned)
-                return PlayerUnitState.Stun;
-            else if (owner.IsDead)
-                return PlayerUnitState.Die;
-
-            return PlayerUnitState.Attack;
         }
     }
 
@@ -78,16 +103,6 @@ namespace PlayerState
         public void OnExit(PlayerUnitController entity)
         {
         }
-
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
-        {
-            if (owner.IsStunned)
-                return PlayerUnitState.Stun;
-            else if (owner.IsDead)
-                return PlayerUnitState.Die;
-
-            return PlayerUnitState.Skill;
-        }
     }
 
     public class DeadState : IState<PlayerUnitController, PlayerUnitState>
@@ -107,11 +122,6 @@ namespace PlayerState
         public void OnExit(PlayerUnitController entity)
         {
         }
-
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
-        {
-            return PlayerUnitState.Die;
-        }
     }
 
     public class StunState : IState<PlayerUnitController, PlayerUnitState>
@@ -130,39 +140,6 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController entity)
         {
-        }
-
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
-        {
-            if (owner.IsDead)
-                return PlayerUnitState.Die;
-
-            return PlayerUnitState.Idle;
-        }
-    }
-
-    public class EndTurnState : IState<PlayerUnitController, PlayerUnitState>
-    {
-        public void OnEnter(PlayerUnitController owner)
-        {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        }
-
-        public void OnUpdate(PlayerUnitController owner)
-        {
-        }
-
-        public void OnFixedUpdate(PlayerUnitController owner)
-        {
-        }
-
-        public void OnExit(PlayerUnitController entity)
-        {
-        }
-
-        public PlayerUnitState CheckTransition(PlayerUnitController owner)
-        {
-            return PlayerUnitState.Idle;
         }
     }
 }

@@ -81,18 +81,18 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 유닛이 사용할 스킬 선택
     private void OnSkillSelect()
     {
-        ChangeSelectedUnitAction(PlayerActionType.SKill);
+        ChangeSelectedUnitAction(ActionType.SKill);
         Debug.Log("스킬 선택");
     }
 
     // 플레이어 유닛이 기본공격 수행
     public void SelectBasicAttack()
     {
-        ChangeSelectedUnitAction(PlayerActionType.Attack);
+        ChangeSelectedUnitAction(ActionType.Attack);
         Debug.Log("기본 공격 선택");
     }
 
-    private void ChangeSelectedUnitAction(PlayerActionType actionType)
+    private void ChangeSelectedUnitAction(ActionType actionType)
     {
         currentPhase = InputPhase.SelectTarget;
         if (selectedPlayerUnit is PlayerUnitController playerUnit)

@@ -3,23 +3,33 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable
 {
+    private const float ResistancePerStack = 0.08f;
+
     [SerializeField] private GameObject SelectionEffect; // 유닛 선택 시 표시해주는 이펙트
-    public BaseEmotion         CurrentEmotion      { get; protected set; }
-    public bool                IsStunned           { get; private set; }
+
+    public BaseEmotion CurrentEmotion { get; protected set; }
+    public bool        IsStunned      { get; private set; }
+
+    protected BattleManager    BattleManager    => BattleManager.Instance;
+    public    BaseEmotion[]    Emotions         { get; private set; }
+    public    ActionType       CurrentAction    { get; private set; } = ActionType.None;
+    public    TurnStateMachine TurnStateMachine { get; protected set; }
+
     public StatManager         StatManager         { get; protected set; }
     public StatusEffectManager StatusEffectManager { get; protected set; }
+    public StatBase            AttackStat          { get; protected set; }
+    public IDamageable         Target              { get; protected set; }
+    public Collider            Collider            { get; protected set; }
+    public bool                IsDead              { get; protected set; }
+    public int                 Index               { get; protected set; }
+    public UnitSO              UnitSo              { get; protected set; }
+    public IAttackAction       CurrentAttackAction { get; private set; }
 
-    public    StatBase      AttackStat    { get; protected set; }
-    public    IDamageable   Target        { get; protected set; }
-    public    Collider      Collider      { get; protected set; }
-    public    int           Index         { get; protected set; }
-    public    bool          IsDead        { get; protected set; }
-    protected BattleManager BattleManager => BattleManager.Instance;
-    public    BaseEmotion[] Emotions      { get; private set; }
-
-    public          Unit SelectedUnit => this;
+    public virtual  bool IsAtTargetPosition => false;
+    public virtual  bool IsAnimationDone    => false;
+    public          Unit SelectedUnit       => this;
     public abstract void StartTurn();
 
     public abstract void EndTurn();
@@ -28,7 +38,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void Dead();
 
-    private const float ResistancePerStack = 0.08f;
+    public event Action<Unit> OnAnimationComplete;
 
     private void Awake()
     {
@@ -76,6 +86,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
 
     public abstract void Attack();
+    public abstract void MoveTo(Vector3 destination);
 
     public void SetTarget(IDamageable target)
     {
@@ -98,8 +109,22 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         SelectionEffect.SetActive(false);
     }
 
+    public void ChangeAction(ActionType action)
+    {
+        CurrentAction = action;
+        if (action == ActionType.Attack)
+            CurrentAttackAction = UnitSo.AttackType;
+        else if (action == ActionType.SKill)
+        {
+        }
+    }
+
     public void ExecuteCoroutine(IEnumerator coroutine)
     {
         StartCoroutine(coroutine);
     }
+
+    public abstract void ChangeUnitState(Enum newState);
+
+    public abstract void Initialize(UnitSO unit);
 }

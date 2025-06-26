@@ -4,6 +4,8 @@
 [CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObjects/AttackType/Melee", order = 0)]
 public class MeleeAttackSO : AttackTypeSO
 {
+    public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
+
     public override void Attack(Unit attacker)
     {
         float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);

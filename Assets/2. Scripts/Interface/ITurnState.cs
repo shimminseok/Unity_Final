@@ -3,6 +3,4 @@
     void OnEnter(Unit unit);
     void OnUpdate(Unit unit);
     void OnExit(Unit unit);
-
-    ITurnState CheckTransition(Unit unit);
 }

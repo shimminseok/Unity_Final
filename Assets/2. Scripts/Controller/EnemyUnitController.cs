@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnemyState;
+using System;
+using Random = UnityEngine.Random;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
@@ -14,7 +16,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     protected override void Awake()
     {
         base.Awake();
-        Initialize();
+        Initialize(TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -32,9 +34,21 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         base.Update();
     }
 
-    public override void Initialize()
+    public override void ChangeUnitState(Enum newState)
     {
-        MonsterSO = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id);
+        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
+        CurrentState = (EnemyUnitState)newState;
+    }
+
+    public override void Initialize(UnitSO unitSO)
+    {
+        //TODO : 스폰 하는곳에서 So 생성해서 보내주기
+        UnitSo = unitSO;
+        if (UnitSo is EnemyUnitSO enemyUnitSo)
+        {
+            MonsterSO = enemyUnitSo;
+        }
+
         if (MonsterSO == null)
             return;
 
@@ -89,6 +103,11 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         //Test
         EndTurn();
+    }
+
+    public override void MoveTo(Vector3 destination)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime);
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)

@@ -38,12 +38,11 @@ public enum PlayerUnitState
     Idle,
     Move,
     Attack,
+    Return,
     Hit,
     Skill,
     Die,
     Stun,
-
-    EndTurn,
 }
 
 public enum EnemyUnitState
@@ -51,6 +50,7 @@ public enum EnemyUnitState
     Idle,
     Move,
     Attack,
+    Return,
     Hit,
     Stun,
     Die
@@ -144,8 +144,8 @@ public enum JobType
     Mage
 }
 
-public enum EquipJobRestrictionType
+public enum AttackDistanceType
 {
-    All,
-    Specific
+    Melee,
+    Range
 }
