@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: FireBall_Mage
+  m_EditorClassIdentifier: 
+  selectCamp: 1
+  selectType: 0
+  mainSkillEffect:
+    owner: {fileID: 0}
+    effects:
+    - ID: 201010
+      ownerStatType: 4
+      weight: 4
+      opponentStatType: 1
+      effectType: 8
+      lastTurn: 1
+      isStackable: 0
+      emotionType: 0
+  subSkillEffect:
+    owner: {fileID: 0}
+    effects:
+    - ID: 211010
+      ownerStatType: 4
+      weight: 1
+      opponentStatType: 1
+      effectType: 9
+      lastTurn: 1
+      isStackable: 0
+      emotionType: 0
+  jobType: 0
+  reuseMaxNumber: 0
+  maxCost: 0
+  skillIcon: {fileID: 0}
+  skillAnimation: {fileID: 0}

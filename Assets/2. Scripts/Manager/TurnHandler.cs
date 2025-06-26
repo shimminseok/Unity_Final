@@ -26,7 +26,6 @@ public class TurnHandler
 
     public void OnUnitTurnEnd()
     {
-        currentTurnUnit.EndTurn();
         if (turnQueue.Count > 0)
         {
             StartNextTurn();

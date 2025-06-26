@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+
 /*
  * 플레이어 스킬 컨트롤러
  *
@@ -14,17 +15,17 @@ using UnityEngine;
  *
  * 현재 EndTurn을 스킬을 사용 후 바로 적용시켜줄 지 혹은 외부에서 호출해줄지 결정 중. [2025/06/24]
  * 스킬 사용 시 효과를 발생시키는 메서드 처리에 대한 고민 중 [2025/06/24]
- * 
+ *
  */
+[System.Serializable]
 [RequireComponent(typeof(SkillManager))]
 public class PlayerSkillController : BaseSkillController
 {
-
-    public override void SelectTargets(IDamageable target)
+    public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target,currentSkill.selectedType);
+        subTargets = targetSelect.FindTargets(target, currentSkill.selectedType, currentSkill.selectedCamp);
     }
 
     public void ChangeSkill(int index)
@@ -42,23 +43,22 @@ public class PlayerSkillController : BaseSkillController
             currentSkill.mainEffect.AffectTargetWithSkill(mainTarget);
         }
         // 메인타겟에 메인효과 적용
-        
+
 
         if (subTargets != null)
         {
-            foreach (IDamageable subTarget in subTargets)
+            foreach (Unit subTarget in subTargets)
             {
-                
+                currentSkill.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
         // 서브타겟에 서브효과 적용
-        
+
         currentSkill = null;
-        
-        //EndTurn();
+
+        EndTurn();
     }
-    
-    
+
 
     public override void EndTurn()
     {

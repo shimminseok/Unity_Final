@@ -3,4 +3,6 @@
     StatBase           AttackStat { get; }
     public IDamageable Target     { get; }
     public void        Attack();
+
+    public void SetTarget(IDamageable target);
 }

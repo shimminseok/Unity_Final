@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,13 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 {
     //Test
     public List<Unit> PartyUnits;
-    public List<Unit> EnumyUnits;
-    public TurnHandler TurnHandler { get; private set; }
+    public List<Unit> EnemyUnits;
+    public TurnHandler    TurnHandler    { get; private set; }
+    public CommandPlanner CommandPlanner { get; private set; } // 전략 페이즈의 플래너 가저오기
 
 
     private List<Unit> allUnits = new List<Unit>();
+    public event Action OnBattleEnd;
 
     protected override void Awake()
     {
@@ -21,9 +24,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void Start()
     {
         TurnHandler = new TurnHandler();
-
-        allUnits = PartyUnits.Concat(EnumyUnits).ToList();
-        //
+        SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
     }
 
     public void SetAllUnits(List<Unit> units)
@@ -48,6 +49,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
+        CommandPlanner?.Clear(); // 턴 종료되면 전략 플래너도 초기화
+        OnBattleEnd?.Invoke();
     }
 
     public List<Unit> GetAllies(Unit unit)
@@ -55,13 +58,13 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         if (PartyUnits.Contains(unit))
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
-            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+            return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
     }
 
     public List<Unit> GetEnemies(Unit unit)
     {
         if (PartyUnits.Contains(unit))
-            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+            return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
     }

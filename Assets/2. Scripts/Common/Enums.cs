@@ -73,7 +73,8 @@ public enum StatusEffectType
 
 public enum EmotionType
 {
-    None,       //일반
+    None,       //없음
+    Neutral,    // 노말
     Anger,      //분노
     Depression, //우울
     Joy         // 기쁨
