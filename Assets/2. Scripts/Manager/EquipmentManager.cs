@@ -47,6 +47,12 @@ public class EquipmentManager
 
     public void EquipItem(EquipmentItem item)
     {
+        if (!item.EquipmentItemSo.IsEquipableByAllJobs && PlayerUnitController.PlayerUnitSo.JobType != item.EquipmentItemSo.JobType)
+        {
+            Debug.Log("장착 가능한 직업이 아닙니다.");
+            return;
+        }
+
         EquipmentType type = item.EquipmentItemSo.EquipmentType;
         if (item.IsEquipped)
         {

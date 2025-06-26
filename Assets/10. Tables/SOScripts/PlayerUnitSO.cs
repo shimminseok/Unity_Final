@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerUnitSO : UnitSO, IStatProvider
 {
     public PassiveSO PassiveSkill;
+    public JobType JobType;
 
     //TODO : 스킬 리스트 
 }

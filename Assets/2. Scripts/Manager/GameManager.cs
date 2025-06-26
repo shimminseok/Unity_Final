@@ -4,7 +4,6 @@
 public class GameManager : Singleton<GameManager>
 {
     //Test
-    public EmotionType testEmotion;
     [SerializeField] private Unit unit;
 
     private void OnGUI()
@@ -26,9 +25,9 @@ public class GameManager : Singleton<GameManager>
             unit.EndTurn();
         }
 
-        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "Start"))
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "StartTurn"))
         {
-            BattleManager.Instance.StartTurn();
+            unit.StartTurn();
         }
 
         if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 0), buttonWidth, buttonHeight), "노말"))
