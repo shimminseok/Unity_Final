@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class StatBase
 {
-    public StatType Type  { get; protected set; }
+    public          StatType Type  { get; protected set; }
     public abstract float    Value { get; }
     public Action<float> OnValueChanged;
 
@@ -69,9 +69,9 @@ public class ResourceStat : StatBase
     public override float Value => CurrentValue;
 
 
-    public ResourceStat(StatType type, float maxValue) : base(type)
+    public ResourceStat(StatType type, float initialValue, float maxValue) : base(type)
     {
-        CurrentValue = maxValue;
+        CurrentValue = initialValue;
         MaxValue = maxValue;
     }
 
