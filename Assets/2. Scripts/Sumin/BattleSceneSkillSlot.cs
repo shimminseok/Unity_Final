@@ -7,14 +7,18 @@ using UnityEngine.UI;
 
 public class BattleSceneSkillSlot : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI skillCostText;
-    [SerializeField] private TextMeshProUGUI reuseNumberText;
+    [Header("스킬 슬롯 앞면 : 남은 재사용 횟수")]
     [SerializeField] private Button FrontSkillBtn;
-    [SerializeField] private Button BackSkillBtn;
+    [SerializeField] private TextMeshProUGUI reuseNumberText;
 
-    // UI에 들어온 스킬 확인용
+    [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
+    [SerializeField] private Button BackSkillBtn;
+    [SerializeField] private TextMeshProUGUI skillCostText;
+
+    // Test : UI에 들어온 스킬 index 확인용
     [SerializeField] private TextMeshProUGUI skillIdText;
 
+    // 스킬 데이터들
     private int currentskillIndex;
     private int cost;
     private int reuseNumber;
@@ -22,20 +26,22 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void Initialize(Skill skill, int index)
     {
         // skill data를 넣기
-        this.currentskillIndex = index;
-        this.cost = skill.cost;
-        this.reuseNumber = skill.reuseMaxNumber;
+        currentskillIndex = index;
+        cost = skill.cost;
+        reuseNumber = skill.reuseMaxNumber;
 
+        // UI에 반영
         skillCostText.text = $"{cost}";
         reuseNumberText.text = $"{reuseNumber}";
         skillIdText.text = $"{currentskillIndex}";
     }
 
+    // 스킬 버튼 누르면 이 스킬의 슬롯 인덱스에 맞춰서 반영하여 스킬 선택
     public void OnFrontSkillBtn()
     {
-        // 스킬 버튼 누르면 이 스킬의 슬롯 인덱스에 맞춰서 반영
         InputManager.Instance.SelectSkill(currentskillIndex);
     }
-    // 버튼 앞쪽이 보이면 스킬 선택 가능
-    // 버튼 뒤쪽이 보이면 잠시 앞면 보여줌
+
+    // 버튼 앞쪽이 보이면 클릭 시 스킬 선택 가능
+    // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
 }

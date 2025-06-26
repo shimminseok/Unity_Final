@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
@@ -105,6 +105,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         //이펙트 생성
         //
         PlayerSkillController.UseSkill();
+
+        EndTurn();
     }
 
     private AnimatorOverrideController ChangeClip()

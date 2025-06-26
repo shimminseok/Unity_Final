@@ -1,10 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-// 1. 플레이어 유닛 선택 (아군만)
-// 2. 플레이어 유닛이 가지고 있는 스킬을 받아옴 -> 스킬 선택
-//Onclick 안하고 UI에서 선택 스킬이 받아지면? 넘겨줌
-// 3. 스킬의 타겟Type을 받아와서 레이어를 정해줌 -> 타겟(아군/적) 유닛 선택
+// 추후 StateMachine으로 리팩토링하면 좋다.
 
 // 나중에 Enum으로 이동
 public enum InputPhase
@@ -18,11 +15,12 @@ public enum InputPhase
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
+    [SerializeField] private BattleSceneSkillUI skillUI;
+
+    [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
-
-    [SerializeField] private BattleSceneSkillUI skillUI;
 
     private ISelectable selectedPlayerUnit;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
@@ -37,7 +35,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     void Update()
     {
-        // 각 Phase별 초기화 또는 상태 진입 처리
         switch (currentPhase)
         {
             case InputPhase.SelectExecuter:
@@ -103,6 +100,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         Debug.Log("기본 공격 선택");
     }
 
+    // 선택한 액션 타입(기본공격/스킬)에 따라 ChangeAction하는 함수
     private void ChangeSelectedUnitAction(PlayerActionType actionType)
     {
         currentPhase = InputPhase.SelectTarget;
@@ -130,6 +128,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 Unit targetUnit = targetSelectable.SelectedUnit;
                 Unit executer   = selectedPlayerUnit.SelectedUnit;
 
+                // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedPlayerUnit is PlayerUnitController playerUnit)
                 {
                     playerUnit.PlayerSkillController.mainTarget = targetUnit;
