@@ -62,7 +62,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             //Test
             var enemies = BattleManager.Instance.GetEnemies(this);
             Target = enemies[Random.Range(0, enemies.Count)];
-            return;
+            // return;
         }
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
@@ -74,7 +74,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-            emotionOnHit.OnCalculateHitChance(ref hitRate);
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -83,6 +83,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
+        //TODO: 크리티컬 구현
         MonsterSO.AttackType.Attack(this);
     }
 
@@ -97,8 +98,18 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             //방어력 계산.
         }
 
-        var curHp = StatManager.GetStat<ResourceStat>(StatType.CurHp);
-        StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+        var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
+        var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+
+        if (shield.CurrentValue > 0)
+        {
+            float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
+            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
+            finalDam -= shieldUsed;
+        }
+
+        if (finalDam > 0)
+            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {
@@ -112,6 +123,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void StartTurn()
     {
+        if (IsDead || IsStunned)
+            return;
     }
 
     public override void EndTurn()

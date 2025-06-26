@@ -55,8 +55,9 @@ public class StatManager : MonoBehaviour
     {
         return type switch
         {
-            StatType.CurHp => new ResourceStat(type, value),
-            StatType.CurMp => new ResourceStat(type, value),
+            StatType.CurHp  => new ResourceStat(type, value, value),
+            StatType.CurMp  => new ResourceStat(type, value, value),
+            StatType.Shield => new ResourceStat(type, value, int.MaxValue),
             ///////////////////////////////////////////////////////////////////////////////////
             _ => new CalculatedStat(type, value),
         };

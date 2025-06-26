@@ -10,5 +10,12 @@ public interface IEmotionOnTakeDamage
 
 public interface IEmotionOnHitChance
 {
-    void OnCalculateHitChance(ref float hitRate);
+    void OnCalculateHitChance(Unit unit, ref float hitRate);
+}
+
+/// <summary>
+/// 감정의 상태가 특정 스탯에 영향을 줄 때 호출이 됨
+/// </summary>
+public interface IEmotionStatModifier
+{
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,8 +6,13 @@ public class SkillManager : MonoBehaviour
 {
    public List<SkillData> selectedSkill;
    public BaseSkillController skillController;
-
-
+   public Unit owner;
+   private void Awake()
+   {
+      owner = GetComponent<Unit>();
+      skillController = GetComponent<BaseSkillController>();
+      InitializeSkillManager();
+   }
 
 
    public void InitializeSkillManager()
@@ -14,10 +20,11 @@ public class SkillManager : MonoBehaviour
       foreach (SkillData skillData in selectedSkill)
       {
          Skill skill = new Skill
-            (  skillData.selectCamp,
+            (  
+               skillData.selectCamp,
                skillData.selectType,
-               skillData.mainAffect,
-               skillData.subAffect,
+               skillData.mainSkillEffect,
+               skillData.subSkillEffect,
                skillData.jobType,
                skillData.reuseMaxNumber,
                skillData.maxCost,
@@ -25,6 +32,8 @@ public class SkillManager : MonoBehaviour
                skillData.SkillVFX,
                skillData.skillAnimation
                );
+         skill.mainEffect.owner = owner;
+         skill.subEffect.owner = owner;
          skillController.skills.Add(skill);
       }
    }

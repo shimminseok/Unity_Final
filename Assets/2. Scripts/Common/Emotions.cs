@@ -32,6 +32,7 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
 
     private float critDamUpAmount = 0f;
+    private float hitRateDownAmount = 0f;
 
     public JoyEmotion()
     {
@@ -56,8 +57,17 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
         Debug.Log("기쁨 상태 종료!!");
     }
 
-    public void OnCalculateHitChance(ref float hitRate)
+    public void OnCalculateHitChance(Unit unit, ref float hitRate)
     {
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is ComposurePassiveSo composurePassive)
+            {
+                hitRate = composurePassive.ComposureValue(hitRate);
+                return;
+            }
+        }
+
         float chance = Mathf.Min(Stack * MissChanceAmount, MissChanceMax);
         hitRate = Mathf.Clamp01(hitRate - chance);
     }
@@ -181,8 +191,7 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
     public override void Exit(Unit unit)
     {
         Stack = 0;
-
-        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, -defenseDownAmount);
+        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
         defenseDownAmount = 0;
         Debug.Log("우울 상태 종료!!");
     }
@@ -203,10 +212,19 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 
     public override void OnStackChanged(Unit unit)
     {
+        float perStack = DefenseDownPerStack;
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            {
+                emotionDebuffReducer.OnDebuffReducer(ref perStack);
+            }
+        }
+
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
         // 2. 새 버프 계산
-        defenseDownAmount = Mathf.Min(Stack * DefenseDownPerStack, DefenseDownMax);
+        defenseDownAmount = Mathf.Min(Stack * perStack, DefenseDownMax);
         // 3. 새 버프 적용
         unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, -defenseDownAmount);
     }
