@@ -13,14 +13,15 @@ public enum PlayerActionType
     SKill
 }
 
+[RequireComponent(typeof(PlayerSkillController))]
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
     public Animator animator;
     public PassiveSO passiveSo;
-    public EquipmentManager EquipmentManager { get; private set; }
-    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.Attack;
-
+    public EquipmentManager      EquipmentManager      { get; private set; }
+    public PlayerActionType      CurrentAction         { get; private set; } = PlayerActionType.None;
+    public PlayerSkillController PlayerSkillController { get; private set; }
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
@@ -59,17 +60,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+
+        PlayerSkillController = GetComponent<PlayerSkillController>();
     }
 
     public override void Attack()
     {
-        // if (Target == null || Target.IsDead)
-        {
-            //Test
-            var enemies = BattleManager.Instance.GetEnemies(this);
-            Target = enemies[Random.Range(0, enemies.Count)];
-            // return;
-        }
+        if (Target == null || Target.IsDead)
+            return;
+
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;
@@ -105,6 +104,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         //이펙트 생성
         //
+        PlayerSkillController.UseSkill();
     }
 
     private AnimatorOverrideController ChangeClip()
@@ -220,6 +220,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
+        ChangeAction(PlayerActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 

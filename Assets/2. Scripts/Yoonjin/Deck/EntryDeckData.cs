@@ -15,7 +15,5 @@ public class EntryDeckData
     public SkillData passiveSkill;
 
     // 딕셔너리로 줘!!! 
-    public EquipmentItemSO weapon;
-    public EquipmentItemSO armor;
-    public EquipmentItemSO accessory;
+    public Dictionary<EquipmentType, EquipmentItemSO> equippedItems = new();
 }

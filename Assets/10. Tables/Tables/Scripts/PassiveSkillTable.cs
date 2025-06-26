@@ -8,7 +8,7 @@ public class PassiveSkillTable : BaseTable<int, PassiveSO>
 {
     protected override string[] DataPath => new[] { "Assets/10. Tables/Skill/Passive" };
 
-    public Dictionary<JobType, List<PassiveSO>> PassiveSkillJobs { get; private set; } = new Dictionary<JobType, List<PassiveSO>>();
+    public Dictionary<JobType, List<PassiveSO>> PassiveSkillByJob { get; private set; } = new Dictionary<JobType, List<PassiveSO>>();
 
     public override void CreateTable()
     {
@@ -20,18 +20,18 @@ public class PassiveSkillTable : BaseTable<int, PassiveSO>
                 Debug.LogWarning($"중복된 Passive ID 감지: {passiveSo.PassiveID} - {passiveSo.name}");
             }
 
-            if (!PassiveSkillJobs.TryGetValue(passiveSo.JobType, out List<PassiveSO> passiveSkills))
+            if (!PassiveSkillByJob.TryGetValue(passiveSo.JobType, out List<PassiveSO> passiveSkills))
             {
                 passiveSkills = new List<PassiveSO>();
-                PassiveSkillJobs[passiveSo.JobType] = passiveSkills;
+                PassiveSkillByJob[passiveSo.JobType] = passiveSkills;
             }
 
             passiveSkills.Add(passiveSo);
         }
     }
 
-    public List<PassiveSO> GetPassiveSkillJobs(JobType jobType)
+    public List<PassiveSO> GetPassiveSkillsByJob(JobType jobType)
     {
-        return PassiveSkillJobs.TryGetValue(jobType, out List<PassiveSO> passiveSkills) ? passiveSkills : new List<PassiveSO>();
+        return PassiveSkillByJob.TryGetValue(jobType, out List<PassiveSO> passiveSkills) ? passiveSkills : new List<PassiveSO>();
     }
 }

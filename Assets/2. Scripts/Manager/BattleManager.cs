@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,13 +9,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     //Test
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
-    public TurnHandler   TurnHandler   { get; private set; }
-    public ActionPlanner ActionPlanner { get; private set; } // 전략 페이즈의 플래너 가저오기
+    public TurnHandler    TurnHandler    { get; private set; }
+    public CommandPlanner CommandPlanner { get; private set; } // 전략 페이즈의 플래너 가저오기
 
 
     private List<Unit> allUnits = new List<Unit>();
-    public bool StartBattle;
-
     public event Action OnBattleEnd;
 
     protected override void Awake()
@@ -25,9 +24,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void Start()
     {
         TurnHandler = new TurnHandler();
-
-        allUnits = PartyUnits.Concat(EnemyUnits).ToList();
-        //
+        SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
     }
 
     public void SetAllUnits(List<Unit> units)
@@ -38,7 +35,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     public void StartTurn()
     {
-        StartBattle = true;
         TurnHandler.StartNextTurn();
     }
 
@@ -46,24 +42,15 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         foreach (Unit unit in allUnits)
         {
-            if (!unit.IsDead)
-            {
-                unit.StatusEffectManager?.OnTurnPassed();
-            }
+            if (unit.IsDead)
+                continue;
+            unit.StatusEffectManager?.OnTurnPassed();
         }
 
-        if (EnemyUnits.TrueForAll(x => x.IsDead))
-        {
-            Debug.Log("게임 승리");
-        }
-        else if (PartyUnits.TrueForAll(x => x.IsDead))
-        {
-            Debug.Log("게임 패배");
-        }
-
-        OnBattleEnd?.Invoke();
+        allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
-        ActionPlanner.Clear(); // 턴 종료되면 전략 플래너도 초기화
+        CommandPlanner?.Clear(); // 턴 종료되면 전략 플래너도 초기화
+        OnBattleEnd?.Invoke();
     }
 
     public List<Unit> GetAllies(Unit unit)

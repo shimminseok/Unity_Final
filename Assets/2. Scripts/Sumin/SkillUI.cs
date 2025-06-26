@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private List<BattleSceneSkillSlot> skillSlot;
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateSkillList(Unit selectedUnit)
     {
-        
+        // 유닛이 보유한 스킬 리스트들을 차례로 슬롯에 넣어주기? - 나중에
+
+        //for (int i = 0; i < skillSlot.Count; i++)
+        //{
+        //    skillSlot[i].skill = selectedUnit.GetComponent<PlayerSkillController>().skills[i];
+        //    skillSlot[i].Initialize(skills[i], i, OnSkillSlotClicked);
+            
+        //}
     }
 }

@@ -32,7 +32,6 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
 
     private float critDamUpAmount = 0f;
-    private float hitRateDownAmount = 0f;
 
     public JoyEmotion()
     {

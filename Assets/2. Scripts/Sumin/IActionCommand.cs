@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 // 커맨드 패턴 사용하여 플레이어 전략 페이즈 구현
 // 플레이어 전략 페이즈 순서
 // 1. 유닛을 선택 
@@ -16,6 +12,7 @@ using UnityEngine;
 // TurnHandler가 속도 순 정렬 → 한 명씩 Execute()
 
 // 행동 커맨드 인터페이스
+
 public interface IActionCommand
 {
     Unit Executer { get; }
@@ -25,7 +22,7 @@ public interface IActionCommand
 // 기본 공격 커맨드
 public class AttackCommand : IActionCommand
 {
-    public Unit Executer {get; private set;}
+    public Unit Executer { get; private set; }
     private Unit target;
 
     public AttackCommand(Unit executer, Unit target)
@@ -41,4 +38,3 @@ public class AttackCommand : IActionCommand
         Executer.Attack();
     }
 }
-
