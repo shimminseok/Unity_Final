@@ -60,6 +60,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+
+        PlayerSkillController = GetComponent<PlayerSkillController>();
     }
 
     public override void Attack()
