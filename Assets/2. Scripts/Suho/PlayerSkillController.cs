@@ -55,7 +55,7 @@ public class PlayerSkillController : BaseSkillController
         
         currentSkill = null;
         
-        //EndTurn();
+        EndTurn();
     }
     
     

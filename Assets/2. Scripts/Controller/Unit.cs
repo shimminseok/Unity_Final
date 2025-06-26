@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable
@@ -82,5 +83,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         if (SelectionEffect == null)
             Debug.LogError("SelectionEffect가 null입니다!");
         SelectionEffect.SetActive(false);
+    }
+    
+    public void ExecuteCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
     }
 }

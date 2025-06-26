@@ -238,3 +238,18 @@ public class DamageDebuff : StatusEffect
         manager.RemoveEffect(this);
     }
 }
+
+public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
+{
+    public override IEnumerator Apply(StatusEffectManager manager)
+    {
+        while (0 < Duration)
+        {
+            manager.Owner.TakeDamage(Value, ModifierType);
+            yield return null;
+        }
+
+        manager.RemoveEffect(this);
+    }
+
+}
