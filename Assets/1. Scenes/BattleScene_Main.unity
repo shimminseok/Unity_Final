@@ -19867,8 +19867,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 101
 --- !u!95 &410376846
 Animator:
@@ -36639,7 +36637,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 128
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 873999813}
+  m_TargetTexture: {fileID: 2024393732}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -41385,44 +41383,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 873975864}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &873999813
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 4
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &874004472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44793,8 +44753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 101
 --- !u!95 &962725057
 Animator:
@@ -47597,8 +47555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 4
   animator: {fileID: 0}
   passiveSo: {fileID: 11400000, guid: 5ce7bc7bbfcf1114886d820a9ab3d9ca, type: 2}
@@ -52113,6 +52069,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tableList:
+  - {fileID: 11400000, guid: f71075f7e9c8bff458a070717c0d72ba, type: 2}
   - {fileID: 11400000, guid: 2c2da54e61e2f11438b1350943cfa26a, type: 2}
   - {fileID: 11400000, guid: 11a405bd888aa184783ee837142d7f1b, type: 2}
   - {fileID: 11400000, guid: 82ef12e6b66406843b1638ce6e7484c6, type: 2}
@@ -69024,8 +68981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 101
 --- !u!95 &1509057605
 Animator:
@@ -69485,7 +69440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9481698a601e419dbe07ac83ca82e6d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testEmotion: 0
   unit: {fileID: 1862999554}
 --- !u!4 &1512682996
 Transform:
@@ -72689,8 +72643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 2
   animator: {fileID: 0}
   passiveSo: {fileID: 11400000, guid: 85416e8c1ea72a4479b9eee4d80a6b8a, type: 2}
@@ -85502,8 +85454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 1
   animator: {fileID: 0}
   passiveSo: {fileID: 11400000, guid: 85416e8c1ea72a4479b9eee4d80a6b8a, type: 2}
@@ -86795,8 +86745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 101
 --- !u!95 &1889334380
 Animator:
@@ -87164,8 +87112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 101
 --- !u!95 &1891727366
 Animator:
@@ -92180,8 +92126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d69e3024a31402e9617e7d8bdcda2a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedPlayerUnit: {fileID: 0}
-  selectedTargetUnit: {fileID: 0}
   id: 3
   animator: {fileID: 0}
   passiveSo: {fileID: 11400000, guid: 587b6e5e3a04f3145b225c1bf212ad03, type: 2}
@@ -92631,6 +92575,44 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2018040636}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &2024393732
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 4
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &2027037368
 PrefabInstance:
   m_ObjectHideFlags: 0
