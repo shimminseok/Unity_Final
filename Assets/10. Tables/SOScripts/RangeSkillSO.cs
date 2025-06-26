@@ -1,7 +1,11 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
+
 public class RangeSkillSO : SkillTypeSO
 {
-    public override void UseSkill()
+    public override void UseSkill(BaseSkillController skillController)
     {
-        //원거리 스킬 사용 구현
+        
     }
 }

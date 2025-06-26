@@ -3,8 +3,9 @@ using UnityEngine;
 
 public class Skill
 {
-    public Skill(SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public Skill(SkillTypeSO type,SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
     {
+        this.skillType = type;
         this.selectedCamp = camp;
         this.selectedType = selectType;
         this.mainEffect = mainEffect;
@@ -19,14 +20,11 @@ public class Skill
     }
 
     //파워 슬래쉬
+    public SkillTypeSO skillType; // 원거리인가 근거리인가
     public SelectCampType selectedCamp;
 
     public SelectTargetType selectedType = SelectTargetType.Single;
-    //대미지 입히는거
-    // 한번에 큰 대미지를 준다.
 
-    //디버프 주는거
-    // 스턴을 줄꺼야
     public StatBaseSkillEffect mainEffect;
     public StatBaseSkillEffect subEffect;
     public JobType jobType;
