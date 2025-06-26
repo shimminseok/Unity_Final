@@ -220,6 +220,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
+        ChangeAction(PlayerActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 
