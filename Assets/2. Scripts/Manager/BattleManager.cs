@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
 
     private List<Unit> allUnits = new List<Unit>();
+    public event Action OnBattleEnd;
 
     protected override void Awake()
     {
@@ -22,7 +24,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void Start()
     {
         TurnHandler = new TurnHandler();
-
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
     }
 
@@ -48,7 +49,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
-        CommandPlanner.Clear();  // 턴 종료되면 전략 플래너도 초기화
+        CommandPlanner?.Clear(); // 턴 종료되면 전략 플래너도 초기화
+        OnBattleEnd?.Invoke();
     }
 
     public List<Unit> GetAllies(Unit unit)
