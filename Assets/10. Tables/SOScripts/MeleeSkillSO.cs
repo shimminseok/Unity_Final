@@ -1,7 +1,26 @@
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
+
 public class MeleeSkillSO : SkillTypeSO
 {
-    public override void UseSkill()
+    
+    public override void UseSkill(BaseSkillController controller)
     {
-        //근거리 스킬 사용로직 구현
+        this.skillController = controller;
+        if (controller.mainTarget != null)
+        {
+            controller.currentSkill.mainEffect.AffectTargetWithSkill(controller.mainTarget);
+        }
+
+
+        if (controller.subTargets != null)
+        {
+            foreach (Unit subTarget in controller.subTargets)
+            {
+                controller.currentSkill.mainEffect.AffectTargetWithSkill(subTarget);
+            }
+        }
+        
     }
 }

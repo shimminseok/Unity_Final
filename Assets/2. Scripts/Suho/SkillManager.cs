@@ -21,6 +21,7 @@ public class SkillManager : MonoBehaviour
       {
          Skill skill = new Skill
             (  
+               skillData.skillType,
                skillData.selectCamp,
                skillData.selectType,
                skillData.mainSkillEffect,

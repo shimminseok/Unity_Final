@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class SkillTypeSO : ScriptableObject
 {
-
-    public abstract void UseSkill();
+    protected BaseSkillController skillController;
+    public abstract void UseSkill(BaseSkillController skillController);
 
 }

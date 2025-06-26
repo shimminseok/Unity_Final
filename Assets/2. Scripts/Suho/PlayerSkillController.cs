@@ -38,22 +38,9 @@ public class PlayerSkillController : BaseSkillController
         currentSkill.cost = 0;
         currentSkill.reuseNumber++;
         SelectTargets(mainTarget);
-        if (mainTarget != null)
-        {
-            currentSkill.mainEffect.AffectTargetWithSkill(mainTarget);
-        }
-        // 메인타겟에 메인효과 적용
-
-
-        if (subTargets != null)
-        {
-            foreach (Unit subTarget in subTargets)
-            {
-                currentSkill.subEffect.AffectTargetWithSkill(subTarget);
-            }
-        }
-        // 서브타겟에 서브효과 적용
-
+        
+        currentSkill.skillType.UseSkill(this);
+        
         currentSkill = null;
 
         // EndTurn();
