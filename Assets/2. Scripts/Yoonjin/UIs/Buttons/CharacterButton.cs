@@ -12,13 +12,19 @@ public class CharacterButton : MonoBehaviour
     [SerializeField] private Button button;     // 클릭 버튼
 
     private PlayerUnitSO characterSO;
-    private Action<PlayerUnitSO> onClickAction;
+
+    // 보유 중 영역에 위치한 버튼인지
+    private bool isSelected;
+
+    // 버튼 클릭 후 UI 갱신을 위한 콜백
+    private Action<PlayerUnitSO, bool> onAfterClick;
 
     // 버튼에 데이터를 집어넣는 초기화 작업
-    public void Initialize(PlayerUnitSO data, Action<PlayerUnitSO> onClick)
+    public void Initialize(PlayerUnitSO data, bool isSelectedCharacter, Action<PlayerUnitSO, bool> onClick)
     {
         characterSO = data;
-        onClickAction = onClick;
+        isSelected = isSelectedCharacter;
+        onAfterClick = onClick;
 
         // UI 이미지와 텍스트 교체
         iconImage.sprite = data.UnitIcon;
@@ -29,9 +35,12 @@ public class CharacterButton : MonoBehaviour
         button.onClick.AddListener(OnClicked);
     }
 
-    // 버튼 클릭 시 등록된 콜백 실행
+    // 버튼 클릭
     private void OnClicked()
     {
-        onClickAction?.Invoke(characterSO);
+        // 외부에서 갱신
+        onAfterClick?.Invoke(characterSO, isSelected);
     }
+
+    public PlayerUnitSO GetCharacterSO() => characterSO;
 }
