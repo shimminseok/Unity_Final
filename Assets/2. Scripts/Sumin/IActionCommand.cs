@@ -34,7 +34,7 @@ public class AttackCommand : IActionCommand
 
     public void Execute()
     {
-        // 기본공격은 적 타겟 지정 없이 랜덤인 상태니까 Attack Target을 지정
+        // 기본공격 실행
         Executer.Attack();
     }
 }

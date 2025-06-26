@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 // 1. 플레이어 유닛 선택 (아군만)
@@ -21,7 +22,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
 
-    [SerializeField] private SkillUI skillUI;
+    [SerializeField] private BattleSceneSkillUI skillUI;
 
     private ISelectable selectedPlayerUnit;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
@@ -79,10 +80,20 @@ public class InputManager : SceneOnlySingleton<InputManager>
     }
 
     // 유닛이 사용할 스킬 선택
-    private void OnSkillSelect()
+    public void SelectSkill(int index)
     {
+        if (selectedPlayerUnit == null)
+        {
+            Debug.Log("플레이어 유닛 선택하지 않음!");
+        }
+
+        // 스킬 인덱스 받아서 교체해야 되는데... 유닛에서 교체?
+        if (selectedPlayerUnit is PlayerUnitController playerUnit)
+        {
+            playerUnit.PlayerSkillController.ChangeSkill(index);
+        }
         ChangeSelectedUnitAction(PlayerActionType.SKill);
-        Debug.Log("스킬 선택");
+        Debug.Log($"스킬 {index}번째 선택");
     }
 
     // 플레이어 유닛이 기본공격 수행
@@ -118,6 +129,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 Unit targetUnit = targetSelectable.SelectedUnit;
                 Unit executer   = selectedPlayerUnit.SelectedUnit;
+
+                if (selectedPlayerUnit is PlayerUnitController playerUnit)
+                {
+                    playerUnit.PlayerSkillController.mainTarget = targetUnit;
+                }
 
                 executer.SetTarget(targetUnit);
                 Debug.Log("타겟 유닛 선택 완료");
