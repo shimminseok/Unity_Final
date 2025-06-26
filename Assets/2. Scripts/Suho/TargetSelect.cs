@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 public class TargetSelect
 {
-    public List<IDamageable> FindTargets(IDamageable mainTarget, SelectTargetType type,SelectCampType camp)
+    public List<Unit> FindTargets(Unit mainTarget, SelectTargetType type,SelectCampType camp)
     {
         switch (type)
         { 
@@ -15,23 +15,20 @@ public class TargetSelect
             case SelectTargetType.All:
                 if (camp == SelectCampType.Enemy)
                 {
-                    List<IDamageable> targets = BattleManager.Instance.EnemyUnits.ConvertAll(new Converter<Unit, IDamageable>(UnitToIDamageable));
+                    List<Unit> targets = BattleManager.Instance.EnemyUnits;
                     return targets;
                 }
                 else if (camp == SelectCampType.Player)
                 {
-                    List<IDamageable> targets = BattleManager.Instance.PartyUnits.ConvertAll(new Converter<Unit, IDamageable>(UnitToIDamageable));
+                    List<Unit> targets = BattleManager.Instance.PartyUnits;
                     return targets;
                 }
                 else if (camp == SelectCampType.BothSide)
                 {
-                    List<IDamageable> playerUnit =
-                        BattleManager.Instance.PartyUnits.ConvertAll(
-                            new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> enemyUnit =
-                        BattleManager.Instance.EnemyUnits.ConvertAll(
-                            new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> total = playerUnit.Concat(enemyUnit).ToList();
+                    List<Unit> playerUnit = BattleManager.Instance.PartyUnits;
+                    List<Unit> enemyUnit =  BattleManager.Instance.EnemyUnits;
+                   
+                    List<Unit> total = playerUnit.Concat(enemyUnit).ToList();
                     return total;
                 }
                 else return null;
@@ -39,26 +36,22 @@ public class TargetSelect
             case SelectTargetType.SinglePlusRandomOne:
                 if (camp == SelectCampType.Enemy)
                 {
-                    List<IDamageable> targets = BattleManager.Instance.EnemyUnits.ConvertAll(new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> target = new List<IDamageable> { targets[Random.Range(0, targets.Count)] };
+                    List<Unit> targets = BattleManager.Instance.EnemyUnits;
+                    List<Unit> target = new List<Unit> { targets[Random.Range(0, targets.Count)] };
                     return target;
                 }
                 else if (camp == SelectCampType.Player)
                 {
-                    List<IDamageable> targets = BattleManager.Instance.PartyUnits.ConvertAll(new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> target = new List<IDamageable> { targets[Random.Range(0, targets.Count)] };
+                    List<Unit> targets = BattleManager.Instance.PartyUnits;
+                    List<Unit> target = new List<Unit> { targets[Random.Range(0, targets.Count)] };
                     return target;
                 }
                 else if (camp == SelectCampType.BothSide)
                 {
-                    List<IDamageable> playerUnit =
-                        BattleManager.Instance.PartyUnits.ConvertAll(
-                            new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> enemyUnit =
-                        BattleManager.Instance.EnemyUnits.ConvertAll(
-                            new Converter<Unit, IDamageable>(UnitToIDamageable));
-                    List<IDamageable> total = playerUnit.Concat(enemyUnit).ToList();
-                    List<IDamageable> target = new List<IDamageable> { total[Random.Range(0, total.Count)] };
+                    List<Unit> playerUnit = BattleManager.Instance.PartyUnits;
+                    List<Unit> enemyUnit = BattleManager.Instance.EnemyUnits;
+                    List<Unit> total = playerUnit.Concat(enemyUnit).ToList();
+                    List<Unit> target = new List<Unit> { total[Random.Range(0, total.Count)] };
                     return target;
                 }
                 else return null;
@@ -69,11 +62,7 @@ public class TargetSelect
 
     }
 
-    public static IDamageable UnitToIDamageable(Unit unit)
-    {
-        IDamageable damageable = unit;
-        return damageable;
-    } 
+
     
 }
 

@@ -20,7 +20,7 @@ using UnityEngine;
 public class PlayerSkillController : BaseSkillController
 {
 
-    public override void SelectTargets(IDamageable target)
+    public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
@@ -46,7 +46,7 @@ public class PlayerSkillController : BaseSkillController
 
         if (subTargets != null)
         {
-            foreach (IDamageable subTarget in subTargets)
+            foreach (Unit subTarget in subTargets)
             {
                 currentSkill.subEffect.AffectTargetWithSkill(subTarget);
             }
