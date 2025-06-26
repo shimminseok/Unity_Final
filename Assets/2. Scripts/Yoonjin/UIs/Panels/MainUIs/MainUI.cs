@@ -47,8 +47,6 @@ public class MainUI : UIBase
         // 테이블 데이터에서 get table 로 받아옴
         ownedCharacters = dummyPool.OwnedCharacters;
 
-        
-
         foreach (PlayerUnitSO unit in ownedCharacters)
         {
             CharacterButton btn = Instantiate(characterButtonPrefab, ownedCharacterParent);
