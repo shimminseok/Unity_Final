@@ -18,17 +18,8 @@ public class MeleeAttackSO : AttackTypeSO
         }
 
         float mutiplier = 0f;
-        //Test
-        if (attacker.Target == null)
-        {
-            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, GameManager.Instance.testEmotion);
-            Debug.Log(finalValue * mutiplier);
-        }
-        else
-        {
-            mutiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, attacker.Target.CurrentEmotion.EmotionType);
-            finalValue *= mutiplier;
-            attacker.Target.TakeDamage(finalValue);
-        }
+        mutiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, attacker.Target.CurrentEmotion.EmotionType);
+        finalValue *= mutiplier;
+        attacker.Target.TakeDamage(finalValue);
     }
 }

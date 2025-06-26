@@ -4,7 +4,6 @@
 public class GameManager : Singleton<GameManager>
 {
     //Test
-    public EmotionType testEmotion;
     [SerializeField] private Unit unit;
 
     private void OnGUI()

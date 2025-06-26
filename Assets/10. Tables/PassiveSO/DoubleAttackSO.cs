@@ -18,13 +18,7 @@ public class Double : PassiveSO, IPassiveAttackTrigger
 
         float baseDamage = Owner.StatManager.GetValue(StatType.AttackPow);
 
-        //Test
-        if (Owner.Target == null)
-        {
-            Debug.Log(baseDamage * EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, GameManager.Instance.testEmotion));
-            return;
-        }
-
+        
         float mutiplier   = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, Owner.Target.CurrentEmotion.EmotionType);
         float finalDamage = baseDamage * mutiplier;
 
