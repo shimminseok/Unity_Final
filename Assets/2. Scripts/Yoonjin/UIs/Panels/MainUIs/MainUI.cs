@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class MainUI : UIBase
 {
-    [Header("임시 전체 캐릭터 풀")]
-    [SerializeField] private DummyCharacterLoader dummyPool;
-
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
     [SerializeField] private CharacterButton characterButtonPrefab;
@@ -39,6 +36,7 @@ public class MainUI : UIBase
         GenerateOwnedCharacterButtons();
         startBattleButton.onClick.AddListener(OnClickStartBattle);
     }
+
 
     // 현재 보유 중인 캐릭터 목록 버튼 생성
     private void GenerateOwnedCharacterButtons()
@@ -85,11 +83,22 @@ public class MainUI : UIBase
     }
 
     // 최근 선택된 캐릭터 정보를 패널에 갱신
-    private void UpdateCharacterInfoPanel()
+    private void UpdateCharacterInfoPanel(PlayerUnitSO character)
     {
+        var entry = DeckSelectManager.Instance.GetSelectedDeck()
+            .Find(entry => entry.characterSO == character);
 
+        if (entry != null)
+        {
+            characterInfoPanel.SetData(entry);
+
+
+        }
     }
 
+    /// <summary>
+    /// 이하 클릭 이벤트
+    /// </summary>
 
     // 전투 시작 버튼 클릭
     private void OnClickStartBattle()
@@ -109,7 +118,7 @@ public class MainUI : UIBase
     // 선택된 캐릭터 버튼 클릭 시 상세 정보 표시
     private void OnSelectedCharacterButtonClicked(PlayerUnitSO character)
     {
-
+        UpdateCharacterInfoPanel(character);
     }
 
 }
