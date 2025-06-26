@@ -8,7 +8,7 @@ using UnityEngine;
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
-    SelectExecuter,     // 커맨드를 수행할 플레이어 유닛 선택 상태
+    SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
     SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
 }
@@ -33,7 +33,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
             mainCam = Camera.main;
         }
     }
-    
+
     void Update()
     {
         // 각 Phase별 초기화 또는 상태 진입 처리
@@ -56,14 +56,14 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
             {
                 ISelectable selectable = hit.transform.GetComponent<ISelectable>();
                 SelectUnit(selectable);
-                
+
                 // 유닛 선택하면 스킬 선택 페이즈로 전환
                 currentPhase = InputPhase.SelectSkill;
                 Debug.Log("플레이어 유닛 선택 완료");
@@ -81,14 +81,24 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 유닛이 사용할 스킬 선택
     private void OnSkillSelect()
     {
-        
+        ChangeSelectedUnitAction(PlayerActionType.SKill);
+        Debug.Log("스킬 선택");
     }
 
     // 플레이어 유닛이 기본공격 수행
     public void SelectBasicAttack()
     {
-        currentPhase = InputPhase.SelectTarget;
+        ChangeSelectedUnitAction(PlayerActionType.Attack);
         Debug.Log("기본 공격 선택");
+    }
+
+    private void ChangeSelectedUnitAction(PlayerActionType actionType)
+    {
+        currentPhase = InputPhase.SelectTarget;
+        if (selectedPlayerUnit is PlayerUnitController playerUnit)
+        {
+            playerUnit.ChangeAction(actionType);
+        }
     }
 
     // 공격할 타겟 유닛 선택
@@ -99,7 +109,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+            Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, enemyUnitLayer))
@@ -107,7 +117,9 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 ISelectable targetSelectable = hit.transform.GetComponent<ISelectable>();
 
                 Unit targetUnit = targetSelectable.SelectedUnit;
-                Unit executer = selectedPlayerUnit.SelectedUnit;
+                Unit executer   = selectedPlayerUnit.SelectedUnit;
+
+                executer.SetTarget(targetUnit);
                 Debug.Log("타겟 유닛 선택 완료");
 
                 // 커맨드 생성
@@ -115,10 +127,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 CommandPlanner.Instance.PlanAction(executer, command);
                 Debug.Log($"수행 : {executer} | 타겟 : {targetUnit}");
 
+
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-
             }
             else
             {
@@ -150,6 +162,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         selectedPlayerUnit = null;
     }
+
     void SelectUnit(ISelectable unit)
     {
         selectedPlayerUnit = unit;

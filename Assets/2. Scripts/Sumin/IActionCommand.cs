@@ -12,6 +12,7 @@
 // TurnHandler가 속도 순 정렬 → 한 명씩 Execute()
 
 // 행동 커맨드 인터페이스
+
 public interface IActionCommand
 {
     Unit Executer { get; }
@@ -21,7 +22,7 @@ public interface IActionCommand
 // 기본 공격 커맨드
 public class AttackCommand : IActionCommand
 {
-    public Unit Executer {get; private set;}
+    public Unit Executer { get; private set; }
     private Unit target;
 
     public AttackCommand(Unit executer, Unit target)
@@ -37,4 +38,3 @@ public class AttackCommand : IActionCommand
         Executer.Attack();
     }
 }
-

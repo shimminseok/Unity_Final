@@ -17,14 +17,19 @@ MonoBehaviour:
   selectType: 0
   mainSkillEffect:
     owner: {fileID: 0}
-    effects:
-    - ID: 1010101
+    damageEffects:
+    - attackCount: 0
       ownerStatType: 4
-      weight: 5
-      opponentStatType: 7
-      effectType: 9
-      lastTurn: 1
-      isStackable: 1
+      weight: 1.5
+      value: 1000
+    buffEffects:
+    - ID: 0
+      ownerStatType: 1
+      weight: 0
+      value: 0
+      opponentStatType: 0
+      lastTurn: 0
+      statusEffectType: 0
       emotionType: 0
       StatusEffect:
         ID: 0
@@ -38,7 +43,8 @@ MonoBehaviour:
         IsStackable: 0
   subSkillEffect:
     owner: {fileID: 0}
-    effects: []
+    damageEffects: []
+    buffEffects: []
   jobType: 1
   reuseMaxNumber: 5
   maxCost: 2

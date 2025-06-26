@@ -10,17 +10,17 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public StatManager         StatManager         { get; protected set; }
     public StatusEffectManager StatusEffectManager { get; protected set; }
 
-    public          StatBase      AttackStat    { get; protected set; }
-    public          IDamageable   Target        { get; protected set; }
-    public          Collider      Collider      { get; protected set; }
-    public          int           Index         { get; protected set; }
-    public          bool          IsDead        { get; protected set; }
-    protected       BattleManager BattleManager => BattleManager.Instance;
-    public          BaseEmotion[] Emotions      { get; private set; }
+    public    StatBase      AttackStat    { get; protected set; }
+    public    IDamageable   Target        { get; protected set; }
+    public    Collider      Collider      { get; protected set; }
+    public    int           Index         { get; protected set; }
+    public    bool          IsDead        { get; protected set; }
+    protected BattleManager BattleManager => BattleManager.Instance;
+    public    BaseEmotion[] Emotions      { get; private set; }
 
     public Unit SelectedUnit => this;
 
-    public abstract void          StartTurn();
+    public abstract void StartTurn();
 
     public abstract void EndTurn();
 
@@ -71,6 +71,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
 
     public abstract void Attack();
+
+    public void SetTarget(IDamageable target)
+    {
+        Target = target;
+    }
 
     // 유닛 선택 했을 때
     public void OnSelect()
