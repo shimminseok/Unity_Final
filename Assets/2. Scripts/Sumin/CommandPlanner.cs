@@ -1,10 +1,7 @@
-
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class ActionPlanner
+public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
 {
     // Unit과 Command Dictionary에 저장
     private Dictionary<Unit, IActionCommand> plannedCommands = new Dictionary<Unit, IActionCommand>();

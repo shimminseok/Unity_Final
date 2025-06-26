@@ -16,6 +16,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public          bool          IsDead        { get; protected set; }
     protected       BattleManager BattleManager => BattleManager.Instance;
     public          BaseEmotion[] Emotions      { get; private set; }
+
+    public Unit SelectedUnit => this;
+
     public abstract void          StartTurn();
 
     public abstract void EndTurn();

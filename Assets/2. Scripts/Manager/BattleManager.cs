@@ -9,7 +9,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public List<Unit> PartyUnits;
     public List<Unit> EnumyUnits;
     public TurnHandler TurnHandler { get; private set; }
-    public ActionPlanner ActionPlanner { get; private set; } // 전략 페이즈의 플래너 가저오기
+    public CommandPlanner CommandPlanner { get; private set; } // 전략 페이즈의 플래너 가저오기
 
 
     private List<Unit> allUnits = new List<Unit>();
@@ -23,8 +23,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         TurnHandler = new TurnHandler();
 
-        allUnits = PartyUnits.Concat(EnumyUnits).ToList();
-        //
+        SetAllUnits(PartyUnits.Concat(EnumyUnits).ToList());
     }
 
     public void SetAllUnits(List<Unit> units)
@@ -49,7 +48,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
-        ActionPlanner.Clear();  // 턴 종료되면 전략 플래너도 초기화
+        CommandPlanner.Clear();  // 턴 종료되면 전략 플래너도 초기화
     }
 
     public List<Unit> GetAllies(Unit unit)
