@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Skill
 {
-    public Skill(SelectCampType camp, SelectTargetType selectType, List<StatusEffectData> mainAffect, List<StatusEffectData> subAffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public Skill(SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxNumber, int maxCost, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
     {
         this.selectedCamp = camp;
         this.selectedType = selectType;
-        this.mainAffect = mainAffect;
-        this.subAffect = subAffect;
+        this.mainEffect = mainEffect;
+        this.subEffect = subEffect;
         this.jobType = jobType;
         this.reuseMaxNumber = reuseMaxNumber;
         this.maxCost = maxCost;
@@ -18,10 +18,17 @@ public class Skill
         this.skillAnimation = skillAnimation;
     }
 
+    //파워 슬래쉬
     public SelectCampType selectedCamp;
+
     public SelectTargetType selectedType = SelectTargetType.Single;
-    public List<StatusEffectData> mainAffect;
-    public List<StatusEffectData> subAffect;
+    //대미지 입히는거
+    // 한번에 큰 대미지를 준다.
+
+    //디버프 주는거
+    // 스턴을 줄꺼야
+    public StatBaseSkillEffect mainEffect;
+    public StatBaseSkillEffect subEffect;
     public JobType jobType;
     public int reuseNumber = 0;
     public int cost = 0;
@@ -36,19 +43,18 @@ public class Skill
         cost = Mathf.Min(maxCost, cost + value);
     }
 
-    public bool CheckUseSkill()
+    public bool CheckCanUseSkill()
     {
         if (cost < maxCost)
         {
             return false;
         }
 
-        if ( reuseNumber > reuseMaxNumber)
+        if (reuseNumber > reuseMaxNumber)
         {
             return false;
         }
-        
+
         return true;
     }
-    
 }

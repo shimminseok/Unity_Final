@@ -98,8 +98,18 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             //방어력 계산.
         }
 
-        var curHp = StatManager.GetStat<ResourceStat>(StatType.CurHp);
-        StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+        var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
+        var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+
+        if (shield.CurrentValue > 0)
+        {
+            float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
+            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
+            finalDam -= shieldUsed;
+        }
+
+        if (finalDam > 0)
+            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {

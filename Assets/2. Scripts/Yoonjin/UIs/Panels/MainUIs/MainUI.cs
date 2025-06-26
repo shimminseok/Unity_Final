@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class MainUI : UIBase
 {
-    [Header("임시 전체 캐릭터 풀")]
-    [SerializeField] private DummyCharacterLoader dummyPool;
-
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
     [SerializeField] private CharacterButton characterButtonPrefab;
@@ -40,12 +37,25 @@ public class MainUI : UIBase
         startBattleButton.onClick.AddListener(OnClickStartBattle);
     }
 
-    // 현재 보유 중인 캐릭터 목록을 버튼 생성
+
+    // 현재 보유 중인 캐릭터 목록 버튼 생성
     private void GenerateOwnedCharacterButtons()
     {
         // !!!임시로 더미 전체 캐릭터풀의 데이터 집어넣음!!!
-        // 테이블 데이터에서 get table 로 받아옴
-        ownedCharacters = dummyPool.OwnedCharacters;
+        // 테이블 데이터에서 전체 캐릭터 목록 get table 로 받아옴
+        var table = TableManager.Instance.GetTable<PlayerUnitTable>();
+        ownedCharacters.Clear();
+
+        // ID 순회: 현재 캐릭터 id가 1부터 7까지이므로 임시 조치
+        for (int id = 1; id <= 20; id++)
+        {
+            var unit = table.GetDataByID(id);
+
+            if (unit != null)
+            {
+                ownedCharacters.Add(unit);
+            }
+        }
 
         foreach (PlayerUnitSO unit in ownedCharacters)
         {
@@ -54,6 +64,41 @@ public class MainUI : UIBase
             ownedCharacterButtons.Add(btn);
         }
     }
+
+    // 선택된 캐릭터 목록 버튼 생성
+    private void GenerateSelectedCharacterButtons(List<EntryDeckData> selectedDeck)
+    {
+        // 기존 버튼 모두 제거
+        foreach (var btn in selectedCharacterButtons)
+            Destroy(btn.gameObject);
+        selectedCharacterButtons.Clear();
+
+        // 새로운 버튼 생성
+        foreach(var entry in selectedDeck)
+        {
+            var btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
+            btn.Initialize(entry.characterSO, OnSelectedCharacterButtonClicked);
+            selectedCharacterButtons.Add(btn);
+        }
+    }
+
+    // 최근 선택된 캐릭터 정보를 패널에 갱신
+    private void UpdateCharacterInfoPanel(PlayerUnitSO character)
+    {
+        var entry = DeckSelectManager.Instance.GetSelectedDeck()
+            .Find(entry => entry.characterSO == character);
+
+        if (entry != null)
+        {
+            characterInfoPanel.SetData(entry);
+
+
+        }
+    }
+
+    /// <summary>
+    /// 이하 클릭 이벤트
+    /// </summary>
 
     // 전투 시작 버튼 클릭
     private void OnClickStartBattle()
@@ -65,17 +110,15 @@ public class MainUI : UIBase
     private void OnCharacterButtonClicked(PlayerUnitSO character)
     {
         DeckSelectManager.Instance.SelectCharacter(character);
+
+        // 선택된 캐릭터 UI 갱신
+        GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
     }
 
     // 선택된 캐릭터 버튼 클릭 시 상세 정보 표시
     private void OnSelectedCharacterButtonClicked(PlayerUnitSO character)
     {
-
+        UpdateCharacterInfoPanel(character);
     }
 
-    // 최근 선택된 캐릭터 정보를 패널에 갱신
-    private void UpdateCharacterInfoPanel()
-    {
-
-    }
 }
