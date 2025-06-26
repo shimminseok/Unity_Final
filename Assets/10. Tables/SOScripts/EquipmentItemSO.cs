@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEquipmentData", menuName = "ScriptableObjects/Item/Equipment", order = 0)]
 public class EquipmentItemSO : ItemSO
 {
-    public bool IsAllEquipped;
+    public bool IsEquipableByAllJobs;
 
-    [ShowIfFalse("IsAllEquipped")]
+    [ShowIfFalse("IsEquipableByAllJobs")]
     public JobType JobType;
 
     public EquipmentType EquipmentType;
