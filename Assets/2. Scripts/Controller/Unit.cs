@@ -44,7 +44,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             Emotions[i] = EmotionFactory.CreateEmotion((EmotionType)i);
         }
 
-        CurrentEmotion = Emotions[(int)EmotionType.None];
+        CurrentEmotion = Emotions[(int)EmotionType.Neutral];
     }
 
     public void ChangeEmotion(EmotionType newType)
@@ -84,7 +84,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             Debug.LogError("SelectionEffect가 null입니다!");
         SelectionEffect.SetActive(false);
     }
-    
+
     public void ExecuteCoroutine(IEnumerator coroutine)
     {
         StartCoroutine(coroutine);
