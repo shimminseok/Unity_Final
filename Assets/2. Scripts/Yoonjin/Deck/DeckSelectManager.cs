@@ -21,6 +21,14 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     // 최대 선택 가능한 캐릭터 수
     private const int maxCharacterCount = 4;
 
+
+    #region getter
+    public List<EntryDeckData> GetSelectedDeck()
+    {
+        return selectedDeck;
+    }
+    #endregion
+
     protected override void Awake()
     {
         base.Awake();

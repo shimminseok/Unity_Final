@@ -33,11 +33,11 @@ public class PlayerSkillController : BaseSkillController
         currentSkill = skills[index];
     }
 
-    [ContextMenu("스킬 사용!")]
     public override void UseSkill()
     {
         currentSkill.cost = 0;
         currentSkill.reuseNumber++;
+        SelectTargets(mainTarget);
         if (mainTarget != null)
         {
             currentSkill.mainEffect.AffectTargetWithSkill(mainTarget);
@@ -56,7 +56,7 @@ public class PlayerSkillController : BaseSkillController
 
         currentSkill = null;
 
-        EndTurn();
+        // EndTurn();
     }
 
 

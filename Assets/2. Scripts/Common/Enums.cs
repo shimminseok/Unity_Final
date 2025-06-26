@@ -69,6 +69,7 @@ public enum StatusEffectType
     Damege,               // 즉발 대미지
     TurnBasedModifierBuff,
     Trigger,
+    TurnBasedPeriodicDamageDebuff,
 }
 
 public enum EmotionType
@@ -98,9 +99,9 @@ public enum EquipmentType
 }
 
 /*SelectTargetType : 스킬을 사용할 때 적을 선택하는 로직 타입
- * Single : 단일 타겟
- * All : 진형 전체
- * SinglePlusRandomOne : 진형 한 쪽의 단일 한 명과 랜덤 한 명
+ * Single : 단일 타겟 - 메인타겟
+ * All : 진영 전체 - 진영 전체가 서브타겟
+ * SinglePlusRandomOne : 진영 한 쪽의 단일 한 명 -메인타겟-과 랜덤 한 명 -서브타겟-
  */
 public enum SelectTargetType
 {

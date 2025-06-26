@@ -17,6 +17,8 @@ using UnityEngine;
 public class SkillData : ScriptableObject
 {
     public int ID;
+    public string skillName;
+    public string skillDescription;
     public SelectCampType selectCamp;
     public SelectTargetType selectType;
     public StatBaseSkillEffect mainSkillEffect;
