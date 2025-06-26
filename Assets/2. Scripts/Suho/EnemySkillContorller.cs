@@ -1,7 +1,7 @@
 
 public class EnemySkillContorller : BaseSkillController
 {
-    public override void SelectTargets(IDamageable mainTarget)
+    public override void SelectTargets(Unit mainTarget)
     {
     }
 
