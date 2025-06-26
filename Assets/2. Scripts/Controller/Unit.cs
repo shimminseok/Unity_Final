@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable
 {
@@ -18,8 +19,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     protected BattleManager BattleManager => BattleManager.Instance;
     public    BaseEmotion[] Emotions      { get; private set; }
 
-    public Unit SelectedUnit => this;
-
+    public          Unit SelectedUnit => this;
     public abstract void StartTurn();
 
     public abstract void EndTurn();
@@ -27,6 +27,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
+
+    private const float ResistancePerStack = 0.08f;
 
     private void Awake()
     {
@@ -54,6 +56,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         if (CurrentEmotion.EmotionType != newType)
         {
+            if (Random.value < CurrentEmotion.Stack * ResistancePerStack)
+                return;
+
             CurrentEmotion.Exit(this);
             CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
