@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkillUI : MonoBehaviour
+public class SkillUI : UIBase
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("패시브 스킬 선택 영역")]
+    [SerializeField] private Transform passiveSkillParent;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [Header("액티브 스킬 선택 영역")]
+    [SerializeField] private Transform activeSkillParent;
+
+    [Header("장착 스킬 영역")]
+    [SerializeField] private Transform selectedSkillParent;
 }

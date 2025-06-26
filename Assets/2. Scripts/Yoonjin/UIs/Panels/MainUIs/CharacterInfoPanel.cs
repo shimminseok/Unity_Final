@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterInfoPanel : UIBase
+public class CharacterInfoPanel : MonoBehaviour
 {
     [Header("편집 버튼")]
     public Button equipEditButton;
@@ -25,6 +25,13 @@ public class CharacterInfoPanel : UIBase
     [Header("패시브 스킬 슬롯")]
     [SerializeField] private Image passiveSkillSlotImage;
 
+    private void Awake()
+    {
+        // 편집 버튼에 클릭 이벤트 연결
+        equipEditButton.onClick.AddListener(OnClickEquipUI);
+        skillEditButton.onClick.AddListener(OnClickSkillUI);
+    }
+
     public void SetData(EntryDeckData data)
     {
         if (data == null) return;
@@ -33,9 +40,9 @@ public class CharacterInfoPanel : UIBase
         characterNameText.text = data.characterSO.UnitName;
 
         // 장비 표시
-        weaponSlotImage.sprite = GetItemSprite(data.equippedItems, EquipmentType.Weapon);
-        armorSlotImage.sprite = GetItemSprite(data.equippedItems, EquipmentType.Armor);
-        accessorySlotImage.sprite = GetItemSprite(data.equippedItems, EquipmentType.Accessory);
+        weaponSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Weapon);
+        armorSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Armor);
+        accessorySlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Accessory);
 
         // 액티브 스킬들 표시
         for (int i = 0; i < activeSkillSlotImage.Length; i++)
@@ -64,7 +71,7 @@ public class CharacterInfoPanel : UIBase
     }
 
     // 장비 딕셔너리에서 원하는 장비 타입을 꺼내, 아이콘을 반환한다
-    private Sprite GetItemSprite(Dictionary<EquipmentType, EquipmentItemSO> dic, EquipmentType type)
+    private Sprite GetEquipSprite(Dictionary<EquipmentType, EquipmentItemSO> dic, EquipmentType type)
     {
         if (dic.TryGetValue(type, out var item) && item != null)
         {
@@ -75,5 +82,28 @@ public class CharacterInfoPanel : UIBase
         {
             return null;
         }
+    }
+
+    // 장비 편집창 열기
+    private void OnClickEquipUI()
+    {
+        var entry = DeckSelectManager.Instance.GetSelectedDeck();
+
+        if(entry != null)
+        {
+            UIManager.Instance.Open<EquipUI>();
+        }
+    }
+
+    // 스킬 편집창 열기
+    private void OnClickSkillUI()
+    {
+        var entry = DeckSelectManager.Instance.GetSelectedDeck();
+
+        if (entry != null)
+        {
+            UIManager.Instance.Open<EquipUI>();
+        }
+
     }
 }

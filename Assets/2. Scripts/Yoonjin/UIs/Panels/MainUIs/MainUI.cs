@@ -91,8 +91,6 @@ public class MainUI : UIBase
         if (entry != null)
         {
             characterInfoPanel.SetData(entry);
-
-
         }
     }
 
@@ -113,6 +111,7 @@ public class MainUI : UIBase
 
         // 선택된 캐릭터 UI 갱신
         GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+        UpdateCharacterInfoPanel(character);
     }
 
     // 선택된 캐릭터 버튼 클릭 시 상세 정보 표시
