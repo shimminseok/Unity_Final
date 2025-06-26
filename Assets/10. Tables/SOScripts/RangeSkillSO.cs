@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class RangeSkillSO : SkillTypeSO
 {
+    public string poolID;
     public override void UseSkill(BaseSkillController skillController)
     {
+        GameObject projectile = ObjectPoolManager.Instance.GetObject(poolID);
         
+
     }
 }

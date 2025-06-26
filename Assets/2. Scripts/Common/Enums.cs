@@ -149,3 +149,13 @@ public enum EquipJobRestrictionType
     All,
     Specific
 }
+
+public enum ProjectileInterpolationMode
+{
+    Linear,
+    Lerp,
+    MoveTowards,
+    SmoothDamp,
+    Slerp
+    
+}
