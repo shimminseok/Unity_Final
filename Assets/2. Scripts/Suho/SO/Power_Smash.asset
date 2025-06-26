@@ -10,23 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: New SkillData
+  m_Name: Power_Smash
   m_EditorClassIdentifier: 
   selectCamp: 1
   selectType: 0
-  mainAffect:
-  - ID: 1010101
-    EffectType: 8
-    Stat:
-      StatType: 0
-      ModifierType: 0
-      Value: 0
-    Duration: 1
-    TickInterval: 1
-    IsStackable: 0
-  subAffect: []
-  jobType: 0
-  reuseMaxNumber: 0
-  maxCost: 0
+  mainSkillEffect:
+    owner: {fileID: 0}
+    effects:
+    - ID: 1010101
+      ownerStatType: 4
+      weight: 5
+      opponentStatType: 1
+      effectType: 9
+      lastTurn: 1
+      isStackable: 1
+      emotionType: 1
+  subSkillEffect:
+    owner: {fileID: 0}
+    effects: []
+  jobType: 1
+  reuseMaxNumber: 5
+  maxCost: 2
   skillIcon: {fileID: 0}
   skillAnimation: {fileID: 0}

@@ -19,7 +19,8 @@ public enum StatType
     CriticalDam,
     CriticalRate,
 
-    HitRate
+    HitRate,
+    Shield
 }
 
 public enum StatModifierType
@@ -85,10 +86,14 @@ public enum TriggerEventType
 
 public enum ItemType
 {
+    Equipment
 }
 
 public enum EquipmentType
 {
+    Weapon,
+    Armor,
+    Accessory
 }
 
 /*SelectTargetType : 스킬을 사용할 때 적을 선택하는 로직 타입
@@ -135,4 +140,10 @@ public enum JobType
     Archer,
     Priest,
     Mage
+}
+
+public enum EquipJobRestrictionType
+{
+    All,
+    Specific
 }
