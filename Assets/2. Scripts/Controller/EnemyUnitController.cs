@@ -1,21 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EnemyState;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
+    [SerializeField] private int id;
+    public EnemyUnitSO MonsterSO { get; private set; }
     // Start is called before the first frame update
-    public override StatBase    AttackStat { get; protected set; }
-    public override IDamageable Target     { get; protected set; }
+
+    private HPBarUI hpBar;
 
     protected override void Awake()
     {
         base.Awake();
+        Initialize();
     }
 
     protected override void Start()
     {
         base.Start();
+        hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
     }
 
     // Update is called once per frame
@@ -27,26 +32,59 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         base.Update();
     }
 
+    public override void Initialize()
+    {
+        MonsterSO = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id);
+        if (MonsterSO == null)
+            return;
+
+        StatManager.Initialize(MonsterSO);
+    }
+
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
     {
-        // return unitState switch
-        // {
-        //     EnemyUnitState.Idle   => new IdleState(),
-        //     EnemyUnitState.Move   => new MoveState(),
-        //     EnemyUnitState.Attack => new AttackState(weaponController.StatManager.GetValue(StatType.AttackSpd), weaponController.StatManager.GetValue(StatType.AttackRange)),
-        //     EnemyUnitState.Die    => new DieState(),
-        //     _                     => null
-        // };
+        return unitState switch
+        {
+            EnemyUnitState.Idle   => new IdleState(),
+            EnemyUnitState.Move   => new MoveState(),
+            EnemyUnitState.Attack => new AttackState(),
+            EnemyUnitState.Stun   => new StunState(),
+            EnemyUnitState.Die    => new DeadState(),
 
-        return null;
+            _ => null
+        };
     }
 
     public override void Attack()
     {
         if (Target == null || Target.IsDead)
-            return;
+        {
+            //Test
+            var enemies = BattleManager.Instance.GetEnemies(this);
+            Target = enemies[Random.Range(0, enemies.Count)];
+            // return;
+        }
 
-        AttackTypeSo.Attack();
+        //어택 타입에 따라서 공격 방식을 다르게 적용
+        IDamageable finalTarget = Target;
+
+
+        float hitRate = StatManager.GetValue(StatType.HitRate);
+        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
+
+        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
+
+        bool isHit = Random.value < hitRate;
+        if (!isHit)
+        {
+            Debug.Log("빗나갔지롱");
+            return;
+        }
+
+        //TODO: 크리티컬 구현
+        MonsterSO.AttackType.Attack(this);
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -62,6 +100,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         var curHp = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+        Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {
             Dead();
@@ -74,9 +113,13 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void StartTurn()
     {
+        if (IsDead || IsStunned)
+            return;
     }
 
     public override void EndTurn()
     {
+        if (!IsDead)
+            CurrentEmotion.AddStack(this);
     }
 }

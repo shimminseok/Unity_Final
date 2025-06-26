@@ -4,25 +4,35 @@ public abstract class BaseEmotion
 {
     public EmotionType EmotionType;
     public int Stack;
+    protected const int MaxStack = 10;
 
     public abstract void Enter(Unit unit);
     public abstract void Execute(Unit unit);
     public abstract void Exit(Unit unit);
 
-    public void AddStack(int amount = 1)
+    public void AddStack(Unit unit, int amount = 1)
     {
         Stack += amount;
+        Stack = Mathf.Clamp(Stack, 0, MaxStack);
+        OnStackChanged(unit);
+    }
+
+    public virtual void OnStackChanged(Unit unit)
+    {
     }
 }
 
 public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 {
-    private const float CritDamageUpMin = 0.1f;
     private const float CritDamageUpMax = 0.4f;
-    private const float MissChanceMax = 0.3f;
-    private const float missChanceAmount = 0.05f;
-    private const float critUpAmount = 0.1f;
+    private const float CritDamageUpPerStack = CritDamageUpMax / MaxStack;
 
+    private const float MissChanceMax = 0.3f;
+    private const float MissChanceAmount = 0.05f;
+
+
+    private float critDamUpAmount = 0f;
+    private float hitRateDownAmount = 0f;
 
     public JoyEmotion()
     {
@@ -42,24 +52,45 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
     public override void Exit(Unit unit)
     {
         Stack = 0;
+        unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -critDamUpAmount);
+        critDamUpAmount = 0;
         Debug.Log("기쁨 상태 종료!!");
     }
 
-    public void OnCalculateHitChance(ref float hitRate)
+    public void OnCalculateHitChance(Unit unit, ref float hitRate)
     {
-        float chance = Mathf.Min(Stack * missChanceAmount, MissChanceMax);
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is ComposurePassiveSo composurePassive)
+            {
+                hitRate = composurePassive.ComposureValue(hitRate);
+                return;
+            }
+        }
+
+        float chance = Mathf.Min(Stack * MissChanceAmount, MissChanceMax);
         hitRate = Mathf.Clamp01(hitRate - chance);
+    }
+
+    public override void OnStackChanged(Unit unit)
+    {
+        // 1. 기존 버프 제거
+        unit.StatManager.ApplyStatEffect(StatType.CriticalDam, StatModifierType.BuffPercent, -critDamUpAmount);
+        // 2. 새 버프 계산
+        critDamUpAmount = Mathf.Min(Stack * CritDamageUpPerStack, CritDamageUpMax);
+        // 3. 새 버프 적용
+        unit.StatManager.ApplyStatEffect(StatType.CriticalDam, StatModifierType.BuffPercent, critDamUpAmount);
     }
 }
 
 public class AngerEmotion : BaseEmotion, IEmotionOnAttack
 {
-    private const float AttackUpMin = 0.1f;
     private const float AttackUpMax = 0.3f;
-    private const float AllyHitChanceMax = 0.3f;
-    private const float attackUpAmount = 0.05f;
+    private const float AttackUpPerStack = AttackUpMax / MaxStack;
+    private const float AllyHitChanceMax = 0.15f;
+    private const float AllyAttackChancePerStack = 0.05f;
 
-    private float allyHitChance;
+    private float attackUpAmount;
 
     public AngerEmotion()
     {
@@ -79,19 +110,32 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
     public override void Exit(Unit unit)
     {
         Stack = 0;
+        unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -attackUpAmount);
+        attackUpAmount = 0;
         Debug.Log("분노 상태 종료!!");
     }
 
-    public void OnBeforeAttack(ref IDamageable target)
+    public void OnBeforeAttack(Unit attacker, ref IDamageable target)
     {
-        float chance = Mathf.Min(Stack * attackUpAmount, AllyHitChanceMax);
+        float chance = Mathf.Min(Stack * AllyAttackChancePerStack, AllyHitChanceMax);
 
         if (Random.value < chance)
         {
-            //target을 아군으로 바꿔줌
-            //BattleManager에 있는 아군 리스트를 가져와서 다시 target을 지정해줄꺼..
+            //타겟을 아군으로 바꿔줌
+            var allies = BattleManager.Instance.GetAllies(attacker);
+            target = allies[Random.Range(0, allies.Count)];
             Debug.Log("아군 공격함!");
         }
+    }
+
+    public override void OnStackChanged(Unit unit)
+    {
+        // 1. 기존 버프 제거
+        unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -attackUpAmount);
+        // 2. 새 버프 계산
+        attackUpAmount = Mathf.Min(Stack * AttackUpPerStack, AttackUpMax);
+        // 3. 새 버프 적용
+        unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, attackUpAmount);
     }
 }
 
@@ -110,7 +154,6 @@ public class NeutralEmotion : BaseEmotion
 
     public override void Execute(Unit unit)
     {
-        Stack++;
     }
 
     public override void Exit(Unit unit)
@@ -122,10 +165,10 @@ public class NeutralEmotion : BaseEmotion
 
 public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 {
-    private const float DefenseDownMin = 0.1f;
     private const float DefenseDownMax = 0.3f;
+    private const float DefenseDownPerStack = DefenseDownMax / MaxStack;
     private const float InvincibleChanceMax = 0.1f;
-    private const float invincibleChance = 0.02f;
+    private const float InvincibleChance = 0.02f;
 
     private float defenseDownAmount;
 
@@ -143,18 +186,19 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 
     public override void Execute(Unit unit)
     {
-        Stack++;
     }
 
     public override void Exit(Unit unit)
     {
         Stack = 0;
+        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
+        defenseDownAmount = 0;
         Debug.Log("우울 상태 종료!!");
     }
 
-    public void OnBeforeTakeDamage(Unit unit, ref float damage, out bool ignoreDamage)
+    public void OnBeforeTakeDamage(Unit unit, out bool ignoreDamage)
     {
-        float chance = Mathf.Min(Stack * invincibleChance, InvincibleChanceMax);
+        float chance = Mathf.Min(Stack * InvincibleChance, InvincibleChanceMax);
         if (Random.value < chance)
         {
             ignoreDamage = true;
@@ -164,5 +208,24 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
         {
             ignoreDamage = false;
         }
+    }
+
+    public override void OnStackChanged(Unit unit)
+    {
+        float perStack = DefenseDownPerStack;
+        if (unit is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.passiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            {
+                emotionDebuffReducer.OnDebuffReducer(ref perStack);
+            }
+        }
+
+        // 1. 기존 버프 제거
+        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, defenseDownAmount);
+        // 2. 새 버프 계산
+        defenseDownAmount = Mathf.Min(Stack * perStack, DefenseDownMax);
+        // 3. 새 버프 적용
+        unit.StatManager.ApplyStatEffect(StatType.Defense, StatModifierType.BuffPercent, -defenseDownAmount);
     }
 }

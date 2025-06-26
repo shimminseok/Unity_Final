@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "DoubleAttack", menuName = "ScriptableObject/PassiveSkill/DoubleAttack", order = 0)]
-public class DoublePassivesPassive : PassiveSO, IPassives
+[CreateAssetMenu(fileName = "DoubleAttack", menuName = "ScriptableObjects/PassiveSkill/DoubleAttack", order = 0)]
+public class Double : PassiveSO, IPassiveAttackTrigger
 {
     public int RequiredStack;
 
     public override bool CanTrigger(BaseEmotion currentEmotion)
     {
-        return currentEmotion.EmotionType == EmotionType.Anger && currentEmotion.Stack >= RequiredStack;
+        return currentEmotion.EmotionType == TriggerEmotion && currentEmotion.Stack >= RequiredStack;
     }
 
-    public void OnAttackRepeat()
+    public void OnAttack()
     {
         if (!CanTrigger(Owner.CurrentEmotion))
             return;

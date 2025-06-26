@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewEquipmentData", menuName = "ScriptableObject/Item/Equipment", order = 0)]
+[CreateAssetMenu(fileName = "NewEquipmentData", menuName = "ScriptableObjects/Item/Equipment", order = 0)]
 public class EquipmentItemSO : ItemSO
 {
     public JobType JobType;

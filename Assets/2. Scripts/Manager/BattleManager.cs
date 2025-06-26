@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class BattleManager : SceneOnlySingleton<BattleManager>
 {
+    //Test
+    public List<Unit> PartyUnits;
+    public List<Unit> EnumyUnits;
     public TurnHandler TurnHandler { get; private set; }
 
 
@@ -18,6 +21,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void Start()
     {
         TurnHandler = new TurnHandler();
+
+        allUnits = PartyUnits.Concat(EnumyUnits).ToList();
         //
     }
 
@@ -43,6 +48,22 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
+    }
+
+    public List<Unit> GetAllies(Unit unit)
+    {
+        if (PartyUnits.Contains(unit))
+            return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        else
+            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+    }
+
+    public List<Unit> GetEnemies(Unit unit)
+    {
+        if (PartyUnits.Contains(unit))
+            return EnumyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        else
+            return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
     }
 
     protected override void OnDestroy()

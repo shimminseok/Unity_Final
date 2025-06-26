@@ -2,21 +2,28 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
+using System.Linq;
+using UnityEngine.Serialization;
+
+
+public enum PlayerActionType
+{
+    None,
+    Attack,
+    SKill
+}
 
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    public PlayerUnitSO PlayerUnitSo;
-
-    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
-    public Animator Animator;
-    public PassiveSO PassiveSo;
+    [SerializeField] private int id;
+    public Animator animator;
+    public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
-
-    public override IDamageable Target     { get; protected set; }
-    public override StatBase    AttackStat { get; protected set; }
+    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.None;
 
     private HPBarUI hpBar;
-    public EmotionType CurrentEmotionType;
+    public PlayerUnitSO PlayerUnitSo { get; private set; }
+
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -35,22 +42,34 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        StatManager.Initialize(PlayerUnitSo);
-        PassiveSo.Initialize(this);
+        Initialize();
     }
 
     protected override void Start()
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+    }
 
-        CurrentEmotionType = CurrentEmotion.EmotionType;
+    public override void Initialize()
+    {
+        PlayerUnitSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
+        if (PlayerUnitSo == null)
+            return;
+
+        passiveSo.Initialize(this);
+        StatManager.Initialize(PlayerUnitSo);
     }
 
     public override void Attack()
     {
-        // if (Target == null || Target.IsDead)
-        //     return;
+        if (Target == null || Target.IsDead)
+        {
+            //Test
+            var enemies = BattleManager.Instance.GetEnemies(this);
+            Target = enemies[Random.Range(0, enemies.Count)];
+            // return;
+        }
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;
@@ -58,10 +77,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
-            emotionOnAttack.OnBeforeAttack(ref finalTarget);
+            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-            emotionOnHit.OnCalculateHitChance(ref hitRate);
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -70,7 +89,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        AttackTypeSo.Attack();
+        Target = finalTarget;
+        PlayerUnitSo.AttackType.Attack(this);
+    }
+
+    public void SetTarget(IDamageable target)
+    {
+        Target = target;
     }
 
     public void UseSkill()
@@ -97,6 +122,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (IsDead)
             return;
 
+        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
+        {
+            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
+            if (isIgnore)
+                return;
+        }
 
         float finalDam = amount;
 
@@ -104,7 +135,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
 
-        if (StatManager.GetValue(StatType.Counter) < Random.value) //반격 로직
+        if (StatManager.GetValue(StatType.Counter) >= Random.value) //반격 로직
         {
             //반격을 한다.
             return;
@@ -125,37 +156,60 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void Dead()
     {
+        if (IsDead)
+            return;
+
+        IsDead = true;
+
+
+        //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
+        var allyDeathPassives = BattleManager.Instance.GetAllies(this)
+            .Select(u => (u as PlayerUnitController)?.passiveSo)
+            .OfType<IPassiveAllyDeathTrigger>()
+            .ToList();
+
+        foreach (var unit in allyDeathPassives)
+        {
+            unit.OnAllyDead();
+        }
     }
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned)
+        if (IsDead || IsStunned || CurrentAction == PlayerActionType.None)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+            return;
         }
 
-        if (PassiveSo is ITurnStartTrigger turnStartTrigger)
+        if (passiveSo is IPassiveTurnStartTrigger turnStartTrigger)
         {
             turnStartTrigger.OnTurnStart(this);
         }
 
-        //선택한 행동에 따라서 실행되는 메서드를 구분
-        // 기본공격이면
-        Attack();
-        //스킬이면
-        // UseSkill();
+        if (CurrentAction == PlayerActionType.Attack)
+            Attack();
+        else if (CurrentAction == PlayerActionType.SKill)
+            UseSkill();
     }
 
 
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        if (PassiveSo is IEmotionStackApplier stackPassive)
+        if (passiveSo is IPassiveEmotionStackTrigger stackPassive)
         {
-            stackPassive.ApplyStack(CurrentEmotion);
+            stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
 
         if (!IsDead)
-            CurrentEmotion.AddStack();
+            CurrentEmotion.AddStack(this);
+
+        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+    }
+
+    public void ChangeAction(PlayerActionType action)
+    {
+        CurrentAction = action;
     }
 }

@@ -40,9 +40,10 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         target = owner;
         OnSpawnFromPool();
         statManager = target.Collider.GetComponent<StatManager>();
-        speedStat = statManager.GetStat<CalculatedStat>(StatType.Speed);
+        statManager.GetStat<ResourceStat>(StatType.CurHp).OnValueChanged += UpdateHealthBarWrapper;
+        //speedStat = statManager.GetStat<CalculatedStat>(StatType.Speed);
 
-        speedStat.OnValueChanged += UpdateSpeedText;
+        //speedStat.OnValueChanged += UpdateSpeedText;
     }
 
     public void UpdatePosion()
@@ -56,6 +57,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         UpdateFill(cur, statManager.GetValue(StatType.MaxHp));
     }
 
+    // 속도 스탯 받기
     private void UpdateSpeedText(float curSpeed)
     {
         speedText.text = $"{curSpeed:N0}";
@@ -74,13 +76,14 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     public void UnLink()
     {
         HealthBarManager.Instance.DespawnHealthBar(this);
-        speedStat.OnValueChanged -= UpdateSpeedText;
+        //speedStat.OnValueChanged -= UpdateSpeedText;
     }
 
     public void OnSpawnFromPool()
     {
         targetTransform = target.Collider.transform;
-        heightOffset = target.Collider.bounds.size.y;
+        heightOffset = target.Collider.bounds.size.y - 1.2f; // 위치 보정을 위해 임시로 -1.4f
+        offset.x += 0.1f;
         offset.y += heightOffset;
         transform.SetParent(HealthBarManager.Instance.hpBarCanvas.transform);
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +10,12 @@ public class EntryDeckData
     // 장비 등등 equipItem
     // 패시브SO
     public PlayerUnitSO characterSO;  
+
     public SkillData[] skillDatas = new SkillData[3];
-    public SkillData passiveSkill;      
+    public SkillData passiveSkill;
+
+    // 딕셔너리로 줘!!! 
+    public EquipmentItemSO weapon;
+    public EquipmentItemSO armor;
+    public EquipmentItemSO accessory;
 }

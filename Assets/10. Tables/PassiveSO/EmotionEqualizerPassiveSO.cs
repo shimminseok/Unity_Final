@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "EmotionEqualizerPassive", menuName = "ScriptableObject/PassiveSkill/EmotionEqualizerPassive", order = 0)]
-public class EmotionEqualizerPassiveSO : PassiveSO, IEmotionDamageModifier
+[CreateAssetMenu(fileName = "EmotionEqualizerPassive", menuName = "ScriptableObjects/PassiveSkill/EmotionEqualizerPassive", order = 0)]
+public class PassiveEmotionEqualizerPassiveSo : PassiveSO, IPassiveEmotionDamageModifier
 {
-    private const float fixedMutiplier = 1.3f;
+    private const float FixedMutiplier = 1.3f;
 
     public override bool CanTrigger(BaseEmotion currentEmotion)
     {
-        return (currentEmotion.EmotionType == EmotionType.None);
+        return currentEmotion.EmotionType == TriggerEmotion;
     }
 
     public float ModifyEmotionDamage(float baseDamage)
     {
-        return CanTrigger(Owner.CurrentEmotion) ? baseDamage * fixedMutiplier : 0.7f;
+        return CanTrigger(Owner.CurrentEmotion) ? baseDamage * FixedMutiplier : baseDamage * 0.7f;
     }
 }

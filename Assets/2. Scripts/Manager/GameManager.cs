@@ -26,6 +26,11 @@ public class GameManager : Singleton<GameManager>
             unit.EndTurn();
         }
 
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "StartTurn"))
+        {
+            unit.StartTurn();
+        }
+
         if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 0), buttonWidth, buttonHeight), "노말"))
         {
             unit.ChangeEmotion(EmotionType.None);
