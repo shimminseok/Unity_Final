@@ -12,7 +12,7 @@ public class EntryDeckData
     public PlayerUnitSO characterSO;  
 
     public SkillData[] skillDatas = new SkillData[3];
-    public SkillData passiveSkill;
+    public PassiveSO passiveSkill;
 
     // 딕셔너리로 줘!!! 
     public Dictionary<EquipmentType, EquipmentItemSO> equippedItems = new();

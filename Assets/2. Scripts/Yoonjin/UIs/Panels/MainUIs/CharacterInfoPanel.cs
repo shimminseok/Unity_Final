@@ -61,7 +61,8 @@ public class CharacterInfoPanel : MonoBehaviour
         // 패시브 스킬 표시
         if (data.passiveSkill != null)
         {
-            passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
+            // !!!현재 패시브 스킬 아이콘이 없음!!!
+            // passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
         }
 
         else

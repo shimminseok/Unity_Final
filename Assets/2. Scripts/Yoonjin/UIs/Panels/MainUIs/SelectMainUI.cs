@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainUI : UIBase
+public class SelectMainUI : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
