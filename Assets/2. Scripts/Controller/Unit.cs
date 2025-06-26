@@ -1,8 +1,10 @@
-﻿using System;
+using System;
+using System.Collections;
 using UnityEngine;
 
-public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable
 {
+    [SerializeField] private GameObject SelectionEffect; // 유닛 선택 시 표시해주는 이펙트
     public BaseEmotion         CurrentEmotion      { get; protected set; }
     public bool                IsStunned           { get; private set; }
     public StatManager         StatManager         { get; protected set; }
@@ -15,6 +17,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
     public          bool          IsDead        { get; protected set; }
     protected       BattleManager BattleManager => BattleManager.Instance;
     public          BaseEmotion[] Emotions      { get; private set; }
+
+    public Unit SelectedUnit => this;
+
     public abstract void          StartTurn();
 
     public abstract void EndTurn();
@@ -22,6 +27,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
+
+    private void Awake()
+    {
+        if (SelectionEffect != null)
+            SelectionEffect.SetActive(false);
+    }
 
     public void SetStunned(bool isStunned)
     {
@@ -36,7 +47,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
             Emotions[i] = EmotionFactory.CreateEmotion((EmotionType)i);
         }
 
-        CurrentEmotion = Emotions[(int)EmotionType.None];
+        CurrentEmotion = Emotions[(int)EmotionType.Neutral];
     }
 
     public void ChangeEmotion(EmotionType newType)
@@ -60,4 +71,25 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable
 
 
     public abstract void Attack();
+
+    // 유닛 선택 했을 때
+    public void OnSelect()
+    {
+        if (SelectionEffect == null)
+            Debug.LogError("SelectionEffect가 null입니다!");
+        SelectionEffect.SetActive(true);
+    }
+
+    // 유닛 선택 해제 했을 때
+    public void OnDeselect()
+    {
+        if (SelectionEffect == null)
+            Debug.LogError("SelectionEffect가 null입니다!");
+        SelectionEffect.SetActive(false);
+    }
+
+    public void ExecuteCoroutine(IEnumerator coroutine)
+    {
+        StartCoroutine(coroutine);
+    }
 }

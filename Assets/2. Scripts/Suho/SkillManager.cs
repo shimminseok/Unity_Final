@@ -6,7 +6,7 @@ public class SkillManager : MonoBehaviour
 {
    public List<SkillData> selectedSkill;
    public BaseSkillController skillController;
-   public Unit owner;
+   [HideInInspector]public Unit owner;
    private void Awake()
    {
       owner = GetComponent<Unit>();
@@ -33,6 +33,7 @@ public class SkillManager : MonoBehaviour
                skillData.skillAnimation
                );
          skill.mainEffect.owner = owner;
+         skill.mainEffect.InstantiateBuffEffects();
          skill.subEffect.owner = owner;
          skillController.skills.Add(skill);
       }

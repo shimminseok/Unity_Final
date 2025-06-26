@@ -4,7 +4,7 @@
     {
         return emotionType switch
         {
-            EmotionType.None       => new NeutralEmotion(),
+            EmotionType.Neutral    => new NeutralEmotion(),
             EmotionType.Anger      => new AngerEmotion(),
             EmotionType.Depression => new DepressionEmotion(),
             EmotionType.Joy        => new JoyEmotion(),
