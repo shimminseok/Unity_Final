@@ -5,7 +5,7 @@ public class GameManager : Singleton<GameManager>
 {
     //Test
     [SerializeField] private Unit unit;
-
+    [SerializeField] private PlayerSkillController skillController;
 
     public Unit CurrentUnit;
 
@@ -25,12 +25,30 @@ public class GameManager : Singleton<GameManager>
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 1), buttonWidth, buttonHeight), "EndTurn"))
         {
-            unit.EndTurn();
+            BattleManager.Instance.EndTurn();
         }
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "StartTurn"))
         {
             BattleManager.Instance.StartTurn();
+        }
+
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 3), buttonWidth, buttonHeight), "Skill_1"))
+        {
+            skillController.currentSkill = skillController.skills[0];
+            skillController.UseSkill();
+        }
+
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 4), buttonWidth, buttonHeight), "Skill_2"))
+        {
+            skillController.currentSkill = skillController.skills[1];
+            skillController.UseSkill();
+        }
+
+        if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 5), buttonWidth, buttonHeight), "Skill_3"))
+        {
+            skillController.currentSkill = skillController.skills[2];
+            skillController.UseSkill();
         }
 
         if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 0), buttonWidth, buttonHeight), "노말"))

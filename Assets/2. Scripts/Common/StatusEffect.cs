@@ -199,6 +199,11 @@ public class StunDebuff : TurnBasedBuff
         manager.Owner.SetStunned(true);
         yield return null;
     }
+
+    public override void OnEffectRemoved(StatusEffectManager manager)
+    {
+        manager.Owner.SetStunned(false);
+    }
 }
 
 public class TriggerBuff : TurnBasedBuff
@@ -226,30 +231,26 @@ public class TriggerBuff : TurnBasedBuff
     }
 }
 
-/// <summary>
-/// 즉시 데미지를 주는 디버프. 한 번의 데미지를 입히고 효과가 바로 제거됨
-/// </summary>
-public class DamageDebuff : StatusEffect
-{
-    public override IEnumerator Apply(StatusEffectManager manager)
-    {
-        manager.Owner.TakeDamage(Value, ModifierType);
-        yield return null;
-        manager.RemoveEffect(this);
-    }
-}
-
 public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
 {
+    //배틀 End때 아야하는 느낌
+    private StatusEffectManager manager;
+
     public override IEnumerator Apply(StatusEffectManager manager)
     {
-        while (0 < Duration)
-        {
-            manager.Owner.TakeDamage(Value, ModifierType);
-            yield return null;
-        }
-
-        manager.RemoveEffect(this);
+        this.manager = manager;
+        BattleManager.Instance.OnBattleEnd += TakeDamage;
+        yield return null;
     }
 
+    public override void OnEffectRemoved(StatusEffectManager effect)
+    {
+        BattleManager.Instance.OnBattleEnd -= TakeDamage;
+    }
+
+    private void TakeDamage()
+    {
+        manager.Owner.TakeDamage(Value, ModifierType);
+        //대미지를 처리해준다?
+    }
 }
