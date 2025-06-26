@@ -12,30 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: FireBall_Mage
   m_EditorClassIdentifier: 
+  ID: 101
   selectCamp: 1
   selectType: 0
   mainSkillEffect:
     owner: {fileID: 0}
-    effects:
-    - ID: 201010
-      ownerStatType: 4
-      weight: 4
-      opponentStatType: 1
-      effectType: 8
-      lastTurn: 1
-      isStackable: 0
-      emotionType: 0
+    damageEffects: []
+    buffEffects: []
   subSkillEffect:
     owner: {fileID: 0}
-    effects:
-    - ID: 211010
-      ownerStatType: 4
-      weight: 1
-      opponentStatType: 1
-      effectType: 9
-      lastTurn: 1
-      isStackable: 0
-      emotionType: 0
+    damageEffects: []
+    buffEffects: []
   jobType: 0
   reuseMaxNumber: 0
   maxCost: 0

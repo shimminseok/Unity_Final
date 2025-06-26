@@ -33,8 +33,9 @@ public class SkillManager : MonoBehaviour
                skillData.skillAnimation
                );
          skill.mainEffect.owner = owner;
-         skill.mainEffect.InstantiateBuffEffects();
          skill.subEffect.owner = owner;
+         skill.mainEffect.Init();
+         skill.subEffect.Init();
          skillController.skills.Add(skill);
       }
    }

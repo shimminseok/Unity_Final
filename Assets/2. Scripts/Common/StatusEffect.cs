@@ -238,6 +238,7 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
 
     public override IEnumerator Apply(StatusEffectManager manager)
     {
+        Debug.Log("Apply!!!");
         this.manager = manager;
         BattleManager.Instance.OnBattleEnd += TakeDamage;
         yield return null;
@@ -245,11 +246,13 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
 
     public override void OnEffectRemoved(StatusEffectManager effect)
     {
+        Debug.Log("효과종료");
         BattleManager.Instance.OnBattleEnd -= TakeDamage;
     }
 
     private void TakeDamage()
     {
+        Debug.Log($"Taking damage{manager.Owner} : {Value}");
         manager.Owner.TakeDamage(Value, ModifierType);
         //대미지를 처리해준다?
     }

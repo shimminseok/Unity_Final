@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.21162693, g: 0.7007531, b: 0.87662315, a: 1}
+  m_IndirectSpecularColor: {r: 0.21162483, g: 0.7007517, b: 0.87662613, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -36638,7 +36638,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 128
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1516603147}
+  m_TargetTexture: {fileID: 1228906615}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -36668,7 +36668,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
@@ -36707,7 +36707,7 @@ MonoBehaviour:
   camToDrawWith: {fileID: 792809290}
   layer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 1
   renderers: []
   terrains: []
   resolution: 512
@@ -47942,7 +47942,12 @@ MonoBehaviour:
   - {fileID: 1593904612}
   - {fileID: 2003366259}
   - {fileID: 1030863208}
-  EnemyUnits: []
+  EnemyUnits:
+  - {fileID: 1889334379}
+  - {fileID: 1509057604}
+  - {fileID: 410376845}
+  - {fileID: 1891727365}
+  - {fileID: 962725056}
   StartBattle: 0
 --- !u!4 &1039635241
 Transform:
@@ -53031,7 +53036,7 @@ GameObject:
   - component: {fileID: 1156965534}
   - component: {fileID: 1156965536}
   - component: {fileID: 1156965535}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BigTree_LOD0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55703,6 +55708,44 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1227577583}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1228906615
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 4
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &1229785142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66868,7 +66911,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -69644,44 +69687,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22d4c37aab9130944a76d41c6e7646b1, type: 3}
---- !u!84 &1516603147
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 4
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &1518553309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -86509,7 +86514,7 @@ GameObject:
   - component: {fileID: 1887319362}
   - component: {fileID: 1887319361}
   - component: {fileID: 1887319360}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: MainDemoTerrain (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89076,76 +89081,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1926523120}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1926750525
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1926750528}
-  - component: {fileID: 1926750527}
-  - component: {fileID: 1926750526}
-  m_Layer: 0
-  m_Name: PlayerSkill
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1926750526
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926750525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2c9cc013ecfb974e83ed90ad249292f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainTarget: {fileID: 1889334379}
-  subTargets:
-  - {fileID: 1509057604}
-  - {fileID: 410376845}
-  - {fileID: 1891727365}
-  - {fileID: 962725056}
-  generateCost: 1
---- !u!114 &1926750527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926750525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectedSkill:
-  - {fileID: 11400000, guid: 7d95054bda6229b448c25f00e7a7336d, type: 2}
-  - {fileID: 11400000, guid: 7d95054bda6229b448c25f00e7a7336d, type: 2}
-  - {fileID: 11400000, guid: 7d95054bda6229b448c25f00e7a7336d, type: 2}
-  skillController: {fileID: 1926750526}
-  owner: {fileID: 0}
---- !u!4 &1926750528
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926750525}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1926758313
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98618,7 +98553,7 @@ GameObject:
   - component: {fileID: 4272784293390347867}
   - component: {fileID: 2241943070139953103}
   - component: {fileID: 2508896718524438172}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: MainDemoTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102037,7 +101972,7 @@ GameObject:
   - component: {fileID: 1844961719688349829}
   - component: {fileID: 4453390555606845713}
   - component: {fileID: 231745063}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: MainDemoTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105399,7 +105334,7 @@ PrefabInstance:
     - target: {fileID: 4964353397659614430, guid: 6a698dfde7cc29b4da4d6415f64102a8,
         type: 3}
       propertyPath: m_Layer
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4964353397659614430, guid: 6a698dfde7cc29b4da4d6415f64102a8,
         type: 3}
@@ -110287,4 +110222,3 @@ SceneRoots:
   - {fileID: 527516699}
   - {fileID: 1512682996}
   - {fileID: 1127858627}
-  - {fileID: 1926750528}

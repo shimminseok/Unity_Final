@@ -12,33 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: Power_Smash
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 10
   selectCamp: 1
-  selectType: 0
+  selectType: 2
   mainSkillEffect:
     owner: {fileID: 0}
-    effects:
-    - ID: 1010101
+    damageEffects:
+    - attackCount: 3
       ownerStatType: 4
-      weight: 5
-      opponentStatType: 7
-      effectType: 9
-      lastTurn: 1
-      isStackable: 1
-      emotionType: 0
-      StatusEffect:
-        ID: 0
-        EffectType: 0
-        Stat:
-          StatType: 0
-          ModifierType: 0
-          Value: 0
-        Duration: 0
-        TickInterval: 0
-        IsStackable: 0
+      weight: 2
+      value: 50
+    buffEffects: []
   subSkillEffect:
     owner: {fileID: 0}
-    effects: []
+    damageEffects:
+    - attackCount: 1
+      ownerStatType: 1
+      weight: 0
+      value: 500
+    buffEffects:
+    - ID: 10001
+      ownerStatType: 4
+      weight: 0
+      value: 10
+      opponentStatType: 1
+      lastTurn: 3
+      statusEffectType: 11
+      emotionType: 2
+      StatusEffect:
+        ID: 10001
+        EffectType: 11
+        Stat:
+          StatType: 1
+          ModifierType: 0
+          Value: 10
+        Duration: 3
+        TickInterval: 0
+        IsStackable: 0
   jobType: 1
   reuseMaxNumber: 5
   maxCost: 2

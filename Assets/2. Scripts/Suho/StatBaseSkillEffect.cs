@@ -16,7 +16,7 @@ public class StatBaseSkillEffect
         foreach (var result in buffEffects)
         {
             var statusEffect = result.StatusEffect;
-            statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight;
+            statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
             target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
             target.ChangeEmotion(result.emotionType);
         }
@@ -29,25 +29,6 @@ public class StatBaseSkillEffect
         
     }
 
-
-    public List<StatusEffectData> InstantiateBuffEffects()
-    {
-        List<StatusEffectData> resultEffect = new List<StatusEffectData>();
-        foreach (StatBaseBuffSkillEffect skillData in this.buffEffects)
-        {
-            StatusEffectData sed = new StatusEffectData();
-            sed.ID = skillData.ID;
-            sed.Duration = skillData.lastTurn;
-            sed.Stat = new StatData();
-            sed.Stat.StatType = skillData.opponentStatType;
-            /* 임시처리 */
-            sed.Stat.Value = owner.StatManager.GetValue(skillData.ownerStatType) * skillData.weight;
-            sed.TickInterval = 0;
-            resultEffect.Add(sed);
-        }
-
-        return resultEffect;
-    }
 
     public void Init()
     {
