@@ -13,14 +13,15 @@ public enum PlayerActionType
     SKill
 }
 
+[RequireComponent(typeof(PlayerSkillController))]
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
     public Animator animator;
     public PassiveSO passiveSo;
-    public EquipmentManager EquipmentManager { get; private set; }
-    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.Attack;
-
+    public EquipmentManager      EquipmentManager      { get; private set; }
+    public PlayerActionType      CurrentAction         { get; private set; } = PlayerActionType.Attack;
+    public PlayerSkillController PlayerSkillController { get; private set; }
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
@@ -105,6 +106,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         //이펙트 생성
         //
+        PlayerSkillController.UseSkill();
     }
 
     private AnimatorOverrideController ChangeClip()
