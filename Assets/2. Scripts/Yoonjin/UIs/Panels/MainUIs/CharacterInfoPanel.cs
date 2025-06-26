@@ -91,7 +91,7 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if(entry != null)
         {
-            UIManager.Instance.Open<EquipUI>();
+            UIManager.Instance.Open<SelectEquipUI>();
         }
     }
 
@@ -102,7 +102,7 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<EquipUI>();
+            UIManager.Instance.Open<SelectEquipUI>();
         }
 
     }
