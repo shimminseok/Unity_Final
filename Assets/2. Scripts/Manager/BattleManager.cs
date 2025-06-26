@@ -22,7 +22,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         TurnHandler = new TurnHandler();
 
-        allUnits = PartyUnits.Concat(EnumyUnits).ToList();
+        SetAllUnits(PartyUnits.Concat(EnumyUnits).ToList());
         //
     }
 
@@ -41,13 +41,24 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         foreach (Unit unit in allUnits)
         {
-            if (unit.IsDead)
-                continue;
-            unit.StatusEffectManager?.OnTurnPassed();
+            if (!unit.IsDead)
+            {
+                unit.StatusEffectManager?.OnTurnPassed();
+            }
         }
 
-        allUnits.RemoveAll(u => u.IsDead);
+
+        if (EnumyUnits.TrueForAll(x => x.IsDead))
+        {
+            Debug.Log("게임 승리");
+        }
+        else if (PartyUnits.TrueForAll(x => x.IsDead))
+        {
+            Debug.Log("게임 패배");
+        }
+
         TurnHandler.RefillTurnQueue();
+        Debug.Log("라운드 종료");
     }
 
     public List<Unit> GetAllies(Unit unit)

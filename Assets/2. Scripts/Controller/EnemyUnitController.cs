@@ -57,13 +57,14 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Attack()
     {
-        if (Target == null || Target.IsDead)
-        {
-            //Test
-            var enemies = BattleManager.Instance.GetEnemies(this);
-            Target = enemies[Random.Range(0, enemies.Count)];
-            // return;
-        }
+        // if (Target == null || Target.IsDead)
+        // {
+        //     //Test
+        var enemies = BattleManager.Instance.GetEnemies(this);
+        Target = enemies[Random.Range(0, enemies.Count)];
+        //     // return;
+        // }
+        // Target = 
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;
@@ -85,6 +86,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         //TODO: 크리티컬 구현
         MonsterSO.AttackType.Attack(this);
+
+        //Test
+        EndTurn();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -119,17 +123,27 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Dead()
     {
+        IsDead = true;
     }
 
     public override void StartTurn()
     {
         if (IsDead || IsStunned)
+        {
+            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
+        }
+
+        Attack();
     }
 
     public override void EndTurn()
     {
         if (!IsDead)
             CurrentEmotion.AddStack(this);
+
+        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+        Debug.Log("EndTurn");
     }
 }

@@ -6,6 +6,9 @@ public class GameManager : Singleton<GameManager>
     //Test
     [SerializeField] private Unit unit;
 
+
+    public Unit CurrentUnit;
+
     private void OnGUI()
     {
         float buttonWidth  = 150f;
@@ -27,7 +30,7 @@ public class GameManager : Singleton<GameManager>
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 2), buttonWidth, buttonHeight), "StartTurn"))
         {
-            unit.StartTurn();
+            BattleManager.Instance.StartTurn();
         }
 
         if (GUI.Button(new Rect(10, y - ((buttonHeight + spacing) * 0), buttonWidth, buttonHeight), "노말"))

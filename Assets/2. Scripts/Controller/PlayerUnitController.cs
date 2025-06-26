@@ -19,7 +19,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public Animator animator;
     public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
-    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.None;
+    public PlayerActionType CurrentAction    { get; private set; } = PlayerActionType.Attack;
 
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
@@ -63,7 +63,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void Attack()
     {
-        if (Target == null || Target.IsDead)
+        // if (Target == null || Target.IsDead)
         {
             //Test
             var enemies = BattleManager.Instance.GetEnemies(this);
@@ -91,6 +91,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         Target = finalTarget;
         PlayerUnitSo.AttackType.Attack(this);
+
+        //Test
+        EndTurn();
     }
 
     public void SetTarget(IDamageable target)
@@ -158,6 +161,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (finalDam > 0)
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+
+        Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {
             Dead();
@@ -215,7 +220,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
-        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 
     public void ChangeAction(PlayerActionType action)
