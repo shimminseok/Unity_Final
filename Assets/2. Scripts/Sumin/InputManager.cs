@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // 1. 플레이어 유닛 선택 (아군만)
@@ -10,22 +8,23 @@ using UnityEngine;
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
-    SelectUnit,     // 플레이어 유닛 선택 상태
-    SelectSkill,    // 유닛이 사용할 스킬 선택 상태
+    SelectExecuter,     // 커맨드를 수행할 플레이어 유닛 선택 상태
+    SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
 }
 
 // 전투 씬에서 플레이어 선택 Input 관리
-public class InputManager : MonoBehaviour
+public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
     [SerializeField] private LayerMask unitLayer;
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
-    private ISelectable selectedUnit;
-    private InputPhase currentPhase = InputPhase.SelectUnit;
-    public InputPhase CurrentPhase => currentPhase;
-    private SkillData selectedSkill;
+
+    [SerializeField] private SkillUI skillUI;
+
+    private ISelectable selectedPlayerUnit;
+    private InputPhase currentPhase = InputPhase.SelectExecuter;
 
     void Start()
     {
@@ -40,11 +39,11 @@ public class InputManager : MonoBehaviour
         // 각 Phase별 초기화 또는 상태 진입 처리
         switch (currentPhase)
         {
-            case InputPhase.SelectUnit:
+            case InputPhase.SelectExecuter:
                 OnClickPlayerUnit();
                 break;
             case InputPhase.SelectSkill:
-                // 스킬 UI 선택
+                // 버튼 동작시까지 대기
                 break;
             case InputPhase.SelectTarget:
                 OnClickTargetUnit();
@@ -64,28 +63,66 @@ public class InputManager : MonoBehaviour
             {
                 ISelectable selectable = hit.transform.GetComponent<ISelectable>();
                 SelectUnit(selectable);
+                
+                // 유닛 선택하면 스킬 선택 페이즈로 전환
                 currentPhase = InputPhase.SelectSkill;
+                Debug.Log("플레이어 유닛 선택 완료");
+
+                // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
+                skillUI.UpdateSkillList(selectable.SelectedUnit);
+            }
+            else
+            {
+                return;
             }
         }
     }
 
-    // 스킬을 사용할 타겟 유닛 선택
+    // 유닛이 사용할 스킬 선택
+    private void OnSkillSelect()
+    {
+        
+    }
+
+    // 플레이어 유닛이 기본공격 수행
+    public void SelectBasicAttack()
+    {
+        currentPhase = InputPhase.SelectTarget;
+        Debug.Log("기본 공격 선택");
+    }
+
+    // 공격할 타겟 유닛 선택
     private void OnClickTargetUnit()
     {
-        LayerMask targetLayer = GetTargetLayerMask(selectedSkill.selectCamp);
+        // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
+        //LayerMask targetLayer = GetTargetLayerMask(selectedSkill.selectCamp);
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, enemyUnitLayer))
             {
-                ISelectable selectable = hit.transform.GetComponent<ISelectable>();
-                SelectUnit(selectedUnit);
+                ISelectable targetSelectable = hit.transform.GetComponent<ISelectable>();
+
+                Unit targetUnit = targetSelectable.SelectedUnit;
+                Unit executer = selectedPlayerUnit.SelectedUnit;
+                Debug.Log("타겟 유닛 선택 완료");
+
+                // 커맨드 생성
+                IActionCommand command = new AttackCommand(executer, targetUnit);
+                CommandPlanner.Instance.PlanAction(executer, command);
+                Debug.Log($"수행 : {executer} | 타겟 : {targetUnit}");
+
+                // 다음 선택
+                DeselectUnit();
+                currentPhase = InputPhase.SelectExecuter;
+
             }
             else
             {
-                DeselectUnit();
+                return;
             }
         }
     }
@@ -108,15 +145,14 @@ public class InputManager : MonoBehaviour
 
     private void DeselectUnit()
     {
-        if (selectedUnit != null)
-            selectedUnit.OnDeselect();
+        if (selectedPlayerUnit != null)
+            selectedPlayerUnit.OnDeselect();
 
-        selectedUnit = null;
+        selectedPlayerUnit = null;
     }
     void SelectUnit(ISelectable unit)
     {
-        DeselectUnit();
-        selectedUnit = unit;
+        selectedPlayerUnit = unit;
         unit.OnSelect();
     }
 }
