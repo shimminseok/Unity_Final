@@ -6,8 +6,9 @@ using UnityEngine;
 public class EquipmentItemSO : ItemSO
 {
     public bool IsEquipableByAllJobs;
-
+#if UNITY_EDITOR
     [ShowIfFalse("IsEquipableByAllJobs")]
+#endif
     public JobType JobType;
 
     public EquipmentType EquipmentType;

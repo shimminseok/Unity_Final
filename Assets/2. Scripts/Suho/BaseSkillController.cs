@@ -7,8 +7,8 @@ using UnityEngine;
  */
 public abstract class BaseSkillController : MonoBehaviour
 {
-   public List<Skill> skills = new List<Skill>();
-   public Skill currentSkill;
+   public List<SkillData> skills = new List<SkillData>();
+   public SkillData CurrentSkillData;
    public Unit mainTarget;
    public List<Unit> subTargets = new List<Unit>();
 
