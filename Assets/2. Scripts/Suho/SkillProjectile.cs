@@ -31,7 +31,13 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public bool isShooting = false;
     public ProjectileInterpolationMode mode;
 
+    public ProjectileTrigger trigger;
 
+    private void Awake()
+    {
+        trigger = GetComponentInChildren<ProjectileTrigger>();
+
+    }
     private void Update()
     {
         if (isShooting)
@@ -75,9 +81,15 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     {
         effectData = effect;
         startPosition = startPos;
+        Vector3 AdjustedYVector = Vector3.up * 1.5f;
+        startPosition += AdjustedYVector;
         direction = dir;
-        this.gameObject.transform.position = startPos;
+        direction += AdjustedYVector;
+        this.gameObject.transform.position = startPosition;
+        this.gameObject.transform.LookAt(target.transform);
         Target = target;
+        trigger.target = Target;
+        trigger.OnTriggerTarget += HandleTrigger;
         OnSpawnFromPool();
     }
 
@@ -92,13 +104,9 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         isShooting = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void HandleTrigger()
     {
-        if (other.GetComponent<Unit>() == Target)
-        {
-            effectData.AffectTargetWithSkill(Target);
-            ObjectPoolManager.Instance.ReturnObject(gameObject);
-
-        }
+        effectData.AffectTargetWithSkill(Target);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }
