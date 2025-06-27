@@ -131,16 +131,15 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
         {
-            ISelectable targetSelectable = hit.transform.GetComponent<ISelectable>();
-            targetSelectable.OnSelect();
+            selectedTargetUnit = hit.transform.GetComponent<ISelectable>();
+            selectedTargetUnit.OnSelect();
 
             if (Input.GetMouseButtonDown(0))
             {
-                Unit targetUnit = targetSelectable.SelectedUnit;
-                Unit executer   = selectedExecuterUnit.SelectedUnit;
+                Unit targetUnit = selectedTargetUnit.SelectedUnit;
+                Unit executer = selectedExecuterUnit.SelectedUnit;
 
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
@@ -154,16 +153,21 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 커맨드 생성
                 IActionCommand command = new AttackCommand(executer, targetUnit);
                 CommandPlanner.Instance.PlanAction(executer, command);
-                Debug.Log($"수행 : {executer} | 타겟 : {targetUnit}");
+                Debug.Log($"실행 : {executer} | 타겟 : {targetUnit}");
 
 
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
+                selectedTargetUnit.OnDeselect();
             }
         }
         else
         {
+            if (selectedTargetUnit != null)
+            {
+                selectedTargetUnit.OnDeselect();
+            }
             return;
         }
     }
@@ -196,5 +200,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         selectedExecuterUnit = unit;
         unit.OnSelect();
+    }
+
+    private void ShowSelectableUnit()
+    {
+
     }
 }
