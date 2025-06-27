@@ -11,20 +11,24 @@ public abstract class BaseController<TController, TState> : Unit where TControll
     where TState : Enum
 
 {
-    private StateMachine<TController, TState> stateMachine;
-
-    private IState<TController, TState>[] states;
-
-    public TState CurrentState { get; protected set; }
+    protected StateMachine<TController, TState> stateMachine;
+    protected IState<TController, TState>[] states;
+    public Animator Animator     { get; protected set; }
+    public TState   CurrentState { get; protected set; }
 
     protected virtual void Awake()
     {
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
-        stateMachine = new StateMachine<TController, TState>();
         Collider = GetComponent<CapsuleCollider>();
+        Animator = GetComponent<Animator>();
+        stateMachine = new StateMachine<TController, TState>();
+
         CreateEmotion();
         SetupState();
+
+        TurnStateMachine = new TurnStateMachine();
+        TurnStateMachine.Initialize(this);
     }
 
     protected virtual void Start()
@@ -33,7 +37,8 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 
     protected virtual void Update()
     {
-        TryStateTransition();
+        // TryStateTransition();
+        TurnStateMachine?.Update();
         stateMachine?.Update();
     }
 
@@ -57,23 +62,16 @@ public abstract class BaseController<TController, TState> : Unit where TControll
     }
 
 
-    protected void ChangeState(TState newState)
-    {
-        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
-        CurrentState = newState;
-    }
-
     private void TryStateTransition()
     {
-        int currentIndex = Convert.ToInt32(CurrentState);
-        var next         = states[currentIndex].CheckTransition((TController)this);
-        if (!next.Equals(CurrentState))
-        {
-            ChangeState(next);
-        }
+        // int currentIndex = Convert.ToInt32(CurrentState);
+        // var next         = states[currentIndex].CheckTransition((TController)this);
+        // if (!next.Equals(CurrentState))
+        // {
+        //     ChangeState(next);
+        // }
     }
 
-    public abstract void Initialize();
 
     protected abstract IState<TController, TState> GetState(TState state);
 }

@@ -1,12 +1,11 @@
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using PlayerState;
+using System;
 using System.Linq;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
+using PlayerState;
 
-
-public enum PlayerActionType
+public enum ActionType
 {
     None,
     Attack,
@@ -17,25 +16,39 @@ public enum PlayerActionType
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
-    public Animator animator;
     public PassiveSO passiveSo;
     public EquipmentManager      EquipmentManager      { get; private set; }
-    public PlayerActionType      CurrentAction         { get; private set; } = PlayerActionType.None;
     public PlayerSkillController PlayerSkillController { get; private set; }
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
+    public override bool IsAtTargetPosition => remainDistance < 2f;
+
+
+    public override bool IsAnimationDone
+    {
+        get
+        {
+            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+        }
+    }
+
+
+    private float remainDistance;
+    public Vector3 StartPostion { get; private set; }
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
         return state switch
         {
-            PlayerUnitState.Idle    => new IdleState(),
-            PlayerUnitState.Attack  => new AttackState(),
-            PlayerUnitState.Die     => new DeadState(),
-            PlayerUnitState.EndTurn => new EndTurnState(),
-            PlayerUnitState.Skill   => new SkillState(),
-            _                       => null
+            PlayerUnitState.Idle   => new IdleState(),
+            PlayerUnitState.Move   => new MoveState(),
+            PlayerUnitState.Return => new PlayerState.ReturnState(),
+            PlayerUnitState.Attack => new AttackState(),
+            PlayerUnitState.Die    => new DeadState(),
+            PlayerUnitState.Skill  => new SkillState(),
+            _                      => null
         };
     }
 
@@ -43,18 +56,32 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        Initialize();
+        Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
     }
 
     protected override void Start()
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+
+        StartPostion = transform.position;
     }
 
-    public override void Initialize()
+    public override void ChangeUnitState(Enum newState)
     {
-        PlayerUnitSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
+        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
+        CurrentState = (PlayerUnitState)newState;
+    }
+
+    public override void Initialize(UnitSO unitSo)
+    {
+        UnitSo = unitSo;
+
+        if (UnitSo is PlayerUnitSO playerUnitSo)
+        {
+            PlayerUnitSo = playerUnitSo;
+        }
+
         if (PlayerUnitSo == null)
             return;
 
@@ -92,12 +119,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         PlayerUnitSo.AttackType.Attack(this);
 
         //Test
-        EndTurn();
+        // EndTurn();
     }
 
-    public void SetTarget(IDamageable target)
+    public override void MoveTo(Vector3 destination)
     {
-        Target = target;
+        remainDistance = Vector3.Distance(transform.position, destination);
+
+        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 5f);
     }
 
     public void UseSkill()
@@ -105,8 +134,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         //이펙트 생성
         //
         PlayerSkillController.UseSkill();
-
-        EndTurn();
     }
 
     private AnimatorOverrideController ChangeClip()
@@ -193,7 +220,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || CurrentAction == PlayerActionType.None)
+        if (IsDead || IsStunned || CurrentAction == ActionType.None)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
@@ -204,10 +231,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
-        if (CurrentAction == PlayerActionType.Attack)
-            Attack();
-        else if (CurrentAction == PlayerActionType.SKill)
-            UseSkill();
+        TurnStateMachine.ChangeState(new StartTurnState());
+
+        // if (CurrentAction == ActionType.Attack)
+        //     Attack();
+        // else if (CurrentAction == ActionType.SKill)
+        //     UseSkill();
     }
 
 
@@ -222,12 +251,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
-        ChangeAction(PlayerActionType.None);
+        ChangeAction(ActionType.None);
+        ChangeUnitState(PlayerUnitState.Idle);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-    }
-
-    public void ChangeAction(PlayerActionType action)
-    {
-        CurrentAction = action;
     }
 }

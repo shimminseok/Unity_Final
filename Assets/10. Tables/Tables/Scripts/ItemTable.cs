@@ -15,6 +15,11 @@ public class ItemTable : BaseTable<int, ItemSO>
         Type = GetType();
         foreach (ItemSO item in dataList)
         {
+            if (!DataDic.TryAdd(item.ID, item))
+            {
+                Debug.LogWarning($"중복된 아이템 ID 감지: {item.ID} - {item.name}");
+            }
+
             DataDic[item.ID] = item;
         }
 
@@ -23,10 +28,6 @@ public class ItemTable : BaseTable<int, ItemSO>
             if (item is not EquipmentItemSO equipmentItem)
                 continue;
 
-            if (!DataDic.TryAdd(item.ID, item))
-            {
-                Debug.LogWarning($"중복된 아이템 ID 감지: {item.ID} - {item.name}");
-            }
 
             if (equipmentItem.IsEquipableByAllJobs)
             {
