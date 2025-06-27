@@ -58,16 +58,13 @@ public class StartTurnState : ITurnState
 
                 break;
             case ActionType.SKill:
-                if (unit is PlayerUnitController player)
+                if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
                 {
-                    if (player.PlayerSkillController.CurrentSkillData.skillType is MeleeSkillSO)
-                    {
-                        unit.TurnStateMachine.ChangeState(new MoveToTargetState());
-                    }
-                    else if (player.PlayerSkillController.CurrentSkillData.skillType is RangeSkillSO)
-                    {
-                        unit.TurnStateMachine.ChangeState(new ActState());
-                    }
+                    unit.TurnStateMachine.ChangeState(new MoveToTargetState());
+                }
+                else
+                {
+                    unit.TurnStateMachine.ChangeState(new ActState());
                 }
 
                 break;

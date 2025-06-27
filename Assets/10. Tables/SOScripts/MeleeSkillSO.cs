@@ -1,10 +1,8 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
-
 public class MeleeSkillSO : SkillTypeSO
 {
-    
     public override void UseSkill(BaseSkillController controller)
     {
         this.skillController = controller;
@@ -21,6 +19,7 @@ public class MeleeSkillSO : SkillTypeSO
                 controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
-        
     }
+
+    public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
 }
