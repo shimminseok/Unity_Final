@@ -2,25 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EnemyState;
+using System;
+using Random = UnityEngine.Random;
 
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
     [SerializeField] private int id;
-    public EnemyUnitSO MonsterSO { get; private set; }
+    public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
     private HPBarUI hpBar;
+    public override bool IsAtTargetPosition => remainDistance < 2f;
+
+    public override bool IsAnimationDone
+    {
+        get
+        {
+            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+        }
+    }
+
+    private float remainDistance;
+    public Vector3 StartPostion { get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-        Initialize();
+        Initialize(TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id));
     }
 
     protected override void Start()
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+        StartPostion = transform.position;
     }
 
     // Update is called once per frame
@@ -32,13 +48,25 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         base.Update();
     }
 
-    public override void Initialize()
+    public override void ChangeUnitState(Enum newState)
     {
-        MonsterSO = TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id);
-        if (MonsterSO == null)
+        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
+        CurrentState = (EnemyUnitState)newState;
+    }
+
+    public override void Initialize(UnitSO unitSO)
+    {
+        //TODO : 스폰 하는곳에서 So 생성해서 보내주기
+        UnitSo = unitSO;
+        if (UnitSo is EnemyUnitSO enemyUnitSo)
+        {
+            MonsterSo = enemyUnitSo;
+        }
+
+        if (MonsterSo == null)
             return;
 
-        StatManager.Initialize(MonsterSO);
+        StatManager.Initialize(MonsterSo);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -47,6 +75,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         {
             EnemyUnitState.Idle   => new IdleState(),
             EnemyUnitState.Move   => new MoveState(),
+            EnemyUnitState.Return => new EnemyState.ReturnState(),
             EnemyUnitState.Attack => new AttackState(),
             EnemyUnitState.Stun   => new StunState(),
             EnemyUnitState.Die    => new DeadState(),
@@ -85,10 +114,14 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         //TODO: 크리티컬 구현
-        MonsterSO.AttackType.Attack(this);
+        MonsterSo.AttackType.Attack(this);
+    }
 
-        //Test
-        EndTurn();
+    public override void MoveTo(Vector3 destination)
+    {
+        remainDistance = Vector3.Distance(transform.position, destination);
+
+        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 5f);
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -134,7 +167,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        Attack();
+        ChangeAction(ActionType.Attack);
+        var enemies = BattleManager.Instance.GetEnemies(this);
+        SetTarget(enemies[Random.Range(0, enemies.Count)]);
+        TurnStateMachine.ChangeState(new StartTurnState());
     }
 
     public override void EndTurn()
@@ -142,8 +178,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
-        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+        ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        Debug.Log("EndTurn");
+        ChangeUnitState(PlayerUnitState.Idle);
     }
 }

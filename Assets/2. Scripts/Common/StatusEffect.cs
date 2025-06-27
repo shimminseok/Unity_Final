@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -181,14 +179,18 @@ public class TurnBasedModifierBuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         //효과 적용
+        Debug.Log($"Before AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         manager.ModifyBuffStat(StatType, ModifierType, Value);
+        Debug.Log($"After AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager manager)
     {
+        Debug.Log($"Before Remove AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         manager.ModifyBuffStat(StatType, ModifierType, -Value);
+        Debug.Log($"After Remove AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
     }
 }
 

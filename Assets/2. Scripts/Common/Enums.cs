@@ -38,6 +38,7 @@ public enum PlayerUnitState
     Idle,
     Move,
     Attack,
+    Return,
     Hit,
     Skill,
     Die,
@@ -51,6 +52,8 @@ public enum EnemyUnitState
     Idle,
     Move,
     Attack,
+    Return,
+    Skill,
     Hit,
     Stun,
     Die
@@ -144,10 +147,10 @@ public enum JobType
     Mage
 }
 
-public enum EquipJobRestrictionType
+public enum AttackDistanceType
 {
-    All,
-    Specific
+    Melee,
+    Range
 }
 
 public enum ProjectileInterpolationMode
@@ -157,5 +160,4 @@ public enum ProjectileInterpolationMode
     MoveTowards,
     SmoothDamp,
     Slerp
-    
 }

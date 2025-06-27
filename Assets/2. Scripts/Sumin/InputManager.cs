@@ -20,6 +20,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
+
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
 
@@ -93,19 +94,20 @@ public class InputManager : SceneOnlySingleton<InputManager>
         {
             playerUnit.PlayerSkillController.ChangeSkill(index);
         }
-        ChangeSelectedUnitAction(PlayerActionType.SKill);
+
+        ChangeSelectedUnitAction(ActionType.SKill);
         Debug.Log($"스킬 {index}번 선택");
     }
 
     // 플레이어 유닛이 기본공격 수행
     public void SelectBasicAttack()
     {
-        ChangeSelectedUnitAction(PlayerActionType.Attack);
+        ChangeSelectedUnitAction(ActionType.Attack);
         Debug.Log("기본 공격 선택");
     }
 
     // 선택한 액션 타입(기본공격/스킬)에 따라 ChangeAction하는 함수
-    private void ChangeSelectedUnitAction(PlayerActionType actionType)
+    private void ChangeSelectedUnitAction(ActionType actionType)
     {
         currentPhase = InputPhase.SelectTarget;
         if (selectedExecuterUnit is PlayerUnitController playerUnit)
@@ -127,7 +129,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
             targetLayer = enemyUnitLayer;
         }
 
-        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
         {

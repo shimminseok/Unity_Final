@@ -1,4 +1,6 @@
-﻿namespace EnemyState
+﻿using UnityEngine;
+
+namespace EnemyState
 {
     public class IdleState : IState<EnemyUnitController, EnemyUnitState>
     {
@@ -17,21 +19,19 @@
         public void OnExit(EnemyUnitController entity)
         {
         }
-
-        public EnemyUnitState CheckTransition(EnemyUnitController owner)
-        {
-            return EnemyUnitState.Idle;
-        }
     }
 
     public class MoveState : IState<EnemyUnitController, EnemyUnitState>
     {
         public void OnEnter(EnemyUnitController owner)
         {
+            Debug.Log("Enter Move State");
+            owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnUpdate(EnemyUnitController owner)
         {
+            owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)
@@ -40,18 +40,17 @@
 
         public void OnExit(EnemyUnitController entity)
         {
-        }
-
-        public EnemyUnitState CheckTransition(EnemyUnitController owner)
-        {
-            return EnemyUnitState.Idle;
         }
     }
 
     public class AttackState : IState<EnemyUnitController, EnemyUnitState>
     {
+        private static readonly int Attack = Animator.StringToHash("Attack");
+
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.Animator.SetTrigger(Attack);
+            owner.Attack();
         }
 
         public void OnUpdate(EnemyUnitController owner)
@@ -64,11 +63,6 @@
 
         public void OnExit(EnemyUnitController entity)
         {
-        }
-
-        public EnemyUnitState CheckTransition(EnemyUnitController owner)
-        {
-            return EnemyUnitState.Idle;
         }
     }
 
@@ -89,10 +83,25 @@
         public void OnExit(EnemyUnitController entity)
         {
         }
+    }
 
-        public EnemyUnitState CheckTransition(EnemyUnitController owner)
+    public class ReturnState : IState<EnemyUnitController, EnemyUnitState>
+    {
+        public void OnEnter(EnemyUnitController owner)
         {
-            return EnemyUnitState.Idle;
+        }
+
+        public void OnUpdate(EnemyUnitController owner)
+        {
+            owner.MoveTo(owner.StartPostion);
+        }
+
+        public void OnFixedUpdate(EnemyUnitController owner)
+        {
+        }
+
+        public void OnExit(EnemyUnitController entity)
+        {
         }
     }
 
