@@ -53,6 +53,7 @@ public enum EnemyUnitState
     Move,
     Attack,
     Return,
+    Skill,
     Hit,
     Stun,
     Die
@@ -159,5 +160,4 @@ public enum ProjectileInterpolationMode
     MoveTowards,
     SmoothDamp,
     Slerp
-    
 }

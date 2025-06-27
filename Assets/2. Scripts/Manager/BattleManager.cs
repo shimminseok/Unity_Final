@@ -47,6 +47,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             unit.StatusEffectManager?.OnTurnPassed();
         }
 
+
+        Debug.Log("배틀 턴이 종료 되었습니다.");
         allUnits.RemoveAll(u => u.IsDead);
         TurnHandler.RefillTurnQueue();
         CommandPlanner?.Clear(); // 턴 종료되면 전략 플래너도 초기화

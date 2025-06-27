@@ -24,6 +24,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override bool IsAtTargetPosition => remainDistance < 2f;
 
+
     public override bool IsAnimationDone
     {
         get
