@@ -12,19 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: FireBall_Mage
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 101
+  skillName: "\uD30C\uC774\uC5B4 \uBCFC"
+  skillDescription: "\uAD49\uC7A5\uD788 \uB728\uAC81\uC2B5\uB2C8\uB2E4."
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
   selectType: 0
   mainSkillEffect:
     owner: {fileID: 0}
-    damageEffects: []
+    damageEffects:
+    - attackCount: 5
+      ownerStatType: 1
+      weight: 0.5
+      value: 50
     buffEffects: []
   subSkillEffect:
     owner: {fileID: 0}
     damageEffects: []
     buffEffects: []
-  jobType: 0
-  reuseMaxNumber: 0
-  maxCost: 0
+  jobType: 6
+  reuseMaxNumber: 5
+  maxCost: 3
   skillIcon: {fileID: 0}
   skillAnimation: {fileID: 0}

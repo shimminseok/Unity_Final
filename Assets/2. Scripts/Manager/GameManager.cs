@@ -35,19 +35,19 @@ public class GameManager : Singleton<GameManager>
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 3), buttonWidth, buttonHeight), "Skill_1"))
         {
-            skillController.currentSkill = skillController.skills[0];
+            skillController.ChangeSkill(0);
             skillController.UseSkill();
         }
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 4), buttonWidth, buttonHeight), "Skill_2"))
         {
-            skillController.currentSkill = skillController.skills[1];
+            skillController.ChangeSkill(1);
             skillController.UseSkill();
         }
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 5), buttonWidth, buttonHeight), "Skill_3"))
         {
-            skillController.currentSkill = skillController.skills[2];
+            skillController.ChangeSkill(2);
             skillController.UseSkill();
         }
 

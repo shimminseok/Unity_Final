@@ -27,7 +27,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private ISelectable selectedExecuterUnit;
     private ISelectable selectedTargetUnit;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
-    public Skill SelectedSkill { get; set; }
+    public SkillData SelectedSkillData { get; set; }
 
     void Start()
     {
@@ -118,9 +118,9 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickTargetUnit()
     {
         // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
-        if (SelectedSkill != null)
+        if (SelectedSkillData != null)
         {
-            targetLayer = GetTargetLayerMask(SelectedSkill.selectedCamp);
+            targetLayer = GetTargetLayerMask(SelectedSkillData.selectedCamp);
         }
         else
         {

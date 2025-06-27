@@ -25,36 +25,26 @@ public class PlayerSkillController : BaseSkillController
     {
         this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target, currentSkill.selectedType, currentSkill.selectedCamp);
+        subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
     public void ChangeSkill(int index)
     {
-        currentSkill = skills[index];
+        CurrentSkillData = skills[index];
     }
 
-    [ContextMenu("스킬 사용!")]
     public override void UseSkill()
     {
-        currentSkill.cost = 0;
-        currentSkill.reuseNumber++;
-        if (mainTarget != null)
+        if (!CurrentSkillData.CheckCanUseSkill())
         {
-            currentSkill.mainEffect.AffectTargetWithSkill(mainTarget);
+            Debug.LogWarning("사용 불가능한 스킬 사용시도");
+            return;
         }
-        // 메인타겟에 메인효과 적용
-
-
-        if (subTargets != null)
-        {
-            foreach (Unit subTarget in subTargets)
-            {
-                currentSkill.subEffect.AffectTargetWithSkill(subTarget);
-            }
-        }
-        // 서브타겟에 서브효과 적용
-
-        currentSkill = null;
+        CurrentSkillData.coolDown = CurrentSkillData.coolTime;
+        CurrentSkillData.reuseCount--;
+        SelectTargets(mainTarget);
+        CurrentSkillData.skillType.UseSkill(this);
+        CurrentSkillData = null;
 
         EndTurn();
     }
@@ -62,12 +52,12 @@ public class PlayerSkillController : BaseSkillController
 
     public override void EndTurn()
     {
-        currentSkill = null;
+        CurrentSkillData = null;
         this.mainTarget = null;
         subTargets = null;
-        foreach (Skill skill in skills)
+        foreach (SkillData skill in skills)
         {
-            skill.RegenerateCost(generateCost);
+            skill.RegenerateCoolDown(generateCost);
         }
     }
 }

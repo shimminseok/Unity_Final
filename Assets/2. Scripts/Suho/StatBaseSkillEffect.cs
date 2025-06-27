@@ -16,7 +16,7 @@ public class StatBaseSkillEffect
         foreach (var result in buffEffects)
         {
             var statusEffect = result.StatusEffect;
-            statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight;
+            statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
             target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
             target.ChangeEmotion(result.emotionType);
         }
@@ -30,25 +30,6 @@ public class StatBaseSkillEffect
     }
 
 
-    public List<StatusEffectData> InstantiateBuffEffects()
-    {
-        List<StatusEffectData> resultEffect = new List<StatusEffectData>();
-        foreach (StatBaseBuffSkillEffect skillData in this.buffEffects)
-        {
-            StatusEffectData sed = new StatusEffectData();
-            sed.ID = skillData.ID;
-            sed.Duration = skillData.lastTurn;
-            sed.Stat = new StatData();
-            sed.Stat.StatType = skillData.opponentStatType;
-            /* 임시처리 */
-            sed.Stat.Value = owner.StatManager.GetValue(skillData.ownerStatType) * skillData.weight;
-            sed.TickInterval = 0;
-            resultEffect.Add(sed);
-        }
-
-        return resultEffect;
-    }
-
     public void Init()
     {
         foreach (StatBaseBuffSkillEffect buffSkillEffect in this.buffEffects)
@@ -61,7 +42,8 @@ public class StatBaseSkillEffect
                 buffSkillEffect.StatusEffect.Duration = buffSkillEffect.lastTurn;
                 buffSkillEffect.StatusEffect.Stat = new StatData();
                 buffSkillEffect.StatusEffect.Stat.StatType = buffSkillEffect.opponentStatType;
-                
+                buffSkillEffect.StatusEffect.Stat.ModifierType = buffSkillEffect.modifierType;
+
             }
         }
     }
@@ -72,7 +54,6 @@ public class StatBaseDamageEffect
 {
     [Header("공격 횟수")]
     public int attackCount = 1;  // 공격 횟수 => weight * attackCount = 실제 weight
-    private int currentCount = 0;
     private float attackDelay = 0.5f;
     [Header("어떤 스텟을 기준으로 데미지를 줄까")]
     public StatType ownerStatType;    // 사용자에 의해 강해지거나 약해지는 사용자의 스텟타입 => ex) 남기사 실드스킬에서 남기사의 최대체력
@@ -89,6 +70,8 @@ public class StatBaseDamageEffect
 
     public IEnumerator DamageEffectCoroutine(Unit target, Unit owner)
     {
+        int currentCount = 0;
+        
         while (currentCount < attackCount)
         {
             DamageEffect(target, owner);
@@ -116,6 +99,7 @@ public class StatBaseBuffSkillEffect
     public int lastTurn = 1;        // 영향이 지속되는 턴 ( 턴 마다 지속되는 도트데미지, 디버프 등)
     [Header("받는 디버프의 타입")]
     public StatusEffectType statusEffectType;
+    public StatModifierType modifierType;
     [Header("대상의 감정을 바꾸는 공격")]
     public EmotionType emotionType;
     [HideInInspector]public StatusEffectData StatusEffect; //디버프

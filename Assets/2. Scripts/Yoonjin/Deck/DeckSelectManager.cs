@@ -15,7 +15,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     [SerializeField]
     private List<EntryDeckData> selectedDeck = new List<EntryDeckData>();
 
-    // 최근에 선택한 캐릭터
+    // 최근에 덱에 넣은 캐릭터
     private EntryDeckData currentSelectedCharacter;
 
     // 최대 선택 가능한 캐릭터 수
@@ -26,6 +26,11 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public List<EntryDeckData> GetSelectedDeck()
     {
         return selectedDeck;
+    }
+
+    public EntryDeckData GetCurrentSelectedCharacter()
+    {
+        return currentSelectedCharacter;
     }
     #endregion
 
@@ -39,7 +44,15 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         base.OnDestroy();
     }
 
-    // 캐릭터 선택 시
+
+
+    // 현재 편집 중인 캐릭터
+    public void SetCurrentSelectedCharacter(EntryDeckData entry)
+    {
+        currentSelectedCharacter = entry;
+    }
+
+    // 덱에 캐릭터 넣기
     public void SelectCharacter(PlayerUnitSO newCharacterSO)
     {
         // 이미 선택됐는지 확인
@@ -65,33 +78,59 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
 
-    // 캐릭터에 스킬 장착
-    // 캐릭터, 스킬, 스킬 슬롯 번호
-    public void SelectSkill(SkillData skill, int slotIndex)
+    // 캐릭터에 액티브 스킬 장착 & 해제
+    public void SelectActiveSkill(ActiveSkillSO activeSkill)
     {
         if (currentSelectedCharacter == null) return;
 
-        // 이미 선택한 스킬인지
-        bool isAlreadyEquipped = currentSelectedCharacter.skillDatas.Contains(skill);
+        var skills = currentSelectedCharacter.skillDatas;
 
-        if (isAlreadyEquipped)
+        // 이미 장착된 스킬일 경우 해제
+        for (int i = 0; i < skills.Length; i++)
         {
-            currentSelectedCharacter.skillDatas[slotIndex] = null;
-            return;
-        }
-
-        // 다른 슬롯에 장착되어 있는 동일한 스킬은 제거
-        for (int i = 0; i < currentSelectedCharacter.skillDatas.Length; i++)
-        {
-            if (currentSelectedCharacter.skillDatas[i] == skill)
+            if (skills[i] == activeSkill)
             {
-                currentSelectedCharacter.skillDatas[i] = null;
-                break;
+                skills[i] = null;
+                return;
             }
         }
 
-        // 최근 선택한 캐릭터의 스킬 추가
-        currentSelectedCharacter.skillDatas[slotIndex] = skill;
+        // 비어 있는 슬롯에 장착
+        for (int i = 0; i < skills.Length; i++)
+        {
+            if (skills[i] == null)
+            {
+                skills[i] = activeSkill;
+                return;
+            }
+        }
+
+    }
+
+    // 캐릭터에 패시브 스킬 장착 (1개만)
+    public void SelectPassiveSkill(PassiveSO passive)
+    {
+        if (currentSelectedCharacter == null)
+        {
+            Debug.LogWarning("캐릭터 없음");
+            return;
+        }
+
+        Debug.Log($"[SelectPassiveSkill] 시도: {passive.PassiveName}");
+
+        // 이미 선택했으면 해제
+        if (currentSelectedCharacter.passiveSkill == passive)
+        {
+            Debug.Log("해제됨");
+            currentSelectedCharacter.passiveSkill = null;
+        }
+
+
+        else
+        {
+            Debug.Log("장착됨");
+            currentSelectedCharacter.passiveSkill = passive;
+        }
 
     }
 
@@ -106,7 +145,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ConfirmDeckAndStartBattle()
     {
         PlayerDeckContainer.Instance.SetDeck(selectedDeck);
-        LoadSceneManager.Instance.LoadScene("BattleScene");
+        LoadSceneManager.Instance.LoadScene("BattleScene_Main");
     }
 
     // 덱 전체 초기화
