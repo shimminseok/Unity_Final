@@ -21,7 +21,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     // 스킬 데이터들
     private SkillData selectedSkillData;
     private int currentskillIndex;
-    private int cost;
+    private int coolDown;
     private int reuseNumber;
 
     public void Initialize(SkillData skillData, int index)
@@ -29,11 +29,11 @@ public class BattleSceneSkillSlot : MonoBehaviour
         // skill data를 넣기
         selectedSkillData = skillData;
         currentskillIndex = index;
-        cost = skillData.coolTime;
+        coolDown = skillData.coolDown;
         reuseNumber = skillData.reuseCount;
 
         // UI에 반영
-        skillCostText.text = $"{cost}";
+        skillCostText.text = $"{coolDown}";
         reuseNumberText.text = $"{reuseNumber}";
         skillIdText.text = $"{currentskillIndex}";
     }
