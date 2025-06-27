@@ -9,19 +9,21 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     
     [SerializeField] private float projectileSpeed;
     
-    private SkillData skillData;
+    private StatBaseSkillEffect effectData;
     
     private float smoothTime = 0.3f;
     private Vector3 startPosition = Vector3.zero;
     private Vector3 direction = Vector3.zero;
     private Vector3 velocity = Vector3.zero;
-
+    private float _delta = 0;
     public GameObject GameObject => gameObject;
     public string     PoolID     => poolId;
     public int        PoolSize   => poolSize;
+
+    public Unit Target;
     
     
-    public SkillData SkillData     => skillData;
+    public StatBaseSkillEffect EffectData     => effectData;
     public float ProjectileSpeed => projectileSpeed;
     public Vector3 Direction => direction;
     public Vector3 StartPosition => startPosition;
@@ -34,16 +36,15 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     {
         if (isShooting)
         {
-            ShootProjectile(mode);
+            _delta += Time.deltaTime * ProjectileSpeed;
+            ShootProjectile(mode,_delta);
         }
     }
 
 
-    public void ShootProjectile(ProjectileInterpolationMode interpolationMode)
+    public void ShootProjectile(ProjectileInterpolationMode interpolationMode, float delta)
     {
         {
-            float delta = projectileSpeed * Time.deltaTime;
-
             switch (interpolationMode)
             {
                 case ProjectileInterpolationMode.Linear:
@@ -63,28 +64,41 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
                     break;
 
                 case ProjectileInterpolationMode.Slerp:
-                    Vector3 offset = Vector3.Slerp(Vector3.zero, direction.normalized * 100f, delta);
+                    Vector3 offset = Vector3.Slerp(startPosition, direction, delta);
                     transform.position = direction + offset;
                     break;
             }
         }
     }
 
-    public void Initialize(SkillData skillDataInfo, Vector3 startPos,Vector3 dir)
+    public void Initialize(StatBaseSkillEffect effect, Vector3 startPos,Vector3 dir, Unit target)
     {
-        skillData = skillDataInfo;
+        effectData = effect;
         startPosition = startPos;
         direction = dir;
+        this.gameObject.transform.position = startPos;
+        Target = target;
         OnSpawnFromPool();
     }
 
     public void OnSpawnFromPool()
     {
+        _delta = 0;
         isShooting = true;
     }
 
     public void OnReturnToPool()
     {
         isShooting = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Unit>() == Target)
+        {
+            effectData.AffectTargetWithSkill(Target);
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+
+        }
     }
 }

@@ -10,11 +10,10 @@ public class RangeSkillSO : SkillTypeSO
     {
         this.skillController = controller;
         SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-        projectile.Initialize(skillController.CurrentSkillData, skillController.transform.position, skillController.mainTarget.transform.position);
         
         if (skillController.mainTarget != null)
         {
-            skillController.CurrentSkillData.mainEffect.AffectTargetWithSkill(skillController.mainTarget);
+            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.transform.position, skillController.mainTarget.transform.position,skillController.mainTarget);
         }
 
 
