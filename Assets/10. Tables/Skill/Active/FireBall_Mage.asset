@@ -17,21 +17,25 @@ MonoBehaviour:
   skillDescription: "\uAD49\uC7A5\uD788 \uB728\uAC81\uC2B5\uB2C8\uB2E4."
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
-  selectType: 0
+  selectType: 1
   mainSkillEffect:
     owner: {fileID: 0}
     damageEffects:
     - attackCount: 5
-      ownerStatType: 1
+      ownerStatType: 4
       weight: 0.5
       value: 50
     buffEffects: []
   subSkillEffect:
     owner: {fileID: 0}
-    damageEffects: []
+    damageEffects:
+    - attackCount: 2
+      ownerStatType: 4
+      weight: 0
+      value: 50
     buffEffects: []
   jobType: 6
-  reuseMaxNumber: 5
-  maxCost: 3
+  reuseMaxCount: 2
+  coolTime: 5
   skillIcon: {fileID: 0}
   skillAnimation: {fileID: 0}
