@@ -15,7 +15,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     [SerializeField]
     private List<EntryDeckData> selectedDeck = new List<EntryDeckData>();
 
-    // 최근에 선택한 캐릭터
+    // 최근에 덱에 넣은 캐릭터
     private EntryDeckData currentSelectedCharacter;
 
     // 최대 선택 가능한 캐릭터 수
@@ -44,7 +44,15 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         base.OnDestroy();
     }
 
-    // 캐릭터 선택 시
+
+
+    // 현재 편집 중인 캐릭터
+    public void SetCurrentSelectedCharacter(EntryDeckData entry)
+    {
+        currentSelectedCharacter = entry;
+    }
+
+    // 덱에 캐릭터 넣기
     public void SelectCharacter(PlayerUnitSO newCharacterSO)
     {
         // 이미 선택됐는지 확인
@@ -137,7 +145,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ConfirmDeckAndStartBattle()
     {
         PlayerDeckContainer.Instance.SetDeck(selectedDeck);
-        LoadSceneManager.Instance.LoadScene("BattleScene");
+        LoadSceneManager.Instance.LoadScene("BattleScene_Main");
     }
 
     // 덱 전체 초기화

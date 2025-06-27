@@ -85,6 +85,7 @@ public class SelectMainUI : UIBase
     // 최근 선택된 캐릭터 정보를 패널에 갱신
     private void UpdateCharacterInfoPanel(PlayerUnitSO character)
     {
+        // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
             .Find(entry => entry.characterSO == character);
 
@@ -111,7 +112,17 @@ public class SelectMainUI : UIBase
         // 선택된 경우는 정보 갱신
         if(isSelected)
         {
-            UpdateCharacterInfoPanel(character);
+            // 덱에 존재하는지 확인하고
+            var entry = DeckSelectManager.Instance.GetSelectedDeck()
+                .Find(entry => entry.characterSO == character);
+
+            if (entry != null)
+            {
+                // 현재 선택된 캐릭터로 갱신
+                DeckSelectManager.Instance.SetCurrentSelectedCharacter(entry);
+
+                UpdateCharacterInfoPanel(character);
+            }
         }
 
         // 선택 안 된 경우는 선택 or 해제 처리
