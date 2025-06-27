@@ -116,6 +116,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
+            CurrentAttackAction = (this as PlayerUnitController)?.PlayerSkillController.CurrentSkillData.skillType;
         }
     }
 
