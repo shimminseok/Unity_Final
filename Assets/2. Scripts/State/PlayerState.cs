@@ -92,8 +92,12 @@ namespace PlayerState
 
     public class SkillState : IState<PlayerUnitController, PlayerUnitState>
     {
+        private static readonly int Skill = Animator.StringToHash("Skill");
+
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Animator.SetTrigger(Skill);
+            owner.UseSkill();
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -104,8 +108,9 @@ namespace PlayerState
         {
         }
 
-        public void OnExit(PlayerUnitController entity)
+        public void OnExit(PlayerUnitController owner)
         {
+            owner.Animator.ResetTrigger(Skill);
         }
     }
 
