@@ -25,23 +25,26 @@ public class PlayerSkillController : BaseSkillController
     {
         this.mainTarget = target;
         TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target, currentSkill.selectedType, currentSkill.selectedCamp);
+        subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
     public void ChangeSkill(int index)
     {
-        currentSkill = skills[index];
+        CurrentSkillData = skills[index];
     }
 
     public override void UseSkill()
     {
-        currentSkill.cost = 0;
-        currentSkill.reuseNumber++;
+        if (!CurrentSkillData.CheckCanUseSkill())
+        {
+            Debug.LogWarning("사용 불가능한 스킬 사용시도");
+            return;
+        }
+        CurrentSkillData.coolDown = CurrentSkillData.coolTime;
+        CurrentSkillData.reuseCount--;
         SelectTargets(mainTarget);
-        
-        currentSkill.skillType.UseSkill(this);
-        
-        currentSkill = null;
+        CurrentSkillData.skillType.UseSkill(this);
+        CurrentSkillData = null;
 
         EndTurn();
     }
@@ -49,12 +52,12 @@ public class PlayerSkillController : BaseSkillController
 
     public override void EndTurn()
     {
-        currentSkill = null;
+        CurrentSkillData = null;
         this.mainTarget = null;
         subTargets = null;
-        foreach (Skill skill in skills)
+        foreach (SkillData skill in skills)
         {
-            skill.RegenerateCost(generateCost);
+            skill.RegenerateCoolDown(generateCost);
         }
     }
 }

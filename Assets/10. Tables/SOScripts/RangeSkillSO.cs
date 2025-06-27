@@ -10,11 +10,11 @@ public class RangeSkillSO : SkillTypeSO
     {
         this.skillController = controller;
         SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-        projectile.Initialize(skillController.currentSkill, skillController.transform.position, skillController.mainTarget.transform.position);
+        projectile.Initialize(skillController.CurrentSkillData, skillController.transform.position, skillController.mainTarget.transform.position);
         
         if (skillController.mainTarget != null)
         {
-            skillController.currentSkill.mainEffect.AffectTargetWithSkill(skillController.mainTarget);
+            skillController.CurrentSkillData.mainEffect.AffectTargetWithSkill(skillController.mainTarget);
         }
 
 
@@ -22,7 +22,7 @@ public class RangeSkillSO : SkillTypeSO
         {
             foreach (Unit subTarget in skillController.subTargets)
             {
-                skillController.currentSkill.subEffect.AffectTargetWithSkill(subTarget);
+                skillController.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
         

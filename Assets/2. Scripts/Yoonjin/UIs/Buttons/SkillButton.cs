@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +14,7 @@ public class SkillButton : MonoBehaviour
     [SerializeField] private Button button;
 
     // 현재 버튼에 할당된 스킬 데이터
-    private SkillData activeSkill;
+    private ActiveSkillSO activeActiveSkill;
     private PassiveSO passiveSkill;
 
     // 현재 버튼의 역할이 패시브인지 액티브인지
@@ -29,20 +28,20 @@ public class SkillButton : MonoBehaviour
 
 
     // 액티브 스킬 초기화
-    public void Initialize(SkillData active, bool isSelectedSkill, Action<SkillButton, bool> onClick)
+    public void Initialize(ActiveSkillSO active, bool isSelectedSkill, Action<SkillButton, bool> onClick)
     {
-        activeSkill = active;
+        activeActiveSkill = active;
         isPassive = false;
         this.isSelected = isSelectedSkill;
         onAfterClick = onClick;
 
         icon.sprite = active.skillIcon;
-        cost.text = active.maxCost.ToString();
+        cost.text = active.coolTime.ToString();
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
 
-        Debug.Log($"[Initialize] 액티브 스킬: {active.name}, 코스트: {active.maxCost}");
+        Debug.Log($"[Initialize] 액티브 스킬: {active.name}, 코스트: {active.coolTime}");
     }
 
     // 패시브 스킬 초기화
@@ -70,7 +69,7 @@ public class SkillButton : MonoBehaviour
     }
 
     #region
-    public SkillData GetActiveSkill() => activeSkill;
+    public ActiveSkillSO GetActiveSkill() => activeActiveSkill;
     public PassiveSO GetPassiveSkill() => passiveSkill;
     public bool IsPassive => isPassive;
     #endregion

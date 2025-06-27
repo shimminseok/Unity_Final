@@ -19,18 +19,18 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI skillIdText;
 
     // 스킬 데이터들
-    private Skill selectedSkill;
+    private SkillData selectedSkillData;
     private int currentskillIndex;
     private int cost;
     private int reuseNumber;
 
-    public void Initialize(Skill skill, int index)
+    public void Initialize(SkillData skillData, int index)
     {
         // skill data를 넣기
-        selectedSkill = skill;
+        selectedSkillData = skillData;
         currentskillIndex = index;
-        cost = skill.cost;
-        reuseNumber = skill.reuseNumber;
+        cost = skillData.coolTime;
+        reuseNumber = skillData.reuseCount;
 
         // UI에 반영
         skillCostText.text = $"{cost}";
@@ -44,7 +44,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
         InputManager.Instance.SelectSkill(currentskillIndex);
 
         // 선택한 스킬 넘겨주기
-        InputManager.Instance.SelectedSkill = selectedSkill;
+        InputManager.Instance.SelectedSkillData = selectedSkillData;
     }
 
     // 버튼 앞쪽이 보이면 클릭 시 스킬 선택 가능

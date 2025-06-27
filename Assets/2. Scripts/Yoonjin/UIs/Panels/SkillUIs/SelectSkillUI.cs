@@ -114,7 +114,7 @@ public class SelectSkillUI : UIBase
     }
 
     // 액티브 스킬 정보 표시
-    private void ShowSkillInfo(SkillData active)
+    private void ShowSkillInfo(ActiveSkillSO active)
     {
         skillName.text = active.name;
         // !!!아직 액티브 스킬 description이 없음!!!
