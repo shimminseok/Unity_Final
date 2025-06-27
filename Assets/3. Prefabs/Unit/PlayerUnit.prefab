@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 2537298192428250852}
   - component: {fileID: 3299858713532474659}
   - component: {fileID: 3236291055713436926}
+  - component: {fileID: 6742666286339340982}
+  - component: {fileID: 4156698034694976115}
   m_Layer: 6
   m_Name: PlayerUnit
   m_TagString: Untagged
@@ -173,6 +175,36 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6742666286339340982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245560173667762251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSkill: []
+  skillController: {fileID: 0}
+  owner: {fileID: 0}
+--- !u!114 &4156698034694976115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 245560173667762251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2c9cc013ecfb974e83ed90ad249292f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTarget: {fileID: 0}
+  subTargets: []
+  generateCost: 1
 --- !u!1 &8903592395978470899
 GameObject:
   m_ObjectHideFlags: 0

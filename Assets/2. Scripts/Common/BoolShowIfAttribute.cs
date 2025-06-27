@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public class ShowIfTrueAttribute : PropertyAttribute
 {
     public string ConditionFieldName;
@@ -20,6 +21,7 @@ public class ShowIfFalseAttribute : PropertyAttribute
         ConditionFieldName = conditionFieldName;
     }
 }
+
 
 [CustomPropertyDrawer(typeof(ShowIfTrueAttribute))]
 [CustomPropertyDrawer(typeof(ShowIfFalseAttribute))]
@@ -61,3 +63,4 @@ public class ShowIfDrawer : PropertyDrawer
         return true; // 조건 못 찾으면 기본 표시
     }
 }
+#endif

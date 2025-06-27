@@ -79,7 +79,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
 
     // 캐릭터에 액티브 스킬 장착 & 해제
-    public void SelectActiveSkill(SkillData skill)
+    public void SelectActiveSkill(ActiveSkillSO activeSkill)
     {
         if (currentSelectedCharacter == null) return;
 
@@ -88,7 +88,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 이미 장착된 스킬일 경우 해제
         for (int i = 0; i < skills.Length; i++)
         {
-            if (skills[i] == skill)
+            if (skills[i] == activeSkill)
             {
                 skills[i] = null;
                 return;
@@ -100,7 +100,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         {
             if (skills[i] == null)
             {
-                skills[i] = skill;
+                skills[i] = activeSkill;
                 return;
             }
         }

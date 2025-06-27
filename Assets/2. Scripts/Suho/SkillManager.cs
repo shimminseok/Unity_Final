@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
-   public List<SkillData> selectedSkill;
+   public List<ActiveSkillSO> selectedSkill;
    public BaseSkillController skillController;
    [HideInInspector]public Unit owner;
    private void Awake()
@@ -17,25 +17,29 @@ public class SkillManager : MonoBehaviour
 
    public void InitializeSkillManager()
    {
-      foreach (SkillData skillData in selectedSkill)
+      foreach (ActiveSkillSO activeSkillSo in selectedSkill)
       {
-         Skill skill = new Skill
+         SkillData skillData = new SkillData
             (  
-               skillData.selectCamp,
-               skillData.selectType,
-               skillData.mainSkillEffect,
-               skillData.subSkillEffect,
-               skillData.jobType,
-               skillData.reuseMaxNumber,
-               skillData.maxCost,
-               skillData.skillIcon,
-               skillData.SkillVFX,
-               skillData.skillAnimation
+                activeSkillSo.skillName,
+                activeSkillSo.skillDescription,
+                activeSkillSo.skillType,
+                activeSkillSo.selectCamp,
+                activeSkillSo.selectType,
+                activeSkillSo.mainSkillEffect,
+                activeSkillSo.subSkillEffect,
+                activeSkillSo.jobType,
+                activeSkillSo.reuseMaxCount,
+                activeSkillSo.coolTime,
+                activeSkillSo.skillIcon,
+                activeSkillSo.SkillVFX,
+                activeSkillSo.skillAnimation
                );
-         skill.mainEffect.owner = owner;
-         skill.mainEffect.InstantiateBuffEffects();
-         skill.subEffect.owner = owner;
-         skillController.skills.Add(skill);
+               skillData.mainEffect.owner = owner;
+               skillData.subEffect.owner = owner;
+               skillData.mainEffect.Init();
+               skillData.subEffect.Init();
+         skillController.skills.Add(skillData);
       }
    }
    

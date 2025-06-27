@@ -11,7 +11,7 @@ public class EntryDeckData
     // 패시브SO
     public PlayerUnitSO characterSO;  
 
-    public SkillData[] skillDatas = new SkillData[3];
+    public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
     public PassiveSO passiveSkill;
 
     // 딕셔너리로 줘!!! 
