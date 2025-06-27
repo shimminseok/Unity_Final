@@ -10,7 +10,7 @@ public class MeleeSkillSO : SkillTypeSO
         this.skillController = controller;
         if (controller.mainTarget != null)
         {
-            controller.currentSkill.mainEffect.AffectTargetWithSkill(controller.mainTarget);
+            controller.CurrentSkillData.mainEffect.AffectTargetWithSkill(controller.mainTarget);
         }
 
 
@@ -18,7 +18,7 @@ public class MeleeSkillSO : SkillTypeSO
         {
             foreach (Unit subTarget in controller.subTargets)
             {
-                controller.currentSkill.subEffect.AffectTargetWithSkill(subTarget);
+                controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
         

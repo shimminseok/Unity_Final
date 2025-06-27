@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainUI : UIBase
+public class SelectMainUI : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
@@ -60,7 +60,7 @@ public class MainUI : UIBase
         foreach (PlayerUnitSO unit in ownedCharacters)
         {
             CharacterButton btn = Instantiate(characterButtonPrefab, ownedCharacterParent);
-            btn.Initialize(unit, OnCharacterButtonClicked);
+            btn.Initialize(unit, false, OnCharacterButtonClicked);
             ownedCharacterButtons.Add(btn);
         }
     }
@@ -77,7 +77,7 @@ public class MainUI : UIBase
         foreach(var entry in selectedDeck)
         {
             var btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
-            btn.Initialize(entry.characterSO, OnSelectedCharacterButtonClicked);
+            btn.Initialize(entry.characterSO, true, OnCharacterButtonClicked);
             selectedCharacterButtons.Add(btn);
         }
     }
@@ -85,6 +85,7 @@ public class MainUI : UIBase
     // 최근 선택된 캐릭터 정보를 패널에 갱신
     private void UpdateCharacterInfoPanel(PlayerUnitSO character)
     {
+        // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
             .Find(entry => entry.characterSO == character);
 
@@ -105,19 +106,33 @@ public class MainUI : UIBase
     }
 
     // 보유 캐릭터 버튼 클릭 처리
-    private void OnCharacterButtonClicked(PlayerUnitSO character)
+    // 선택 중인지에 따라 다른 처리
+    private void OnCharacterButtonClicked(PlayerUnitSO character, bool isSelected)
     {
-        DeckSelectManager.Instance.SelectCharacter(character);
+        // 선택된 경우는 정보 갱신
+        if(isSelected)
+        {
+            // 덱에 존재하는지 확인하고
+            var entry = DeckSelectManager.Instance.GetSelectedDeck()
+                .Find(entry => entry.characterSO == character);
 
-        // 선택된 캐릭터 UI 갱신
-        GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
-        UpdateCharacterInfoPanel(character);
-    }
+            if (entry != null)
+            {
+                // 현재 선택된 캐릭터로 갱신
+                DeckSelectManager.Instance.SetCurrentSelectedCharacter(entry);
 
-    // 선택된 캐릭터 버튼 클릭 시 상세 정보 표시
-    private void OnSelectedCharacterButtonClicked(PlayerUnitSO character)
-    {
-        UpdateCharacterInfoPanel(character);
+                UpdateCharacterInfoPanel(character);
+            }
+        }
+
+        // 선택 안 된 경우는 선택 or 해제 처리
+        else
+        {
+            DeckSelectManager.Instance.SelectCharacter(character);
+
+            GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+            UpdateCharacterInfoPanel(character);
+        }
     }
 
 }

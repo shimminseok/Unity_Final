@@ -7,9 +7,9 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
     [SerializeField] private int poolSize;
     
-    private float projectileSpeed;
+    [SerializeField] private float projectileSpeed;
     
-    private Skill skill;
+    private SkillData skillData;
     
     private float smoothTime = 0.3f;
     private Vector3 startPosition = Vector3.zero;
@@ -21,7 +21,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public int        PoolSize   => poolSize;
     
     
-    public Skill Skill     => skill;
+    public SkillData SkillData     => skillData;
     public float ProjectileSpeed => projectileSpeed;
     public Vector3 Direction => direction;
     public Vector3 StartPosition => startPosition;
@@ -70,13 +70,11 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         }
     }
 
-    public void Initialize(Skill skillInfo,float speed, Vector3 startPos,Vector3 dir, ProjectileInterpolationMode interpolationMode)
+    public void Initialize(SkillData skillDataInfo, Vector3 startPos,Vector3 dir)
     {
-        skill = skillInfo;
-        projectileSpeed = speed;
+        skillData = skillDataInfo;
         startPosition = startPos;
         direction = dir;
-        mode = interpolationMode;
         OnSpawnFromPool();
     }
 

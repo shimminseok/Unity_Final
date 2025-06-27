@@ -61,7 +61,8 @@ public class CharacterInfoPanel : MonoBehaviour
         // 패시브 스킬 표시
         if (data.passiveSkill != null)
         {
-            passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
+            // !!!현재 패시브 스킬 아이콘이 없음!!!
+            // passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
         }
 
         else
@@ -71,11 +72,11 @@ public class CharacterInfoPanel : MonoBehaviour
     }
 
     // 장비 딕셔너리에서 원하는 장비 타입을 꺼내, 아이콘을 반환한다
-    private Sprite GetEquipSprite(Dictionary<EquipmentType, EquipmentItemSO> dic, EquipmentType type)
+    private Sprite GetEquipSprite(Dictionary<EquipmentType, EquipmentItem> dic, EquipmentType type)
     {
         if (dic.TryGetValue(type, out var item) && item != null)
         {
-            return item.ItemSprite;
+            return item.EquipmentItemSo.ItemSprite;
         }
 
         else
@@ -102,7 +103,8 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<SelectEquipUI>();
+            UIManager.Instance.Open<SelectSkillUI>();
+
         }
 
     }

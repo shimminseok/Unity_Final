@@ -1,9 +1,8 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
-// 1. 플레이어 유닛 선택 (아군만)
-// 2. 플레이어 유닛이 가지고 있는 스킬을 받아옴 -> 스킬 선택
-//Onclick 안하고 UI에서 선택 스킬이 받아지면? 넘겨줌
-// 3. 스킬의 타겟Type을 받아와서 레이어를 정해줌 -> 타겟(아군/적) 유닛 선택
+// 추후 StateMachine으로 리팩토링하면 좋다.
 
 // 나중에 Enum으로 이동
 public enum InputPhase
@@ -17,14 +16,18 @@ public enum InputPhase
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
+    [SerializeField] private BattleSceneSkillUI skillUI;
+
+    [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
 
-    [SerializeField] private SkillUI skillUI;
-
+    private LayerMask targetLayer;
     private ISelectable selectedPlayerUnit;
+    private ISelectable targetUnit;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
+    public SkillData SelectedSkillData { get; set; }
 
     void Start()
     {
@@ -36,7 +39,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     void Update()
     {
-        // 각 Phase별 초기화 또는 상태 진입 처리
         switch (currentPhase)
         {
             case InputPhase.SelectExecuter:
@@ -66,7 +68,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 // 유닛 선택하면 스킬 선택 페이즈로 전환
                 currentPhase = InputPhase.SelectSkill;
-                Debug.Log("플레이어 유닛 선택 완료");
+                Debug.Log($"플레이어 유닛 선택 : {selectedPlayerUnit}");
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
                 skillUI.UpdateSkillList(selectable.SelectedUnit);
@@ -79,20 +81,31 @@ public class InputManager : SceneOnlySingleton<InputManager>
     }
 
     // 유닛이 사용할 스킬 선택
-    private void OnSkillSelect()
+    public void SelectSkill(int index)
     {
-        ChangeSelectedUnitAction(ActionType.SKill);
-        Debug.Log("스킬 선택");
+        if (selectedPlayerUnit == null)
+        {
+            Debug.Log("플레이어 유닛 선택하지 않음!");
+        }
+
+        // 스킬 인덱스 받아서 교체
+        if (selectedPlayerUnit is PlayerUnitController playerUnit)
+        {
+            playerUnit.PlayerSkillController.ChangeSkill(index);
+        }
+        ChangeSelectedUnitAction(PlayerActionType.SKill);
+        Debug.Log($"스킬 {index}번 선택");
     }
 
     // 플레이어 유닛이 기본공격 수행
     public void SelectBasicAttack()
     {
-        ChangeSelectedUnitAction(ActionType.Attack);
+        ChangeSelectedUnitAction(PlayerActionType.Attack);
         Debug.Log("기본 공격 선택");
     }
 
-    private void ChangeSelectedUnitAction(ActionType actionType)
+    // 선택한 액션 타입(기본공격/스킬)에 따라 ChangeAction하는 함수
+    private void ChangeSelectedUnitAction(PlayerActionType actionType)
     {
         currentPhase = InputPhase.SelectTarget;
         if (selectedPlayerUnit is PlayerUnitController playerUnit)
@@ -101,26 +114,40 @@ public class InputManager : SceneOnlySingleton<InputManager>
         }
     }
 
-    // 공격할 타겟 유닛 선택
+    // 공격 혹은 스킬 사용할 타겟 유닛 선택
     private void OnClickTargetUnit()
     {
         // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
-        //LayerMask targetLayer = GetTargetLayerMask(selectedSkill.selectCamp);
-
-        if (Input.GetMouseButtonDown(0))
+        if (SelectedSkillData != null)
         {
-            Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            targetLayer = GetTargetLayerMask(SelectedSkillData.selectedCamp);
+        }
+        else
+        {
+            targetLayer = enemyUnitLayer;
+        }
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, enemyUnitLayer))
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
+        {
+            ISelectable targetSelectable = hit.transform.GetComponent<ISelectable>();
+            targetSelectable.OnSelect();
+
+            if (Input.GetMouseButtonDown(0))
             {
-                ISelectable targetSelectable = hit.transform.GetComponent<ISelectable>();
-
                 Unit targetUnit = targetSelectable.SelectedUnit;
-                Unit executer   = selectedPlayerUnit.SelectedUnit;
+                Unit executer = selectedPlayerUnit.SelectedUnit;
+
+                // playerUnit에게 선택한 mainTarget 전달하기
+                if (selectedPlayerUnit is PlayerUnitController playerUnit)
+                {
+                    playerUnit.PlayerSkillController.mainTarget = targetUnit;
+                }
 
                 executer.SetTarget(targetUnit);
-                Debug.Log("타겟 유닛 선택 완료");
+                Debug.Log($"타겟 유닛 선택 : {targetUnit}");
 
                 // 커맨드 생성
                 IActionCommand command = new AttackCommand(executer, targetUnit);
@@ -132,11 +159,14 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
             }
-            else
-            {
-                return;
-            }
+            
         }
+        else
+        {
+            return;
+        }
+
+        
     }
 
     // 선택한 스킬의 타겟 진영 받아오기
@@ -163,7 +193,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         selectedPlayerUnit = null;
     }
 
-    void SelectUnit(ISelectable unit)
+    private void SelectUnit(ISelectable unit)
     {
         selectedPlayerUnit = unit;
         unit.OnSelect();
