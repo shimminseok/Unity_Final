@@ -27,8 +27,11 @@ public class SelectSkillUI : UIBase
     // 현재 선택된 캐릭터
     private EntryDeckData currentCharacter;
 
-    private void OnEnable()
+
+
+    public override void Open()
     {
+        base.Open();
         UpdateSkillUI();
     }
 
@@ -38,6 +41,10 @@ public class SelectSkillUI : UIBase
         currentCharacter = DeckSelectManager.Instance.GetCurrentSelectedCharacter();
 
         if (currentCharacter == null) return;
+
+        skillName.text = "";
+        skillDescription.text = "";
+        skillEffect.text = "";
 
         ClearAllSlots();
         GenerateOwnedSkillButtons();
@@ -131,6 +138,8 @@ public class SelectSkillUI : UIBase
                 ShowSkillInfo(btn.GetPassiveSkill());
             else
                 ShowSkillInfo(btn.GetActiveSkill());
+
+            return;
         }
 
         // 보유 스킬 클릭 시 장착 / 해제
@@ -140,10 +149,10 @@ public class SelectSkillUI : UIBase
                 DeckSelectManager.Instance.SelectPassiveSkill(btn.GetPassiveSkill());
             else
                 DeckSelectManager.Instance.SelectActiveSkill(btn.GetActiveSkill());
-        }
 
-        // UI 갱신
-        UpdateSkillUI();
+            // UI 갱신
+            UpdateSkillUI();
+        }
     }
 
     // 초기화: 자식 오브젝트 삭제 (SkillInfo 진입할 때)
