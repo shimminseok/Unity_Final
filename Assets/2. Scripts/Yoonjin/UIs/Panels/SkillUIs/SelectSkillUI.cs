@@ -42,10 +42,7 @@ public class SelectSkillUI : UIBase
 
         if (currentCharacter == null) return;
 
-        skillName.text = "";
-        skillDescription.text = "";
-        skillEffect.text = "";
-
+        ClearSkillInfo();
         ClearAllSlots();
         GenerateOwnedSkillButtons();
         GenerateSelectedSkillButtons();
@@ -128,11 +125,21 @@ public class SelectSkillUI : UIBase
         skillDescription.text = passive.Description;
     }
 
+    // 스킬 정보 리셋
+    private void ClearSkillInfo()
+    {
+        skillName.text = "";
+        skillDescription.text = "";
+        skillEffect.text = "";
+    }
+
     // 클릭 콜백
     private void OnSkillButtonClicked(SkillButton btn, bool isSelected)
     {
+        ClearSkillInfo();
+
         // 장착된 슬롯에서 클릭 시 정보 패널에 설명 표시
-        if(isSelected)
+        if (isSelected)
         {
             if (btn.IsPassive)
                 ShowSkillInfo(btn.GetPassiveSkill());
