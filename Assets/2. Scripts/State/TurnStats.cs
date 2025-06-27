@@ -109,8 +109,11 @@ public class MoveToTargetState : ITurnState
 
 public class ActState : ITurnState
 {
+    private bool waitOneFrame = false;
+
     public void OnEnter(Unit unit)
     {
+        waitOneFrame = false;
         if (unit.CurrentAction == ActionType.Attack)
         {
             if (unit is PlayerUnitController player)
@@ -130,14 +133,19 @@ public class ActState : ITurnState
             }
             else if (unit is EnemyUnitController enemy)
             {
-                enemy.ChangeUnitState(EnemyUnitState.Attack); // Enemy에 Skill 상태가 없으면 Attack으로 재사용
+                enemy.ChangeUnitState(EnemyUnitState.Skill);
             }
         }
     }
 
     public void OnUpdate(Unit unit)
     {
-        Debug.Log("Act가 도는중");
+        if (!waitOneFrame)
+        {
+            waitOneFrame = true;
+            return;
+        }
+
         if (!(unit as IUnitFsmControllable)?.IsAnimationDone ?? false)
             return;
 

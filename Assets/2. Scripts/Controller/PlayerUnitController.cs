@@ -16,7 +16,6 @@ public enum ActionType
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
-    public Animator animator;
     public PassiveSO passiveSo;
     public EquipmentManager      EquipmentManager      { get; private set; }
     public PlayerSkillController PlayerSkillController { get; private set; }
@@ -25,8 +24,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override bool IsAtTargetPosition => remainDistance < 2f;
 
-    public override bool IsAnimationDone => true;
-    // public override bool IsAnimationDone    => animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+    public override bool IsAnimationDone
+    {
+        get
+        {
+            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+        }
+    }
 
 
     private float remainDistance;
@@ -246,6 +251,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             CurrentEmotion.AddStack(this);
 
         ChangeAction(ActionType.None);
+        ChangeUnitState(PlayerUnitState.Idle);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

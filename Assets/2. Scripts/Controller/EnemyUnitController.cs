@@ -8,10 +8,23 @@ using Random = UnityEngine.Random;
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
     [SerializeField] private int id;
-    public EnemyUnitSO MonsterSO { get; private set; }
+    public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
     private HPBarUI hpBar;
+    public override bool IsAtTargetPosition => remainDistance < 2f;
+
+    public override bool IsAnimationDone
+    {
+        get
+        {
+            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+        }
+    }
+
+    private float remainDistance;
+    public Vector3 StartPostion { get; private set; }
 
     protected override void Awake()
     {
@@ -23,6 +36,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
+        StartPostion = transform.position;
     }
 
     // Update is called once per frame
@@ -46,13 +60,13 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         UnitSo = unitSO;
         if (UnitSo is EnemyUnitSO enemyUnitSo)
         {
-            MonsterSO = enemyUnitSo;
+            MonsterSo = enemyUnitSo;
         }
 
-        if (MonsterSO == null)
+        if (MonsterSo == null)
             return;
 
-        StatManager.Initialize(MonsterSO);
+        StatManager.Initialize(MonsterSo);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -61,6 +75,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         {
             EnemyUnitState.Idle   => new IdleState(),
             EnemyUnitState.Move   => new MoveState(),
+            EnemyUnitState.Return => new EnemyState.ReturnState(),
             EnemyUnitState.Attack => new AttackState(),
             EnemyUnitState.Stun   => new StunState(),
             EnemyUnitState.Die    => new DeadState(),
@@ -99,15 +114,14 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         //TODO: 크리티컬 구현
-        MonsterSO.AttackType.Attack(this);
-
-        //Test
-        EndTurn();
+        MonsterSo.AttackType.Attack(this);
     }
 
     public override void MoveTo(Vector3 destination)
     {
-        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime);
+        remainDistance = Vector3.Distance(transform.position, destination);
+
+        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 5f);
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -153,7 +167,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        Attack();
+        ChangeAction(ActionType.Attack);
+        var enemies = BattleManager.Instance.GetEnemies(this);
+        SetTarget(enemies[Random.Range(0, enemies.Count)]);
+        TurnStateMachine.ChangeState(new StartTurnState());
     }
 
     public override void EndTurn()
@@ -161,8 +178,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
-        Debug.Log($"Turn 종료 현재 스택 {CurrentEmotion.Stack}");
+        ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        Debug.Log("EndTurn");
+        ChangeUnitState(PlayerUnitState.Idle);
     }
 }

@@ -13,15 +13,15 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 {
     protected StateMachine<TController, TState> stateMachine;
     protected IState<TController, TState>[] states;
-
-    public TState CurrentState { get; protected set; }
+    public Animator Animator     { get; protected set; }
+    public TState   CurrentState { get; protected set; }
 
     protected virtual void Awake()
     {
         StatManager = GetComponent<StatManager>();
         StatusEffectManager = GetComponent<StatusEffectManager>();
         Collider = GetComponent<CapsuleCollider>();
-
+        Animator = GetComponent<Animator>();
         stateMachine = new StateMachine<TController, TState>();
 
         CreateEmotion();

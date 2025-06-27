@@ -68,8 +68,11 @@ namespace PlayerState
 
     public class AttackState : IState<PlayerUnitController, PlayerUnitState>
     {
+        private static readonly int Attack = Animator.StringToHash("Attack");
+
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Animator.SetTrigger(Attack);
             owner.Attack();
         }
 
@@ -83,6 +86,7 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController entity)
         {
+            entity.Animator.ResetTrigger(Attack);
         }
     }
 
