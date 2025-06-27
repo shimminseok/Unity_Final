@@ -24,8 +24,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
     [SerializeField] private LayerMask enemyUnitLayer;
 
     private LayerMask targetLayer;
-    private ISelectable selectedPlayerUnit;
-    private ISelectable targetUnit;
+    private ISelectable selectedExecuterUnit;
+    private ISelectable selectedTargetUnit;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
     public Skill SelectedSkill { get; set; }
 
@@ -68,7 +68,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 // 유닛 선택하면 스킬 선택 페이즈로 전환
                 currentPhase = InputPhase.SelectSkill;
-                Debug.Log($"플레이어 유닛 선택 : {selectedPlayerUnit}");
+                Debug.Log($"플레이어 유닛 선택 : {selectedExecuterUnit}");
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
                 skillUI.UpdateSkillList(selectable.SelectedUnit);
@@ -83,13 +83,13 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 유닛이 사용할 스킬 선택
     public void SelectSkill(int index)
     {
-        if (selectedPlayerUnit == null)
+        if (selectedExecuterUnit == null)
         {
             Debug.Log("플레이어 유닛 선택하지 않음!");
         }
 
         // 스킬 인덱스 받아서 교체
-        if (selectedPlayerUnit is PlayerUnitController playerUnit)
+        if (selectedExecuterUnit is PlayerUnitController playerUnit)
         {
             playerUnit.PlayerSkillController.ChangeSkill(index);
         }
@@ -108,7 +108,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void ChangeSelectedUnitAction(PlayerActionType actionType)
     {
         currentPhase = InputPhase.SelectTarget;
-        if (selectedPlayerUnit is PlayerUnitController playerUnit)
+        if (selectedExecuterUnit is PlayerUnitController playerUnit)
         {
             playerUnit.ChangeAction(actionType);
         }
@@ -138,10 +138,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
             if (Input.GetMouseButtonDown(0))
             {
                 Unit targetUnit = targetSelectable.SelectedUnit;
-                Unit executer = selectedPlayerUnit.SelectedUnit;
+                Unit executer = selectedExecuterUnit.SelectedUnit;
 
                 // playerUnit에게 선택한 mainTarget 전달하기
-                if (selectedPlayerUnit is PlayerUnitController playerUnit)
+                if (selectedExecuterUnit is PlayerUnitController playerUnit)
                 {
                     playerUnit.PlayerSkillController.mainTarget = targetUnit;
                 }
@@ -187,15 +187,15 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     private void DeselectUnit()
     {
-        if (selectedPlayerUnit != null)
-            selectedPlayerUnit.OnDeselect();
+        if (selectedExecuterUnit != null)
+            selectedExecuterUnit.OnDeselect();
 
-        selectedPlayerUnit = null;
+        selectedExecuterUnit = null;
     }
 
     private void SelectUnit(ISelectable unit)
     {
-        selectedPlayerUnit = unit;
+        selectedExecuterUnit = unit;
         unit.OnSelect();
     }
 }
