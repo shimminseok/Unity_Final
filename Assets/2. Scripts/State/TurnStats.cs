@@ -133,7 +133,7 @@ public class ActState : ITurnState
             }
             else if (unit is EnemyUnitController enemy)
             {
-                enemy.ChangeUnitState(EnemyUnitState.Skill);
+                enemy.ChangeUnitState(EnemyUnitState.Skil);
             }
         }
     }
