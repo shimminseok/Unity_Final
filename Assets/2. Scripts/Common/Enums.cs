@@ -43,6 +43,8 @@ public enum PlayerUnitState
     Skill,
     Die,
     Stun,
+
+    EndTurn,
 }
 
 public enum EnemyUnitState
@@ -148,4 +150,14 @@ public enum AttackDistanceType
 {
     Melee,
     Range
+}
+
+public enum ProjectileInterpolationMode
+{
+    Linear,
+    Lerp,
+    MoveTowards,
+    SmoothDamp,
+    Slerp
+    
 }

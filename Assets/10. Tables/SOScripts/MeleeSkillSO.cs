@@ -18,7 +18,7 @@ public class MeleeSkillSO : SkillTypeSO
         {
             foreach (Unit subTarget in controller.subTargets)
             {
-                controller.currentSkill.mainEffect.AffectTargetWithSkill(subTarget);
+                controller.currentSkill.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
         
