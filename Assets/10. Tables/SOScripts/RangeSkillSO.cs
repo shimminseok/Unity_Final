@@ -9,10 +9,10 @@ public class RangeSkillSO : SkillTypeSO
     public override void UseSkill(BaseSkillController controller)
     {
         this.skillController = controller;
-        SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
         
         if (skillController.mainTarget != null)
         {
+            SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
             projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.transform.position, skillController.mainTarget.transform.position,skillController.mainTarget);
         }
 
@@ -20,8 +20,9 @@ public class RangeSkillSO : SkillTypeSO
         if (skillController.subTargets != null)
         {
             foreach (Unit subTarget in skillController.subTargets)
-            {
-                skillController.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
+            { 
+                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
+                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.transform.position, subTarget.transform.position,subTarget);
             }
         }
         
