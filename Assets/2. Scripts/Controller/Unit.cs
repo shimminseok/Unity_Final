@@ -12,20 +12,21 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public BaseEmotion CurrentEmotion { get; protected set; }
     public bool        IsStunned      { get; private set; }
 
-    protected BattleManager    BattleManager    => BattleManager.Instance;
-    public    BaseEmotion[]    Emotions         { get; private set; }
-    public    ActionType       CurrentAction    { get; private set; } = ActionType.None;
-    public    TurnStateMachine TurnStateMachine { get; protected set; }
-
-    public StatManager         StatManager         { get; protected set; }
-    public StatusEffectManager StatusEffectManager { get; protected set; }
-    public StatBase            AttackStat          { get; protected set; }
-    public IDamageable         Target              { get; protected set; }
-    public Collider            Collider            { get; protected set; }
-    public bool                IsDead              { get; protected set; }
-    public int                 Index               { get; protected set; }
-    public UnitSO              UnitSo              { get; protected set; }
-    public IAttackAction       CurrentAttackAction { get; private set; }
+    protected BattleManager       BattleManager       => BattleManager.Instance;
+    public    BaseEmotion[]       Emotions            { get; private set; }
+    public    ActionType          CurrentAction       { get; private set; } = ActionType.None;
+    public    TurnStateMachine    TurnStateMachine    { get; protected set; }
+    public    ITurnState[]        TurnStates          { get; private set; }
+    public    TurnStateType       CurrentTurnState    { get; private set; }
+    public    StatManager         StatManager         { get; protected set; }
+    public    StatusEffectManager StatusEffectManager { get; protected set; }
+    public    StatBase            AttackStat          { get; protected set; }
+    public    IDamageable         Target              { get; protected set; }
+    public    Collider            Collider            { get; protected set; }
+    public    bool                IsDead              { get; protected set; }
+    public    int                 Index               { get; protected set; }
+    public    UnitSO              UnitSo              { get; protected set; }
+    public    IAttackAction       CurrentAttackAction { get; private set; }
 
     public virtual  bool IsAtTargetPosition => false;
     public virtual  bool IsAnimationDone    => false;
@@ -60,6 +61,36 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         }
 
         CurrentEmotion = Emotions[(int)EmotionType.Neutral];
+    }
+
+    protected void CreateTurnStates()
+    {
+        TurnStates = new ITurnState[Enum.GetValues(typeof(TurnStateType)).Length];
+        for (int i = 0; i < TurnStates.Length; i++)
+        {
+            TurnStates[i] = CreateTurnState((TurnStateType)i);
+        }
+
+        TurnStateMachine.Initialize(this, TurnStates[0]);
+    }
+
+    public void ChangeTurnState(TurnStateType state)
+    {
+        TurnStateMachine.ChangeState(TurnStates[(int)state]);
+        CurrentTurnState = state;
+    }
+
+    private ITurnState CreateTurnState(TurnStateType state)
+    {
+        return state switch
+        {
+            TurnStateType.StartTurn    => new StartTurnState(),
+            TurnStateType.MoveToTarget => new MoveToTargetState(),
+            TurnStateType.Return       => new ReturnState(),
+            TurnStateType.Act          => new ActState(),
+            TurnStateType.EndTurn      => new EndTurnState(),
+            _                          => null
+        };
     }
 
     public void ChangeEmotion(EmotionType newType)

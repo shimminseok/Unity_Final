@@ -22,9 +22,10 @@ public class TurnStateMachine
     private ITurnState currentState;
     private Unit owner;
 
-    public void Initialize(Unit unit)
+    public void Initialize(Unit unit, ITurnState entryState)
     {
         owner = unit;
+        ChangeState(entryState);
     }
 
     public void Update()
@@ -49,22 +50,22 @@ public class StartTurnState : ITurnState
             case ActionType.Attack:
                 if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
                 {
-                    unit.TurnStateMachine.ChangeState(new MoveToTargetState());
+                    unit.ChangeTurnState(TurnStateType.MoveToTarget);
                 }
                 else
                 {
-                    unit.TurnStateMachine.ChangeState(new ActState());
+                    unit.ChangeTurnState(TurnStateType.Act);
                 }
 
                 break;
             case ActionType.SKill:
                 if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
                 {
-                    unit.TurnStateMachine.ChangeState(new MoveToTargetState());
+                    unit.ChangeTurnState(TurnStateType.MoveToTarget);
                 }
                 else
                 {
-                    unit.TurnStateMachine.ChangeState(new ActState());
+                    unit.ChangeTurnState(TurnStateType.Act);
                 }
 
                 break;
@@ -96,7 +97,7 @@ public class MoveToTargetState : ITurnState
     public void OnUpdate(Unit unit)
     {
         if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.TurnStateMachine.ChangeState(new ActState());
+            unit.ChangeTurnState(TurnStateType.Act);
     }
 
     public void OnExit(Unit unit)
@@ -149,13 +150,11 @@ public class ActState : ITurnState
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
         {
-            Debug.Log("다시 내 집으로!!");
-            unit.TurnStateMachine.ChangeState(new ReturnState());
+            unit.ChangeTurnState(TurnStateType.Return);
         }
         else
         {
-            Debug.Log("EndTurn");
-            unit.TurnStateMachine.ChangeState(new EndTurnState());
+            unit.ChangeTurnState(TurnStateType.EndTurn);
         }
     }
 
@@ -178,7 +177,7 @@ public class ReturnState : ITurnState
     public void OnUpdate(Unit unit)
     {
         if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.TurnStateMachine.ChangeState(new EndTurnState());
+            unit.ChangeTurnState(TurnStateType.EndTurn);
     }
 
     public void OnExit(Unit unit)
