@@ -142,7 +142,7 @@ public class NeutralEmotion : BaseEmotion
 {
     public NeutralEmotion()
     {
-        EmotionType = EmotionType.None;
+        EmotionType = EmotionType.Neutral;
         Stack = 0;
     }
 

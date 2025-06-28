@@ -62,7 +62,6 @@ namespace PlayerState
             owner.setRemainDistance = 0.1f;
             owner.transform.LookAt(owner.StartPostion, Vector3.up);
             owner.Animator.SetBool(IsMoving, true);
-            Debug.Log("Enter Move State");
         }
 
         public void OnUpdate(PlayerUnitController owner)

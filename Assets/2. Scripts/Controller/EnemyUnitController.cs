@@ -30,7 +30,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     protected override void Awake()
     {
         base.Awake();
-        Initialize(TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -47,6 +46,21 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         base.Update();
+    }
+
+    private AnimatorOverrideController ChangeClip()
+    {
+        AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
+        overrideController["EnemyIdle"] = MonsterSo.IdleAniClip;
+        // overrideController["EnemySkill"] = MonsterSo.
+        overrideController["EnemyMove"] = MonsterSo.MoveAniClip;
+        overrideController["EnemyAttack"] = MonsterSo.AttackAniClip;
+        // for (int i = 0; i < m_Clips.Count; i++)
+        // {
+        //     overrideController[m_Clips[i].name] = m_Clips[i];
+        // }
+
+        return overrideController;
     }
 
     public override void ChangeUnitState(Enum newState)
@@ -68,6 +82,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         StatManager.Initialize(MonsterSo);
+        Animator.runtimeAnimatorController = ChangeClip();
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)

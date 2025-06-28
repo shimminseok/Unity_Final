@@ -56,7 +56,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
+        // Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -85,11 +85,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (PlayerUnitSo == null)
             return;
 
-        // passiveSo.Initialize(this);
+        passiveSo = PlayerUnitSo.PassiveSkill;
+        passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
 
         PlayerSkillController = GetComponent<PlayerSkillController>();
-
         Animator.runtimeAnimatorController = ChangeClip();
     }
 
