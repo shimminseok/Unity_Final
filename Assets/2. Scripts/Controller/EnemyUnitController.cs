@@ -12,7 +12,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     // Start is called before the first frame update
 
     private HPBarUI hpBar;
-    public override bool IsAtTargetPosition => remainDistance < 2f;
+    public override bool IsAtTargetPosition => remainDistance < setRemainDistance;
+    public float setRemainDistance;
 
     public override bool IsAnimationDone
     {

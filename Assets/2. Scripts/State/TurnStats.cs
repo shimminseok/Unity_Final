@@ -190,6 +190,11 @@ public class EndTurnState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
+        if (unit is PlayerUnitController)
+            unit.ChangeUnitState(PlayerUnitState.Idle);
+        else if (unit is EnemyUnitController)
+            unit.ChangeUnitState(EnemyUnitState.Idle);
+
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 

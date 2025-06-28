@@ -7,6 +7,8 @@ using UnityEngine;
 public class BattleManager : SceneOnlySingleton<BattleManager>
 {
     //Test
+    public List<Transform> PartyUnitsTrans;
+    public List<int> PartyUnitsID;
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
     public TurnHandler    TurnHandler    { get; private set; }
@@ -23,8 +25,26 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
+        SetAlliesUnits(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
+    }
+
+    public void SetAlliesUnits(List<PlayerUnitSO> units)
+    {
+        int index = 0;
+        foreach (PlayerUnitSO playerUnitSo in units)
+        {
+            GameObject go = Instantiate(playerUnitSo.UnitPrefab, Vector3.zero, Quaternion.identity);
+            go.transform.SetParent(PartyUnitsTrans[index].transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            Unit unit = go.GetComponent<Unit>();
+            unit.Initialize(playerUnitSo);
+            PartyUnits.Add(unit);
+            index++;
+        }
     }
 
     public void SetAllUnits(List<Unit> units)

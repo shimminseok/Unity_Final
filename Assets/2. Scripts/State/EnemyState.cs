@@ -26,6 +26,7 @@ namespace EnemyState
         public void OnEnter(EnemyUnitController owner)
         {
             Debug.Log("Enter Move State");
+            owner.setRemainDistance = 1.5f;
             owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
@@ -89,6 +90,7 @@ namespace EnemyState
     {
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.setRemainDistance = 0.1f;
         }
 
         public void OnUpdate(EnemyUnitController owner)
