@@ -135,9 +135,32 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment (EquipmentItemSO equip)
+    public void SelectEquipment (EquipmentItem equip)
     {
+        if (currentSelectedCharacter == null) return;
 
+        // 장비 타입 받아옴
+        EquipmentType type = equip.EquipmentItemSo.EquipmentType;
+        var equipped = currentSelectedCharacter.equippedItems;
+
+        // 현재 type 슬롯에 장착된 아이템
+        if(equipped.TryGetValue(type, out var currentEquipped))
+        {
+            // 같은 아이템을 다시 클릭한 경우에 해제
+            if(currentEquipped == equip)
+            {
+                equip.IsEquipped = false;
+                equipped.Remove(type);
+                return;
+            }
+
+            // 다른 장비로 교체하며 기존 장비 해제
+            currentEquipped.IsEquipped = false;
+        }
+
+        // 새 장비 장착
+        equip.IsEquipped = true;
+        equipped[type] = equip;
     }
 
     // 게임 시작 버튼 클릭 시 호출
