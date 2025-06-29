@@ -35,7 +35,10 @@ public class SelectEquipUI : UIBase
 
         if (currentCharacter == null) return;
 
-        
+        ClearEquipInfo();
+        ClearAllSlots();
+        GenerateOwnedEquipButtons();
+        GenerateSelectedEquipButtons();
     }
 
     // 모두 삭제
@@ -63,22 +66,31 @@ public class SelectEquipUI : UIBase
 
         foreach(var equipSO in equipList)
         {
-            // SO 기반 임시 장비 인스턴스
-            EquipmentItem equipItem = new EquipmentItem(equipSO);
+            EquipmentType type = equipSO.EquipmentType;
+            EquipmentItem equipItem;
+            bool isEquipped = false;
 
-            // 장착 여부를 SO 기준으로 판단
-            bool isEquipped = currentCharacter.equippedItems.TryGetValue(
-                equipSO.EquipmentType, out var equippedItem)
-                && equipItem.EquipmentItemSo == equipSO;
+        // 현재 해당 타입 슬롯에 장착된 장비가 있다면
+        if (currentCharacter.equippedItems.TryGetValue(type, out var equippedItem) &&
+            equippedItem.EquipmentItemSo == equipSO)
+        {
+            // 기존 인스턴스를 재사용
+            equipItem = equippedItem;
+            isEquipped = true;
+        }
+        else
+        {
+            // 새 장비 인스턴스를 생성
+            equipItem = new EquipmentItem(equipSO);
+        }
 
-            // 버튼 생성 및 초기화
-            var btn = Instantiate(equipButtonPrefab, inventoryParent);
-            btn.Initialize(equipItem, isEquipped, OnEquipButtonClicked);
+        var btn = Instantiate(equipButtonPrefab, inventoryParent);
+        btn.Initialize(equipItem, isEquipped, false, OnEquipButtonClicked);
         }
     }
 
     // 선택 중인 장비 슬롯 채우기
-    private void GenerateSelectedEquipButton()
+    private void GenerateSelectedEquipButtons()
     {
         foreach (var item in currentCharacter.equippedItems)
         {
@@ -88,7 +100,7 @@ public class SelectEquipUI : UIBase
             if (slot == null) continue;
 
             var btn = Instantiate(equipButtonPrefab, slot);
-            btn.Initialize(item.Value, true, OnEquipButtonClicked);
+            btn.Initialize(item.Value, true, true, OnEquipButtonClicked);
         }
     }
 
@@ -96,14 +108,16 @@ public class SelectEquipUI : UIBase
 
     // 클릭 콜백
     private void OnEquipButtonClicked(EquipButton btn, bool isEquipped)
-    {
+    { 
         ClearEquipInfo();
 
         var item = btn.GetEquipmentItem();
         var job = currentCharacter.characterSO.JobType;
 
+        Debug.Log($"[SelectEquipUI] 버튼 클릭됨 - {item.EquipmentItemSo.ItemName}, isEquipped: {isEquipped}");
+
         // 장착된 장비를 클릭하면 정보만 표시한다
-        if (isEquipped)
+        if (btn.IsSlotButton)
         {
             ShowEquipInfo(item);
             return;

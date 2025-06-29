@@ -14,15 +14,19 @@ public class EquipButton : MonoBehaviour
     private EquipmentItem equip;
     private Action<EquipButton, bool> onClick;
     private bool isEquipped;
+    private bool isSlotButton;
 
-    public void Initialize(EquipmentItem item, bool isEquipped, Action<EquipButton, bool> callback)
+    public void Initialize(EquipmentItem item, bool isEquipped, bool isSlotButton, Action<EquipButton, bool> callback)
     {
         equip = item;
         this.isEquipped = isEquipped;
+        this.isSlotButton = isSlotButton;
         onClick = callback;
 
         icon.sprite = item.EquipmentItemSo.ItemSprite;
         typeText.text = item.EquipmentItemSo.EquipmentType.ToString();
+
+        Debug.Log($"[EquipButton] 초기화됨: {item.EquipmentItemSo.ItemName}, 장착됨?: {isEquipped}");
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
@@ -30,11 +34,13 @@ public class EquipButton : MonoBehaviour
 
     private void OnClick()
     {
+        Debug.Log($"[EquipButton] 클릭됨 - isEquipped: {isEquipped}, item: {equip.EquipmentItemSo.ItemName}");
         onClick?.Invoke(this, isEquipped);
     }
 
     #region
     public EquipmentItem GetEquipmentItem() => equip;
     public bool IsEquipped => isEquipped;
+    public bool IsSlotButton => isSlotButton;   
     #endregion
 }
