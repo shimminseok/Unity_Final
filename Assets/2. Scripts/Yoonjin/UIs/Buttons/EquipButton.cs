@@ -36,4 +36,5 @@ public class EquipButton : MonoBehaviour
     #region
     public EquipmentItem GetEquipmentItem() => equip;
     public bool IsEquipped => isEquipped;
+    #endregion
 }
