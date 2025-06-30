@@ -54,7 +54,7 @@ public class StatBaseDamageEffect
 {
     [Header("공격 횟수")]
     public int attackCount = 1;  // 공격 횟수 => weight * attackCount = 실제 weight
-    private float attackDelay = 0.5f;
+    private float attackDelay = 0.2f;
     [Header("어떤 스텟을 기준으로 데미지를 줄까")]
     public StatType ownerStatType;    // 사용자에 의해 강해지거나 약해지는 사용자의 스텟타입 => ex) 남기사 실드스킬에서 남기사의 최대체력
     [Header("기준스텟에 대한 가중치와 고정 값")]
