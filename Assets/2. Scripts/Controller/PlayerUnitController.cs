@@ -22,15 +22,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
-    public override bool IsAtTargetPosition => remainDistance < 2f;
-
+    public override bool IsAtTargetPosition => remainDistance < setRemainDistance;
+    public float setRemainDistance;
 
     public override bool IsAnimationDone
     {
         get
         {
             var info = Animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+            return info.IsTag("Action") && info.normalizedTime >= 0.95f;
         }
     }
 
@@ -56,7 +56,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
+        // Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -85,10 +85,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (PlayerUnitSo == null)
             return;
 
+        passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
 
         PlayerSkillController = GetComponent<PlayerSkillController>();
+        Animator.runtimeAnimatorController = ChangeClip();
     }
 
     public override void Attack()
@@ -138,15 +140,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     private AnimatorOverrideController ChangeClip()
     {
-        // AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+        AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
+        overrideController["ATK0"] = UnitSo.AttackAniClip;
         // for (int i = 0; i < m_Clips.Count; i++)
         // {
         //     overrideController[m_Clips[i].name] = m_Clips[i];
         // }
-        //
-        // return overrideController;
 
-        return null;
+        return overrideController;
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)

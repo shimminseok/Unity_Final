@@ -12,4 +12,6 @@ public class UnitSO : ScriptableObject, IStatProvider
 
     public GameObject UnitPrefab;
     public Sprite UnitIcon;
+
+    public AnimationClip AttackAniClip;
 }

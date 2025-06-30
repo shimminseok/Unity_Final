@@ -6,8 +6,11 @@ namespace PlayerState
 {
     public class IdleState : IState<PlayerUnitController, PlayerUnitState>
     {
+        private static readonly int IsMove = Animator.StringToHash("IsMove");
+
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Animator.SetBool(IsMove, false);
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -25,9 +28,13 @@ namespace PlayerState
 
     public class MoveState : IState<PlayerUnitController, PlayerUnitState>
     {
+        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.setRemainDistance = 1.5f;
             Debug.Log("Enter Move State");
+            owner.Animator.SetBool(IsMoving, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
@@ -42,14 +49,19 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController entity)
         {
+            entity.Animator.SetBool(IsMoving, false);
         }
     }
 
     public class ReturnState : IState<PlayerUnitController, PlayerUnitState>
     {
+        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+
         public void OnEnter(PlayerUnitController owner)
         {
-            Debug.Log("Enter Move State");
+            owner.setRemainDistance = 0.1f;
+            owner.transform.LookAt(owner.StartPostion, Vector3.up);
+            owner.Animator.SetBool(IsMoving, true);
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -61,8 +73,10 @@ namespace PlayerState
         {
         }
 
-        public void OnExit(PlayerUnitController entity)
+        public void OnExit(PlayerUnitController owner)
         {
+            owner.Animator.SetBool(IsMoving, false);
+            owner.transform.localRotation = Quaternion.identity;
         }
     }
 
