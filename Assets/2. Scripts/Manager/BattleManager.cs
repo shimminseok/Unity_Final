@@ -65,20 +65,15 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             go.transform.SetParent(PartyUnitsTrans[index].transform);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
-            Unit unit = go.GetComponent<Unit>();
+            PlayerUnitController unit = go.GetComponent<PlayerUnitController>();
             unit.Initialize(deckData.characterSO);
             PartyUnits.Add(unit);
-
-            if (unit is PlayerUnitController player)
+            foreach (EquipmentItem equipment in deckData.equippedItems.Values)
             {
-                foreach (EquipmentItem equipment in deckData.equippedItems.Values)
-                {
-                    player.EquipmentManager.EquipItem(equipment);
-                }
-
-                player.SkillManager.selectedSkill = deckData.skillDatas.ToList();
+                unit.EquipmentManager.EquipItem(equipment);
             }
 
+            unit.SkillManager.selectedSkill = deckData.skillDatas.ToList();
             index++;
         }
     }
