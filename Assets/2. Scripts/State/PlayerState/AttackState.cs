@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.CodeAnalysis;
+using UnityEngine;
 
 public class AttackState : IState<PlayerUnitController, PlayerUnitState>
 {
@@ -12,7 +13,7 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
         owner.Agent.velocity = Vector3.zero;
         owner.Agent.ResetPath();
         owner.Animator.SetTrigger(attack);
-        owner.Attack();
+        // owner.Attack();
     }
 
     public void OnUpdate(PlayerUnitController owner)
@@ -29,4 +30,5 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
         owner.Agent.isStopped = false;
         owner.Agent.updateRotation = true;
     }
+    
 }

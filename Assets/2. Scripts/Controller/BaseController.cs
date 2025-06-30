@@ -8,6 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(StatusEffectManager))]
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(AnimationEventListener))]
 public abstract class BaseController<TController, TState> : Unit where TController : BaseController<TController, TState>
     where TState : Enum
 

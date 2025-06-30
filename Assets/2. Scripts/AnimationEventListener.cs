@@ -11,7 +11,19 @@ public class AnimationEventListener : MonoBehaviour
         owner = unit;
     }
 
-    public void Attack()
+    public void EventTrigger()
+    {
+        if (owner.CurrentAction == ActionType.Attack)
+        {
+            Attack();
+        }
+        else if (owner.CurrentAction == ActionType.SKill)
+        {
+            UseSkill();
+        }
+    }
+
+    private void Attack()
     {
         owner.Attack();
     }
