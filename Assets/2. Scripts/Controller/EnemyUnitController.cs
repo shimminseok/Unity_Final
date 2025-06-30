@@ -92,9 +92,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             EnemyUnitState.Idle   => new IdleState(),
             EnemyUnitState.Move   => new MoveState(),
             EnemyUnitState.Return => new EnemyState.ReturnState(),
-            EnemyUnitState.Attack => new AttackState(),
+            EnemyUnitState.Attack => new EnemyState.AttackState(),
             EnemyUnitState.Stun   => new StunState(),
-            EnemyUnitState.Die    => new DeadState(),
+            EnemyUnitState.Die    => new EnemyState.DeadState(),
 
             _ => null
         };

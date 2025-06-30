@@ -1,0 +1,28 @@
+﻿namespace EnemyState
+{
+    public class MoveState : IState<EnemyUnitController, EnemyUnitState>
+    {
+        private readonly int isMove = Define.MoveAnimationHash;
+
+        public void OnEnter(EnemyUnitController owner)
+        {
+            owner.setRemainDistance = 1.5f;
+            owner.Agent.avoidancePriority = 10;
+            owner.Animator.SetBool(isMove, true);
+            owner.MoveTo(owner.Target.Collider.transform.position);
+        }
+
+        public void OnUpdate(EnemyUnitController owner)
+        {
+        }
+
+        public void OnFixedUpdate(EnemyUnitController owner)
+        {
+        }
+
+        public void OnExit(EnemyUnitController owner)
+        {
+            owner.Animator.SetBool(isMove, false);
+        }
+    }
+}
