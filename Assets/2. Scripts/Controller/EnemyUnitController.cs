@@ -102,14 +102,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Attack()
     {
-        // if (Target == null || Target.IsDead)
-        // {
-        //     //Test
         var enemies = BattleManager.Instance.GetEnemies(this);
         Target = enemies[Random.Range(0, enemies.Count)];
-        //     // return;
-        // }
-        // Target = 
+
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;
