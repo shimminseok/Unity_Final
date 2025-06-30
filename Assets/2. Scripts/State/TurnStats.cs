@@ -69,7 +69,6 @@ public class StartTurnState : ITurnState
                 }
 
                 break;
-
         }
     }
 
@@ -84,8 +83,12 @@ public class StartTurnState : ITurnState
 
 public class MoveToTargetState : ITurnState
 {
+    private bool waitOneFrame = false;
+
     public void OnEnter(Unit unit)
     {
+        waitOneFrame = false;
+
         if (unit is PlayerUnitController)
             unit.ChangeUnitState(PlayerUnitState.Move);
         else if (unit is EnemyUnitController)
@@ -94,6 +97,12 @@ public class MoveToTargetState : ITurnState
 
     public void OnUpdate(Unit unit)
     {
+        if (!waitOneFrame)
+        {
+            waitOneFrame = true;
+            return;
+        }
+
         if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
             unit.ChangeTurnState(TurnStateType.Act);
     }

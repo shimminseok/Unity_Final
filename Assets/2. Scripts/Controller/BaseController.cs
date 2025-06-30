@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(StatManager))]
 [RequireComponent(typeof(StatusEffectManager))]
@@ -22,6 +23,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         StatusEffectManager = GetComponent<StatusEffectManager>();
         Collider = GetComponent<CapsuleCollider>();
         Animator = GetComponent<Animator>();
+        Agent = GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine<TController, TState>();
 
         CreateEmotion();

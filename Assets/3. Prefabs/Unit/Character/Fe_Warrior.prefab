@@ -1415,6 +1415,7 @@ GameObject:
   - component: {fileID: -6501386483660908860}
   - component: {fileID: 5562904978021872245}
   - component: {fileID: 603949595726562362}
+  - component: {fileID: -1666054991882986111}
   m_Layer: 6
   m_Name: Fe_Warrior
   m_TagString: Untagged
@@ -1557,6 +1558,29 @@ MonoBehaviour:
   SelectionEffect: {fileID: 4431236958739095837}
   id: 2
   passiveSo: {fileID: 0}
+  setRemainDistance: 0
+--- !u!195 &-1666054991882986111
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194394832456452}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.25
+  m_Speed: 10
+  m_Acceleration: 100
+  avoidancePriority: 50
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1.2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1200085055734178
 GameObject:
   m_ObjectHideFlags: 0

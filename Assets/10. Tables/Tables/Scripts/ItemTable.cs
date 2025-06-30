@@ -21,13 +21,9 @@ public class ItemTable : BaseTable<int, ItemSO>
             }
 
             DataDic[item.ID] = item;
-        }
 
-        foreach (ItemSO item in dataList)
-        {
             if (item is not EquipmentItemSO equipmentItem)
                 continue;
-
 
             if (equipmentItem.IsEquipableByAllJobs)
             {

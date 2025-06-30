@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable
@@ -27,12 +28,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public    int                 Index               { get; protected set; }
     public    UnitSO              UnitSo              { get; protected set; }
     public    IAttackAction       CurrentAttackAction { get; private set; }
+    public    NavMeshAgent        Agent               { get; protected set; }
 
-    public virtual  bool IsAtTargetPosition => false;
-    public virtual  bool IsAnimationDone    => false;
-    public          Unit SelectedUnit       => this;
+    public virtual bool IsAtTargetPosition => false;
+    public virtual bool IsAnimationDone    => false;
+    public         Unit SelectedUnit       => this;
+
     public abstract void StartTurn();
-
     public abstract void EndTurn();
 
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
@@ -71,7 +73,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             TurnStates[i] = CreateTurnState((TurnStateType)i);
         }
 
-        TurnStateMachine.Initialize(this, TurnStates[0]);
+        TurnStateMachine.Initialize(this, TurnStates[(int)TurnStateType.StartTurn]);
     }
 
     public void ChangeTurnState(TurnStateType state)

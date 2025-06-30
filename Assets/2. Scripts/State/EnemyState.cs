@@ -6,6 +6,8 @@ namespace EnemyState
     {
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.Agent.avoidancePriority = 1;
+            owner.Animator.SetBool(Define.MoveAnimationHash, false);
         }
 
         public void OnUpdate(EnemyUnitController owner)
@@ -23,18 +25,18 @@ namespace EnemyState
 
     public class MoveState : IState<EnemyUnitController, EnemyUnitState>
     {
-        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+        private readonly int isMove = Define.MoveAnimationHash;
 
         public void OnEnter(EnemyUnitController owner)
         {
             owner.setRemainDistance = 1.5f;
-            owner.Animator.SetBool(IsMoving, true);
+            owner.Agent.avoidancePriority = 10;
+            owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnUpdate(EnemyUnitController owner)
         {
-            owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)
@@ -43,17 +45,46 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController owner)
         {
-            owner.Animator.SetBool(IsMoving, false);
+            owner.Animator.SetBool(isMove, false);
+        }
+    }
+
+    public class ReturnState : IState<EnemyUnitController, EnemyUnitState>
+    {
+        private readonly int isMove = Define.MoveAnimationHash;
+
+        public void OnEnter(EnemyUnitController owner)
+        {
+            owner.Agent.avoidancePriority = 10;
+            owner.setRemainDistance = 0.1f;
+            owner.Animator.SetBool(isMove, true);
+            owner.MoveTo(owner.StartPostion);
+        }
+
+        public void OnUpdate(EnemyUnitController owner)
+        {
+        }
+
+        public void OnFixedUpdate(EnemyUnitController owner)
+        {
+        }
+
+        public void OnExit(EnemyUnitController owner)
+        {
+            owner.Animator.SetBool(isMove, false);
         }
     }
 
     public class AttackState : IState<EnemyUnitController, EnemyUnitState>
     {
-        private static readonly int Attack = Animator.StringToHash("Attack");
+        private readonly int attack = Define.AttackAnimationHash;
 
         public void OnEnter(EnemyUnitController owner)
         {
-            owner.Animator.SetTrigger(Attack);
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
+            owner.Animator.SetTrigger(attack);
             owner.Attack();
         }
 
@@ -65,8 +96,9 @@ namespace EnemyState
         {
         }
 
-        public void OnExit(EnemyUnitController entity)
+        public void OnExit(EnemyUnitController owner)
         {
+            owner.Agent.isStopped = false;
         }
     }
 
@@ -89,32 +121,6 @@ namespace EnemyState
         }
     }
 
-    public class ReturnState : IState<EnemyUnitController, EnemyUnitState>
-    {
-        private static readonly int IsMoving = Animator.StringToHash("IsMove");
-
-        public void OnEnter(EnemyUnitController owner)
-        {
-            owner.setRemainDistance = 0.1f;
-            owner.transform.LookAt(owner.StartPostion, Vector3.up);
-            owner.Animator.SetBool(IsMoving, true);
-        }
-
-        public void OnUpdate(EnemyUnitController owner)
-        {
-            owner.MoveTo(owner.StartPostion);
-        }
-
-        public void OnFixedUpdate(EnemyUnitController owner)
-        {
-        }
-
-        public void OnExit(EnemyUnitController owner)
-        {
-            owner.Animator.SetBool(IsMoving, false);
-        }
-    }
-
     public class StunState : IState<EnemyUnitController, EnemyUnitState>
     {
         public void OnEnter(EnemyUnitController owner)
@@ -131,11 +137,6 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController entity)
         {
-        }
-
-        public EnemyUnitState CheckTransition(EnemyUnitController owner)
-        {
-            return EnemyUnitState.Stun;
         }
     }
 }
