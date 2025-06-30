@@ -6,6 +6,6 @@ public class BattleSceneStartButton : UIBase
 {
     public void OnStartButton()
     {
-        BattleManager.Instance.StartTurn();
+        InputManager.Instance.OnClickTurnStartButton();
     }
 }
