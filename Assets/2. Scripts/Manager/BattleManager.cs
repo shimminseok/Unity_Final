@@ -38,6 +38,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
+        UIManager.Instance.Open<BattleSceneStartButton>(); // 배틀씬 시작되면 켜져야함.
     }
 
     public void SetAlliesUnit(List<PlayerUnitSO> units)
@@ -103,6 +104,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public void StartTurn()
     {
         TurnHandler.StartNextTurn();
+        UIManager.Instance.Close<BattleSceneStartButton>(); // 턴 시작되면 start 버튼 끄기
     }
 
     public void EndTurn()
@@ -120,6 +122,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         TurnHandler.RefillTurnQueue();
         CommandPlanner?.Clear(); // 턴 종료되면 전략 플래너도 초기화
         OnBattleEnd?.Invoke();
+        UIManager.Instance.Open<BattleSceneStartButton>(); // 턴 종료되면 start 버튼 켜기
     }
 
     public List<Unit> GetAllies(Unit unit)

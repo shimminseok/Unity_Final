@@ -1,5 +1,10 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEngine.UI.CanvasScaler;
 
 // 추후 StateMachine으로 리팩토링하면 좋다.
@@ -27,6 +32,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private LayerMask targetLayer;
     private ISelectable selectedExecuterUnit;
     private ISelectable selectedTargetUnit;
+    private ISelectable selectable;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
     public SkillData SelectedSkillData { get; set; }
 
@@ -57,14 +63,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 플레이어 유닛 선택
     private void OnClickPlayerUnit()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        ShowSelectableUnit(playerUnitLayer, true);
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
+        {
+            selectable = hit.transform.GetComponent<ISelectable>();
+
+            if (Input.GetMouseButtonDown(0))
             {
-                ISelectable selectable = hit.transform.GetComponent<ISelectable>();
                 SelectUnit(selectable);
 
                 // 유닛 선택하면 스킬 선택 페이즈로 전환
@@ -72,13 +80,15 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 Debug.Log($"플레이어 유닛 선택 : {selectedExecuterUnit}");
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
-                skillUI.UpdateSkillList(selectable.SelectedUnit);
-            }
-            else
-            {
-                return;
+                skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
+                ShowSelectableUnit(playerUnitLayer, false); // 선택 가능 인디케이터 끄기
             }
         }
+        else
+        {
+            return;
+        }
+        
     }
 
     // 유닛이 사용할 스킬 선택
@@ -129,17 +139,20 @@ public class InputManager : SceneOnlySingleton<InputManager>
             targetLayer = enemyUnitLayer;
         }
 
+        ShowSelectableUnit(targetLayer, true); // 선택 가능한 유닛 인디케이터 켜기
+
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
         {
             selectedTargetUnit = hit.transform.GetComponent<ISelectable>();
-            selectedTargetUnit.OnSelect();
 
             if (Input.GetMouseButtonDown(0))
             {
                 Unit targetUnit = selectedTargetUnit.SelectedUnit;
                 Unit executer = selectedExecuterUnit.SelectedUnit;
+
+                targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
 
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
@@ -150,26 +163,28 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 executer.SetTarget(targetUnit);
                 Debug.Log($"타겟 유닛 선택 : {targetUnit}");
 
+                ShowSelectableUnit(targetLayer, false); // 선택 완료하면 인디케이터 꺼주기
+
                 // 커맨드 생성
                 IActionCommand command = new AttackCommand(executer, targetUnit);
                 CommandPlanner.Instance.PlanAction(executer, command);
-                Debug.Log($"실행 : {executer} | 타겟 : {targetUnit}");
-
 
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-                selectedTargetUnit.OnDeselect();
+                UIManager.Instance.Close<BattleSceneSkillUI>();
             }
         }
         else
         {
-            if (selectedTargetUnit != null)
-            {
-                selectedTargetUnit.OnDeselect();
-            }
             return;
         }
+    }
+
+    public void OnClickTurnStartButton()
+    {
+        BattleManager.Instance.StartTurn();
+        ShowSelectableUnit(unitLayer, false);
     }
 
     // 선택한 스킬의 타겟 진영 받아오기
@@ -191,7 +206,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void DeselectUnit()
     {
         if (selectedExecuterUnit != null)
-            selectedExecuterUnit.OnDeselect();
+            selectedExecuterUnit.ToggleSelectedIndicator(false);
 
         selectedExecuterUnit = null;
     }
@@ -199,11 +214,42 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void SelectUnit(ISelectable unit)
     {
         selectedExecuterUnit = unit;
-        unit.OnSelect();
+        unit.PlaySelectEffect();
+        unit.ToggleSelectedIndicator(true);
     }
 
-    private void ShowSelectableUnit()
+    // 선택 가능한 유닛 레이어에 Selectable Indicator 띄워주기
+    private void ShowSelectableUnit(LayerMask layer, bool isSelectable)
     {
+        List<Unit> playerUnits = BattleManager.Instance.PartyUnits;
+        List<Unit> enemyUnits = BattleManager.Instance.EnemyUnits;
 
+        if (layer == playerUnitLayer)
+        {
+            foreach (Unit unit in playerUnits)
+            {
+                unit.ToggleSelectableIndicator(isSelectable);
+            }
+        }
+        
+        if (layer == enemyUnitLayer)
+        {
+            foreach (Unit unit in enemyUnits)
+            {
+                unit.ToggleSelectableIndicator(isSelectable);
+            }
+        }
+        
+        if (layer == unitLayer)
+        {
+            foreach (Unit unit in playerUnits)
+            {
+                unit.ToggleSelectableIndicator(isSelectable);
+            }
+            foreach (Unit unit in enemyUnits)
+            {
+                unit.ToggleSelectableIndicator(isSelectable);
+            }
+        }
     }
 }
