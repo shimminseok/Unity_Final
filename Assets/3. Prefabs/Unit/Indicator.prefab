@@ -9798,6 +9798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2582346288489634839}
+  - component: {fileID: 2468560118019999540}
   m_Layer: 0
   m_Name: Indicator
   m_TagString: Untagged
@@ -9819,7 +9820,22 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 594632256733483720}
-  - {fileID: 1672928582599729116}
   - {fileID: 1939660141988747513}
+  - {fileID: 1672928582599729116}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2468560118019999540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7718288766111538265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75807f2778e6d054881e2082a23a349c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectableIndicator: {fileID: 4661591251234978940}
+  SelectEffect: {fileID: 4011060699925059372}
+  SelectedIndicator: {fileID: 5439626713511861674}

@@ -36,6 +36,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 
     protected virtual void Start()
     {
+        base.Start();
     }
 
     protected virtual void Update()

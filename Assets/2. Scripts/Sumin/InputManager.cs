@@ -64,7 +64,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickPlayerUnit()
     {
         ShowSelectableUnit(playerUnitLayer, true);
-        Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
@@ -88,6 +88,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         {
             return;
         }
+        
     }
 
     // 유닛이 사용할 스킬 선택
@@ -149,14 +150,14 @@ public class InputManager : SceneOnlySingleton<InputManager>
             if (Input.GetMouseButtonDown(0))
             {
                 Unit targetUnit = selectedTargetUnit.SelectedUnit;
-                Unit executer   = selectedExecuterUnit.SelectedUnit;
+                Unit executer = selectedExecuterUnit.SelectedUnit;
 
                 targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
 
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
                 {
-                    playerUnit.SkillController.mainTarget = targetUnit;
+                    playerUnit.PlayerSkillController.mainTarget = targetUnit;
                 }
 
                 executer.SetTarget(targetUnit);
@@ -220,36 +221,21 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 선택 가능한 유닛 레이어에 Selectable Indicator 띄워주기
     private void ShowSelectableUnit(LayerMask layer, bool isSelectable)
     {
-        List<Unit> playerUnits = BattleManager.Instance.PartyUnits;
-        List<Unit> enemyUnits  = BattleManager.Instance.EnemyUnits;
+        List<Unit> targetUnits = new List<Unit>();
 
-        if (layer == playerUnitLayer)
+        if ((layer.value & playerUnitLayer.value) != 0)
         {
-            foreach (Unit unit in playerUnits)
-            {
-                unit.ToggleSelectableIndicator(isSelectable);
-            }
+            targetUnits.AddRange(BattleManager.Instance.PartyUnits);
         }
 
-        if (layer == enemyUnitLayer)
+        if ((layer.value & enemyUnitLayer.value) != 0)
         {
-            foreach (Unit unit in enemyUnits)
-            {
-                unit.ToggleSelectableIndicator(isSelectable);
-            }
+            targetUnits.AddRange(BattleManager.Instance.EnemyUnits);
         }
 
-        if (layer == unitLayer)
+        foreach (Unit unit in targetUnits)
         {
-            foreach (Unit unit in playerUnits)
-            {
-                unit.ToggleSelectableIndicator(isSelectable);
-            }
-
-            foreach (Unit unit in enemyUnits)
-            {
-                unit.ToggleSelectableIndicator(isSelectable);
-            }
+            unit.ToggleSelectableIndicator(isSelectable);
         }
     }
 }
