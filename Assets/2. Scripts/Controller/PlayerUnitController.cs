@@ -22,7 +22,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
-    public override bool IsAtTargetPosition => remainDistance < setRemainDistance;
+    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
     public float setRemainDistance;
 
     public override bool IsAnimationDone
@@ -126,9 +126,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void MoveTo(Vector3 destination)
     {
-        remainDistance = Vector3.Distance(transform.position, destination);
-
-        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 5f);
+        Agent.SetDestination(destination);
     }
 
     public void UseSkill()

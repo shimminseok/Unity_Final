@@ -3725,6 +3725,7 @@ GameObject:
   - component: {fileID: -3090219877229818458}
   - component: {fileID: -5964720563794396349}
   - component: {fileID: -5583537012172356708}
+  - component: {fileID: 1749261649730106066}
   m_Layer: 6
   m_Name: SpearMan
   m_TagString: Untagged
@@ -3866,6 +3867,29 @@ MonoBehaviour:
   SelectionEffect: {fileID: 2823643882007535686}
   id: 3
   passiveSo: {fileID: 0}
+  setRemainDistance: 0
+--- !u!195 &1749261649730106066
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566368292716416}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.25
+  m_Speed: 10
+  m_Acceleration: 100
+  avoidancePriority: 50
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1.2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1584870791148330
 GameObject:
   m_ObjectHideFlags: 0

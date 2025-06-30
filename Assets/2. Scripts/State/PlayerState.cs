@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace PlayerState
 {
@@ -10,6 +12,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.avoidancePriority = 1;
             owner.Animator.SetBool(isMove, false);
         }
 
@@ -32,6 +35,8 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 5f;
+            owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 1.5f;
             Debug.Log("Enter Move State");
             owner.Animator.SetBool(isMove, true);
@@ -40,7 +45,6 @@ namespace PlayerState
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
@@ -59,14 +63,15 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 10f;
+            owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 0.1f;
-            owner.transform.LookAt(owner.StartPostion, Vector3.up);
             owner.Animator.SetBool(isMove, true);
+            owner.MoveTo(owner.StartPostion);
         }
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            owner.MoveTo(owner.StartPostion);
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
@@ -86,22 +91,28 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.updateRotation = false;
+            owner.transform.LookAt(owner.Target.Collider.transform);
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
             owner.Animator.SetTrigger(attack);
             owner.Attack();
         }
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
         {
         }
 
-        public void OnExit(PlayerUnitController entity)
+        public void OnExit(PlayerUnitController owner)
         {
-            entity.Animator.ResetTrigger(attack);
+            owner.Animator.ResetTrigger(attack);
+            owner.Agent.isStopped = false;
+            owner.Agent.updateRotation = true;
         }
     }
 
