@@ -36,6 +36,8 @@ public class BattleSceneSkillSlot : MonoBehaviour
         skillCostText.text = $"{coolDown}";
         reuseNumberText.text = $"{reuseNumber}";
         skillIdText.text = $"{currentskillIndex}";
+
+        ToggleSkillSlot(skillData.CheckCanUseSkill()); // 사용 가능 여부에 따라 앞or뒤 켜고 끄기
     }
 
     // 스킬 버튼 누르면 이 스킬의 슬롯 인덱스에 맞춰서 반영하여 스킬 선택
@@ -47,6 +49,17 @@ public class BattleSceneSkillSlot : MonoBehaviour
         InputManager.Instance.SelectedSkillData = selectedSkillData;
     }
 
-    // 버튼 앞쪽이 보이면 클릭 시 스킬 선택 가능
-    // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
+    public void OnBackSkillBtn()
+    {
+        // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
+        // 잠시 앞면 보일때 못누르게해야함.
+    }
+
+    // 스킬 슬롯 앞or뒤 토글
+    private void ToggleSkillSlot(bool toggle)
+    {
+        FrontSkillBtn.gameObject.SetActive(toggle);
+        BackSkillBtn.gameObject.SetActive(!toggle);
+    }
+    
 }
