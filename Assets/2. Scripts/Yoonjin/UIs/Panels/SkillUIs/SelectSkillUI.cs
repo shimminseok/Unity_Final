@@ -35,6 +35,12 @@ public class SelectSkillUI : UIBase
         UpdateSkillUI();
     }
 
+    public override void Close()
+    {
+        base.Close();
+
+    }
+
     // UI 갱신
     public void UpdateSkillUI()
     {

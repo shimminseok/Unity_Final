@@ -6,11 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 {
-    // UI 연동해서 테스트해보려는데
-    // 내가 갖고있는 캐릭터풀이 < 어디서?.? < 아직 미정
-    // 버튼 스크립트 만들어서 PlayerUnitSo / SelectCharacter 호출 < 테스트는 걍 박아놓기
-
-
     // 선택된 캐릭터와 스킬 목록
     [SerializeField]
     private List<EntryDeckData> selectedDeck = new List<EntryDeckData>();
@@ -135,9 +130,38 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment (EquipmentItemSO equip)
+    public void SelectEquipment (EquipmentItem equip)
     {
+        if (currentSelectedCharacter == null) return;
 
+        // 장비 타입 받아옴
+        EquipmentType type = equip.EquipmentItemSo.EquipmentType;
+        var equipped = currentSelectedCharacter.equippedItems;
+
+        // 현재 type 슬롯에 장착된 아이템
+        if(equipped.TryGetValue(type, out var currentEquipped))
+        {
+            // 같은 아이템을 다시 클릭한 경우에 해제
+            if(currentEquipped == equip)
+            {
+                equip.IsEquipped = false;
+                equipped.Remove(type);
+
+                // 디버깅용
+                currentSelectedCharacter.SyncDebugEquipments();
+                return;
+            }
+
+            // 다른 장비로 교체하며 기존 장비 해제
+            currentEquipped.IsEquipped = false;
+        }
+
+        // 새 장비 장착
+        equip.IsEquipped = true;
+        equipped[type] = equip;
+
+        // 디버깅용
+        currentSelectedCharacter.SyncDebugEquipments();
     }
 
     // 게임 시작 버튼 클릭 시 호출
