@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectEquipUI : UIBase
 {
@@ -18,6 +19,9 @@ public class SelectEquipUI : UIBase
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemDescription;
 
+    [Header("아바타 표시")]
+    [SerializeField] private RawImage avatarImage;
+
     private EntryDeckData currentCharacter;
 
 
@@ -26,6 +30,17 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
+
+        if (currentCharacter != null)
+        {
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.characterSO, avatarImage);
+        }
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        AvatarPreviewManager.Instance.HideAllAvatars();
     }
 
     // UI 갱신
