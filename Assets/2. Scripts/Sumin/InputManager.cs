@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.UI.CanvasScaler;
 
 // 추후 StateMachine으로 리팩토링하면 좋다.
@@ -27,6 +28,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private LayerMask targetLayer;
     private ISelectable selectedExecuterUnit;
     private ISelectable selectedTargetUnit;
+    private ISelectable selectable;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
     public SkillData SelectedSkillData { get; set; }
 
@@ -57,14 +59,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 플레이어 유닛 선택
     private void OnClickPlayerUnit()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
+        {
+            selectable = hit.transform.GetComponent<ISelectable>();
+            selectable.OnSelect();
+
+            if (Input.GetMouseButtonDown(0))
             {
-                ISelectable selectable = hit.transform.GetComponent<ISelectable>();
                 SelectUnit(selectable);
 
                 // 유닛 선택하면 스킬 선택 페이즈로 전환
@@ -72,13 +76,18 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 Debug.Log($"플레이어 유닛 선택 : {selectedExecuterUnit}");
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
-                skillUI.UpdateSkillList(selectable.SelectedUnit);
-            }
-            else
-            {
-                return;
+                skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
             }
         }
+        else
+        {
+            if (selectedTargetUnit != null)
+            {
+                selectable.OnDeselect();
+            }
+            return;
+        }
+        
     }
 
     // 유닛이 사용할 스킬 선택
@@ -134,6 +143,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
         {
             selectedTargetUnit = hit.transform.GetComponent<ISelectable>();
+            Debug.Log(selectedTargetUnit);
             selectedTargetUnit.OnSelect();
 
             if (Input.GetMouseButtonDown(0))
@@ -160,6 +170,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
                 selectedTargetUnit.OnDeselect();
+                UIManager.Instance.Close<BattleSceneSkillUI>();
             }
         }
         else
