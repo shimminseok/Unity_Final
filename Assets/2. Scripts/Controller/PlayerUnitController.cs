@@ -16,6 +16,8 @@ public enum ActionType
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
+    [SerializeField] private AnimationClip idleClip;
+    [SerializeField] private AnimationClip moveClip;
     public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
     private HPBarUI hpBar;
@@ -89,6 +91,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         StatManager.Initialize(PlayerUnitSo);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
+        ChangeClip(Define.IdleClipName, idleClip);
+        ChangeClip(Define.MoveClipName, moveClip);
         Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 

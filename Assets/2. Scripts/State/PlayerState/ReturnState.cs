@@ -26,7 +26,9 @@ namespace PlayerState
         public void OnExit(PlayerUnitController owner)
         {
             owner.Animator.SetBool(isMove, false);
+            owner.Agent.updateRotation = false;
             owner.transform.localRotation = Quaternion.identity;
+            owner.Agent.updateRotation = true;
         }
     }
 }
