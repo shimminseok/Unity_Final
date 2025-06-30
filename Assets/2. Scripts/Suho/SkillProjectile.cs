@@ -81,10 +81,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     {
         effectData = effect;
         startPosition = startPos;
-        Vector3 AdjustedYVector = Vector3.up * 1.5f;
-        startPosition += AdjustedYVector;
         direction = dir;
-        direction += AdjustedYVector;
         this.gameObject.transform.position = startPosition;
         this.gameObject.transform.LookAt(target.transform);
         Target = target;

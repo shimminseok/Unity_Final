@@ -116,6 +116,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentEmotion.AddStack(this);
         }
     }
+    
 
 
     public abstract void Attack();
@@ -161,4 +162,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void ChangeUnitState(Enum newState);
 
     public abstract void Initialize(UnitSO unit);
+
+    public Vector3 GetCenter()
+    {
+        return Collider.bounds.center;
+    }
 }

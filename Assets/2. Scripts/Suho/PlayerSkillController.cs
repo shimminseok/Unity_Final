@@ -26,11 +26,13 @@ public class PlayerSkillController : BaseSkillController
     public Animator animator;
     
     public AnimationClip skillAttackAnim;
+    private SkillAnimationListener skillAnimationListener;
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
+        skillAnimationListener = GetComponent<SkillAnimationListener>();
     }
 
     public override void SelectTargets(Unit target)
@@ -47,6 +49,7 @@ public class PlayerSkillController : BaseSkillController
         AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
         overrideController["ATK2"] = CurrentSkillData.skillAnimation;
         animator.runtimeAnimatorController = overrideController;
+        skillAnimationListener.skillData = CurrentSkillData;
     }
 
     public override void UseSkill()
@@ -59,11 +62,8 @@ public class PlayerSkillController : BaseSkillController
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
         SelectTargets(mainTarget);
-        skillManager.owner.ChangeUnitState(PlayerUnitState.Skill);
         //CurrentSkillData.skillType.UseSkill(this);
-        CurrentSkillData = null;
-
-        EndTurn();
+  
     }
 
 

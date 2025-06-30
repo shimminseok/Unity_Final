@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 3), buttonWidth, buttonHeight), "Skill_1"))
         {
             skillController.ChangeSkill(0);
-            skillController.UseSkill();
+            CurrentUnit.ChangeUnitState(PlayerUnitState.Skill);
         }
 
         if (GUI.Button(new Rect(x, y - ((buttonHeight + spacing) * 4), buttonWidth, buttonHeight), "Skill_2"))
