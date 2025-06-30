@@ -71,7 +71,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             TurnStates[i] = CreateTurnState((TurnStateType)i);
         }
 
-        TurnStateMachine.Initialize(this, TurnStates[0]);
+        TurnStateMachine.Initialize(this, TurnStates[(int)TurnStateType.StartTurn]);
     }
 
     public void ChangeTurnState(TurnStateType state)

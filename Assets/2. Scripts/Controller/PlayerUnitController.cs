@@ -141,11 +141,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     private AnimatorOverrideController ChangeClip()
     {
         AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
-        overrideController["ATK0"] = UnitSo.AttackAniClip;
-        // for (int i = 0; i < m_Clips.Count; i++)
-        // {
-        //     overrideController[m_Clips[i].name] = m_Clips[i];
-        // }
+        overrideController[Define.PlayerAttackClipName] = UnitSo.AttackAniClip;
 
         return overrideController;
     }
@@ -233,11 +229,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         TurnStateMachine.ChangeState(new StartTurnState());
-
-        // if (CurrentAction == ActionType.Attack)
-        //     Attack();
-        // else if (CurrentAction == ActionType.SKill)
-        //     UseSkill();
     }
 
 

@@ -69,9 +69,6 @@ public class StartTurnState : ITurnState
                 }
 
                 break;
-            case ActionType.None:
-                unit.EndTurn();
-                break;
         }
     }
 
