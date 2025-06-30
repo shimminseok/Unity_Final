@@ -2523,6 +2523,7 @@ GameObject:
   - component: {fileID: -3100819424120585792}
   - component: {fileID: 9105016036144610945}
   - component: {fileID: -3967711964234224515}
+  - component: {fileID: -6156759580500302914}
   m_Layer: 6
   m_Name: Archer
   m_TagString: Untagged
@@ -2665,6 +2666,29 @@ MonoBehaviour:
   SelectionEffect: {fileID: 4536712764178136893}
   id: 5
   passiveSo: {fileID: 0}
+  setRemainDistance: 0
+--- !u!195 &-6156759580500302914
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374048655880376}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.25
+  m_Speed: 5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1.2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1378542575408906
 GameObject:
   m_ObjectHideFlags: 0
