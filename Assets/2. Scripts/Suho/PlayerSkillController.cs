@@ -39,6 +39,9 @@ public class PlayerSkillController : BaseSkillController
     public override void ChangeSkill(int index)
     {
         CurrentSkillData = skills[index];
+        if (CurrentSkillData == null)
+            return;
+
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillAnimation);
         skillAnimationListener.skillData = CurrentSkillData;
     }

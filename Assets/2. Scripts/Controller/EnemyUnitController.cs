@@ -74,8 +74,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.IdleClipName, MonsterSo.IdleAniClip);
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
-
-        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -124,6 +122,11 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override void MoveTo(Vector3 destination)
     {
         Agent.SetDestination(destination);
+    }
+
+    public override void UseSkill()
+    {
+        SkillController.UseSkill();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)

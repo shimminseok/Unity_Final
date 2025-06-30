@@ -25,6 +25,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         Agent = GetComponent<NavMeshAgent>();
         SkillManager = GetComponent<SkillManager>();
         stateMachine = new StateMachine<TController, TState>();
+        AnimationEventListener = GetComponent<AnimationEventListener>();
         CreateEmotion();
         SetupState();
 

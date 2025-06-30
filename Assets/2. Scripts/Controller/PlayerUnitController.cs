@@ -24,6 +24,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
+
     public float setRemainDistance;
 
     public override bool IsAnimationDone
@@ -89,11 +90,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+        AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
         ChangeClip(Define.IdleClipName, idleClip);
         ChangeClip(Define.MoveClipName, moveClip);
-        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
 
@@ -133,7 +134,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Agent.SetDestination(destination);
     }
 
-    public void UseSkill()
+    public override void UseSkill()
     {
         //이펙트 생성
         //
