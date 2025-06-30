@@ -8,9 +8,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 {
     private const float ResistancePerStack = 0.08f;
 
-    [SerializeField] private GameObject SelectedIndicator; // 선택중인 유닛 표시
-    [SerializeField] private ParticleSystem SelectEffect; // 유닛 선택 시 표시
-    [SerializeField] private GameObject SelectableIndicator; // 선택 가능한 유닛 표시
+    [SerializeField] protected BattleSceneUnitIndicator unitIndicator;
 
     public BaseEmotion CurrentEmotion { get; protected set; }
     public bool        IsStunned      { get; private set; }
@@ -45,10 +43,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public event Action<Unit> OnAnimationComplete;
 
-    private void Awake()
+    protected void Start()
     {
-        if (SelectedIndicator != null)
-            SelectedIndicator.SetActive(false);
+        if (unitIndicator == null)
+        {
+            unitIndicator = GetComponentInChildren<BattleSceneUnitIndicator>();
+        }
     }
 
     public void SetStunned(bool isStunned)
@@ -131,25 +131,28 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     // 유닛 선택 가능 토글
     public void ToggleSelectableIndicator(bool toggle)
     {
-        if (SelectableIndicator == null)
-            Debug.LogError("SelectableIndicator Prefab을 연결해주세요.");
-        SelectableIndicator.SetActive(toggle);
+        if (unitIndicator == null)
+            Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+
+        unitIndicator.ToggleSelectableIndicator(toggle);
     }
 
     // 유닛 선택됨 표시 토글
     public void ToggleSelectedIndicator(bool toggle)
     {
-        if (SelectedIndicator == null)
-            Debug.LogError("SelectedIndicator Prefab을 연결해주세요.");
-        SelectedIndicator.SetActive(toggle);
+        if (unitIndicator == null)
+            Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+
+        unitIndicator.ToggleSelectedIndicator(toggle);
     }
 
     // 유닛 선택 파티클 재생
     public void PlaySelectEffect()
     {
-        if (SelectEffect == null)
-            Debug.LogError("SelectEffect Prefab을 연결해주세요.");
-        SelectEffect.Play();
+        if (unitIndicator == null)
+            Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+
+        unitIndicator.PlaySelectEffect();
     }
 
     public void ChangeAction(ActionType action)
