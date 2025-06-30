@@ -23,9 +23,12 @@ namespace EnemyState
 
     public class MoveState : IState<EnemyUnitController, EnemyUnitState>
     {
+        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+
         public void OnEnter(EnemyUnitController owner)
         {
-            Debug.Log("Enter Move State");
+            owner.setRemainDistance = 1.5f;
+            owner.Animator.SetBool(IsMoving, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
@@ -38,8 +41,9 @@ namespace EnemyState
         {
         }
 
-        public void OnExit(EnemyUnitController entity)
+        public void OnExit(EnemyUnitController owner)
         {
+            owner.Animator.SetBool(IsMoving, false);
         }
     }
 
@@ -87,8 +91,13 @@ namespace EnemyState
 
     public class ReturnState : IState<EnemyUnitController, EnemyUnitState>
     {
+        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.setRemainDistance = 0.1f;
+            owner.transform.LookAt(owner.StartPostion, Vector3.up);
+            owner.Animator.SetBool(IsMoving, true);
         }
 
         public void OnUpdate(EnemyUnitController owner)
@@ -100,8 +109,9 @@ namespace EnemyState
         {
         }
 
-        public void OnExit(EnemyUnitController entity)
+        public void OnExit(EnemyUnitController owner)
         {
+            owner.Animator.SetBool(IsMoving, false);
         }
     }
 

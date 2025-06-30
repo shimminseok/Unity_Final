@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: f1bf9616e59cf204ba9b67a5cabb5c4c
 ModelImporter:
-  serializedVersion: 21300
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -1404,6 +1404,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -1431,6 +1432,7 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -2074,7 +2076,8 @@ ModelImporter:
     - name: ToesEnd_R
       parentName: Toes_R
       position: {x: -0.02448291, y: -1.949829e-14, z: 0.000000061952235}
-      rotation: {x: -0.00000016856937, y: 0.000000022584569, z: 0.000000046007692, w: 1}
+      rotation: {x: -0.00000016856937, y: 0.000000022584569, z: 0.000000046007692,
+        w: 1}
       scale: {x: 1.0000006, y: 0.99999994, z: 1.0000005}
     - name: RootPart1_M
       parentName: Root_M
@@ -2954,6 +2957,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
   remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 

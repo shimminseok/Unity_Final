@@ -9,7 +9,7 @@ public static class EmotionAffinityManager
 
     public static float GetAffinityMultiplier(EmotionType attacker, EmotionType defender)
     {
-        if (attacker == EmotionType.None || defender == EmotionType.None || attacker == defender)
+        if (attacker == EmotionType.Neutral || defender == EmotionType.Neutral || attacker == defender)
         {
             return 1.0f;
         }

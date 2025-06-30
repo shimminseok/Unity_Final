@@ -7,6 +7,10 @@ using UnityEngine;
 public class BattleManager : SceneOnlySingleton<BattleManager>
 {
     //Test
+    public List<Transform> PartyUnitsTrans;
+    public List<Transform> EnemyUnitsTrans;
+    public List<int> PartyUnitsID;
+    public List<int> EnemyUnitsID;
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
     public TurnHandler    TurnHandler    { get; private set; }
@@ -23,9 +27,44 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
+        SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+        SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
+
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
         UIManager.Instance.Open<BattleSceneStartButton>(); // 배틀씬 시작되면 켜져야함.
+    }
+
+    public void SetAlliesUnit(List<PlayerUnitSO> units)
+    {
+        int index = 0;
+        foreach (PlayerUnitSO playerUnitSo in units)
+        {
+            GameObject go = Instantiate(playerUnitSo.UnitPrefab, Vector3.zero, Quaternion.identity);
+            go.transform.SetParent(PartyUnitsTrans[index].transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            Unit unit = go.GetComponent<Unit>();
+            unit.Initialize(playerUnitSo);
+            PartyUnits.Add(unit);
+            index++;
+        }
+    }
+
+    public void SetEnemiesUnit(List<EnemyUnitSO> units)
+    {
+        int index = 0;
+        foreach (EnemyUnitSO enemyUnitSo in units)
+        {
+            GameObject go = Instantiate(enemyUnitSo.UnitPrefab, Vector3.zero, Quaternion.identity);
+            go.transform.SetParent(EnemyUnitsTrans[index].transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            Unit unit = go.GetComponent<Unit>();
+            unit.Initialize(enemyUnitSo);
+            EnemyUnits.Add(unit);
+            index++;
+        }
     }
 
     public void SetAllUnits(List<Unit> units)
