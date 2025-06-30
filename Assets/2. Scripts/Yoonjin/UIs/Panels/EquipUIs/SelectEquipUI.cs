@@ -114,8 +114,6 @@ public class SelectEquipUI : UIBase
         var item = btn.GetEquipmentItem();
         var job = currentCharacter.characterSO.JobType;
 
-        Debug.Log($"[SelectEquipUI] 버튼 클릭됨 - {item.EquipmentItemSo.ItemName}, isEquipped: {isEquipped}");
-
         // 장착된 장비를 클릭하면 정보만 표시한다
         if (btn.IsSlotButton)
         {

@@ -101,7 +101,6 @@ public class SelectSkillUI : UIBase
         if (currentCharacter.passiveSkill != null)
         {
             var btn = Instantiate(skillButtonPrefab, passiveSkillSlot);
-            Debug.Log("선택한 패시브 슬롯 할당");
             btn.Initialize(currentCharacter.passiveSkill, true, OnSkillButtonClicked);
         }
 

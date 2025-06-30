@@ -111,19 +111,15 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             return;
         }
 
-        Debug.Log($"[SelectPassiveSkill] 시도: {passive.PassiveName}");
-
         // 이미 선택했으면 해제
         if (currentSelectedCharacter.passiveSkill == passive)
         {
-            Debug.Log("해제됨");
             currentSelectedCharacter.passiveSkill = null;
         }
 
 
         else
         {
-            Debug.Log("장착됨");
             currentSelectedCharacter.passiveSkill = passive;
         }
 
