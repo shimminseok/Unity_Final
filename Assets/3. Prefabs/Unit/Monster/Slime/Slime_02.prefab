@@ -79,6 +79,8 @@ GameObject:
   - component: {fileID: -8536690853834946952}
   - component: {fileID: 2008938028857214423}
   - component: {fileID: 8312651432243848466}
+  - component: {fileID: 7972055332060156088}
+  - component: {fileID: 4558901962933364633}
   m_Layer: 0
   m_Name: Slime_02
   m_TagString: Untagged
@@ -160,7 +162,7 @@ Animator:
   m_GameObject: {fileID: 2795397902362475942}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eb340672e17c0af4089e561b61cdc548, type: 3}
-  m_Controller: {fileID: 9100000, guid: ce74b7ce80361b743b8bee127c4cad6f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4fa3646181582444c9c9fdede92d9d87, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -183,7 +185,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionEffect: {fileID: 0}
+  SelectedIndicator: {fileID: 0}
+  SelectEffect: {fileID: 0}
+  SelectableIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
 --- !u!195 &8312651432243848466
@@ -208,6 +212,36 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7972055332060156088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2795397902362475942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSkill: []
+  skillController: {fileID: 0}
+  owner: {fileID: 0}
+--- !u!114 &4558901962933364633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2795397902362475942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTarget: {fileID: 0}
+  subTargets: []
+  generateCost: 1
 --- !u!1 &2988591986747077261
 GameObject:
   m_ObjectHideFlags: 0

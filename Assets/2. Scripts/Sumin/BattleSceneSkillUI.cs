@@ -16,8 +16,8 @@ public class BattleSceneSkillUI : UIBase
         {
             for (int i = 0; i < skillSlot.Count; i++)
             {
-                skillSlot[i].Initialize(playerUnit.PlayerSkillController.skills[i], i);
+                skillSlot[i].Initialize(playerUnit.SkillController.skills[i], i);
             }
-        } 
+        }
     }
 }

@@ -13,7 +13,7 @@ public class RangeSkillSO : SkillTypeSO
         if (skillController.mainTarget != null)
         {
             SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.skillManager.owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
+            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
         }
 
 
@@ -22,7 +22,7 @@ public class RangeSkillSO : SkillTypeSO
             foreach (Unit subTarget in skillController.subTargets)
             {
                 SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
-                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.skillManager.owner.GetCenter(), skillController.mainTarget.GetCenter(), subTarget);
+                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), subTarget);
             }
         }
     }

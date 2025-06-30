@@ -369,6 +369,8 @@ GameObject:
   - component: {fileID: -7300509626107127362}
   - component: {fileID: -2340280398794444029}
   - component: {fileID: 7304862460484803836}
+  - component: {fileID: 9213170989445789907}
+  - component: {fileID: 1245196192009526894}
   m_Layer: 7
   m_Name: Slime_01
   m_TagString: Untagged
@@ -404,7 +406,7 @@ Animator:
   m_GameObject: {fileID: 6705402075998324148}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eb340672e17c0af4089e561b61cdc548, type: 3}
-  m_Controller: {fileID: 9100000, guid: ce74b7ce80361b743b8bee127c4cad6f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4fa3646181582444c9c9fdede92d9d87, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -474,7 +476,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectionEffect: {fileID: 2737488533394049206}
+  SelectedIndicator: {fileID: 0}
+  SelectEffect: {fileID: 0}
+  SelectableIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
 --- !u!195 &7304862460484803836
@@ -499,6 +503,36 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &9213170989445789907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705402075998324148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSkill: []
+  skillController: {fileID: 0}
+  owner: {fileID: 0}
+--- !u!114 &1245196192009526894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705402075998324148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTarget: {fileID: 0}
+  subTargets: []
+  generateCost: 1
 --- !u!1 &7196686864344488850
 GameObject:
   m_ObjectHideFlags: 0

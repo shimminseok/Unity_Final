@@ -19,19 +19,13 @@ using UnityEngine;
  *
  */
 [System.Serializable]
-[RequireComponent(typeof(SkillManager))]
 public class PlayerSkillController : BaseSkillController
 {
-
-    public Animator animator;
-    
     public AnimationClip skillAttackAnim;
     private SkillAnimationListener skillAnimationListener;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-        animator = GetComponent<Animator>();
         skillAnimationListener = GetComponent<SkillAnimationListener>();
     }
 
@@ -42,13 +36,10 @@ public class PlayerSkillController : BaseSkillController
         subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
-    public void ChangeSkill(int index)
+    public override void ChangeSkill(int index)
     {
         CurrentSkillData = skills[index];
-        // AnimatorOverrideController 교체
-        AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-        overrideController["ATK2"] = CurrentSkillData.skillAnimation;
-        animator.runtimeAnimatorController = overrideController;
+        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillAnimation);
         skillAnimationListener.skillData = CurrentSkillData;
     }
 
@@ -59,11 +50,11 @@ public class PlayerSkillController : BaseSkillController
             Debug.LogWarning("사용 불가능한 스킬 사용시도");
             return;
         }
+
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
         SelectTargets(mainTarget);
         //CurrentSkillData.skillType.UseSkill(this);
-  
     }
 
 

@@ -27,7 +27,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
-        if (PlayerDeckContainer.Instance == null)
+        if (PlayerDeckContainer.Instance.CurrentDeck.deckDatas.Count == 0)
             SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
         else
         {
@@ -88,7 +88,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             go.transform.SetParent(EnemyUnitsTrans[index].transform);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
-            Unit unit = go.GetComponent<Unit>();
+            EnemyUnitController unit = go.GetComponent<EnemyUnitController>();
             unit.Initialize(enemyUnitSo);
             EnemyUnits.Add(unit);
             index++;

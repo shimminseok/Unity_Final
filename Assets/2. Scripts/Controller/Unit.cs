@@ -8,8 +8,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 {
     private const float ResistancePerStack = 0.08f;
 
-    [SerializeField] private GameObject SelectedIndicator; // 선택중인 유닛 표시
-    [SerializeField] private ParticleSystem SelectEffect; // 유닛 선택 시 표시
+    [SerializeField] private GameObject SelectedIndicator;   // 선택중인 유닛 표시
+    [SerializeField] private ParticleSystem SelectEffect;    // 유닛 선택 시 표시
     [SerializeField] private GameObject SelectableIndicator; // 선택 가능한 유닛 표시
 
     public BaseEmotion CurrentEmotion { get; protected set; }
@@ -24,6 +24,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public    StatManager         StatManager         { get; protected set; }
     public    StatusEffectManager StatusEffectManager { get; protected set; }
     public    StatBase            AttackStat          { get; protected set; }
+    public    Animator            Animator            { get; protected set; }
     public    IDamageable         Target              { get; protected set; }
     public    Collider            Collider            { get; protected set; }
     public    bool                IsDead              { get; protected set; }
@@ -32,6 +33,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public    IAttackAction       CurrentAttackAction { get; private set; }
     public    NavMeshAgent        Agent               { get; protected set; }
     public    SkillManager        SkillManager        { get; protected set; }
+    public    BaseSkillController SkillController     { get; protected set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    => false;
@@ -44,7 +46,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void Dead();
 
-    public event Action<Unit> OnAnimationComplete;
+    public event Action<Unit>         OnAnimationComplete;
+    public AnimatorOverrideController AnimatorOverrideController { get; protected set; }
+
+
+    public abstract void Attack();
+    public abstract void MoveTo(Vector3 destination);
+    public abstract void ChangeUnitState(Enum newState);
+    public abstract void Initialize(UnitSO unit);
 
     private void Awake()
     {
@@ -67,6 +76,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
         CurrentEmotion = Emotions[(int)EmotionType.Neutral];
     }
+
 
     protected void CreateTurnStates()
     {
@@ -98,6 +108,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         };
     }
 
+    public void ChangeClip(string changedClipName, AnimationClip changeClip)
+    {
+        AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
+        AnimatorOverrideController[changedClipName] = changeClip;
+
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
+    }
+
     public void ChangeEmotion(EmotionType newType)
     {
         if (CurrentEmotion.EmotionType != newType)
@@ -119,11 +137,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentEmotion.AddStack(this);
         }
     }
-    
 
-
-    public abstract void Attack();
-    public abstract void MoveTo(Vector3 destination);
 
     public void SetTarget(IDamageable target)
     {
@@ -161,7 +175,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
-            CurrentAttackAction = (this as PlayerUnitController)?.PlayerSkillController.CurrentSkillData.skillType;
+            CurrentAttackAction = SkillController.CurrentSkillData.skillType;
         }
     }
 
@@ -170,9 +184,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         StartCoroutine(coroutine);
     }
 
-    public abstract void ChangeUnitState(Enum newState);
-
-    public abstract void Initialize(UnitSO unit);
 
     public Vector3 GetCenter()
     {
