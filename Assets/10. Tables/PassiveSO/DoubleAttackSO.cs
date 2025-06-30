@@ -22,7 +22,7 @@ public class DoubleAttack : PassiveSO, IPassiveAttackTrigger
         float mutiplier   = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, Owner.Target.CurrentEmotion.EmotionType);
         float finalDamage = baseDamage * mutiplier;
 
-
+        // Owner.Attack();
         Owner.Target.TakeDamage(finalDamage);
     }
 }

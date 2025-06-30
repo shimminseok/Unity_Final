@@ -28,7 +28,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         SetupState();
 
         TurnStateMachine = new TurnStateMachine();
-        TurnStateMachine.Initialize(this);
+        CreateTurnStates();
     }
 
     protected virtual void Start()
