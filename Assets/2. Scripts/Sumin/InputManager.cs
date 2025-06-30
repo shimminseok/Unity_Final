@@ -65,7 +65,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
         {
             selectable = hit.transform.GetComponent<ISelectable>();
-            selectable.OnSelect();
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -81,10 +80,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
         }
         else
         {
-            if (selectedTargetUnit != null)
-            {
-                selectable.OnDeselect();
-            }
             return;
         }
         
@@ -143,13 +138,13 @@ public class InputManager : SceneOnlySingleton<InputManager>
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
         {
             selectedTargetUnit = hit.transform.GetComponent<ISelectable>();
-            Debug.Log(selectedTargetUnit);
-            selectedTargetUnit.OnSelect();
 
             if (Input.GetMouseButtonDown(0))
             {
                 Unit targetUnit = selectedTargetUnit.SelectedUnit;
                 Unit executer = selectedExecuterUnit.SelectedUnit;
+
+                targetUnit.PlaySelectEffect();
 
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
@@ -169,16 +164,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-                selectedTargetUnit.OnDeselect();
                 UIManager.Instance.Close<BattleSceneSkillUI>();
             }
         }
         else
         {
-            if (selectedTargetUnit != null)
-            {
-                selectedTargetUnit.OnDeselect();
-            }
             return;
         }
     }
@@ -202,7 +192,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void DeselectUnit()
     {
         if (selectedExecuterUnit != null)
-            selectedExecuterUnit.OnDeselect();
+            selectedExecuterUnit.ToggleSelectedIndicator(false);
 
         selectedExecuterUnit = null;
     }
@@ -210,9 +200,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void SelectUnit(ISelectable unit)
     {
         selectedExecuterUnit = unit;
-        unit.OnSelect();
+        unit.PlaySelectEffect();
+        unit.ToggleSelectedIndicator(true);
     }
 
+    // 선택 가능한 유닛 레이어에 Selectable Indicator 띄워주기
     private void ShowSelectableUnit()
     {
 

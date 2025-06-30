@@ -7,7 +7,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 {
     private const float ResistancePerStack = 0.08f;
 
-    [SerializeField] private GameObject SelectionEffect; // 유닛 선택 시 표시해주는 이펙트
+    [SerializeField] private GameObject SelectedIndicator; // 선택중인 유닛 표시
+    [SerializeField] private ParticleSystem SelectEffect; // 유닛 선택 시 표시
+    [SerializeField] private GameObject SelectableIndicator; // 선택 가능한 유닛 표시
 
     public BaseEmotion CurrentEmotion { get; protected set; }
     public bool        IsStunned      { get; private set; }
@@ -42,8 +44,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     private void Awake()
     {
-        if (SelectionEffect != null)
-            SelectionEffect.SetActive(false);
+        if (SelectedIndicator != null)
+            SelectedIndicator.SetActive(false);
     }
 
     public void SetStunned(bool isStunned)
@@ -93,20 +95,28 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         Target = target;
     }
 
-    // 유닛 선택 했을 때
-    public void OnSelect()
+    // 유닛 선택 가능 토글
+    public void ToggleSelectableIndicator(bool toggle)
     {
-        if (SelectionEffect == null)
-            Debug.LogError("SelectionEffect가 null입니다!");
-        SelectionEffect.SetActive(true);
+        if (SelectableIndicator == null)
+            Debug.LogError("SelectableIndicator Prefab을 연결해주세요.");
+        SelectableIndicator.SetActive(toggle);
     }
 
-    // 유닛 선택 해제 했을 때
-    public void OnDeselect()
+    // 유닛 선택됨 표시 토글
+    public void ToggleSelectedIndicator(bool toggle)
     {
-        if (SelectionEffect == null)
-            Debug.LogError("SelectionEffect가 null입니다!");
-        SelectionEffect.SetActive(false);
+        if (SelectedIndicator == null)
+            Debug.LogError("SelectedIndicator Prefab을 연결해주세요.");
+        SelectedIndicator.SetActive(toggle);
+    }
+
+    // 유닛 선택 파티클 재생
+    public void PlaySelectEffect()
+    {
+        if (SelectEffect == null)
+            Debug.LogError("SelectEffect Prefab을 연결해주세요.");
+        SelectEffect.Play();
     }
 
     public void ChangeAction(ActionType action)
