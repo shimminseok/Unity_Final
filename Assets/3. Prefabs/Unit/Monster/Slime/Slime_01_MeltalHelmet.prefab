@@ -110,6 +110,8 @@ GameObject:
   - component: {fileID: -8206595270608061424}
   - component: {fileID: 241247210662467853}
   - component: {fileID: 3106045796136588455}
+  - component: {fileID: 3091966638611200651}
+  - component: {fileID: 3224760438285463181}
   m_Layer: 0
   m_Name: Slime_01_MeltalHelmet
   m_TagString: Untagged
@@ -192,7 +194,7 @@ Animator:
   m_GameObject: {fileID: 3198502390492704377}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: eb340672e17c0af4089e561b61cdc548, type: 3}
-  m_Controller: {fileID: 9100000, guid: ce74b7ce80361b743b8bee127c4cad6f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4fa3646181582444c9c9fdede92d9d87, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -215,9 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdad0f9695bac840bff9fd84d1677ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectableIndicator: {fileID: 3199280842507251019}
-  SelectEffect: {fileID: 6592506822595610139}
-  SelectedIndicator: {fileID: 2858101166648003741}
+  unitIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
 --- !u!195 &3106045796136588455
@@ -242,6 +242,34 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3091966638611200651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198502390492704377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSkill: []
+--- !u!114 &3224760438285463181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198502390492704377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTarget: {fileID: 0}
+  subTargets: []
+  generateCost: 1
 --- !u!1 &4223262636022095585
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,27 +603,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b660d27919dda84586197e1ea54e496, type: 3}
---- !u!1 &2858101166648003741 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5439626713511861674, guid: 7b660d27919dda84586197e1ea54e496,
-    type: 3}
-  m_PrefabInstance: {fileID: 7842856515986166071}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3199280842507251019 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4661591251234978940, guid: 7b660d27919dda84586197e1ea54e496,
-    type: 3}
-  m_PrefabInstance: {fileID: 7842856515986166071}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5692895411062148384 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2582346288489634839, guid: 7b660d27919dda84586197e1ea54e496,
-    type: 3}
-  m_PrefabInstance: {fileID: 7842856515986166071}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &6592506822595610139 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4011060699925059372, guid: 7b660d27919dda84586197e1ea54e496,
     type: 3}
   m_PrefabInstance: {fileID: 7842856515986166071}
   m_PrefabAsset: {fileID: 0}

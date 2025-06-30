@@ -70,9 +70,12 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         StatManager.Initialize(MonsterSo);
+        AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.IdleClipName, MonsterSo.IdleAniClip);
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
+
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)

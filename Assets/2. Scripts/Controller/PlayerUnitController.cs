@@ -56,7 +56,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         SkillController = GetComponent<PlayerSkillController>();
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        // Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -88,8 +87,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+        AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
+
 
     public override void Attack()
     {

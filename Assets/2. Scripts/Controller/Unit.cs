@@ -13,22 +13,26 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public BaseEmotion CurrentEmotion { get; protected set; }
     public bool        IsStunned      { get; private set; }
 
-    protected BattleManager       BattleManager       => BattleManager.Instance;
-    public    BaseEmotion[]       Emotions            { get; private set; }
-    public    ActionType          CurrentAction       { get; private set; } = ActionType.None;
-    public    TurnStateMachine    TurnStateMachine    { get; protected set; }
-    public    ITurnState[]        TurnStates          { get; private set; }
-    public    TurnStateType       CurrentTurnState    { get; private set; }
-    public    StatManager         StatManager         { get; protected set; }
-    public    StatusEffectManager StatusEffectManager { get; protected set; }
-    public    StatBase            AttackStat          { get; protected set; }
-    public    IDamageable         Target              { get; protected set; }
-    public    Collider            Collider            { get; protected set; }
-    public    bool                IsDead              { get; protected set; }
-    public    int                 Index               { get; protected set; }
-    public    UnitSO              UnitSo              { get; protected set; }
-    public    IAttackAction       CurrentAttackAction { get; private set; }
-    public    NavMeshAgent        Agent               { get; protected set; }
+    protected BattleManager              BattleManager              => BattleManager.Instance;
+    public    BaseEmotion[]              Emotions                   { get; private set; }
+    public    ActionType                 CurrentAction              { get; private set; } = ActionType.None;
+    public    TurnStateMachine           TurnStateMachine           { get; protected set; }
+    public    ITurnState[]               TurnStates                 { get; private set; }
+    public    TurnStateType              CurrentTurnState           { get; private set; }
+    public    StatManager                StatManager                { get; protected set; }
+    public    StatusEffectManager        StatusEffectManager        { get; protected set; }
+    public    StatBase                   AttackStat                 { get; protected set; }
+    public    SkillManager               SkillManager               { get; protected set; }
+    public    Animator                   Animator                   { get; protected set; }
+    public    BaseSkillController        SkillController            { get; protected set; }
+    public    AnimatorOverrideController AnimatorOverrideController { get; protected set; }
+    public    IDamageable                Target                     { get; protected set; }
+    public    Collider                   Collider                   { get; protected set; }
+    public    bool                       IsDead                     { get; protected set; }
+    public    int                        Index                      { get; protected set; }
+    public    UnitSO                     UnitSo                     { get; protected set; }
+    public    IAttackAction              CurrentAttackAction        { get; private set; }
+    public    NavMeshAgent               Agent                      { get; protected set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    => false;
@@ -162,7 +166,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
-            CurrentAttackAction = (this as PlayerUnitController)?.PlayerSkillController.CurrentSkillData.skillType;
+            CurrentAttackAction = SkillController.CurrentSkillData.skillType;
         }
     }
 
@@ -174,6 +178,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void ChangeUnitState(Enum newState);
 
     public abstract void Initialize(UnitSO unit);
+
+    public void ChangeClip(string changedClipName, AnimationClip changeClip)
+    {
+        AnimatorOverrideController[changedClipName] = changeClip;
+    }
+
     public Vector3 GetCenter()
     {
         return Collider.bounds.center;
