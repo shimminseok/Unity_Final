@@ -29,6 +29,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public    UnitSO              UnitSo              { get; protected set; }
     public    IAttackAction       CurrentAttackAction { get; private set; }
     public    NavMeshAgent        Agent               { get; protected set; }
+    public    SkillManager        SkillManager        { get; protected set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    => false;

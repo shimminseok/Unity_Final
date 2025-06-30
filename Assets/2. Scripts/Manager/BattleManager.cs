@@ -27,7 +27,13 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
-        SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+        if (PlayerDeckContainer.Instance == null)
+            SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+        else
+        {
+            SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
+        }
+
         SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
 
         TurnHandler = new TurnHandler();
@@ -46,6 +52,33 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             Unit unit = go.GetComponent<Unit>();
             unit.Initialize(playerUnitSo);
             PartyUnits.Add(unit);
+            index++;
+        }
+    }
+
+    public void SetAlliesUnit(PlayerDeck playerDeck)
+    {
+        int index = 0;
+        foreach (EntryDeckData deckData in playerDeck.deckDatas)
+        {
+            GameObject go = Instantiate(deckData.characterSO.UnitPrefab, Vector3.zero, Quaternion.identity);
+            go.transform.SetParent(PartyUnitsTrans[index].transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            Unit unit = go.GetComponent<Unit>();
+            unit.Initialize(deckData.characterSO);
+            PartyUnits.Add(unit);
+
+            if (unit is PlayerUnitController player)
+            {
+                foreach (EquipmentItem equipment in deckData.equippedItems.Values)
+                {
+                    player.EquipmentManager.EquipItem(equipment);
+                }
+
+                player.SkillManager.selectedSkill = deckData.skillDatas.ToList();
+            }
+
             index++;
         }
     }

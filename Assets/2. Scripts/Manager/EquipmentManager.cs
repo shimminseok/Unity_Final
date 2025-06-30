@@ -54,11 +54,11 @@ public class EquipmentManager
         }
 
         EquipmentType type = item.EquipmentItemSo.EquipmentType;
-        if (item.IsEquipped)
-        {
-            UnequipItem(type);
-            return;
-        }
+        // if (item.IsEquipped)
+        // {
+        //     UnequipItem(type);
+        //     return;
+        // }
 
         if (EquipmentItems.ContainsKey(type))
         {
