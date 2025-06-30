@@ -22,7 +22,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
-    public override bool IsAtTargetPosition => remainDistance < setRemainDistance;
+    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
     public float setRemainDistance;
 
     public override bool IsAnimationDone
@@ -126,9 +126,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void MoveTo(Vector3 destination)
     {
-        remainDistance = Vector3.Distance(transform.position, destination);
-
-        transform.position = Vector3.MoveTowards(transform.position, destination, Time.deltaTime * 5f);
+        Agent.SetDestination(destination);
     }
 
     public void UseSkill()
@@ -141,11 +139,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     private AnimatorOverrideController ChangeClip()
     {
         AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
-        overrideController["ATK0"] = UnitSo.AttackAniClip;
-        // for (int i = 0; i < m_Clips.Count; i++)
-        // {
-        //     overrideController[m_Clips[i].name] = m_Clips[i];
-        // }
+        overrideController[Define.PlayerAttackClipName] = UnitSo.AttackAniClip;
 
         return overrideController;
     }
@@ -233,11 +227,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         TurnStateMachine.ChangeState(new StartTurnState());
-
-        // if (CurrentAction == ActionType.Attack)
-        //     Attack();
-        // else if (CurrentAction == ActionType.SKill)
-        //     UseSkill();
     }
 
 

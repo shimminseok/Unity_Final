@@ -1,16 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace PlayerState
 {
     public class IdleState : IState<PlayerUnitController, PlayerUnitState>
     {
-        private static readonly int IsMove = Animator.StringToHash("IsMove");
+        private readonly int isMove = Define.MoveAnimationHash;
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Animator.SetBool(IsMove, false);
+            owner.Agent.avoidancePriority = 1;
+            owner.Animator.SetBool(isMove, false);
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -28,19 +31,20 @@ namespace PlayerState
 
     public class MoveState : IState<PlayerUnitController, PlayerUnitState>
     {
-        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+        private readonly int isMove = Define.MoveAnimationHash;
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 5f;
+            owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 1.5f;
             Debug.Log("Enter Move State");
-            owner.Animator.SetBool(IsMoving, true);
+            owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            owner.MoveTo(owner.Target.Collider.transform.position);
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
@@ -49,24 +53,25 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController entity)
         {
-            entity.Animator.SetBool(IsMoving, false);
+            entity.Animator.SetBool(isMove, false);
         }
     }
 
     public class ReturnState : IState<PlayerUnitController, PlayerUnitState>
     {
-        private static readonly int IsMoving = Animator.StringToHash("IsMove");
+        private readonly int isMove = Define.MoveAnimationHash;
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 10f;
+            owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 0.1f;
-            owner.transform.LookAt(owner.StartPostion, Vector3.up);
-            owner.Animator.SetBool(IsMoving, true);
+            owner.Animator.SetBool(isMove, true);
+            owner.MoveTo(owner.StartPostion);
         }
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            owner.MoveTo(owner.StartPostion);
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
@@ -75,18 +80,23 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController owner)
         {
-            owner.Animator.SetBool(IsMoving, false);
+            owner.Animator.SetBool(isMove, false);
             owner.transform.localRotation = Quaternion.identity;
         }
     }
 
     public class AttackState : IState<PlayerUnitController, PlayerUnitState>
     {
-        private static readonly int Attack = Animator.StringToHash("Attack");
+        private readonly int attack = Define.AttackAnimationHash;
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Animator.SetTrigger(Attack);
+            owner.Agent.updateRotation = false;
+            owner.transform.LookAt(owner.Target.Collider.transform);
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
+            owner.Animator.SetTrigger(attack);
             owner.Attack();
         }
 
@@ -98,19 +108,21 @@ namespace PlayerState
         {
         }
 
-        public void OnExit(PlayerUnitController entity)
+        public void OnExit(PlayerUnitController owner)
         {
-            entity.Animator.ResetTrigger(Attack);
+            owner.Animator.ResetTrigger(attack);
+            owner.Agent.isStopped = false;
+            owner.Agent.updateRotation = true;
         }
     }
 
     public class SkillState : IState<PlayerUnitController, PlayerUnitState>
     {
-        private static readonly int Skill = Animator.StringToHash("Skill");
+        private readonly int skill = Define.SkillAnimationHash;
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Animator.SetTrigger(Skill);
+            owner.Animator.SetTrigger(skill);
             owner.UseSkill();
         }
 
@@ -124,7 +136,7 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController owner)
         {
-            owner.Animator.ResetTrigger(Skill);
+            owner.Animator.ResetTrigger(skill);
         }
     }
 
