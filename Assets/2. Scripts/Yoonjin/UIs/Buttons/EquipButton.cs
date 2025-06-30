@@ -26,15 +26,12 @@ public class EquipButton : MonoBehaviour
         icon.sprite = item.EquipmentItemSo.ItemSprite;
         typeText.text = item.EquipmentItemSo.EquipmentType.ToString();
 
-        Debug.Log($"[EquipButton] 초기화됨: {item.EquipmentItemSo.ItemName}, 장착됨?: {isEquipped}");
-
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
     }
 
     private void OnClick()
     {
-        Debug.Log($"[EquipButton] 클릭됨 - isEquipped: {isEquipped}, item: {equip.EquipmentItemSo.ItemName}");
         onClick?.Invoke(this, isEquipped);
     }
 

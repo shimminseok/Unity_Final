@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectEquipUI : UIBase
 {
@@ -18,6 +19,9 @@ public class SelectEquipUI : UIBase
     [SerializeField] private TMP_Text itemName;
     [SerializeField] private TMP_Text itemDescription;
 
+    [Header("아바타 표시")]
+    [SerializeField] private RawImage avatarImage;
+
     private EntryDeckData currentCharacter;
 
 
@@ -26,6 +30,17 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
+
+        if (currentCharacter != null)
+        {
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.characterSO, avatarImage);
+        }
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        AvatarPreviewManager.Instance.HideAllAvatars();
     }
 
     // UI 갱신
@@ -113,8 +128,6 @@ public class SelectEquipUI : UIBase
 
         var item = btn.GetEquipmentItem();
         var job = currentCharacter.characterSO.JobType;
-
-        Debug.Log($"[SelectEquipUI] 버튼 클릭됨 - {item.EquipmentItemSo.ItemName}, isEquipped: {isEquipped}");
 
         // 장착된 장비를 클릭하면 정보만 표시한다
         if (btn.IsSlotButton)

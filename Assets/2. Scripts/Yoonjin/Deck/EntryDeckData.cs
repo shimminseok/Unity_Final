@@ -24,6 +24,10 @@ public class EntryDeckData
         public EquipmentItem item;
     }
 
+
+    /// <summary>
+    /// 딕셔너리 디버깅용
+    /// </summary>
     [SerializeField]
     private List<EquipmentEntry> debugEquippedItems = new();
 

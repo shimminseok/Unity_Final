@@ -40,8 +40,6 @@ public class SkillButton : MonoBehaviour
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
-
-        Debug.Log($"[Initialize] 액티브 스킬: {active.name}, 코스트: {active.coolTime}");
     }
 
     // 패시브 스킬 초기화
@@ -55,8 +53,6 @@ public class SkillButton : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
 
-        Debug.Log($"[Initialize] 패시브 스킬: {passive.name}");
-
         //!!!아직 패시브 스킬에는 아이콘이 없음!!!
         //icon.sprite = passive.skillIcon;
     }
@@ -64,7 +60,6 @@ public class SkillButton : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log($"[SkillButton] 클릭됨 - isSelected: {isSelected}, isPassive: {isPassive}");
         onClick?.Invoke(this, isSelected);
     }
 
