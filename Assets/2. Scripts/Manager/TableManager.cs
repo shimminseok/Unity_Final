@@ -12,6 +12,8 @@ public class TableManager : Singleton<TableManager>
     protected override void Awake()
     {
         base.Awake();
+        if (isDuplicated)
+            return;
         foreach (var tableObj in tableList)
         {
             if (tableObj is ITable table)

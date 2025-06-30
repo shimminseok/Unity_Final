@@ -14,8 +14,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 {
     protected StateMachine<TController, TState> stateMachine;
     protected IState<TController, TState>[] states;
-    public Animator Animator     { get; protected set; }
-    public TState   CurrentState { get; protected set; }
+    public TState CurrentState { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -24,13 +23,15 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         Collider = GetComponent<CapsuleCollider>();
         Animator = GetComponent<Animator>();
         Agent = GetComponent<NavMeshAgent>();
+        SkillManager = GetComponent<SkillManager>();
         stateMachine = new StateMachine<TController, TState>();
-
         CreateEmotion();
         SetupState();
 
         TurnStateMachine = new TurnStateMachine();
         CreateTurnStates();
+
+        SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Start()

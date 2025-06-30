@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,9 +19,16 @@ using UnityEngine;
  *
  */
 [System.Serializable]
-[RequireComponent(typeof(SkillManager))]
 public class PlayerSkillController : BaseSkillController
 {
+    public AnimationClip skillAttackAnim;
+    private SkillAnimationListener skillAnimationListener;
+
+    private void Awake()
+    {
+        skillAnimationListener = GetComponent<SkillAnimationListener>();
+    }
+
     public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
@@ -28,9 +36,11 @@ public class PlayerSkillController : BaseSkillController
         subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
-    public void ChangeSkill(int index)
+    public override void ChangeSkill(int index)
     {
         CurrentSkillData = skills[index];
+        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillAnimation);
+        skillAnimationListener.skillData = CurrentSkillData;
     }
 
     public override void UseSkill()
@@ -40,13 +50,11 @@ public class PlayerSkillController : BaseSkillController
             Debug.LogWarning("사용 불가능한 스킬 사용시도");
             return;
         }
+
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
         SelectTargets(mainTarget);
-        CurrentSkillData.skillType.UseSkill(this);
-        CurrentSkillData = null;
-
-        EndTurn();
+        //CurrentSkillData.skillType.UseSkill(this);
     }
 
 

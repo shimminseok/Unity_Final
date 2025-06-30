@@ -24,6 +24,9 @@ public class SelectSkillUI : UIBase
     [Header("스킬 버튼 프리팹")]
     [SerializeField] private SkillButton skillButtonPrefab;
 
+    [Header("아바타 표시")]
+    [SerializeField] private RawImage avatarImage;
+
     // 현재 선택된 캐릭터
     private EntryDeckData currentCharacter;
 
@@ -33,7 +36,19 @@ public class SelectSkillUI : UIBase
     {
         base.Open();
         UpdateSkillUI();
+
+        if (currentCharacter != null)
+        {
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.characterSO, avatarImage);
+        }
     }
+
+    public override void Close()
+    {
+        base.Close();
+        AvatarPreviewManager.Instance.HideAllAvatars();
+    }
+
 
     // UI 갱신
     public void UpdateSkillUI()
@@ -95,7 +110,6 @@ public class SelectSkillUI : UIBase
         if (currentCharacter.passiveSkill != null)
         {
             var btn = Instantiate(skillButtonPrefab, passiveSkillSlot);
-            Debug.Log("선택한 패시브 슬롯 할당");
             btn.Initialize(currentCharacter.passiveSkill, true, OnSkillButtonClicked);
         }
 

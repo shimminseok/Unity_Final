@@ -17,8 +17,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 {
     [SerializeField] private int id;
     public PassiveSO passiveSo;
-    public EquipmentManager      EquipmentManager      { get; private set; }
-    public PlayerSkillController PlayerSkillController { get; private set; }
+    public EquipmentManager EquipmentManager { get; private set; }
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
@@ -54,9 +53,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     protected override void Awake()
     {
+        SkillController = GetComponent<PlayerSkillController>();
         base.Awake();
         EquipmentManager = new EquipmentManager(this);
-        // Initialize(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id));
     }
 
     protected override void Start()
@@ -88,10 +87,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
-
-        PlayerSkillController = GetComponent<PlayerSkillController>();
-        Animator.runtimeAnimatorController = ChangeClip();
+        AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
+        ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
+
 
     public override void Attack()
     {
@@ -133,16 +133,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         //이펙트 생성
         //
-        PlayerSkillController.UseSkill();
+        SkillController.UseSkill();
     }
 
-    private AnimatorOverrideController ChangeClip()
-    {
-        AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
-        overrideController[Define.PlayerAttackClipName] = UnitSo.AttackAniClip;
-
-        return overrideController;
-    }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
     {
@@ -241,6 +234,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!IsDead)
             CurrentEmotion.AddStack(this);
 
+        Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.Idle);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();

@@ -23,25 +23,23 @@ public class SkillButton : MonoBehaviour
     // 선택된 스킬인지
     private bool isSelected;
 
-    private Action<SkillButton, bool> onAfterClick;
+    private Action<SkillButton, bool> onClick;
 
 
 
     // 액티브 스킬 초기화
-    public void Initialize(ActiveSkillSO active, bool isSelectedSkill, Action<SkillButton, bool> onClick)
+    public void Initialize(ActiveSkillSO active, bool isSelectedSkill, Action<SkillButton, bool> callback)
     {
         activeActiveSkill = active;
         isPassive = false;
         this.isSelected = isSelectedSkill;
-        onAfterClick = onClick;
+        onClick = callback;
 
         icon.sprite = active.skillIcon;
         cost.text = active.coolTime.ToString();
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
-
-        Debug.Log($"[Initialize] 액티브 스킬: {active.name}, 코스트: {active.coolTime}");
     }
 
     // 패시브 스킬 초기화
@@ -50,12 +48,10 @@ public class SkillButton : MonoBehaviour
         passiveSkill = passive;
         isPassive = true;
         this.isSelected = isSelectedSkill;
-        onAfterClick = onClick;
+        this.onClick = onClick;
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
-
-        Debug.Log($"[Initialize] 패시브 스킬: {passive.name}");
 
         //!!!아직 패시브 스킬에는 아이콘이 없음!!!
         //icon.sprite = passive.skillIcon;
@@ -64,8 +60,7 @@ public class SkillButton : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log($"[SkillButton] 클릭됨 - isSelected: {isSelected}, isPassive: {isPassive}");
-        onAfterClick?.Invoke(this, isSelected);
+        onClick?.Invoke(this, isSelected);
     }
 
     #region

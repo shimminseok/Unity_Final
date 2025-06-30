@@ -5,6 +5,7 @@ using EnemyState;
 using System;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(EnemySkillContorller))]
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
     [SerializeField] private int id;
@@ -29,6 +30,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     protected override void Awake()
     {
+        SkillController = GetComponent<EnemySkillContorller>();
         base.Awake();
     }
 
@@ -48,20 +50,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         base.Update();
     }
 
-    private AnimatorOverrideController ChangeClip()
-    {
-        AnimatorOverrideController overrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
-        overrideController["EnemyIdle"] = MonsterSo.IdleAniClip;
-        // overrideController["EnemySkill"] = MonsterSo.
-        overrideController["EnemyMove"] = MonsterSo.MoveAniClip;
-        overrideController["EnemyAttack"] = MonsterSo.AttackAniClip;
-        // for (int i = 0; i < m_Clips.Count; i++)
-        // {
-        //     overrideController[m_Clips[i].name] = m_Clips[i];
-        // }
-
-        return overrideController;
-    }
 
     public override void ChangeUnitState(Enum newState)
     {
@@ -82,7 +70,12 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         StatManager.Initialize(MonsterSo);
-        Animator.runtimeAnimatorController = ChangeClip();
+        AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
+        ChangeClip(Define.IdleClipName, MonsterSo.IdleAniClip);
+        ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
+        ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
+
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -92,9 +85,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             EnemyUnitState.Idle   => new IdleState(),
             EnemyUnitState.Move   => new MoveState(),
             EnemyUnitState.Return => new EnemyState.ReturnState(),
-            EnemyUnitState.Attack => new AttackState(),
+            EnemyUnitState.Attack => new EnemyState.AttackState(),
             EnemyUnitState.Stun   => new StunState(),
-            EnemyUnitState.Die    => new DeadState(),
+            EnemyUnitState.Die    => new EnemyState.DeadState(),
 
             _ => null
         };
@@ -102,14 +95,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Attack()
     {
-        // if (Target == null || Target.IsDead)
-        // {
-        //     //Test
         var enemies = BattleManager.Instance.GetEnemies(this);
         Target = enemies[Random.Range(0, enemies.Count)];
-        //     // return;
-        // }
-        // Target = 
+
 
         //어택 타입에 따라서 공격 방식을 다르게 적용
         IDamageable finalTarget = Target;

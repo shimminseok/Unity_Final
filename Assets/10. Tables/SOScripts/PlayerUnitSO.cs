@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "NewPlayerUnitSO", menuName = "ScriptableObjects/Unit/PlayerUnit", order = 0)]
-public class PlayerUnitSO : UnitSO, IStatProvider
+public class PlayerUnitSO : UnitSO
 {
     public PassiveSO PassiveSkill;
     public JobType JobType;

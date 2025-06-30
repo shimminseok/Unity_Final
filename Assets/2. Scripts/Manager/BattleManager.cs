@@ -27,7 +27,13 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
-        SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+        if (PlayerDeckContainer.Instance.CurrentDeck.deckDatas.Count == 0)
+            SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
+        else
+        {
+            SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
+        }
+
         SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
 
         TurnHandler = new TurnHandler();
@@ -51,6 +57,28 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         }
     }
 
+    public void SetAlliesUnit(PlayerDeck playerDeck)
+    {
+        int index = 0;
+        foreach (EntryDeckData deckData in playerDeck.deckDatas)
+        {
+            GameObject go = Instantiate(deckData.characterSO.UnitPrefab, Vector3.zero, Quaternion.identity);
+            go.transform.SetParent(PartyUnitsTrans[index].transform);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            PlayerUnitController unit = go.GetComponent<PlayerUnitController>();
+            unit.Initialize(deckData.characterSO);
+            PartyUnits.Add(unit);
+            foreach (EquipmentItem equipment in deckData.equippedItems.Values)
+            {
+                unit.EquipmentManager.EquipItem(equipment);
+            }
+
+            unit.SkillManager.selectedSkill = deckData.skillDatas.ToList();
+            index++;
+        }
+    }
+
     public void SetEnemiesUnit(List<EnemyUnitSO> units)
     {
         int index = 0;
@@ -60,7 +88,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             go.transform.SetParent(EnemyUnitsTrans[index].transform);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
-            Unit unit = go.GetComponent<Unit>();
+            EnemyUnitController unit = go.GetComponent<EnemyUnitController>();
             unit.Initialize(enemyUnitSo);
             EnemyUnits.Add(unit);
             index++;

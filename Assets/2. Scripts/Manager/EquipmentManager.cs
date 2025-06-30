@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,11 +54,11 @@ public class EquipmentManager
         }
 
         EquipmentType type = item.EquipmentItemSo.EquipmentType;
-        if (item.IsEquipped)
-        {
-            UnequipItem(type);
-            return;
-        }
+        // if (item.IsEquipped)
+        // {
+        //     UnequipItem(type);
+        //     return;
+        // }
 
         if (EquipmentItems.ContainsKey(type))
         {

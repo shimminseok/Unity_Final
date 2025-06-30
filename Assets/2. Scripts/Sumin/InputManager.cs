@@ -64,7 +64,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickPlayerUnit()
     {
         ShowSelectableUnit(playerUnitLayer, true);
-        Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
+        Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
@@ -82,14 +82,12 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
                 skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
                 ShowSelectableUnit(playerUnitLayer, false); // 선택 가능 인디케이터 끄기
-                UIManager.Instance.Close<BattleSceneStartButton>(); // 타겟 선택 완료할때까지 Start 버튼 끄기
             }
         }
         else
         {
             return;
         }
-        
     }
 
     // 유닛이 사용할 스킬 선택
@@ -103,7 +101,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 스킬 인덱스 받아서 교체
         if (selectedExecuterUnit is PlayerUnitController playerUnit)
         {
-            playerUnit.PlayerSkillController.ChangeSkill(index);
+            playerUnit.SkillController.ChangeSkill(index);
         }
 
         ChangeSelectedUnitAction(ActionType.SKill);
@@ -140,7 +138,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
             targetLayer = enemyUnitLayer;
         }
 
-        ShowSelectableUnit(unitLayer, false); // 선택 가능한 유닛 인디케이터 그전에 초기화
         ShowSelectableUnit(targetLayer, true); // 선택 가능한 유닛 인디케이터 켜기
 
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
@@ -152,14 +149,14 @@ public class InputManager : SceneOnlySingleton<InputManager>
             if (Input.GetMouseButtonDown(0))
             {
                 Unit targetUnit = selectedTargetUnit.SelectedUnit;
-                Unit executer = selectedExecuterUnit.SelectedUnit;
+                Unit executer   = selectedExecuterUnit.SelectedUnit;
 
                 targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
 
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
                 {
-                    playerUnit.PlayerSkillController.mainTarget = targetUnit;
+                    playerUnit.SkillController.mainTarget = targetUnit;
                 }
 
                 executer.SetTarget(targetUnit);
@@ -175,7 +172,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
                 UIManager.Instance.Close<BattleSceneSkillUI>();
-                UIManager.Instance.Open<BattleSceneStartButton>(); // Start 버튼 켜기
             }
         }
         else

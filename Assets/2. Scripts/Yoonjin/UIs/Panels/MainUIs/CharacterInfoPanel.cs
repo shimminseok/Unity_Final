@@ -49,6 +49,7 @@ public class CharacterInfoPanel : MonoBehaviour
         {
             if (data.skillDatas[i] != null)
             {
+                Debug.Log("액티브 스프라이트 할당됨");
                 activeSkillSlotImage[i].sprite = data.skillDatas[i].skillIcon;
             }
 
@@ -62,7 +63,8 @@ public class CharacterInfoPanel : MonoBehaviour
         if (data.passiveSkill != null)
         {
             // !!!현재 패시브 스킬 아이콘이 없음!!!
-            // passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
+            //passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
+            Debug.Log("패시브 스프라이트 할당됨");
         }
 
         else

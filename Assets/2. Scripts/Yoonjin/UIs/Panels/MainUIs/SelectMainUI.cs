@@ -83,7 +83,7 @@ public class SelectMainUI : UIBase
     }
 
     // 최근 선택된 캐릭터 정보를 패널에 갱신
-    private void UpdateCharacterInfoPanel(PlayerUnitSO character)
+    public void UpdateCharacterInfoPanel(PlayerUnitSO character)
     {
         // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
