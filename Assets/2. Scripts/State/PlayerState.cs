@@ -35,6 +35,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 5f;
             owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 1.5f;
             Debug.Log("Enter Move State");
@@ -62,6 +63,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.speed = 10f;
             owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 0.1f;
             owner.Animator.SetBool(isMove, true);
