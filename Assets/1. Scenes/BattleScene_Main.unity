@@ -20416,44 +20416,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 472196081}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &473367054
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 5
-  m_Width: 512
-  m_Height: 512
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 4
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1001 &476403047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33522,7 +33484,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 1
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 473367054}
+  m_TargetTexture: {fileID: 1980335071}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -44303,7 +44265,7 @@ MonoBehaviour:
   - {fileID: 994544922}
   - {fileID: 931584151}
   - {fileID: 1728229955}
-  PartyUnitsID: 01000000020000000300000005000000
+  PartyUnitsID: 01000000020000000300000002000000
   EnemyUnitsID: 6500000065000000650000006500000065000000
   PartyUnits: []
   EnemyUnits: []
@@ -84698,6 +84660,44 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1975022465}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1980335071
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 5
+  m_Width: 512
+  m_Height: 512
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 4
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1001 &1982819371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96908,7 +96908,7 @@ Transform:
   m_GameObject: {fileID: 7723271531607308132}
   serializedVersion: 2
   m_LocalRotation: {x: 0.016800525, y: -0.51661986, z: 0.023483925, w: 0.8557279}
-  m_LocalPosition: {x: 0.36124927, y: 0.008899786, z: -0.06265512}
+  m_LocalPosition: {x: 0.36124927, y: 0, z: -0.06265512}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96923,7 +96923,7 @@ Transform:
   m_GameObject: {fileID: 7723271531722519445}
   serializedVersion: 2
   m_LocalRotation: {x: 0.017764239, y: -0.54625195, z: 0.024831058, w: 0.8370643}
-  m_LocalPosition: {x: 3.2111344, y: 0.039799564, z: 2.9819736}
+  m_LocalPosition: {x: 3.2111344, y: 0, z: 2.9819736}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96938,7 +96938,7 @@ Transform:
   m_GameObject: {fileID: 7723271530961971195}
   serializedVersion: 2
   m_LocalRotation: {x: 0.017942034, y: -0.55171853, z: 0.025079492, w: 0.8334601}
-  m_LocalPosition: {x: 1.3561888, y: 0.005915366, z: 4.575716}
+  m_LocalPosition: {x: 1.35, y: 0, z: 6.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96953,7 +96953,7 @@ Transform:
   m_GameObject: {fileID: 7723271530756318200}
   serializedVersion: 2
   m_LocalRotation: {x: 0.010288391, y: -0.31636775, z: 0.014381198, w: 0.94847184}
-  m_LocalPosition: {x: 1.4246511, y: -0.099434845, z: -3.280907}
+  m_LocalPosition: {x: 1.4246511, y: 0, z: -3.280907}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -16,12 +16,15 @@ public enum ActionType
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField] private int id;
+    [SerializeField] private AnimationClip idleClip;
+    [SerializeField] private AnimationClip moveClip;
     public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
     private HPBarUI hpBar;
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
+
     public float setRemainDistance;
 
     public override bool IsAnimationDone
@@ -87,9 +90,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+        AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
-        Animator.runtimeAnimatorController = AnimatorOverrideController;
+        ChangeClip(Define.IdleClipName, idleClip);
+        ChangeClip(Define.MoveClipName, moveClip);
     }
 
 
@@ -129,7 +134,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Agent.SetDestination(destination);
     }
 
-    public void UseSkill()
+    public override void UseSkill()
     {
         //이펙트 생성
         //
