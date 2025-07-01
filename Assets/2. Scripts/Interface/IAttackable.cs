@@ -4,5 +4,5 @@
     public IDamageable Target     { get; }
     public void        Attack();
 
-    public void SetTarget(IDamageable target);
+    public void SetTarget(Unit target);
 }
