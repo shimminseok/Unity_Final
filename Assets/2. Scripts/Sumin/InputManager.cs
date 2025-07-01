@@ -1,17 +1,12 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.UI.CanvasScaler;
 
 // 추후 StateMachine으로 리팩토링하면 좋다.
 
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
+    None, // 입력 불가 상태
     SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
     SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
@@ -49,6 +44,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     void Update()
     {
+        if (currentPhase == InputPhase.None)
+        {
+            return;
+        }
+
         switch (currentPhase)
         {
             case InputPhase.SelectExecuter:
@@ -194,8 +194,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     public void OnClickTurnStartButton()
     {
+        ShowSelectableUnit(playerUnitLayer, false);
+        currentPhase = InputPhase.None;
+        UIManager.Instance.Close<BattleSceneStartButton>(); // 턴 시작되면 start 버튼 끄기
         BattleManager.Instance.StartTurn();
-        ShowSelectableUnit(unitLayer, false);
+    }
+
+    public void Initialize()
+    {
+        UIManager.Instance.Open<BattleSceneStartButton>(); // 턴 종료되면 start 버튼 켜기
+        currentPhase = InputPhase.SelectExecuter;
     }
 
     // 선택한 스킬의 타겟 진영 받아오기
