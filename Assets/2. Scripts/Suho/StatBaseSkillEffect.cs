@@ -4,26 +4,40 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
+public class SkillEffectData
+{
+    public SelectCampType selectCamp;
+    public SelectTargetType selectTarget;
+    public List<StatBaseDamageEffect> damageEffects;
+    public List<StatBaseBuffSkillEffect> buffEffects;
+}
+
+[System.Serializable]
 public class StatBaseSkillEffect
 {
     [HideInInspector] public Unit owner;
-    public List<StatBaseDamageEffect> damageEffects;
-    public List<StatBaseBuffSkillEffect> buffEffects;
+    public List<SkillEffectData> skillEffects;
 
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
 
-        foreach (var result in buffEffects)
+        foreach (var effect in skillEffects)
         {
-            var statusEffect = result.StatusEffect;
-            statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
-            target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
-            target.ChangeEmotion(result.emotionType);
+            foreach (var result in effect.buffEffects)
+            {
+                var statusEffect = result.StatusEffect;
+                statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
+                target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
+                target.ChangeEmotion(result.emotionType);  
+            }
         }
 
-        foreach (var result in damageEffects)
+        foreach (var effect in skillEffects)
         {
-            target.ExecuteCoroutine(result.DamageEffectCoroutine(target,owner));
+            foreach (var result in effect.damageEffects)
+            {
+                target.ExecuteCoroutine(result.DamageEffectCoroutine(target,owner));
+            }
         }
         
         
@@ -32,19 +46,23 @@ public class StatBaseSkillEffect
 
     public void Init()
     {
-        foreach (StatBaseBuffSkillEffect buffSkillEffect in this.buffEffects)
+        foreach (SkillEffectData effect in this.skillEffects)
         {
-            buffSkillEffect.StatusEffect = new StatusEffectData();
+            foreach (var buffSkillEffect in effect.buffEffects)
             {
-                //불변 데이터
-                buffSkillEffect.StatusEffect.ID = buffSkillEffect.ID;
-                buffSkillEffect.StatusEffect.EffectType = buffSkillEffect.statusEffectType;
-                buffSkillEffect.StatusEffect.Duration = buffSkillEffect.lastTurn;
-                buffSkillEffect.StatusEffect.Stat = new StatData();
-                buffSkillEffect.StatusEffect.Stat.StatType = buffSkillEffect.opponentStatType;
-                buffSkillEffect.StatusEffect.Stat.ModifierType = buffSkillEffect.modifierType;
+                buffSkillEffect.StatusEffect = new StatusEffectData();
+                {
+                    //불변 데이터
+                    buffSkillEffect.StatusEffect.ID = buffSkillEffect.ID;
+                    buffSkillEffect.StatusEffect.EffectType = buffSkillEffect.statusEffectType;
+                    buffSkillEffect.StatusEffect.Duration = buffSkillEffect.lastTurn;
+                    buffSkillEffect.StatusEffect.Stat = new StatData();
+                    buffSkillEffect.StatusEffect.Stat.StatType = buffSkillEffect.opponentStatType;
+                    buffSkillEffect.StatusEffect.Stat.ModifierType = buffSkillEffect.modifierType;
 
+                }
             }
+            
         }
     }
 }
