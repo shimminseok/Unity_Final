@@ -8,6 +8,7 @@ public class RangeSkillSO : SkillTypeSO
 
     public override void UseSkill(BaseSkillController controller)
     {
+        //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
         this.skillController = controller;
 
         if (skillController.mainTarget != null)
@@ -22,7 +23,7 @@ public class RangeSkillSO : SkillTypeSO
             foreach (Unit subTarget in skillController.subTargets)
             {
                 SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
-                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), subTarget);
+                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), subTarget.GetCenter(), subTarget);
             }
         }
     }

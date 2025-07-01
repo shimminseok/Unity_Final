@@ -6,7 +6,8 @@ using UnityEngine;
 public class ProjectileTrigger : MonoBehaviour
 {
     public Unit target;
-    public Action OnTriggerTarget;
+    public event Action OnTriggerTarget;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.GetComponent<Unit>() == target)

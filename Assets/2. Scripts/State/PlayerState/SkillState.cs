@@ -6,8 +6,9 @@
 
         public void OnEnter(PlayerUnitController owner)
         {
+            //예외 처리
             owner.Animator.SetTrigger(skill);
-            owner.UseSkill();
+            // owner.UseSkill();
         }
 
         public void OnUpdate(PlayerUnitController owner)
