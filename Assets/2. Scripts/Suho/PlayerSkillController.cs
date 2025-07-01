@@ -32,8 +32,6 @@ public class PlayerSkillController : BaseSkillController
     public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
-        TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
     public override void ChangeSkill(int index)
@@ -67,7 +65,7 @@ public class PlayerSkillController : BaseSkillController
     {
         CurrentSkillData = null;
         this.mainTarget = null;
-        subTargets = null;
+        targets = null;
         foreach (SkillData skill in skills)
         {
             if (skill == null)

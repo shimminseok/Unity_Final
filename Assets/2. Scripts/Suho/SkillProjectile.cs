@@ -9,7 +9,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
     [SerializeField] private float projectileSpeed;
 
-    private StatBaseSkillEffect effectData;
+    private SkillEffectData effectData;
 
     private float smoothTime = 0.3f;
     private Vector3 startPosition = Vector3.zero;
@@ -23,7 +23,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public Unit Target;
 
 
-    public StatBaseSkillEffect EffectData      => effectData;
+    public SkillEffectData EffectData      => effectData;
     public float               ProjectileSpeed => projectileSpeed;
     public Vector3             Direction       => direction;
     public Vector3             StartPosition   => startPosition;
@@ -77,7 +77,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         }
     }
 
-    public void Initialize(StatBaseSkillEffect effect, Vector3 startPos, Vector3 dir, Unit target)
+    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, Unit target)
     {
         //기존 구독되어있던 이벤트 해제
         trigger.OnTriggerTarget -= HandleTrigger;

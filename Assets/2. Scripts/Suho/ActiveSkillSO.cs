@@ -20,13 +20,10 @@ public class ActiveSkillSO : ScriptableObject
     public string skillDescription;
     public CombatActionSo skillType;
     public SelectCampType selectCamp;
-    public SelectTargetType selectType;
-    public StatBaseSkillEffect mainSkillEffect;
-    public StatBaseSkillEffect subSkillEffect;
+    public StatBaseSkillEffect skillEffect;
     public JobType jobType;
     public int reuseMaxCount;
     public int coolTime;
     public Sprite skillIcon;
-    public ParticleSystem.Particle SkillVFX;
     public AnimationClip skillAnimation;
 }

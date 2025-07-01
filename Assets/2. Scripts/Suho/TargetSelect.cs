@@ -4,13 +4,21 @@ using System.Linq;
 using Random = UnityEngine.Random;
 
 public class TargetSelect
-{
-    public List<Unit> FindTargets(Unit mainTarget, SelectTargetType type, SelectCampType camp)
+{   
+    private Unit mainTargetUnit;
+    public TargetSelect(Unit mainTarget)
     {
+        mainTargetUnit = mainTarget;
+    }
+    public List<Unit> FindTargets(SelectTargetType type, SelectCampType camp)
+    {
+        
         switch (type)
         {
             case SelectTargetType.Single:
-                return null;
+                List<Unit> singleTarget = new List<Unit>();
+                singleTarget.Add(mainTargetUnit);
+                return singleTarget;
 
             case SelectTargetType.All:
                 List<Unit> combinedUnits = camp switch
@@ -22,7 +30,7 @@ public class TargetSelect
                     _ => null
                 };
                 if (combinedUnits == null) return null;
-                List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTarget).ToList();
+                List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTargetUnit).ToList();
                 return filteredUnits;
             
             case SelectTargetType.SinglePlusRandomOne:
@@ -38,7 +46,7 @@ public class TargetSelect
                 if (combinedUnits == null) return null;
 
                 // mainTarget 제거 후 랜덤 선택
-                filteredUnits = combinedUnits.Where(u => u != mainTarget).ToList();
+                filteredUnits = combinedUnits.Where(u => u != mainTargetUnit).ToList();
                 if (filteredUnits.Count == 0) return new List<Unit>(); // 선택 가능한 유닛이 없을 경우
 
                 Unit randomTarget = filteredUnits[Random.Range(0, filteredUnits.Count)];
