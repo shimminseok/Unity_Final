@@ -9,12 +9,14 @@ public class BattleSceneSkillSlot : MonoBehaviour
 {
     [Header("스킬 슬롯 앞면 : 남은 재사용 횟수")]
     [SerializeField] private Button FrontSkillBtn;
+
     [SerializeField] private Image skillIconImage;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private TextMeshProUGUI reuseNumberText;
 
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
+
     [SerializeField] private TextMeshProUGUI skillCostText;
     [SerializeField] private GameObject lockImage;
 
@@ -43,10 +45,10 @@ public class BattleSceneSkillSlot : MonoBehaviour
         // UI에 반영
         skillCostText.text = $"{coolDown}";
         reuseNumberText.text = $"{reuseNumber}";
-        skillIconImage.sprite = skillData.skillIcon;
-        skillName.text = skillData.skillName;
+        skillIconImage.sprite = skillData.skillSo.skillIcon;
+        skillName.text = skillData.skillSo.skillName;
 
-        if (reuseNumber <=0)
+        if (reuseNumber <= 0)
         {
             LockSkill();
         }

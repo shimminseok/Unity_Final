@@ -3,34 +3,20 @@ using UnityEngine;
 
 public class SkillData
 {
-    public SkillData(string name, string des,CombatActionSo type,SelectCampType camp, StatBaseSkillEffect skillEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, AnimationClip skillAnimation)
+    public SkillData(ActiveSkillSO skillSo)
     {
-        this.skillName = name;
-        this.skillDescription = des;
-        this.skillType = type;
-        this.selectedCamp = camp;
-        this.skillEffect = skillEffect;
-        this.jobType = jobType;
-        this.reuseMaxCount = reuseMaxCount;
-        this.reuseCount = reuseMaxCount;
-        this.coolDown = 0;
-        this.coolTime = maxCoolTime;
-        this.skillIcon = skillIcon;
-        this.skillAnimation = skillAnimation;
+        this.skillSo = skillSo;
+        skillEffect = skillSo.skillEffect;
+        reuseCount = skillSo.reuseMaxCount;
+        coolDown = 0;
+        coolTime = skillSo.coolTime;
     }
-    
-    public string skillName;
-    public string skillDescription;
-    public CombatActionSo skillType; // 원거리인가 근거리인가
-    public SelectCampType selectedCamp;
+
+    public ActiveSkillSO skillSo;
     public StatBaseSkillEffect skillEffect;
-    public JobType jobType;
     public int reuseCount;
     public int coolDown = 0;
-    public int reuseMaxCount;
     public int coolTime;
-    public Sprite skillIcon;
-    public AnimationClip skillAnimation;
 
     public void RegenerateCoolDown(int value)
     {

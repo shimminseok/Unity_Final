@@ -40,7 +40,7 @@ public class PlayerSkillController : BaseSkillController
         if (CurrentSkillData == null)
             return;
 
-        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillAnimation);
+        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
 
         // skillAnimationListener.skillData = CurrentSkillData;
     }
@@ -55,7 +55,7 @@ public class PlayerSkillController : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillType.Execute(SkillManager.Owner);
+        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner);
 
         EndTurn();
     }
@@ -69,9 +69,9 @@ public class PlayerSkillController : BaseSkillController
                 continue;
             skill.RegenerateCoolDown(generateCost);
         }
+
         CurrentSkillData = null;
         this.mainTarget = null;
         targets = null;
-
     }
 }

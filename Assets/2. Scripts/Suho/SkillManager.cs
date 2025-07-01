@@ -22,19 +22,8 @@ public class SkillManager : MonoBehaviour
                 continue;
             }
 
-            SkillData skillData = new SkillData
-            (
-                activeSkillSo.skillName,
-                activeSkillSo.skillDescription,
-                activeSkillSo.skillType,
-                activeSkillSo.selectCamp,
-                activeSkillSo.skillEffect,
-                activeSkillSo.jobType,
-                activeSkillSo.reuseMaxCount,
-                activeSkillSo.coolTime,
-                activeSkillSo.skillIcon,
-                activeSkillSo.skillAnimation
-            );
+            SkillData skillData = new SkillData(activeSkillSo);
+            skillData.skillSo = activeSkillSo;
             skillData.skillEffect.owner = Owner;
             skillData.skillEffect.Init();
             Owner.SkillController.skills.Add(skillData);

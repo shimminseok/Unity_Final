@@ -7,7 +7,7 @@ using UnityEngine;
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
-    None, // 입력 불가 상태
+    None,           // 입력 불가 상태
     SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
     SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
@@ -137,7 +137,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
         if (SelectedSkillData != null)
         {
-            targetLayer = GetTargetLayerMask(SelectedSkillData.selectedCamp);
+            targetLayer = GetTargetLayerMask(SelectedSkillData.skillSo.selectCamp);
         }
         else
         {
