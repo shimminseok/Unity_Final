@@ -50,6 +50,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     {
         Vector3 screenPos = mainCamera.WorldToScreenPoint(targetTransform.position + offset);
         barRect.position = screenPos;
+        barRect.localScale = Vector3.one; // Hp 바 사이즈 고정
     }
 
     public void UpdateHealthBarWrapper(float cur)
