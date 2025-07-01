@@ -21,7 +21,6 @@ public enum InputPhase
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
-    [SerializeField] private BattleSceneSkillUI skillUI;
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
@@ -34,6 +33,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private ISelectable selectedTargetUnit;
     private ISelectable selectable;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
+
+    private BattleSceneSkillUI skillUI;
     public SkillData SelectedSkillData { get; set; }
 
     void Start()
@@ -42,6 +43,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
         {
             mainCam = Camera.main;
         }
+
+        skillUI = UIManager.Instance.GetUIComponent<BattleSceneSkillUI>();
     }
 
     void Update()
@@ -81,7 +84,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
                 skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
-                ShowSelectableUnit(playerUnitLayer, false); // 선택 가능 인디케이터 끄기
+                ShowSelectableUnit(playerUnitLayer, false);         // 선택 가능 인디케이터 끄기
                 UIManager.Instance.Close<BattleSceneStartButton>(); // 플레이어 유닛 선택 시작하면 start 버튼 끄기
             }
         }

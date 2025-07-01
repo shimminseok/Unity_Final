@@ -27,6 +27,11 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         SkillManager = GetComponent<SkillManager>();
         stateMachine = new StateMachine<TController, TState>();
         AnimationEventListener = GetComponent<AnimationEventListener>();
+        if (unitIndicator == null)
+        {
+            unitIndicator = GetComponentInChildren<BattleSceneUnitIndicator>();
+        }
+
         CreateEmotion();
         SetupState();
 

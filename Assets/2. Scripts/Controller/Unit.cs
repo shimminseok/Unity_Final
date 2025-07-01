@@ -48,10 +48,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     protected void Start()
     {
-        if (unitIndicator == null)
-        {
-            unitIndicator = GetComponentInChildren<BattleSceneUnitIndicator>();
-        }
     }
 
     public void SetStunned(bool isStunned)
