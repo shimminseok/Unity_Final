@@ -10,22 +10,19 @@ public class RangeSkillSO : SkillTypeSO
     {
         //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
         this.skillController = controller;
+        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
 
-        if (skillController.mainTarget != null)
+        foreach (var effect in controller.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
-        }
-
-
-        if (skillController.subTargets != null)
-        {
-            foreach (Unit subTarget in skillController.subTargets)
+            controller.targets = targetSelect.FindTargets(effect.selectTarget,effect.selectCamp);
+            foreach (Unit target in controller.targets)
             {
-                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
-                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), subTarget.GetCenter(), subTarget);
+                if (target == null) continue;
+                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
+                projectile.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), target.GetCenter(), target);
             }
         }
+ 
     }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;

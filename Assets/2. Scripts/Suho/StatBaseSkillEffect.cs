@@ -6,48 +6,41 @@ using UnityEngine;
 [System.Serializable]
 public class SkillEffectData
 {
+    [HideInInspector] public Unit owner;
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
-}
-
-[System.Serializable]
-public class StatBaseSkillEffect
-{
-    [HideInInspector] public Unit owner;
-    public List<SkillEffectData> skillEffects;
-
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
-
-        foreach (var effect in skillEffects)
-        {
-            foreach (var result in effect.buffEffects)
+            foreach (var result in buffEffects)
             {
                 var statusEffect = result.StatusEffect;
                 statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
                 target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
                 target.ChangeEmotion(result.emotionType);  
             }
-        }
 
-        foreach (var effect in skillEffects)
-        {
-            foreach (var result in effect.damageEffects)
+
+            foreach (var result in damageEffects)
             {
                 target.ExecuteCoroutine(result.DamageEffectCoroutine(target,owner));
             }
-        }
-        
-        
     }
+}
+
+[System.Serializable]
+public class StatBaseSkillEffect
+{
+    [HideInInspector] public Unit owner;
+    public List<SkillEffectData> skillEffectDatas;
 
 
     public void Init()
     {
-        foreach (SkillEffectData effect in this.skillEffects)
+        foreach (SkillEffectData effect in this.skillEffectDatas)
         {
+            effect.owner = this.owner;
             foreach (var buffSkillEffect in effect.buffEffects)
             {
                 buffSkillEffect.StatusEffect = new StatusEffectData();

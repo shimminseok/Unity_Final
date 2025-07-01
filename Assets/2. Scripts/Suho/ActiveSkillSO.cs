@@ -21,9 +21,7 @@ public class ActiveSkillSO : ScriptableObject
     public string skillDescription;
     public SkillTypeSO skillType;
     public SelectCampType selectCamp;
-    public SelectTargetType selectType;
-    public StatBaseSkillEffect mainSkillEffect;
-    public StatBaseSkillEffect subSkillEffect;
+    public StatBaseSkillEffect skillEffect;
     public JobType jobType;
     public int reuseMaxCount;
     public int coolTime;
