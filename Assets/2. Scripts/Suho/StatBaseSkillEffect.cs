@@ -9,6 +9,8 @@ public class SkillEffectData
     [HideInInspector] public Unit owner;
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
+    public string projectileID;
+    public ParticleSystem.Particle skillVFX;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분

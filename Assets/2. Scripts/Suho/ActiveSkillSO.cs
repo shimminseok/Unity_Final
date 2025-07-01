@@ -26,7 +26,6 @@ public class ActiveSkillSO : ScriptableObject
     public int reuseMaxCount;
     public int coolTime;
     public Sprite skillIcon;
-    public ParticleSystem.Particle SkillVFX;
     public AnimationClip skillAnimation;
     
 }

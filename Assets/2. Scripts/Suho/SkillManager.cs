@@ -33,7 +33,6 @@ public class SkillManager : MonoBehaviour
                 activeSkillSo.reuseMaxCount,
                 activeSkillSo.coolTime,
                 activeSkillSo.skillIcon,
-                activeSkillSo.SkillVFX,
                 activeSkillSo.skillAnimation
             );
             skillData.skillEffect.owner = Owner;

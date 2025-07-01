@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillData
 {
-    public SkillData(string name, string des,SkillTypeSO type,SelectCampType camp, StatBaseSkillEffect skillEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public SkillData(string name, string des,SkillTypeSO type,SelectCampType camp, StatBaseSkillEffect skillEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, AnimationClip skillAnimation)
     {
         this.skillName = name;
         this.skillDescription = des;
@@ -16,7 +16,6 @@ public class SkillData
         this.coolDown = 0;
         this.coolTime = maxCoolTime;
         this.skillIcon = skillIcon;
-        SkillVFX = skillVFX;
         this.skillAnimation = skillAnimation;
     }
     
@@ -31,7 +30,6 @@ public class SkillData
     public int reuseMaxCount;
     public int coolTime;
     public Sprite skillIcon;
-    public ParticleSystem.Particle SkillVFX;
     public AnimationClip skillAnimation;
 
     public void RegenerateCoolDown(int value)

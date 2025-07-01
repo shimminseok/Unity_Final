@@ -3,8 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
 public class RangeSkillSO : SkillTypeSO
 {
-    public string mainProjectilePoolID;
-    public string subProjectilePoolID;
 
     public override void UseSkill(BaseSkillController controller)
     {
@@ -18,7 +16,7 @@ public class RangeSkillSO : SkillTypeSO
             foreach (Unit target in controller.targets)
             {
                 if (target == null) continue;
-                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
+                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
                 projectile.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), target.GetCenter(), target);
             }
         }
