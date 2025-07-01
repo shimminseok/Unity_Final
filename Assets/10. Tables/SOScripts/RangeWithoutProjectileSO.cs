@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/RangeWithoutProjectile", order = 0)]
-
 public class RangeWithoutProjectileSO : RangeSkillSO
 {
-    public override void UseSkill(BaseSkillController skillController)
+    public override void Execute(Unit attacker)
     {
-        base.UseSkill(skillController);
+        attacker.SkillController.UseSkill();
     }
 }

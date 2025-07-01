@@ -125,10 +125,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Debug.Log("Attack");
 
         Target = finalTarget;
-        PlayerUnitSo.AttackType.Attack(this);
-
-        //Test
-        // EndTurn();
+        PlayerUnitSo.AttackType.Execute(this);
     }
 
     public override void MoveTo(Vector3 destination)
@@ -214,7 +211,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        Debug.Log(UnitSo.UnitName);
         if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();

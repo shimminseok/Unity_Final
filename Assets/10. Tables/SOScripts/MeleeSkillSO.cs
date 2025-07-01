@@ -1,23 +1,23 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
-public class MeleeSkillSO : SkillTypeSO
+public class MeleeSkillSO : CombatActionSo
 {
-    public override void UseSkill(BaseSkillController controller)
+    public override void Execute(Unit attacker)
     {
         //실질적인 데미지 주는 형식의 UseSkill
-        this.skillController = controller;
-        if (controller.mainTarget != null)
+        var skillController = attacker.SkillController;
+        if (skillController.mainTarget != null)
         {
-            controller.CurrentSkillData.mainEffect.AffectTargetWithSkill(controller.mainTarget);
+            skillController.CurrentSkillData.mainEffect.AffectTargetWithSkill(skillController.mainTarget);
         }
 
 
-        if (controller.subTargets != null)
+        if (skillController.subTargets != null)
         {
-            foreach (Unit subTarget in controller.subTargets)
+            foreach (Unit subTarget in skillController.subTargets)
             {
-                controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
+                skillController.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
 

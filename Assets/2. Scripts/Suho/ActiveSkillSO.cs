@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,13 +12,13 @@ using UnityEngine;
  * skillVFX : 시각적 스킬효과 ( 임시로 파티클 시스템으로 만들어 놓음 )
  * AnimationClip : 해당 스킬의 애니메이션 클립
  */
-[CreateAssetMenu (fileName = "New ActiveSkillData", menuName = "ScriptableObjects/New ActiveSkillData")]
+[CreateAssetMenu(fileName = "New ActiveSkillData", menuName = "ScriptableObjects/New ActiveSkillData")]
 public class ActiveSkillSO : ScriptableObject
 {
     public int ID;
     public string skillName;
     public string skillDescription;
-    public SkillTypeSO skillType;
+    public CombatActionSo skillType;
     public SelectCampType selectCamp;
     public SelectTargetType selectType;
     public StatBaseSkillEffect mainSkillEffect;
@@ -30,5 +29,4 @@ public class ActiveSkillSO : ScriptableObject
     public Sprite skillIcon;
     public ParticleSystem.Particle SkillVFX;
     public AnimationClip skillAnimation;
-    
 }

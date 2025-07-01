@@ -1,20 +1,21 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
-public class RangeSkillSO : SkillTypeSO
+public class RangeSkillSO : RangeActionSo
 {
-    public string mainProjectilePoolID;
     public string subProjectilePoolID;
 
-    public override void UseSkill(BaseSkillController controller)
+    public override AttackDistanceType DistanceType => AttackDistanceType.Range;
+    public override CombatActionSo     ActionSo     => this;
+
+    public override void Execute(Unit attacker)
     {
-        //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
-        this.skillController = controller;
+        var skillController = attacker.SkillController;
 
         if (skillController.mainTarget != null)
         {
-            SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
+            ProjectileComponent = ObjectPoolManager.Instance.GetObject(projectilePoolId).GetComponent<SkillProjectile>();
+            ProjectileComponent.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
         }
 
 
@@ -26,7 +27,13 @@ public class RangeSkillSO : SkillTypeSO
                 projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), subTarget.GetCenter(), subTarget);
             }
         }
+
+        ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
     }
 
-    public override AttackDistanceType DistanceType => AttackDistanceType.Range;
+
+    private void ResetProjectile()
+    {
+        ProjectileComponent = null;
+    }
 }

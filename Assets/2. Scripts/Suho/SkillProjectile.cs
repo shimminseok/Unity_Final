@@ -125,7 +125,9 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
     private void HandleAttackTrigger()
     {
-        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow));
+        //감정별 대미지
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
+        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

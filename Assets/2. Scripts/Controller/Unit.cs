@@ -45,11 +45,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void Dead();
 
-
-    protected void Start()
-    {
-    }
-
     public void SetStunned(bool isStunned)
     {
         IsStunned = isStunned;
@@ -124,9 +119,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void SetTarget(Unit target)
     {
-        if (CurrentAction == ActionType.Attack)
-            Target = target;
-        else if (CurrentAction == ActionType.SKill)
+        Target = target;
+        if (CurrentAction == ActionType.SKill)
         {
             SkillController.SelectTargets(target);
         }

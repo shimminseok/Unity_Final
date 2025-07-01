@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillData
 {
-    public SkillData(string name, string des,SkillTypeSO type,SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public SkillData(string name, string des, CombatActionSo type, SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
     {
         this.skillName = name;
         this.skillDescription = des;
@@ -21,10 +21,10 @@ public class SkillData
         SkillVFX = skillVFX;
         this.skillAnimation = skillAnimation;
     }
-    
+
     public string skillName;
     public string skillDescription;
-    public SkillTypeSO skillType; // 원거리인가 근거리인가
+    public CombatActionSo skillType; // 원거리인가 근거리인가
     public SelectCampType selectedCamp;
     public SelectTargetType selectedType = SelectTargetType.Single;
     public StatBaseSkillEffect mainEffect;

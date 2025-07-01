@@ -59,7 +59,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Initialize(UnitSO unitSO)
     {
-        //TODO : 스폰 하는곳에서 So 생성해서 보내주기
         UnitSo = unitSO;
         if (UnitSo is EnemyUnitSO enemyUnitSo)
         {
@@ -117,7 +116,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         //TODO: 크리티컬 구현
-        MonsterSo.AttackType.Attack(this);
+        MonsterSo.AttackType.Execute(this);
     }
 
     public override void MoveTo(Vector3 destination)
