@@ -75,6 +75,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             }
 
             unit.SkillManager.selectedSkill = deckData.skillDatas.ToList();
+
             index++;
         }
     }

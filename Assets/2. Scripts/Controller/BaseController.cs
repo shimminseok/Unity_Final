@@ -27,18 +27,22 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         SkillManager = GetComponent<SkillManager>();
         stateMachine = new StateMachine<TController, TState>();
         AnimationEventListener = GetComponent<AnimationEventListener>();
+        if (unitIndicator == null)
+        {
+            unitIndicator = GetComponentInChildren<BattleSceneUnitIndicator>();
+        }
+
         CreateEmotion();
         SetupState();
 
         TurnStateMachine = new TurnStateMachine();
         CreateTurnStates();
-
-        SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Start()
     {
         base.Start();
+        SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Update()
