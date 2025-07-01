@@ -12,21 +12,19 @@ public class RangeSkillSO : RangeActionSo
     {
         var skillController = attacker.SkillController;
 
-        if (skillController.mainTarget != null)
-        {
-            ProjectileComponent = ObjectPoolManager.Instance.GetObject(projectilePoolId).GetComponent<SkillProjectile>();
-            ProjectileComponent.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
-        }
+        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
 
-
-        if (skillController.subTargets != null)
+        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            foreach (Unit subTarget in skillController.subTargets)
+            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            foreach (Unit target in skillController.targets)
             {
-                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
-                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), subTarget.GetCenter(), subTarget);
+                if (target == null) continue;
+                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), target.GetCenter(), target);
             }
         }
+
 
         ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
     }
