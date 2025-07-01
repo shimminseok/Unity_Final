@@ -45,6 +45,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     void Update()
     {
+        if (currentPhase == InputPhase.None)
+        {
+            return;
+        }
+
         switch (currentPhase)
         {
             case InputPhase.SelectExecuter:
@@ -63,6 +68,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickPlayerUnit()
     {
         ShowSelectableUnit(playerUnitLayer, true);
+        UIManager.Instance.Close<BattleSceneSkillUI>();
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -171,7 +177,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-                UIManager.Instance.Close<BattleSceneSkillUI>();
 
                 // 타겟까지 설정되면 Start 버튼 활성화
                 UIManager.Instance.Open<BattleSceneStartButton>();
@@ -183,10 +188,23 @@ public class InputManager : SceneOnlySingleton<InputManager>
         }
     }
 
+    public void OnClickSkillExitButton()
+    {
+        currentPhase = InputPhase.SelectExecuter;
+    }
+
     public void OnClickTurnStartButton()
     {
+        ShowSelectableUnit(playerUnitLayer, false);
+        currentPhase = InputPhase.None;
+        UIManager.Instance.Close<BattleSceneStartButton>(); // 턴 시작되면 start 버튼 끄기
         BattleManager.Instance.StartTurn();
-        ShowSelectableUnit(unitLayer, false);
+    }
+
+    public void Initialize()
+    {
+        UIManager.Instance.Open<BattleSceneStartButton>(); // 턴 종료되면 start 버튼 켜기
+        currentPhase = InputPhase.SelectExecuter;
     }
 
     // 선택한 스킬의 타겟 진영 받아오기
