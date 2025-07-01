@@ -24,7 +24,11 @@ MonoBehaviour:
       selectCamp: 1
       selectTarget: 0
       projectileID: 
-      damageEffects: []
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.5
+        value: 50
       buffEffects: []
   jobType: 1
   reuseMaxCount: 3

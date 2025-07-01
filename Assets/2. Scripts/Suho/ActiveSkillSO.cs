@@ -26,4 +26,5 @@ public class ActiveSkillSO : ScriptableObject
     public int coolTime;
     public Sprite skillIcon;
     public AnimationClip skillAnimation;
+    public GameObject skillVFX;
 }
