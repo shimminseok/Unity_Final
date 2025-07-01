@@ -10,11 +10,11 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [SerializeField] private Button FrontSkillBtn;
     [SerializeField] private Image skillIconImage;
     [SerializeField] private TextMeshProUGUI skillName;
-    [SerializeField] private TextMeshProUGUI reuseNumberText;
+    [SerializeField] private TextMeshProUGUI reuseCountText;
 
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
-    [SerializeField] private TextMeshProUGUI skillCostText;
+    [SerializeField] private TextMeshProUGUI coolDownText;
     [SerializeField] private GameObject lockImage;
 
     [Header("뒷면 버튼 : 뒤집는 속도와 뒤집고 있는 시간")]
@@ -46,8 +46,8 @@ public class BattleSceneSkillSlot : MonoBehaviour
         reuseCount = skillData.reuseCount;
 
         // UI에 반영
-        skillCostText.text = $"{coolDown}";
-        reuseNumberText.text = $"{reuseCount}";
+        coolDownText.text = $"{coolDown}";
+        reuseCountText.text = $"{reuseCount}";
         skillIconImage.sprite = skillData.skillSo.skillIcon;
         skillName.text = skillData.skillSo.skillName;
 
@@ -125,6 +125,6 @@ public class BattleSceneSkillSlot : MonoBehaviour
         BackSkillBtn.interactable = false;
         colorBlock.normalColor = new Color(0, 0, 0);
         lockImage.SetActive(true);
-        skillCostText.gameObject.SetActive(false);
+        coolDownText.gameObject.SetActive(false);
     }
 }
