@@ -190,6 +190,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     public void OnClickSkillExitButton()
     {
         currentPhase = InputPhase.SelectExecuter;
+        DeselectUnit();
     }
 
     public void OnClickTurnStartButton()
