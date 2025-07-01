@@ -14,5 +14,6 @@ public class MagicMasterPassiveSo : PassiveSO
 
     public void AddCost()
     {
+        
     }
 }

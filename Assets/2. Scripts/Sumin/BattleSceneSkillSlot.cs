@@ -48,8 +48,9 @@ public class BattleSceneSkillSlot : MonoBehaviour
         // UI에 반영
         skillCostText.text = $"{coolDown}";
         reuseNumberText.text = $"{reuseCount}";
-        skillIconImage.sprite = skillData.skillIcon;
-        skillName.text = skillData.skillName;
+        skillIconImage.sprite = skillData.skillSo.skillIcon;
+        skillName.text = skillData.skillSo.skillName;
+
 
         if (reuseCount <=0)
         {

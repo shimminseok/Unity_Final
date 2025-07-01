@@ -9,7 +9,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
     [SerializeField] private float projectileSpeed;
 
-    private StatBaseSkillEffect effectData;
+    private SkillEffectData effectData;
 
     private float smoothTime = 0.3f;
     private Vector3 startPosition = Vector3.zero;
@@ -23,7 +23,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public Unit Target;
 
 
-    public StatBaseSkillEffect EffectData      => effectData;
+    public SkillEffectData EffectData      => effectData;
     public float               ProjectileSpeed => projectileSpeed;
     public Vector3             Direction       => direction;
     public Vector3             StartPosition   => startPosition;
@@ -32,6 +32,8 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public ProjectileInterpolationMode mode;
 
     public ProjectileTrigger trigger;
+
+    private Unit attacker;
 
     private void Awake()
     {
@@ -75,7 +77,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         }
     }
 
-    public void Initialize(StatBaseSkillEffect effect, Vector3 startPos, Vector3 dir, Unit target)
+    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, Unit target)
     {
         //기존 구독되어있던 이벤트 해제
         trigger.OnTriggerTarget -= HandleTrigger;
@@ -90,8 +92,18 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         OnSpawnFromPool();
     }
 
-    public void Initialize()
+    public void Initialize(Unit attacker, Vector3 startPos, Vector3 dir)
     {
+        trigger.OnTriggerTarget -= HandleAttackTrigger;
+        this.attacker = attacker;
+        startPosition = startPos;
+        direction = dir;
+        this.gameObject.transform.position = startPosition;
+        this.gameObject.transform.LookAt(dir);
+        Target = attacker.Target as Unit;
+        trigger.target = Target;
+        trigger.OnTriggerTarget += HandleAttackTrigger;
+        OnSpawnFromPool();
     }
 
     public void OnSpawnFromPool()
@@ -108,6 +120,14 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     private void HandleTrigger()
     {
         effectData.AffectTargetWithSkill(Target);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
+    private void HandleAttackTrigger()
+    {
+        //감정별 대미지
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
+        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

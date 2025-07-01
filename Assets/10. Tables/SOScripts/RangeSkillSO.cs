@@ -1,32 +1,37 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
-public class RangeSkillSO : SkillTypeSO
+public class RangeSkillSO : RangeActionSo
 {
-    public string mainProjectilePoolID;
     public string subProjectilePoolID;
 
-    public override void UseSkill(BaseSkillController controller)
+    public override AttackDistanceType DistanceType => AttackDistanceType.Range;
+    public override CombatActionSo     ActionSo     => this;
+
+    public override void Execute(Unit attacker)
     {
-        //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
-        this.skillController = controller;
+        var skillController = attacker.SkillController;
 
-        if (skillController.mainTarget != null)
+        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
+
+        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(mainProjectilePoolID).GetComponent<SkillProjectile>();
-            projectile.Initialize(skillController.CurrentSkillData.mainEffect, skillController.SkillManager.Owner.GetCenter(), skillController.mainTarget.GetCenter(), skillController.mainTarget);
-        }
-
-
-        if (skillController.subTargets != null)
-        {
-            foreach (Unit subTarget in skillController.subTargets)
+            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            foreach (Unit target in skillController.targets)
             {
-                SkillProjectile projectile = ObjectPoolManager.Instance.GetObject(subProjectilePoolID).GetComponent<SkillProjectile>();
-                projectile.Initialize(skillController.CurrentSkillData.subEffect, skillController.SkillManager.Owner.GetCenter(), subTarget.GetCenter(), subTarget);
+                if (target == null) continue;
+                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), target.GetCenter(), target);
             }
         }
+
+
+        ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
     }
 
-    public override AttackDistanceType DistanceType => AttackDistanceType.Range;
+
+    private void ResetProjectile()
+    {
+        ProjectileComponent = null;
+    }
 }
