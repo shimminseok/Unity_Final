@@ -1,6 +1,5 @@
-using System;
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,11 +17,17 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI skillCostText;
     [SerializeField] private GameObject lockImage;
 
+    [Header("뒷면 버튼 : 뒤집는 속도와 뒤집고 있는 시간")]
+    [SerializeField] private float flipDuration;
+    [SerializeField] private float waitFlippedTime;
+
     // 스킬 데이터들
     private SkillData selectedSkillData;
     private int currentskillIndex;
     private int coolDown;
-    private int reuseNumber;
+    private int reuseCount;
+
+    private bool isFront = false;
 
     public void Initialize(SkillData skillData, int index)
     {
@@ -38,15 +43,15 @@ public class BattleSceneSkillSlot : MonoBehaviour
         selectedSkillData = skillData;
         currentskillIndex = index;
         coolDown = skillData.coolDown;
-        reuseNumber = skillData.reuseCount;
+        reuseCount = skillData.reuseCount;
 
         // UI에 반영
         skillCostText.text = $"{coolDown}";
-        reuseNumberText.text = $"{reuseNumber}";
+        reuseNumberText.text = $"{reuseCount}";
         skillIconImage.sprite = skillData.skillIcon;
         skillName.text = skillData.skillName;
 
-        if (reuseNumber <=0)
+        if (reuseCount <=0)
         {
             LockSkill();
         }
@@ -61,10 +66,48 @@ public class BattleSceneSkillSlot : MonoBehaviour
         InputManager.Instance.SelectedSkillData = selectedSkillData;
     }
 
+    // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
     public void OnBackSkillBtn()
     {
-        // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
-        // 잠시 앞면 보일때 못누르게해야함.
+        Sequence flip = DOTween.Sequence();
+
+        // y축으로 90도 먼저 회전
+        flip.Append(RotateTo(90));
+
+        // 버튼 교체
+        flip.AppendCallback(() => { SetCardState(true); });
+
+        // 완전히 회전
+        flip.Append(RotateTo(180));
+
+        // 대기
+        flip.AppendInterval(waitFlippedTime);
+
+        // 다시 뒤집기
+        flip.Append(RotateTo(90));
+        flip.AppendCallback(() => { SetCardState(false); });
+        flip.Append(RotateTo(0));
+    }
+
+    // 회전 애니메이션 메서드
+    private Tween RotateTo(float y)
+    {
+        return this.transform.DORotate(new Vector3(0, y, 0), flipDuration).SetEase(Ease.Linear);
+    }
+
+    // 카드 상태 전환
+    private void SetCardState(bool showFront)
+    {
+        isFront = showFront;
+
+        FrontSkillBtn.gameObject.SetActive(showFront);
+        BackSkillBtn.gameObject.SetActive(!showFront);
+
+        // 카드가 뒤집힌 상태이므로, 앞면을 보이게 하려면 Y=180 보정, 다시 돌아오면 원래대로.
+        FrontSkillBtn.transform.localRotation = showFront ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+
+        // 앞면 잠깐 보일 때 버튼 클릭 불가능하게
+        FrontSkillBtn.interactable = !showFront;
     }
 
     // 스킬 슬롯 앞or뒤 토글

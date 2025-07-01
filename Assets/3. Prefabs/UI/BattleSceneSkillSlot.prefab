@@ -495,6 +495,8 @@ MonoBehaviour:
   BackSkillBtn: {fileID: 4240600952464905541}
   skillCostText: {fileID: 6270980265844152523}
   lockImage: {fileID: 4353643949565909423}
+  flipDuration: 0.2
+  waitFlippedTime: 1
 --- !u!1 &6122201802235685825
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +599,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -615,7 +617,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6112257314026749593}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8941822086375318803}
+        m_TargetAssemblyTypeName: BattleSceneSkillSlot, Assembly-CSharp
+        m_MethodName: OnBackSkillBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6597629362608911568
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +1004,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.764151, g: 0.764151, b: 0.764151, a: 1}
     m_PressedColor: {r: 0.5424528, g: 0.5424528, b: 0.5424528, a: 1}
     m_SelectedColor: {r: 0.4669811, g: 0.4669811, b: 0.4669811, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
