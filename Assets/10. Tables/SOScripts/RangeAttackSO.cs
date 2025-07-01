@@ -11,9 +11,9 @@ public class RangeAttackSO : AttackTypeSO
     {
         if (attacker.Target != null)
         {
-            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolId);
+            GameObject      projectile      = ObjectPoolManager.Instance.GetObject(projectilePoolId);
+            SkillProjectile skillProjectile = projectile.GetComponent<SkillProjectile>();
+            skillProjectile.Initialize(attacker, attacker.GetCenter(), attacker.Target.Collider.bounds.center);
         }
-
-        attacker.Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow));
     }
 }

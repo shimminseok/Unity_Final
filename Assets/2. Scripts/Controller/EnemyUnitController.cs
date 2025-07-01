@@ -74,6 +74,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.IdleClipName, MonsterSo.IdleAniClip);
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
+        ChangeClip(Define.DeadClipName, MonsterSo.DeadAniClip);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -162,6 +163,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override void Dead()
     {
         IsDead = true;
+        ChangeUnitState(EnemyUnitState.Die);
+        StatusEffectManager.RemoveAllEffects();
+        hpBar.UnLink();
+        gameObject.SetActive(false);
     }
 
     public override void StartTurn()

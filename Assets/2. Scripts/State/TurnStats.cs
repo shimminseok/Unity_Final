@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum TurnStateType
@@ -194,14 +196,12 @@ public class ReturnState : ITurnState
 
 public class EndTurnState : ITurnState
 {
+    private bool waitOneFrame = false;
+
     public void OnEnter(Unit unit)
     {
-        if (unit is PlayerUnitController)
-            unit.ChangeUnitState(PlayerUnitState.Idle);
-        else if (unit is EnemyUnitController)
-            unit.ChangeUnitState(EnemyUnitState.Idle);
-
-        unit.EndTurn();
+        waitOneFrame = false;
+        unit.StartCoroutine(DelayEndTurn(unit));
     }
 
     public void OnUpdate(Unit unit)
@@ -210,5 +210,11 @@ public class EndTurnState : ITurnState
 
     public void OnExit(Unit unit)
     {
+    }
+
+    private IEnumerator DelayEndTurn(Unit unit)
+    {
+        yield return new WaitForFixedUpdate();
+        unit.EndTurn();
     }
 }

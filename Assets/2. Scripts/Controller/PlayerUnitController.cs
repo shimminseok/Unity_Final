@@ -214,7 +214,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || CurrentAction == ActionType.None)
+        Debug.Log(UnitSo.UnitName);
+        if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
