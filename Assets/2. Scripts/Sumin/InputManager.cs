@@ -7,6 +7,7 @@ using UnityEngine;
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
+    None, // 입력 불가 상태
     SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
     SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
