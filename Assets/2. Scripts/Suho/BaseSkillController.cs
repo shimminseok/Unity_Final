@@ -11,7 +11,7 @@ public abstract class BaseSkillController : MonoBehaviour
     public List<SkillData> skills = new List<SkillData>();
     public SkillData CurrentSkillData;
     public Unit mainTarget;
-    public List<Unit> subTargets = new List<Unit>();
+    public List<Unit> targets = new List<Unit>();
     public int generateCost = 1; // 턴 종료 시 cost각 스킬 코스트 추가 defalut 값 = 1
 
 

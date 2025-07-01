@@ -124,9 +124,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void SetTarget(Unit target)
     {
-        if (CurrentAction == ActionType.Attack)
-            Target = target;
-        else if (CurrentAction == ActionType.SKill)
+        Target = target;
+        if (CurrentAction == ActionType.SKill)
         {
             SkillController.SelectTargets(target);
         }

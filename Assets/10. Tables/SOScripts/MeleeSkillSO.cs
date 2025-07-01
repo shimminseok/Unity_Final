@@ -5,22 +5,19 @@ public class MeleeSkillSO : SkillTypeSO
 {
     public override void UseSkill(BaseSkillController controller)
     {
-        //실질적인 데미지 주는 형식의 UseSkill
+
+        //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
         this.skillController = controller;
-        if (controller.mainTarget != null)
-        {
-            controller.CurrentSkillData.mainEffect.AffectTargetWithSkill(controller.mainTarget);
-        }
+        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
 
-
-        if (controller.subTargets != null)
+        foreach (var effect in controller.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            foreach (Unit subTarget in controller.subTargets)
+            controller.targets = targetSelect.FindTargets(effect.selectTarget,effect.selectCamp);
+            foreach (Unit target in controller.targets)
             {
-                controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
+                effect.AffectTargetWithSkill(target);
             }
         }
-
         //이펙트 추가
     }
 
