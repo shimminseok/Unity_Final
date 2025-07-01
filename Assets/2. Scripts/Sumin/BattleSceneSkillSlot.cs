@@ -16,6 +16,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
     [SerializeField] private TextMeshProUGUI skillCostText;
+    [SerializeField] private GameObject lockImage;
 
     // 스킬 데이터들
     private SkillData selectedSkillData;
@@ -44,6 +45,11 @@ public class BattleSceneSkillSlot : MonoBehaviour
         reuseNumberText.text = $"{reuseNumber}";
         skillIconImage.sprite = skillData.skillIcon;
         skillName.text = skillData.skillName;
+
+        if (reuseNumber <=0)
+        {
+            LockSkill();
+        }
     }
 
     // 스킬 버튼 누르면 이 스킬의 슬롯 인덱스에 맞춰서 반영하여 스킬 선택
@@ -66,5 +72,15 @@ public class BattleSceneSkillSlot : MonoBehaviour
     {
         FrontSkillBtn.gameObject.SetActive(toggle);
         BackSkillBtn.gameObject.SetActive(!toggle);
+    }
+
+    // 스킬 슬롯 비활성화
+    private void LockSkill()
+    {
+        ColorBlock colorBlock = BackSkillBtn.colors;
+        BackSkillBtn.interactable = false;
+        colorBlock.normalColor = new Color(0, 0, 0);
+        lockImage.SetActive(true);
+        skillCostText.gameObject.SetActive(false);
     }
 }

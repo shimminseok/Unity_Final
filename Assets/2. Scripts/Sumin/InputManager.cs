@@ -67,6 +67,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickPlayerUnit()
     {
         ShowSelectableUnit(playerUnitLayer, true);
+        UIManager.Instance.Close<BattleSceneSkillUI>();
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -175,7 +176,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-                UIManager.Instance.Close<BattleSceneSkillUI>();
 
                 // 타겟까지 설정되면 Start 버튼 활성화
                 UIManager.Instance.Open<BattleSceneStartButton>();
@@ -185,6 +185,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
         {
             return;
         }
+    }
+
+    public void OnClickSkillExitButton()
+    {
+        currentPhase = InputPhase.SelectExecuter;
     }
 
     public void OnClickTurnStartButton()
