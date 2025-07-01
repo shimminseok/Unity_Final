@@ -32,13 +32,12 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 
         TurnStateMachine = new TurnStateMachine();
         CreateTurnStates();
-
-        SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Start()
     {
         base.Start();
+        SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Update()

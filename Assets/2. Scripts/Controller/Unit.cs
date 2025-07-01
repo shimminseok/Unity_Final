@@ -126,9 +126,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void Attack();
     public abstract void MoveTo(Vector3 destination);
 
-    public void SetTarget(IDamageable target)
+    public void SetTarget(Unit target)
     {
-        Target = target;
+        if (CurrentAction == ActionType.Attack)
+            Target = target;
+        else if (CurrentAction == ActionType.SKill)
+        {
+            SkillController.SelectTargets(target);
+        }
     }
 
     // 유닛 선택 가능 토글

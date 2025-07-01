@@ -154,10 +154,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
 
                 // playerUnit에게 선택한 mainTarget 전달하기
-                if (selectedExecuterUnit is PlayerUnitController playerUnit)
-                {
-                    playerUnit.SkillController.SelectTargets(targetUnit);
-                }
+                // if (selectedExecuterUnit is PlayerUnitController playerUnit)
+                // {
+                //     playerUnit.SetTarget(targetUnit);
+                // }
 
                 executer.SetTarget(targetUnit);
                 Debug.Log($"타겟 유닛 선택 : {targetUnit}");

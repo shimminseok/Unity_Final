@@ -9,10 +9,12 @@ public class BattleSceneSkillSlot : MonoBehaviour
 {
     [Header("스킬 슬롯 앞면 : 남은 재사용 횟수")]
     [SerializeField] private Button FrontSkillBtn;
+
     [SerializeField] private TextMeshProUGUI reuseNumberText;
 
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
+
     [SerializeField] private TextMeshProUGUI skillCostText;
 
     // Test : UI에 들어온 스킬 index 확인용
@@ -27,6 +29,12 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void Initialize(SkillData skillData, int index)
     {
         // skill data를 넣기
+        if (skillData == null)
+        {
+            ToggleSkillSlot(false); // 사용 가능 여부에 따라 앞or뒤 켜고 끄기
+            return;
+        }
+
         selectedSkillData = skillData;
         currentskillIndex = index;
         coolDown = skillData.coolDown;
@@ -61,5 +69,4 @@ public class BattleSceneSkillSlot : MonoBehaviour
         FrontSkillBtn.gameObject.SetActive(toggle);
         BackSkillBtn.gameObject.SetActive(!toggle);
     }
-    
 }
