@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillData
 {
-    public SkillData(string name, string des,SkillTypeSO type,SelectCampType camp, StatBaseSkillEffect skillEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, AnimationClip skillAnimation)
+    public SkillData(string name, string des,CombatActionSo type,SelectCampType camp, StatBaseSkillEffect skillEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, AnimationClip skillAnimation)
     {
         this.skillName = name;
         this.skillDescription = des;
@@ -21,7 +21,7 @@ public class SkillData
     
     public string skillName;
     public string skillDescription;
-    public SkillTypeSO skillType; // 원거리인가 근거리인가
+    public CombatActionSo skillType; // 원거리인가 근거리인가
     public SelectCampType selectedCamp;
     public StatBaseSkillEffect skillEffect;
     public JobType jobType;

@@ -45,11 +45,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void Dead();
 
-
-    protected void Start()
-    {
-    }
-
     public void SetStunned(bool isStunned)
     {
         IsStunned = isStunned;

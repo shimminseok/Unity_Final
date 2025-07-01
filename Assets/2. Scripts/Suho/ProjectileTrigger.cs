@@ -13,6 +13,8 @@ public class ProjectileTrigger : MonoBehaviour
         if (other.GetComponent<Unit>() == target)
         {
             OnTriggerTarget?.Invoke();
+
+            OnTriggerTarget = null;
         }
     }
 }

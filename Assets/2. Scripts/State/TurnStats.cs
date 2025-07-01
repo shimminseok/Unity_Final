@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum TurnStateType
@@ -114,59 +116,46 @@ public class MoveToTargetState : ITurnState
 
 public class ActState : ITurnState
 {
-    private bool waitOneFrame = false;
+    private ICombatAction action;
+    private Action handler;
 
     public void OnEnter(Unit unit)
     {
-        waitOneFrame = false;
         if (unit.CurrentAction == ActionType.Attack)
         {
-            if (unit is PlayerUnitController player)
-            {
-                player.ChangeUnitState(PlayerUnitState.Attack);
-            }
-            else if (unit is EnemyUnitController enemy)
-            {
-                enemy.ChangeUnitState(EnemyUnitState.Attack);
-            }
+            if (unit is PlayerUnitController)
+                unit.ChangeUnitState(PlayerUnitState.Attack);
+            else if (unit is EnemyUnitController)
+                unit.ChangeUnitState(EnemyUnitState.Attack);
         }
         else if (unit.CurrentAction == ActionType.SKill)
         {
-            if (unit is PlayerUnitController player)
-            {
-                player.ChangeUnitState(PlayerUnitState.Skill);
-            }
-            else if (unit is EnemyUnitController enemy)
-            {
-                enemy.ChangeUnitState(EnemyUnitState.Skill);
-            }
+            if (unit is PlayerUnitController)
+                unit.ChangeUnitState(PlayerUnitState.Skill);
+            else if (unit is EnemyUnitController)
+                unit.ChangeUnitState(EnemyUnitState.Skill);
         }
+
+        handler = () =>
+        {
+            if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                unit.ChangeTurnState(TurnStateType.Return);
+            else if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
+                unit.ChangeTurnState(TurnStateType.EndTurn);
+        };
+
+        action = CombatActionFactory.Create(unit);
+        action.OnActionComplete += handler;
+        action.Execute(unit);
     }
 
     public void OnUpdate(Unit unit)
     {
-        if (!waitOneFrame)
-        {
-            waitOneFrame = true;
-            return;
-        }
-
-        if (!(unit as IUnitFsmControllable)?.IsAnimationDone ?? false)
-            return;
-
-
-        if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-        {
-            unit.ChangeTurnState(TurnStateType.Return);
-        }
-        else
-        {
-            unit.ChangeTurnState(TurnStateType.EndTurn);
-        }
     }
 
     public void OnExit(Unit unit)
     {
+        action.OnActionComplete -= handler;
     }
 }
 
@@ -196,12 +185,7 @@ public class EndTurnState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
-        if (unit is PlayerUnitController)
-            unit.ChangeUnitState(PlayerUnitState.Idle);
-        else if (unit is EnemyUnitController)
-            unit.ChangeUnitState(EnemyUnitState.Idle);
-
-        unit.EndTurn();
+        unit.StartCoroutine(DelayEndTurn(unit));
     }
 
     public void OnUpdate(Unit unit)
@@ -210,5 +194,11 @@ public class EndTurnState : ITurnState
 
     public void OnExit(Unit unit)
     {
+    }
+
+    private IEnumerator DelayEndTurn(Unit unit)
+    {
+        yield return new WaitForFixedUpdate();
+        unit.EndTurn();
     }
 }

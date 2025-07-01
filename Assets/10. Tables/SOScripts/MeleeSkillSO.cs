@@ -1,24 +1,21 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
-public class MeleeSkillSO : SkillTypeSO
+public class MeleeSkillSO : CombatActionSo
 {
-    public override void UseSkill(BaseSkillController controller)
+    public override void Execute(Unit attacker)
     {
+        //이펙트 추가
+        TargetSelect targetSelect = new TargetSelect(attacker.SkillController.mainTarget);
 
-        //SkillTypeSO에 있는 UseSKill 진짜 UseSkill
-        this.skillController = controller;
-        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
-
-        foreach (var effect in controller.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            controller.targets = targetSelect.FindTargets(effect.selectTarget,effect.selectCamp);
-            foreach (Unit target in controller.targets)
+            attacker.SkillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            foreach (Unit target in attacker.SkillController.targets)
             {
                 effect.AffectTargetWithSkill(target);
             }
         }
-        //이펙트 추가
     }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
