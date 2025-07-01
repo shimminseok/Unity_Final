@@ -122,6 +122,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
+        Debug.Log("Attack");
+
         Target = finalTarget;
         PlayerUnitSo.AttackType.Attack(this);
 
@@ -136,8 +138,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void UseSkill()
     {
-        //이펙트 생성
-        //
+        // SkillController.CurrentSkillData.skillType.UseSkill(SkillController);
         SkillController.UseSkill();
     }
 

@@ -156,7 +156,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // playerUnit에게 선택한 mainTarget 전달하기
                 if (selectedExecuterUnit is PlayerUnitController playerUnit)
                 {
-                    playerUnit.SkillController.mainTarget = targetUnit;
+                    playerUnit.SkillController.SelectTargets(targetUnit);
                 }
 
                 executer.SetTarget(targetUnit);

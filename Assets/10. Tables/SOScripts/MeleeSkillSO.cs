@@ -5,6 +5,7 @@ public class MeleeSkillSO : SkillTypeSO
 {
     public override void UseSkill(BaseSkillController controller)
     {
+        //실질적인 데미지 주는 형식의 UseSkill
         this.skillController = controller;
         if (controller.mainTarget != null)
         {
@@ -19,6 +20,8 @@ public class MeleeSkillSO : SkillTypeSO
                 controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
             }
         }
+
+        //이펙트 추가
     }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
