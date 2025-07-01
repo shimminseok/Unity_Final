@@ -63,14 +63,15 @@ public class PlayerSkillController : BaseSkillController
 
     public override void EndTurn()
     {
-        CurrentSkillData = null;
-        this.mainTarget = null;
-        targets = null;
         foreach (SkillData skill in skills)
         {
-            if (skill == null)
+            if (skill == null || skill == CurrentSkillData)
                 continue;
             skill.RegenerateCoolDown(generateCost);
         }
+        CurrentSkillData = null;
+        this.mainTarget = null;
+        targets = null;
+
     }
 }

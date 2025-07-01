@@ -33,7 +33,7 @@ public class TargetSelect
                 List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTargetUnit).ToList();
                 return filteredUnits;
             
-            case SelectTargetType.SinglePlusRandomOne:
+            case SelectTargetType.RandomOne:
                 combinedUnits = camp switch
                 {
                     SelectCampType.Enemy => BattleManager.Instance.EnemyUnits,
