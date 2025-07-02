@@ -5,7 +5,10 @@ using UnityEngine;
 [System.Serializable]
 public class DialogueLine
 {
-    [Tooltip("대사 주인공 이름")]
+    [Tooltip("이 대사가 속한 그룹의 키 (ex: STAGE_1_BEFORE)")]
+    public string groupKey;
+
+    [Tooltip("대사 중인 캐릭터 이름")]
     public string characterName;
 
     [Tooltip("대사 내용 (줄바꿈 지원)")]
