@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 /// <summary>
-/// CSV 대사 파일을 JSON 구조로 변환하는 Unity 에디터 툴.
+/// CSV 대사 파일을 JSON 구조로 변환하는 Unity 에디터 툴
 /// </summary>
 public static class CsvToJsonConverter
 {
