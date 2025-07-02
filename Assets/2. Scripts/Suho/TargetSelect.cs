@@ -30,7 +30,7 @@ public class TargetSelect
                     _ => null
                 };
                 if (combinedUnits == null) return null;
-                List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTargetUnit).ToList();
+                List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTargetUnit && !u.IsDead).ToList();
                 return filteredUnits;
             
             case SelectTargetType.RandomOne:
@@ -45,8 +45,8 @@ public class TargetSelect
 
                 if (combinedUnits == null) return null;
 
-                // mainTarget 제거 후 랜덤 선택
-                filteredUnits = combinedUnits.Where(u => u != mainTargetUnit).ToList();
+                // mainTarget과 죽은 유닛 제거 후 랜덤 선택
+                filteredUnits = combinedUnits.Where(u => u != mainTargetUnit&& !u.IsDead).ToList();
                 if (filteredUnits.Count == 0) return new List<Unit>(); // 선택 가능한 유닛이 없을 경우
 
                 Unit randomTarget = filteredUnits[Random.Range(0, filteredUnits.Count)];
