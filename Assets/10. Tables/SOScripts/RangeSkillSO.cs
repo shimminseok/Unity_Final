@@ -1,3 +1,4 @@
+using System.Buffers;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
@@ -8,20 +9,20 @@ public class RangeSkillSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker)
+    public override void Execute(Unit attacker, IDamageable target)
     {
         var skillController = attacker.SkillController;
 
-        TargetSelect targetSelect = new TargetSelect(skillController.mainTarget);
+        TargetSelect targetSelect = new TargetSelect(target as Unit);
 
         foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
             skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
-            foreach (Unit target in skillController.targets)
+            foreach (Unit unit in skillController.targets)
             {
-                if (target == null) continue;
+                if (unit == null) continue;
                 ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
-                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), target.GetCenter(), target);
+                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
             }
         }
 

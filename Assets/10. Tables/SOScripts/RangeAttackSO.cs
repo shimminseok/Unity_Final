@@ -7,12 +7,12 @@ public class RangeAttackSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker)
+    public override void Execute(Unit attacker, IDamageable target)
     {
-        if (attacker.Target != null)
+        if (target != null)
         {
             ProjectileComponent = ObjectPoolManager.Instance.GetObject(projectilePoolId).GetComponent<SkillProjectile>();
-            ProjectileComponent.Initialize(attacker, attacker.GetCenter(), attacker.Target.Collider.bounds.center);
+            ProjectileComponent.Initialize(attacker, attacker.GetCenter(), target.Collider.bounds.center);
 
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }

@@ -45,6 +45,8 @@ public enum PlayerUnitState
     Stun,
 
     EndTurn,
+    Victory,
+    ReadyAction
 }
 
 public enum EnemyUnitState

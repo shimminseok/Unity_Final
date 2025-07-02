@@ -138,10 +138,15 @@ public class ActState : ITurnState
 
         handler = () =>
         {
-            if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-                unit.ChangeTurnState(TurnStateType.Return);
-            else if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
-                unit.ChangeTurnState(TurnStateType.EndTurn);
+            Unit target = unit.Target as Unit;
+            if (target != null && target.CanCounterAttack(unit))
+            {
+                unit.ExecuteCoroutine(StartCounterAttack(unit, target));
+            }
+            else
+            {
+                ProceedToNextState(unit);
+            }
         };
 
         action = CombatActionFactory.Create(unit);
@@ -156,6 +161,26 @@ public class ActState : ITurnState
     public void OnExit(Unit unit)
     {
         action.OnActionComplete -= handler;
+    }
+
+    private IEnumerator StartCounterAttack(Unit attacker, Unit target)
+    {
+        target.StartCountAttack(attacker);
+
+        yield return new WaitUntil(() => target.IsAnimationDone);
+        target.EndCountAttack();
+        ProceedToNextState(attacker);
+    }
+
+    private void ProceedToNextState(Unit unit)
+    {
+        if (unit.IsDead)
+            unit.ChangeUnitState(TurnStateType.EndTurn);
+
+        if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            unit.ChangeTurnState(TurnStateType.Return);
+        else
+            unit.ChangeTurnState(TurnStateType.EndTurn);
     }
 }
 

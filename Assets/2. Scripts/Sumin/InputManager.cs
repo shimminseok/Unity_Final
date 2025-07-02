@@ -177,7 +177,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-
+                executer.ChangeUnitState(PlayerUnitState.ReadyAction);
                 // 타겟까지 설정되면 Start 버튼 활성화
                 UIManager.Instance.Open<BattleSceneStartButton>();
             }

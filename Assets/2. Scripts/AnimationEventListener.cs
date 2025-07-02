@@ -13,6 +13,12 @@ public class AnimationEventListener : MonoBehaviour
 
     public void EventTrigger()
     {
+        if (owner.IsCounterAttack)
+        {
+            Attack();
+            return;
+        }
+
         if (owner.CurrentAction == ActionType.Attack)
         {
             Attack();

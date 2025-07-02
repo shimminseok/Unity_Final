@@ -8,12 +8,11 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
     public void OnEnter(PlayerUnitController owner)
     {
         owner.Agent.updateRotation = false;
-        owner.transform.LookAt(owner.Target.Collider.transform);
+        owner.transform.LookAt(owner.IsCounterAttack ? owner.CounterTarget.Collider.transform : owner.Target.Collider.transform);
         owner.Agent.isStopped = true;
         owner.Agent.velocity = Vector3.zero;
         owner.Agent.ResetPath();
         owner.Animator.SetTrigger(attack);
-        // owner.Attack();
     }
 
     public void OnUpdate(PlayerUnitController owner)
@@ -30,5 +29,4 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
         owner.Agent.isStopped = false;
         owner.Agent.updateRotation = true;
     }
-    
 }

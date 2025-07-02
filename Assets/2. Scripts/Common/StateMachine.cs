@@ -7,7 +7,7 @@ public interface IState<TOwner, TState> where TOwner : MonoBehaviour where TStat
     void OnEnter(TOwner owner);
     void OnUpdate(TOwner owner);
     void OnFixedUpdate(TOwner owner);
-    void OnExit(TOwner entity);
+    void OnExit(TOwner owner);
 }
 
 public class StateMachine<T, TState> where T : MonoBehaviour where TState : Enum

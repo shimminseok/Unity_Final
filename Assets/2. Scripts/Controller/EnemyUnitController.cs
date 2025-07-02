@@ -93,13 +93,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Attack()
     {
-        var enemies = BattleManager.Instance.GetEnemies(this);
-        Target = enemies[Random.Range(0, enemies.Count)];
-
-
+        IsCompletedAttack = false;
         //어택 타입에 따라서 공격 방식을 다르게 적용
-        IDamageable finalTarget = Target;
-
+        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
 
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
@@ -116,7 +112,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         //TODO: 크리티컬 구현
-        MonsterSo.AttackType.Execute(this);
+        MonsterSo.AttackType.Execute(this, finalTarget);
+        IsCompletedAttack = true;
     }
 
     public override void MoveTo(Vector3 destination)
@@ -165,7 +162,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
-        gameObject.SetActive(false);
+
+
+        // gameObject.SetActive(false);
     }
 
     public override void StartTurn()
@@ -179,7 +178,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeAction(ActionType.Attack);
         var enemies = BattleManager.Instance.GetEnemies(this);
         SetTarget(enemies[Random.Range(0, enemies.Count)]);
-        TurnStateMachine.ChangeState(new StartTurnState());
+        ChangeTurnState(TurnStateType.StartTurn);
     }
 
     public override void EndTurn()
