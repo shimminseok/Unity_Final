@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace EnemyState
 {
     public class SkillState : IState<EnemyUnitController, EnemyUnitState>
@@ -5,6 +7,9 @@ namespace EnemyState
         private readonly int skill = Define.SkillAnimationHash;
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
             owner.Animator.SetTrigger(Define.SkillAnimationHash);
 
         }
