@@ -1,9 +1,12 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using EnemyState;
+using PlayerState;
 using System;
+using IdleState = EnemyState.IdleState;
+using MoveState = EnemyState.MoveState;
 using Random = UnityEngine.Random;
+using StunState = EnemyState.StunState;
 
 [RequireComponent(typeof(EnemySkillContorller))]
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
@@ -36,7 +39,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     protected override void Start()
     {
-        base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
         StartPostion = transform.position;
     }
@@ -74,6 +76,16 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
         ChangeClip(Define.DeadClipName, MonsterSo.DeadAniClip);
+        foreach (var skillData in MonsterSo.SkillDatas)
+        {
+            SkillManager.AddActiveSkill(skillData.skillSO);
+        }
+        SkillManager.InitializeSkillManager(this);
+        EnemySkillContorller sc = SkillController as EnemySkillContorller;
+        if (sc != null)
+        {
+            sc.InitSkillSelector();       
+        }
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -84,6 +96,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             EnemyUnitState.Move   => new MoveState(),
             EnemyUnitState.Return => new EnemyState.ReturnState(),
             EnemyUnitState.Attack => new EnemyState.AttackState(),
+            EnemyUnitState.Skill => new EnemyState.SkillState(),
             EnemyUnitState.Stun   => new StunState(),
             EnemyUnitState.Die    => new EnemyState.DeadState(),
 
@@ -168,6 +181,12 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         gameObject.SetActive(false);
     }
 
+    public bool ShouldUseSkill()
+    {
+        if(SkillController.CheckAllSkills() && Random.value < MonsterSo.skillActionProbability) return true;
+        else return false;
+    }
+
     public override void StartTurn()
     {
         if (IsDead || IsStunned)
@@ -176,7 +195,19 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        ChangeAction(ActionType.Attack);
+        if (ShouldUseSkill())
+        {
+            EnemySkillContorller sc = SkillController as EnemySkillContorller;
+            if (sc != null)
+            {
+                sc.SelectSkill();
+                ChangeAction(ActionType.SKill);           
+            }
+        }
+        else
+        {
+            ChangeAction(ActionType.Attack);
+        }
         var enemies = BattleManager.Instance.GetEnemies(this);
         SetTarget(enemies[Random.Range(0, enemies.Count)]);
         TurnStateMachine.ChangeState(new StartTurnState());

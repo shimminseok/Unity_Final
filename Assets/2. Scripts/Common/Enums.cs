@@ -144,7 +144,8 @@ public enum JobType
     DragonKnight,
     Archer,
     Priest,
-    Mage
+    Mage,
+    Monster
 }
 
 public enum AttackDistanceType
