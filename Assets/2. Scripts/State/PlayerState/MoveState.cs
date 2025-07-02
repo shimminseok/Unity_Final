@@ -8,6 +8,7 @@
         {
             owner.Agent.speed = 5f;
             owner.Agent.avoidancePriority = 10;
+            owner.Agent.isStopped = false;
             owner.setRemainDistance = 1.5f;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.Target.Collider.transform.position);

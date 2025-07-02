@@ -29,6 +29,9 @@ namespace PlayerState
             owner.Agent.updateRotation = false;
             owner.transform.localRotation = Quaternion.identity;
             owner.Agent.updateRotation = true;
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
         }
     }
 }

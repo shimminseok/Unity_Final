@@ -9,9 +9,11 @@ public class UIManager : Singleton<UIManager>
     private List<UIBase> openedUIList = new();
 
 
-    private void Start()
+    protected override void Awake()
     {
-        InitializeUIRoot();
+        base.Awake();
+        if (!isDuplicated)
+            InitializeUIRoot();
     }
 
     public void InitializeUIRoot()

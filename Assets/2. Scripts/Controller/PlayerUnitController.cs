@@ -24,6 +24,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public PlayerUnitSO PlayerUnitSo { get; private set; }
 
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
+
     public float setRemainDistance;
 
     public override bool IsAnimationDone
@@ -89,11 +90,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
         StatManager.Initialize(PlayerUnitSo);
+        AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
         ChangeClip(Define.IdleClipName, idleClip);
         ChangeClip(Define.MoveClipName, moveClip);
-        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
 
@@ -121,11 +122,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        Target = finalTarget;
-        PlayerUnitSo.AttackType.Attack(this);
+        Debug.Log("Attack");
 
-        //Test
-        // EndTurn();
+        Target = finalTarget;
+        PlayerUnitSo.AttackType.Execute(this);
     }
 
     public override void MoveTo(Vector3 destination)
@@ -133,10 +133,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Agent.SetDestination(destination);
     }
 
-    public void UseSkill()
+    public override void UseSkill()
     {
-        //이펙트 생성
-        //
+        // SkillController.CurrentSkillData.skillType.UseSkill(SkillController);
         SkillController.UseSkill();
     }
 
@@ -212,7 +211,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || CurrentAction == ActionType.None)
+        if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;

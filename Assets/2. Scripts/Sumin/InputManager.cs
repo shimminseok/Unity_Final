@@ -1,17 +1,13 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEngine.UI.CanvasScaler;
+
 
 // 추후 StateMachine으로 리팩토링하면 좋다.
 
 // 나중에 Enum으로 이동
 public enum InputPhase
 {
+    None,           // 입력 불가 상태
     SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
     SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
     SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
@@ -21,7 +17,6 @@ public enum InputPhase
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
-    [SerializeField] private BattleSceneSkillUI skillUI;
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
@@ -34,6 +29,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private ISelectable selectedTargetUnit;
     private ISelectable selectable;
     private InputPhase currentPhase = InputPhase.SelectExecuter;
+
+    private BattleSceneSkillUI skillUI;
     public SkillData SelectedSkillData { get; set; }
 
     void Start()
@@ -42,10 +39,17 @@ public class InputManager : SceneOnlySingleton<InputManager>
         {
             mainCam = Camera.main;
         }
+
+        skillUI = UIManager.Instance.GetUIComponent<BattleSceneSkillUI>();
     }
 
     void Update()
     {
+        if (currentPhase == InputPhase.None)
+        {
+            return;
+        }
+
         switch (currentPhase)
         {
             case InputPhase.SelectExecuter:
@@ -64,6 +68,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     private void OnClickPlayerUnit()
     {
         ShowSelectableUnit(playerUnitLayer, true);
+        UIManager.Instance.Close<BattleSceneSkillUI>();
         Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
@@ -81,7 +86,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
                 skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
-                ShowSelectableUnit(playerUnitLayer, false); // 선택 가능 인디케이터 끄기
+                ShowSelectableUnit(playerUnitLayer, false);         // 선택 가능 인디케이터 끄기
+                UIManager.Instance.Close<BattleSceneStartButton>(); // 플레이어 유닛 선택 시작하면 start 버튼 끄기
             }
         }
         else
@@ -131,7 +137,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
         if (SelectedSkillData != null)
         {
-            targetLayer = GetTargetLayerMask(SelectedSkillData.selectedCamp);
+            targetLayer = GetTargetLayerMask(SelectedSkillData.skillSo.selectCamp);
         }
         else
         {
@@ -154,10 +160,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
 
                 // playerUnit에게 선택한 mainTarget 전달하기
-                if (selectedExecuterUnit is PlayerUnitController playerUnit)
-                {
-                    playerUnit.SkillController.mainTarget = targetUnit;
-                }
+                // if (selectedExecuterUnit is PlayerUnitController playerUnit)
+                // {
+                //     playerUnit.SetTarget(targetUnit);
+                // }
 
                 executer.SetTarget(targetUnit);
                 Debug.Log($"타겟 유닛 선택 : {targetUnit}");
@@ -171,7 +177,9 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-                UIManager.Instance.Close<BattleSceneSkillUI>();
+
+                // 타겟까지 설정되면 Start 버튼 활성화
+                UIManager.Instance.Open<BattleSceneStartButton>();
             }
         }
         else
@@ -180,10 +188,23 @@ public class InputManager : SceneOnlySingleton<InputManager>
         }
     }
 
+    public void OnClickSkillExitButton()
+    {
+        currentPhase = InputPhase.SelectExecuter;
+    }
+
     public void OnClickTurnStartButton()
     {
+        ShowSelectableUnit(playerUnitLayer, false);
+        currentPhase = InputPhase.None;
+        UIManager.Instance.Close<BattleSceneStartButton>(); // 턴 시작되면 start 버튼 끄기
         BattleManager.Instance.StartTurn();
-        ShowSelectableUnit(unitLayer, false);
+    }
+
+    public void Initialize()
+    {
+        UIManager.Instance.Open<BattleSceneStartButton>(); // 턴 종료되면 start 버튼 켜기
+        currentPhase = InputPhase.SelectExecuter;
     }
 
     // 선택한 스킬의 타겟 진영 받아오기

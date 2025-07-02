@@ -59,7 +59,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Initialize(UnitSO unitSO)
     {
-        //TODO : 스폰 하는곳에서 So 생성해서 보내주기
         UnitSo = unitSO;
         if (UnitSo is EnemyUnitSO enemyUnitSo)
         {
@@ -74,8 +73,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.IdleClipName, MonsterSo.IdleAniClip);
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
-
-        Animator.runtimeAnimatorController = AnimatorOverrideController;
+        ChangeClip(Define.DeadClipName, MonsterSo.DeadAniClip);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -118,12 +116,17 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         //TODO: 크리티컬 구현
-        MonsterSo.AttackType.Attack(this);
+        MonsterSo.AttackType.Execute(this);
     }
 
     public override void MoveTo(Vector3 destination)
     {
         Agent.SetDestination(destination);
+    }
+
+    public override void UseSkill()
+    {
+        SkillController.UseSkill();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -159,6 +162,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override void Dead()
     {
         IsDead = true;
+        ChangeUnitState(EnemyUnitState.Die);
+        StatusEffectManager.RemoveAllEffects();
+        hpBar.UnLink();
+        gameObject.SetActive(false);
     }
 
     public override void StartTurn()

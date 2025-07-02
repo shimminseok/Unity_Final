@@ -3,40 +3,20 @@ using UnityEngine;
 
 public class SkillData
 {
-    public SkillData(string name, string des,SkillTypeSO type,SelectCampType camp, SelectTargetType selectType, StatBaseSkillEffect mainEffect, StatBaseSkillEffect subEffect, JobType jobType, int reuseMaxCount, int maxCoolTime, Sprite skillIcon, ParticleSystem.Particle skillVFX, AnimationClip skillAnimation)
+    public SkillData(ActiveSkillSO skillSo)
     {
-        this.skillName = name;
-        this.skillDescription = des;
-        this.skillType = type;
-        this.selectedCamp = camp;
-        this.selectedType = selectType;
-        this.mainEffect = mainEffect;
-        this.subEffect = subEffect;
-        this.jobType = jobType;
-        this.reuseMaxCount = reuseMaxCount;
-        this.reuseCount = reuseMaxCount;
-        this.coolDown = 0;
-        this.coolTime = maxCoolTime;
-        this.skillIcon = skillIcon;
-        SkillVFX = skillVFX;
-        this.skillAnimation = skillAnimation;
+        this.skillSo = skillSo;
+        skillEffect = skillSo.skillEffect;
+        reuseCount = skillSo.reuseMaxCount;
+        coolDown = 0;
+        coolTime = skillSo.coolTime;
     }
-    
-    public string skillName;
-    public string skillDescription;
-    public SkillTypeSO skillType; // 원거리인가 근거리인가
-    public SelectCampType selectedCamp;
-    public SelectTargetType selectedType = SelectTargetType.Single;
-    public StatBaseSkillEffect mainEffect;
-    public StatBaseSkillEffect subEffect;
-    public JobType jobType;
+
+    public ActiveSkillSO skillSo;
+    public StatBaseSkillEffect skillEffect;
     public int reuseCount;
     public int coolDown = 0;
-    public int reuseMaxCount;
     public int coolTime;
-    public Sprite skillIcon;
-    public ParticleSystem.Particle SkillVFX;
-    public AnimationClip skillAnimation;
 
     public void RegenerateCoolDown(int value)
     {

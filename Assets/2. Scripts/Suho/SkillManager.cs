@@ -11,30 +11,21 @@ public class SkillManager : MonoBehaviour
 
     public void InitializeSkillManager(Unit unit)
     {
+        //테스트 스킬로 들어옴
         Owner = unit;
         Owner.SkillController.Initialize(this);
         foreach (ActiveSkillSO activeSkillSo in selectedSkill)
         {
-            SkillData skillData = new SkillData
-            (
-                activeSkillSo.skillName,
-                activeSkillSo.skillDescription,
-                activeSkillSo.skillType,
-                activeSkillSo.selectCamp,
-                activeSkillSo.selectType,
-                activeSkillSo.mainSkillEffect,
-                activeSkillSo.subSkillEffect,
-                activeSkillSo.jobType,
-                activeSkillSo.reuseMaxCount,
-                activeSkillSo.coolTime,
-                activeSkillSo.skillIcon,
-                activeSkillSo.SkillVFX,
-                activeSkillSo.skillAnimation
-            );
-            skillData.mainEffect.owner = Owner;
-            skillData.subEffect.owner = Owner;
-            skillData.mainEffect.Init();
-            skillData.subEffect.Init();
+            if (activeSkillSo == null)
+            {
+                Owner.SkillController.skills.Add(null);
+                continue;
+            }
+
+            SkillData skillData = new SkillData(activeSkillSo);
+            skillData.skillSo = activeSkillSo;
+            skillData.skillEffect.owner = Owner;
+            skillData.skillEffect.Init();
             Owner.SkillController.skills.Add(skillData);
         }
     }

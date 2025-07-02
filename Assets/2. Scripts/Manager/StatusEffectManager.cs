@@ -153,9 +153,5 @@ public class StatusEffectManager : MonoBehaviour
                 turnEffect.OnTurnPassed(this);
             }
         }
-
-        foreach (StatusEffect effect in activeEffects)
-        {
-        }
     }
 }

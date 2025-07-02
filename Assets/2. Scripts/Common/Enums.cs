@@ -110,7 +110,7 @@ public enum SelectTargetType
 {
     Single,
     All,
-    SinglePlusRandomOne,
+    RandomOne,
 }
 
 /* 선택 가능한 진영

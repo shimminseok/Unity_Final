@@ -26,13 +26,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public    Animator                   Animator                   { get; protected set; }
     public    BaseSkillController        SkillController            { get; protected set; }
     public    AnimatorOverrideController AnimatorOverrideController { get; protected set; }
-    public    IDamageable                Target                     { get; protected set; }
     public    Collider                   Collider                   { get; protected set; }
-    public    bool                       IsDead                     { get; protected set; }
-    public    int                        Index                      { get; protected set; }
-    public    UnitSO                     UnitSo                     { get; protected set; }
-    public    IAttackAction              CurrentAttackAction        { get; private set; }
     public    NavMeshAgent               Agent                      { get; protected set; }
+    public    UnitSO                     UnitSo                     { get; protected set; }
+    public    IDamageable                Target                     { get; protected set; }
+    public    IAttackAction              CurrentAttackAction        { get; private set; }
+    public    bool                       IsDead                     { get; protected set; }
+    public    AnimationEventListener     AnimationEventListener     { get; protected set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    => false;
@@ -40,20 +40,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void StartTurn();
     public abstract void EndTurn();
-
+    public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
     public abstract void Dead();
-
-    public event Action<Unit> OnAnimationComplete;
-
-    protected void Start()
-    {
-        if (unitIndicator == null)
-        {
-            unitIndicator = GetComponentInChildren<BattleSceneUnitIndicator>();
-        }
-    }
 
     public void SetStunned(bool isStunned)
     {
@@ -127,9 +117,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void Attack();
     public abstract void MoveTo(Vector3 destination);
 
-    public void SetTarget(IDamageable target)
+    public void SetTarget(Unit target)
     {
         Target = target;
+        if (CurrentAction == ActionType.SKill)
+        {
+            SkillController.SelectTargets(target);
+        }
     }
 
     // 유닛 선택 가능 토글
@@ -166,7 +160,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
-            CurrentAttackAction = SkillController.CurrentSkillData.skillType;
+            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.skillType;
         }
     }
 
@@ -182,6 +176,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ChangeClip(string changedClipName, AnimationClip changeClip)
     {
         AnimatorOverrideController[changedClipName] = changeClip;
+        Animator.runtimeAnimatorController = AnimatorOverrideController;
     }
 
     public Vector3 GetCenter()

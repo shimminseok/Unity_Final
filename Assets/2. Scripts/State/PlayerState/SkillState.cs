@@ -1,4 +1,6 @@
-﻿namespace PlayerState
+﻿using UnityEngine;
+
+namespace PlayerState
 {
     public class SkillState : IState<PlayerUnitController, PlayerUnitState>
     {
@@ -6,8 +8,8 @@
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Animator.SetTrigger(skill);
-            owner.UseSkill();
+            //예외 처리
+            owner.Animator.SetTrigger(Define.SkillAnimationHash);
         }
 
         public void OnUpdate(PlayerUnitController owner)

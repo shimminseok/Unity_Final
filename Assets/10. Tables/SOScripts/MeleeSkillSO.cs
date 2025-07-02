@@ -1,22 +1,19 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
-public class MeleeSkillSO : SkillTypeSO
+public class MeleeSkillSO : CombatActionSo
 {
-    public override void UseSkill(BaseSkillController controller)
+    public override void Execute(Unit attacker)
     {
-        this.skillController = controller;
-        if (controller.mainTarget != null)
-        {
-            controller.CurrentSkillData.mainEffect.AffectTargetWithSkill(controller.mainTarget);
-        }
+        //이펙트 추가
+        TargetSelect targetSelect = new TargetSelect(attacker.SkillController.mainTarget);
 
-
-        if (controller.subTargets != null)
+        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            foreach (Unit subTarget in controller.subTargets)
+            attacker.SkillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            foreach (Unit target in attacker.SkillController.targets)
             {
-                controller.CurrentSkillData.subEffect.AffectTargetWithSkill(subTarget);
+                effect.AffectTargetWithSkill(target);
             }
         }
     }

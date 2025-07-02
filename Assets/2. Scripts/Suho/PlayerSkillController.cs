@@ -32,15 +32,17 @@ public class PlayerSkillController : BaseSkillController
     public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
-        TargetSelect targetSelect = new TargetSelect();
-        subTargets = targetSelect.FindTargets(target, CurrentSkillData.selectedType, CurrentSkillData.selectedCamp);
     }
 
     public override void ChangeSkill(int index)
     {
         CurrentSkillData = skills[index];
-        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillAnimation);
-        skillAnimationListener.skillData = CurrentSkillData;
+        if (CurrentSkillData == null)
+            return;
+
+        SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
+
+        // skillAnimationListener.skillData = CurrentSkillData;
     }
 
     public override void UseSkill()
@@ -53,19 +55,23 @@ public class PlayerSkillController : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        SelectTargets(mainTarget);
-        //CurrentSkillData.skillType.UseSkill(this);
+        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner);
+
+        EndTurn();
     }
 
 
     public override void EndTurn()
     {
-        CurrentSkillData = null;
-        this.mainTarget = null;
-        subTargets = null;
         foreach (SkillData skill in skills)
         {
+            if (skill == null || skill == CurrentSkillData)
+                continue;
             skill.RegenerateCoolDown(generateCost);
         }
+
+        CurrentSkillData = null;
+        this.mainTarget = null;
+        targets = null;
     }
 }

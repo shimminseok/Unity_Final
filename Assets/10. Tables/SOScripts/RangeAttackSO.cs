@@ -1,14 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "NewRangeAttack", menuName = "ScriptableObjects/AttackType/Range", order = 0)]
-public class RangeAttackSO : AttackTypeSO
+public class RangeAttackSO : RangeActionSo
 {
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
+    public override CombatActionSo     ActionSo     => this;
 
-    public override void Attack(Unit attacker)
+    public override void Execute(Unit attacker)
     {
-        Debug.Log("나는 원거리 공격이에오");
+        if (attacker.Target != null)
+        {
+            ProjectileComponent = ObjectPoolManager.Instance.GetObject(projectilePoolId).GetComponent<SkillProjectile>();
+            ProjectileComponent.Initialize(attacker, attacker.GetCenter(), attacker.Target.Collider.bounds.center);
 
-        attacker.Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow));
+            ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+        }
+    }
+
+    private void ResetProjectile()
+    {
+        ProjectileComponent = null;
     }
 }

@@ -6,4 +6,5 @@ public class EnemyUnitSO : UnitSO
 {
     public AnimationClip MoveAniClip;
     public AnimationClip IdleAniClip;
+    public AnimationClip DeadAniClip;
 }
