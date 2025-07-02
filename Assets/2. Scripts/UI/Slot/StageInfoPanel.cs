@@ -19,13 +19,13 @@ public class StageInfoPanel : MonoBehaviour
 
     private void Awake()
     {
-        onScreenPos = panelRect.anchoredPosition;
     }
 
     public void OpenPanel()
     {
+        DOTween.KillAll();
         gameObject.SetActive(true);
-        panelRect.anchoredPosition = offScreenPos;
+        // panelRect.anchoredPosition = offScreenPos;
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             panelRect.anchoredPosition = onScreenPos;
@@ -34,6 +34,7 @@ public class StageInfoPanel : MonoBehaviour
 
     public void ClosePanel()
     {
+        DOTween.KillAll();
         panelRect.anchoredPosition = onScreenPos;
         panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
@@ -46,17 +47,16 @@ public class StageInfoPanel : MonoBehaviour
     {
         stageSo = stage;
 
-        // stageName.text = stageSo.;
         for (int i = 0; i < spawnMonsters.Count; i++)
         {
             if (stageSo.Monsters.Count > i)
             {
-                spawnMonsters[i].gameObject.SetActive(false);
+                spawnMonsters[i].gameObject.SetActive(true);
+                spawnMonsters[i].SetMonsterSlot(stageSo.Monsters[i]);
             }
             else
             {
-                spawnMonsters[i].gameObject.SetActive(true);
-                spawnMonsters[i].SetMonsterSlot(stageSo.Monsters[i]);
+                spawnMonsters[i].gameObject.SetActive(false);
             }
         }
     }

@@ -8,12 +8,15 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private RectTransform viewPort;
     [SerializeField] private StageInfoPanel stageInfoPanel;
+
+    [SerializeField] private List<StageSlot> stageSlots;
     private Vector2 dragStartPos;
     private Vector2 contentStartPos;
 
 
     public void SetStageInfo(StageSO stage)
     {
+        PlayerDeckContainer.Instance.SetStage(stage);
         stageInfoPanel.SetStageInfo(stage);
         stageInfoPanel.OpenPanel();
     }
@@ -53,12 +56,22 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
     public void OnClickEnterStage()
     {
         //TODO : StageManager에 해당 Stage 넘겨주기
-        //이거 끄고 덱빌딩 UI로 넘거가기
+        UIManager.Instance.Close<UIStageSelect>();
+
+        UIManager.Instance.Open<SelectMainUI>();
     }
 
     public override void Open()
     {
         base.Open();
+        int index = 0;
+        foreach (StageSO dataDicValue in TableManager.Instance.GetTable<StageTable>().DataDic.Values)
+        {
+            if (stageSlots.Count <= index)
+                return;
+
+            stageSlots[index++].Initialize(dataDicValue);
+        }
     }
 
     public override void Close()

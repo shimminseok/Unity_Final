@@ -34,7 +34,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
         }
 
-        SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
+        if (PlayerDeckContainer.Instance.SelectedStage == null)
+            SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
+        else
+        {
+            SetEnemiesUnit(PlayerDeckContainer.Instance.SelectedStage.Monsters);
+        }
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
