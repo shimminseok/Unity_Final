@@ -26,7 +26,5 @@ public class ActiveSkillSO : ScriptableObject
     public int coolTime;
     public Sprite skillIcon;
     public AnimationClip skillAnimation;
-    public ParticleSystem castingEffect;
-    public ParticleSystem skillVfx;
-    public ParticleSystem hitEffect;
+
 }

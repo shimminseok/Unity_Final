@@ -10,10 +10,12 @@ public class SkillEffectData
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
     public string projectileID;
-    public ParticleSystem.Particle skillVFX;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
-
+    public ParticleSystem castingEffect;
+    public ParticleSystem skillVfx;
+    public ParticleSystem hitEffect;
+    
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
         foreach (var result in buffEffects)
