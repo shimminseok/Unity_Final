@@ -9,7 +9,7 @@ using System.IO;
 public static class DialogueGroupGenerator
 {
     // 메뉴 경로에 등록
-    [MenuItem("Tools/Dialogue/Generate DialogueGroupSO From CSV")]
+    // [MenuItem("Tools/Dialogue/Generate DialogueGroupSO From CSV")]
     public static void GenerateDialogueGroupsFromCSV()
     {
         // CSV 파일 경로

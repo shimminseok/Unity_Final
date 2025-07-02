@@ -19,6 +19,6 @@ public class DialogueGroupSO : ScriptableObject
 // 대사 출력 방식 정의
 public enum DialogueMode
 {
-    Inline,      // 기존 화면에 간단히 출력
+    Overlay,      // 기존 화면에 간단히 출력
     Fullscreen   // 전용 대화 연출 UI로 출력
 }
