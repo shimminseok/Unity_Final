@@ -1,262 +1,120 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-// 추후 StateMachine으로 리팩토링하면 좋다.
-
-// 나중에 Enum으로 이동
-public enum InputPhase
-{
-    None,           // 입력 불가 상태
-    SelectExecuter, // 커맨드를 수행할 플레이어 유닛 선택 상태
-    SelectSkill,    // 유닛이 사용할 스킬 혹은 기본 공격 선택 상태
-    SelectTarget    // 유닛이 스킬을 사용할 타겟 선택 상태
-}
-
-// 전투 씬에서 플레이어 선택 Input 관리
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
-
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
 
-    private LayerMask targetLayer;
-    private ISelectable selectedExecuterUnit;
-    private ISelectable selectedTargetUnit;
-    private ISelectable selectable;
-    private InputPhase currentPhase = InputPhase.SelectExecuter;
+    private InputStateMachine inputStateMachine;
+    private InputContext context;
+    private UnitSelector selector;
 
-    private BattleSceneSkillUI skillUI;
-    public SkillData SelectedSkillData { get; set; }
-
-    void Start()
+    private void Start()
     {
         if (mainCam == null)
         {
             mainCam = Camera.main;
         }
 
-        skillUI = UIManager.Instance.GetUIComponent<BattleSceneSkillUI>();
+        context = new InputContext
+        {
+            UnitLayer = unitLayer,
+            PlayerUnitLayer = playerUnitLayer,
+            EnemyUnitLayer = enemyUnitLayer,
+            OpenSkillUI = unit => UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().UpdateSkillList(unit),
+            CloseSkillUI = () => UIManager.Instance.Close<BattleSceneSkillUI>(),
+            CloseStartButtonUI = () => UIManager.Instance.Close<BattleSceneStartButton>(),
+            OpenStartButtonUI = () => UIManager.Instance.Open<BattleSceneStartButton>(),
+            PlanAttackCommand = (executor, target) =>
+            {
+                IActionCommand command = new AttackCommand(executor, target);
+                CommandPlanner.Instance.PlanAction(executor, command);
+            }
+        };
+
+        inputStateMachine = new InputStateMachine();
+        selector = new UnitSelector(context, mainCam);
+
+        inputStateMachine.CreateInputState<SelectExecuterState>(new SelectExecuterState(context, selector, inputStateMachine));
+        inputStateMachine.CreateInputState<SelectSkillState>(new SelectSkillState(context, inputStateMachine));
+        inputStateMachine.CreateInputState<SelectTargetState>(new SelectTargetState(context, selector, inputStateMachine));
+        inputStateMachine.CreateInputState<InputDisabledState>(new InputDisabledState(context, selector));
+
+        StartCoroutine(WaitForBattleManagerInit());
+    }
+
+    // BattleManager가 초기화 완료된 후 InputManager의 SelectExecuter 상태 시작 (호출 순서 문제 해결)
+    private IEnumerator WaitForBattleManagerInit()
+    {
+        yield return new WaitUntil(() => BattleManager.Instance != null && BattleManager.Instance.PartyUnits.Count > 0);
+
+        inputStateMachine.ChangeState<SelectExecuterState>();
     }
 
     void Update()
     {
-        if (currentPhase == InputPhase.None)
-        {
-            return;
-        }
-
-        switch (currentPhase)
-        {
-            case InputPhase.SelectExecuter:
-                OnClickPlayerUnit();
-                break;
-            case InputPhase.SelectSkill:
-                // 버튼 동작시까지 대기
-                break;
-            case InputPhase.SelectTarget:
-                OnClickTargetUnit();
-                break;
-        }
+        inputStateMachine.Update();
     }
 
-    // 플레이어 유닛 선택
-    private void OnClickPlayerUnit()
+    // Input매니저 초기화
+    public void Initialize()
     {
-        ShowSelectableUnit(playerUnitLayer, true);
-        UIManager.Instance.Close<BattleSceneSkillUI>();
-        Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, playerUnitLayer))
-        {
-            selectable = hit.transform.GetComponent<ISelectable>();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                SelectUnit(selectable);
-
-                // 유닛 선택하면 스킬 선택 페이즈로 전환
-                currentPhase = InputPhase.SelectSkill;
-                Debug.Log($"플레이어 유닛 선택 : {selectedExecuterUnit}");
-
-                // 스킬 슬롯 UI에 유닛이 가지고 있는 스킬 데이터 연동
-                skillUI.UpdateSkillList(selectedExecuterUnit.SelectedUnit);
-                ShowSelectableUnit(playerUnitLayer, false);         // 선택 가능 인디케이터 끄기
-                UIManager.Instance.Close<BattleSceneStartButton>(); // 플레이어 유닛 선택 시작하면 start 버튼 끄기
-            }
-        }
-        else
-        {
-            return;
-        }
+        inputStateMachine.ChangeState<SelectExecuterState>();
     }
 
-    // 유닛이 사용할 스킬 선택
+    // Skill 선택 중 나가기 버튼
+    public void OnClickSkillExitButton()
+    {
+        inputStateMachine.ChangeState<SelectExecuterState>();
+    }
+
+    // Start 버튼
+    public void OnClickTurnStartButton()
+    {
+        UIManager.Instance.Close<BattleSceneStartButton>();
+        BattleManager.Instance.StartTurn();
+        inputStateMachine.ChangeState<InputDisabledState>();
+    }
+
+    // 스킬 선택 버튼
     public void SelectSkill(int index)
     {
-        if (selectedExecuterUnit == null)
-        {
-            Debug.Log("플레이어 유닛 선택하지 않음!");
-        }
-
         // 스킬 인덱스 받아서 교체
-        if (selectedExecuterUnit is PlayerUnitController playerUnit)
+        if (context.SelectedExcuter is PlayerUnitController playerUnit)
         {
             playerUnit.SkillController.ChangeSkill(index);
-        }
+            context.SelectedSkill = playerUnit.SkillController.CurrentSkillData;
 
+            // 타겟 인디케이터 업데이트
+            selector.ShowSelectableUnits(unitLayer, false);
+            context.TargetLayer = selector.GetLayerFromSkill(context.SelectedSkill);
+            selector.ShowSelectableUnits(context.TargetLayer, true);
+        }
         ChangeSelectedUnitAction(ActionType.SKill);
-        Debug.Log($"스킬 {index}번 선택");
     }
 
-    // 플레이어 유닛이 기본공격 수행
+    // 기본 공격 선택 버튼
     public void SelectBasicAttack()
     {
         ChangeSelectedUnitAction(ActionType.Attack);
-        Debug.Log("기본 공격 선택");
+
+        // 타겟 인디케이터 업데이트
+        selector.ShowSelectableUnits(unitLayer, false);
+        selector.ShowSelectableUnits(enemyUnitLayer, true);
     }
 
     // 선택한 액션 타입(기본공격/스킬)에 따라 ChangeAction하는 함수
     private void ChangeSelectedUnitAction(ActionType actionType)
     {
-        currentPhase = InputPhase.SelectTarget;
-        if (selectedExecuterUnit is PlayerUnitController playerUnit)
+        if (context.SelectedExcuter is PlayerUnitController playerUnit)
         {
             playerUnit.ChangeAction(actionType);
-        }
-    }
-
-    // 공격 혹은 스킬 사용할 타겟 유닛 선택
-    private void OnClickTargetUnit()
-    {
-        // 만약 스킬이라면? 스킬 타겟에 따라 레이어를 변경해줘야함
-        if (SelectedSkillData != null)
-        {
-            targetLayer = GetTargetLayerMask(SelectedSkillData.skillSo.selectCamp);
-        }
-        else
-        {
-            targetLayer = enemyUnitLayer;
-        }
-
-        ShowSelectableUnit(targetLayer, true); // 선택 가능한 유닛 인디케이터 켜기
-
-        Ray        ray = mainCam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
-        {
-            selectedTargetUnit = hit.transform.GetComponent<ISelectable>();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                Unit targetUnit = selectedTargetUnit.SelectedUnit;
-                Unit executer   = selectedExecuterUnit.SelectedUnit;
-
-                targetUnit.PlaySelectEffect(); // 선택했을때 이펙트 띄워주기
-
-                // playerUnit에게 선택한 mainTarget 전달하기
-                // if (selectedExecuterUnit is PlayerUnitController playerUnit)
-                // {
-                //     playerUnit.SetTarget(targetUnit);
-                // }
-
-                executer.SetTarget(targetUnit);
-                Debug.Log($"타겟 유닛 선택 : {targetUnit}");
-
-                ShowSelectableUnit(targetLayer, false); // 선택 완료하면 인디케이터 꺼주기
-
-                // 커맨드 생성
-                IActionCommand command = new AttackCommand(executer, targetUnit);
-                CommandPlanner.Instance.PlanAction(executer, command);
-
-                // 다음 선택
-                DeselectUnit();
-                currentPhase = InputPhase.SelectExecuter;
-
-                // 타겟까지 설정되면 Start 버튼 활성화
-                UIManager.Instance.Open<BattleSceneStartButton>();
-            }
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    public void OnClickSkillExitButton()
-    {
-        currentPhase = InputPhase.SelectExecuter;
-        DeselectUnit();
-    }
-
-    public void OnClickTurnStartButton()
-    {
-        ShowSelectableUnit(playerUnitLayer, false);
-        currentPhase = InputPhase.None;
-        UIManager.Instance.Close<BattleSceneStartButton>(); // 턴 시작되면 start 버튼 끄기
-        BattleManager.Instance.StartTurn();
-    }
-
-    public void Initialize()
-    {
-        UIManager.Instance.Open<BattleSceneStartButton>(); // 턴 종료되면 start 버튼 켜기
-        currentPhase = InputPhase.SelectExecuter;
-    }
-
-    // 선택한 스킬의 타겟 진영 받아오기
-    private LayerMask GetTargetLayerMask(SelectCampType selectCamp)
-    {
-        switch (selectCamp)
-        {
-            case SelectCampType.Enemy:
-                return enemyUnitLayer;
-            case SelectCampType.Player:
-                return playerUnitLayer;
-            case SelectCampType.BothSide:
-                return unitLayer;
-            default:
-                return unitLayer;
-        }
-    }
-
-    private void DeselectUnit()
-    {
-        if (selectedExecuterUnit != null)
-            selectedExecuterUnit.ToggleSelectedIndicator(false);
-
-        selectedExecuterUnit = null;
-    }
-
-    private void SelectUnit(ISelectable unit)
-    {
-        selectedExecuterUnit = unit;
-        unit.PlaySelectEffect();
-        unit.ToggleSelectedIndicator(true);
-    }
-
-    // 선택 가능한 유닛 레이어에 Selectable Indicator 띄워주기
-    private void ShowSelectableUnit(LayerMask layer, bool isSelectable)
-    {
-        List<Unit> targetUnits = new List<Unit>();
-
-        if ((layer.value & playerUnitLayer.value) != 0)
-        {
-            targetUnits.AddRange(BattleManager.Instance.PartyUnits);
-        }
-
-        if ((layer.value & enemyUnitLayer.value) != 0)
-        {
-            targetUnits.AddRange(BattleManager.Instance.EnemyUnits);
-        }
-
-        foreach (Unit unit in targetUnits)
-        {
-            unit.ToggleSelectableIndicator(isSelectable);
         }
     }
 }

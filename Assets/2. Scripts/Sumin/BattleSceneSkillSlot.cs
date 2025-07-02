@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -62,9 +61,6 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void OnFrontSkillBtn()
     {
         InputManager.Instance.SelectSkill(currentskillIndex);
-
-        // 선택한 스킬 넘겨주기
-        InputManager.Instance.SelectedSkillData = selectedSkillData;
     }
 
     // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
