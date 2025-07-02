@@ -20,14 +20,14 @@ public class EnemySkillContorller : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner);
+        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
 
         EndTurn();
     }
 
     public void SelectSkill()
     {
-       ChangeCurrentSkill(selector.Select());
+        ChangeCurrentSkill(selector.Select());
     }
 
     public void InitSkillSelector()
@@ -61,7 +61,7 @@ public class EnemySkillContorller : BaseSkillController
         this.mainTarget = null;
         targets = null;
     }
-    
+
     public override void ChangeCurrentSkill(int index)
     {
         CurrentSkillData = skills[index];
@@ -80,9 +80,4 @@ public class EnemySkillContorller : BaseSkillController
             return;
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
     }
-
-
-    
-
-    
 }
