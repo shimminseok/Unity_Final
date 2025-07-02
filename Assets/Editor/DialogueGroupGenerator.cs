@@ -9,7 +9,7 @@ using System.IO;
 public static class DialogueGroupGenerator
 {
     // 메뉴 경로에 등록
-    [MenuItem("Tools/Dialogue/Generate DialogueGroups From Single CSV")]
+    [MenuItem("Tools/Dialogue/Generate DialogueGroupSO From CSV")]
     public static void GenerateDialogueGroupsFromCSV()
     {
         // CSV 파일 경로
@@ -55,7 +55,7 @@ public static class DialogueGroupGenerator
         }
 
         // 생성된 SO 저장 경로
-        string outputPath = "Assets/10. Tables/Dialogues/";
+        string outputPath = "Assets/10. Tables/Dialogue/";
         if (!Directory.Exists(outputPath))
             Directory.CreateDirectory(outputPath);
 
