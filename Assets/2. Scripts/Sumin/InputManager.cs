@@ -107,7 +107,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 스킬 인덱스 받아서 교체
         if (selectedExecuterUnit is PlayerUnitController playerUnit)
         {
-            playerUnit.SkillController.ChangeSkill(index);
+            playerUnit.SkillController.ChangeCurrentSkill(index);
         }
 
         ChangeSelectedUnitAction(ActionType.SKill);

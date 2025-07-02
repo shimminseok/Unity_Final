@@ -10,11 +10,17 @@ public class MeleeCombatAction : ICombatAction
     {
         if (attacker is PlayerUnitController player)
         {
-            player.ChangeUnitState(PlayerUnitState.Attack);
+            if (player.CurrentAction == ActionType.Attack)
+                player.ChangeUnitState(PlayerUnitState.Attack);
+            else if (player.CurrentAction == ActionType.SKill)
+                player.ChangeUnitState(PlayerUnitState.Skill);
         }
         else if (attacker is EnemyUnitController enemy)
         {
-            enemy.ChangeUnitState(EnemyUnitState.Attack);
+            if (enemy.CurrentAction == ActionType.Attack)
+                enemy.ChangeUnitState(EnemyUnitState.Attack);
+            else if (enemy.CurrentAction == ActionType.SKill)
+                enemy.ChangeUnitState(EnemyUnitState.Skill);
         }
 
         attacker.ExecuteCoroutine(WaitForAnimationDone(attacker));
