@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StageTable", menuName = "Table/StageTable", order = 0)]
-public class StatgeTable : BaseTable<int, StageSO>
+public class StageTable : BaseTable<int, StageSO>
 {
     protected override string[] DataPath => new[] { "Assets/10. Tables/Stage" };
 

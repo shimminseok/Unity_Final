@@ -11,6 +11,8 @@ public class PlayerDeckContainer : Singleton<PlayerDeckContainer>
     // 현재 덱
     public PlayerDeck CurrentDeck { get; private set; } = new PlayerDeck();
 
+    public StageSO SelectedStage { get; private set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -28,5 +30,10 @@ public class PlayerDeckContainer : Singleton<PlayerDeckContainer>
     {
         CurrentDeck.deckDatas.Clear();
         debugDeck.deckDatas.Clear();
+    }
+
+    public void SetStage(StageSO stage)
+    {
+        SelectedStage = stage;
     }
 }

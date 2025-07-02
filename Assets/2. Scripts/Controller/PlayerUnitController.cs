@@ -3,7 +3,6 @@ using PlayerState;
 using System;
 using System.Linq;
 using Random = UnityEngine.Random;
-using PlayerState;
 
 public enum ActionType
 {
