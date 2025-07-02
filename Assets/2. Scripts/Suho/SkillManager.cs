@@ -7,7 +7,7 @@ public class SkillManager : MonoBehaviour
 {
     public List<ActiveSkillSO> selectedSkill;
     public Unit Owner { get; private set; }
-
+    
 
     public void InitializeSkillManager(Unit unit)
     {
@@ -28,5 +28,10 @@ public class SkillManager : MonoBehaviour
             skillData.skillEffect.Init();
             Owner.SkillController.skills.Add(skillData);
         }
+    }
+
+    public void AddActiveSkill(ActiveSkillSO skill)
+    {
+        selectedSkill.Add(skill);
     }
 }

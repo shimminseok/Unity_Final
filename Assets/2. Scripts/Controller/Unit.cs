@@ -10,29 +10,34 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     [SerializeField] protected BattleSceneUnitIndicator unitIndicator;
 
-    public BaseEmotion CurrentEmotion { get; protected set; }
-    public bool        IsStunned      { get; private set; }
 
-    protected BattleManager              BattleManager              => BattleManager.Instance;
-    public    BaseEmotion[]              Emotions                   { get; private set; }
-    public    ActionType                 CurrentAction              { get; private set; } = ActionType.None;
-    public    TurnStateMachine           TurnStateMachine           { get; protected set; }
-    public    ITurnState[]               TurnStates                 { get; private set; }
-    public    TurnStateType              CurrentTurnState           { get; private set; }
-    public    StatManager                StatManager                { get; protected set; }
-    public    StatusEffectManager        StatusEffectManager        { get; protected set; }
-    public    StatBase                   AttackStat                 { get; protected set; }
-    public    SkillManager               SkillManager               { get; protected set; }
-    public    Animator                   Animator                   { get; protected set; }
-    public    BaseSkillController        SkillController            { get; protected set; }
-    public    AnimatorOverrideController AnimatorOverrideController { get; protected set; }
-    public    Collider                   Collider                   { get; protected set; }
-    public    NavMeshAgent               Agent                      { get; protected set; }
-    public    UnitSO                     UnitSo                     { get; protected set; }
-    public    IDamageable                Target                     { get; protected set; }
-    public    IAttackAction              CurrentAttackAction        { get; private set; }
-    public    bool                       IsDead                     { get; protected set; }
-    public    AnimationEventListener     AnimationEventListener     { get; protected set; }
+    protected BattleManager BattleManager => BattleManager.Instance;
+
+    public BaseEmotion                CurrentEmotion             { get; protected set; }
+    public BaseEmotion[]              Emotions                   { get; private set; }
+    public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
+    public TurnStateMachine           TurnStateMachine           { get; protected set; }
+    public ITurnState[]               TurnStates                 { get; private set; }
+    public TurnStateType              CurrentTurnState           { get; private set; }
+    public StatManager                StatManager                { get; protected set; }
+    public StatusEffectManager        StatusEffectManager        { get; protected set; }
+    public StatBase                   AttackStat                 { get; protected set; }
+    public SkillManager               SkillManager               { get; protected set; }
+    public Animator                   Animator                   { get; protected set; }
+    public BaseSkillController        SkillController            { get; protected set; }
+    public AnimatorOverrideController AnimatorOverrideController { get; protected set; }
+    public Collider                   Collider                   { get; protected set; }
+    public NavMeshAgent               Agent                      { get; protected set; }
+    public UnitSO                     UnitSo                     { get; protected set; }
+    public AnimationEventListener     AnimationEventListener     { get; protected set; }
+    public Unit                       CounterTarget              { get; private set; }
+
+    public IDamageable   Target              { get; protected set; }
+    public IAttackAction CurrentAttackAction { get; private set; }
+    public bool          IsDead              { get; protected set; }
+    public bool          IsCompletedAttack   { get; protected set; }
+    public bool          IsStunned           { get; private set; }
+    public bool          IsCounterAttack     { get; private set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    => false;
@@ -182,5 +187,39 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public Vector3 GetCenter()
     {
         return Collider.bounds.center;
+    }
+
+    public bool CanCounterAttack(Unit attacker)
+    {
+        if (IsDead)
+            return false;
+        if (!attacker.IsCompletedAttack)
+            return false;
+
+        if (StatManager.GetValue(StatType.Counter) < Random.value)
+            return false;
+        if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
+            return false;
+        if (attacker.CurrentAction == ActionType.SKill)
+            return false;
+
+        return true;
+    }
+
+
+    public void StartCountAttack(Unit attacker)
+    {
+        CounterTarget = attacker;
+        IsCounterAttack = true;
+        if (this is PlayerUnitController)
+            ChangeUnitState(PlayerUnitState.Attack);
+        else if (this is EnemyUnitController)
+            ChangeUnitState(EnemyUnitState.Attack);
+    }
+
+    public void EndCountAttack()
+    {
+        IsCounterAttack = false;
+        CounterTarget = null;
     }
 }

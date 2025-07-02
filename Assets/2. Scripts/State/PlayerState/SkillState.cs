@@ -8,7 +8,9 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
-            //예외 처리
+            owner.Agent.isStopped = true;
+            owner.Agent.velocity = Vector3.zero;
+            owner.Agent.ResetPath();
             owner.Animator.SetTrigger(Define.SkillAnimationHash);
         }
 

@@ -6,7 +6,7 @@ public class MeleeAttackSo : CombatActionSo
 {
     public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
 
-    public override void Execute(Unit attacker)
+    public override void Execute(Unit attacker, IDamageable target)
     {
         float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
@@ -17,7 +17,7 @@ public class MeleeAttackSo : CombatActionSo
             if (player.passiveSo is IPassiveEmotionDamageModifier modifier)
             {
                 finalValue = modifier.ModifyEmotionDamage(finalValue);
-                attacker.Target.TakeDamage(finalValue);
+                target.TakeDamage(finalValue);
                 return;
             }
 
@@ -25,7 +25,7 @@ public class MeleeAttackSo : CombatActionSo
                 repeatPassive.OnAttack();
         }
 
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, attacker.Target.CurrentEmotion.EmotionType);
-        attacker.Target.TakeDamage(finalValue * multiplier);
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
+        target.TakeDamage(finalValue * multiplier);
     }
 }

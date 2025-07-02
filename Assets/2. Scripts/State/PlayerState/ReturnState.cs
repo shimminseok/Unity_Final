@@ -8,7 +8,6 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Agent.speed = 10f;
             owner.Agent.avoidancePriority = 10;
             owner.setRemainDistance = 0.1f;
             owner.Animator.SetBool(isMove, true);

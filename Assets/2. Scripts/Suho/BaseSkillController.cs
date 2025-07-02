@@ -17,7 +17,6 @@ public abstract class BaseSkillController : MonoBehaviour
 
     public SkillManager SkillManager { get; private set; }
 
-
     public void Initialize(SkillManager manager)
     {
         SkillManager = manager;
@@ -27,5 +26,13 @@ public abstract class BaseSkillController : MonoBehaviour
     public abstract void UseSkill();
     public abstract void EndTurn();
 
-    public virtual void ChangeSkill(int index) { }
+    public virtual void ChangeCurrentSkill(int index) { }
+    public bool CheckAllSkills()
+    {
+        foreach (SkillData skill in skills)
+        {
+            if(skill.CheckCanUseSkill()) return true;
+        }
+        return false;
+    }
 }

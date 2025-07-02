@@ -45,6 +45,8 @@ public enum PlayerUnitState
     Stun,
 
     EndTurn,
+    Victory,
+    ReadyAction
 }
 
 public enum EnemyUnitState
@@ -144,7 +146,8 @@ public enum JobType
     DragonKnight,
     Archer,
     Priest,
-    Mage
+    Mage,
+    Monster
 }
 
 public enum AttackDistanceType

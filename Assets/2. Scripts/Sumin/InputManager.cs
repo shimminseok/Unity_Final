@@ -107,7 +107,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 스킬 인덱스 받아서 교체
         if (selectedExecuterUnit is PlayerUnitController playerUnit)
         {
-            playerUnit.SkillController.ChangeSkill(index);
+            playerUnit.SkillController.ChangeCurrentSkill(index);
         }
 
         ChangeSelectedUnitAction(ActionType.SKill);
@@ -177,7 +177,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
                 // 다음 선택
                 DeselectUnit();
                 currentPhase = InputPhase.SelectExecuter;
-
+                executer.ChangeUnitState(PlayerUnitState.ReadyAction);
                 // 타겟까지 설정되면 Start 버튼 활성화
                 UIManager.Instance.Open<BattleSceneStartButton>();
             }
