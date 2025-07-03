@@ -25,7 +25,6 @@ public class SelectExecuterState : IInputState
 
         // 선택 가능한 플레이어 유닛 표시
         selector.ShowSelectableUnits(context.PlayerUnitLayer, true);
-        InputManager.Instance.DebugMethod();
         
         // 유닛 선택하기 전까지는 SkillUI 꺼둠
         context.CloseSkillUI?.Invoke();

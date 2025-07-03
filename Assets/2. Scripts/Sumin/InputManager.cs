@@ -32,11 +32,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
             CloseSkillUI = () => UIManager.Instance.Close<BattleSceneSkillUI>(),
             CloseStartButtonUI = () => UIManager.Instance.Close<BattleSceneStartButton>(),
             OpenStartButtonUI = () => UIManager.Instance.Open<BattleSceneStartButton>(),
-            PlanActionCommand = (executor, target, skillData) =>
+            PlanActionCommand = (executer, target, skillData) =>
             {
-                IActionCommand command = new ActionCommand(executor, target, skillData);
+                IActionCommand command;
+                if (context.SelectedSkill == null)
+                    command = new AttackCommand(executer, target);
+                else
+                    command = new SkillCommand(executer, target, skillData);
+
                 CommandPlanner.Instance.PlanAction(command);
-                Debug.Log($"커맨드 등록 : {executor}, {target}, {(skillData == null ? "기본공격" : skillData.skillSo.name)}");
+                Debug.Log($"커맨드 등록 : {executer}, {target}, {(skillData == null ? "기본공격" : skillData.skillSo.name)}");
 
             },
             HighlightSkillSlotUI = (toggle, index) =>
@@ -71,11 +76,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
     void Update()
     {
         inputStateMachine.Update();
-    }
-
-    public void DebugMethod()
-    {
-        Debug.Log("유저 선택 진입");
     }
 
     // Input매니저 초기화
@@ -118,19 +118,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 스킬 인덱스 받아서 context에 저장
         if (context.SelectedExecuter is PlayerUnitController playerUnit)
         {
-            //playerUnit.SkillController.ChangeSkill(index);
             context.SelectedSkill = playerUnit.SkillController.GetSkillData(index);
 
             UpdateTargetIndicator();
         }
-        //ChangeSelectedUnitAction(ActionType.SKill);
     }
 
     // 기본 공격 선택 버튼
     public void SelectBasicAttack()
     {
         context.SelectedSkill = null;
-        //ChangeSelectedUnitAction(ActionType.Attack);
 
         inputStateMachine.ChangeState<SelectTargetState>();
 

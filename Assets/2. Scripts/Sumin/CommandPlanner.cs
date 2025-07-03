@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Unit에서 행동을 직접 수행하고 있음
-
+// 커맨드는 Unit이 수행할 행동들을 저장하여 명령만 함
 public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
 {
     // Unit과 Command Dictionary에 저장

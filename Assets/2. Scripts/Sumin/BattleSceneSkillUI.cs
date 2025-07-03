@@ -22,6 +22,7 @@ public class BattleSceneSkillUI : UIBase
         }
     }
 
+    // 스킬 선택중 표시
     public void ToggleHighlightSkillSlot(bool toggle, int index)
     {
         skillSlot[index].ToggleHighlightSkillBtn(toggle);

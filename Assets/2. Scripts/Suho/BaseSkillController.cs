@@ -27,8 +27,6 @@ public abstract class BaseSkillController : MonoBehaviour
     public abstract void UseSkill();
     public abstract void EndTurn();
 
-    public virtual void ChangeSkill(int index) { }
-
     public virtual void ChangeCurrentSkill(int index) { }
     public bool CheckAllSkills()
     {

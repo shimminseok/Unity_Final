@@ -32,9 +32,6 @@ public class SelectTargetState : IInputState
             // 선택 이펙트
             targetUnit.PlaySelectEffect();
 
-            // executerUnit의 타겟 지정하여 전달
-            //executerUnit.SetTarget(targetUnit);
-
             // 커맨드 생성
             context.PlanActionCommand?.Invoke(executerUnit, targetUnit, context.SelectedSkill);
 
