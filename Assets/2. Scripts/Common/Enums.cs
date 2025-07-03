@@ -151,6 +151,14 @@ public enum JobType
     Monster
 }
 
+public enum Tier
+{
+    A,
+    S,
+    SR,
+    SSR,
+}
+
 public enum AttackDistanceType
 {
     Melee,
