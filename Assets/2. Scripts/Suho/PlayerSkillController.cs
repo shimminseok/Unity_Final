@@ -22,23 +22,16 @@ using UnityEngine;
 public class PlayerSkillController : BaseSkillController
 {
     public AnimationClip skillAttackAnim;
-    private SkillAnimationListener skillAnimationListener;
-
-    private void Awake()
-    {
-        skillAnimationListener = GetComponent<SkillAnimationListener>();
-    }
-
     public override void SelectTargets(Unit target)
     {
         this.mainTarget = target;
     }
 
-    public override void ChangeSkill(int index)
+    public override void ChangeCurrentSkill(int index)
     {
+        if (index >= skills.Count) return;
         CurrentSkillData = skills[index];
-        if (CurrentSkillData == null)
-            return;
+        if (CurrentSkillData == null) return;
 
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
 
@@ -55,7 +48,7 @@ public class PlayerSkillController : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner);
+        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
 
         EndTurn();
     }

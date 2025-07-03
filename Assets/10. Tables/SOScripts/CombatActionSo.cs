@@ -3,7 +3,7 @@
 
 public abstract class CombatActionSo : ScriptableObject, IAttackAction
 {
-    public abstract void               Execute(Unit attacker);
+    public abstract void               Execute(Unit attacker, IDamageable target);
     public abstract AttackDistanceType DistanceType { get; }
     public virtual  CombatActionSo     ActionSo     => this;
 }

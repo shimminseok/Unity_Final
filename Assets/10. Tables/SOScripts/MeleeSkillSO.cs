@@ -3,17 +3,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
 public class MeleeSkillSO : CombatActionSo
 {
-    public override void Execute(Unit attacker)
+    public override void Execute(Unit attacker, IDamageable target)
     {
         //이펙트 추가
-        TargetSelect targetSelect = new TargetSelect(attacker.SkillController.mainTarget);
+        TargetSelect targetSelect = new TargetSelect(target as Unit);
 
         foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
             attacker.SkillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
-            foreach (Unit target in attacker.SkillController.targets)
+            foreach (Unit unit in attacker.SkillController.targets)
             {
-                effect.AffectTargetWithSkill(target);
+                effect.AffectTargetWithSkill(unit);
             }
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class AnimationEventListener : MonoBehaviour
@@ -13,6 +14,12 @@ public class AnimationEventListener : MonoBehaviour
 
     public void EventTrigger()
     {
+        if (owner.IsCounterAttack)
+        {
+            Attack();
+            return;
+        }
+
         if (owner.CurrentAction == ActionType.Attack)
         {
             Attack();
@@ -31,5 +38,6 @@ public class AnimationEventListener : MonoBehaviour
     private void UseSkill()
     {
         owner.UseSkill();
+        
     }
 }

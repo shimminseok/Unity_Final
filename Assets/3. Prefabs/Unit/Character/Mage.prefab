@@ -209,7 +209,6 @@ GameObject:
   - component: {fileID: 2664075759801568435}
   - component: {fileID: 4847796581812622296}
   - component: {fileID: 8905052491383908231}
-  - component: {fileID: 3721559743867562421}
   m_Layer: 6
   m_Name: Mage
   m_TagString: Untagged
@@ -309,7 +308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainTarget: {fileID: 0}
-  subTargets: []
+  targets: []
   generateCost: 1
   skillAttackAnim: {fileID: 0}
 --- !u!114 &-3476091478542178585
@@ -350,8 +349,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitIndicator: {fileID: 0}
   id: 7
-  idleClip: {fileID: 7400000, guid: d44996dd7adcac34fb47453746f62255, type: 3}
+  idleClip: {fileID: 7400000, guid: aa85a14eac081cc4a9ccf91a2ed72429, type: 3}
   moveClip: {fileID: 7400000, guid: 3da53d6eb7d86db4984cd87a53ca69d6, type: 3}
+  victoryClip: {fileID: 7400000, guid: b155e52766e83b947ab3f2ccb6b77621, type: 3}
+  readyActionClip: {fileID: 7400000, guid: d44996dd7adcac34fb47453746f62255, type: 3}
   passiveSo: {fileID: 0}
   setRemainDistance: 0
 --- !u!195 &4847796581812622296
@@ -364,7 +365,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.25
-  m_Speed: 10
+  m_Speed: 15
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 1000
@@ -388,19 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3721559743867562421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060029176277862}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e37c29414453ea94c844a4608ed1d857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillController: {fileID: 0}
 --- !u!1 &1061156421552890
 GameObject:
   m_ObjectHideFlags: 0

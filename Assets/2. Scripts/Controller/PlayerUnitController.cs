@@ -3,7 +3,6 @@ using PlayerState;
 using System;
 using System.Linq;
 using Random = UnityEngine.Random;
-using PlayerState;
 
 public enum ActionType
 {
@@ -18,6 +17,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     [SerializeField] private int id;
     [SerializeField] private AnimationClip idleClip;
     [SerializeField] private AnimationClip moveClip;
+    [SerializeField] private AnimationClip victoryClip;
+    [SerializeField] private AnimationClip readyActionClip;
     public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
     private HPBarUI hpBar;
@@ -44,13 +45,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         return state switch
         {
-            PlayerUnitState.Idle   => new IdleState(),
-            PlayerUnitState.Move   => new MoveState(),
-            PlayerUnitState.Return => new PlayerState.ReturnState(),
-            PlayerUnitState.Attack => new AttackState(),
-            PlayerUnitState.Die    => new DeadState(),
-            PlayerUnitState.Skill  => new SkillState(),
-            _                      => null
+            PlayerUnitState.Idle        => new IdleState(),
+            PlayerUnitState.Move        => new MoveState(),
+            PlayerUnitState.Return      => new PlayerState.ReturnState(),
+            PlayerUnitState.Attack      => new AttackState(),
+            PlayerUnitState.Die         => new DeadState(),
+            PlayerUnitState.Skill       => new SkillState(),
+            PlayerUnitState.Victory     => new VictoryState(),
+            PlayerUnitState.ReadyAction => new ReadyAction(),
+            _                           => null
         };
     }
 
@@ -95,18 +98,19 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
         ChangeClip(Define.IdleClipName, idleClip);
         ChangeClip(Define.MoveClipName, moveClip);
+        ChangeClip(Define.VictoryClipName, victoryClip);
+        ChangeClip(Define.ReadyActionClipName, readyActionClip);
     }
 
 
     public override void Attack()
     {
-        if (Target == null || Target.IsDead)
-            return;
-
-
         //어택 타입에 따라서 공격 방식을 다르게 적용
-        IDamageable finalTarget = Target;
+        IsCompletedAttack = false;
+        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
 
+        if (finalTarget == null || finalTarget.IsDead)
+            return;
 
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
@@ -124,8 +128,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         Debug.Log("Attack");
 
-        Target = finalTarget;
-        PlayerUnitSo.AttackType.Execute(this);
+        PlayerUnitSo.AttackType.Execute(this, finalTarget);
+        IsCompletedAttack = true;
     }
 
     public override void MoveTo(Vector3 destination)
@@ -135,7 +139,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void UseSkill()
     {
-        // SkillController.CurrentSkillData.skillType.UseSkill(SkillController);
         SkillController.UseSkill();
     }
 
@@ -157,12 +160,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         //이게 반격 스킬에 대한거임.
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
-
-        if (StatManager.GetValue(StatType.Counter) >= Random.value) //반격 로직
-        {
-            //반격을 한다.
-            return;
-        }
 
         if (modifierType == StatModifierType.Base)
         {
@@ -222,7 +219,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
-        TurnStateMachine.ChangeState(new StartTurnState());
+        ChangeTurnState(TurnStateType.StartTurn);
     }
 
 
@@ -239,7 +236,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         Target = null;
         ChangeAction(ActionType.None);
-        ChangeUnitState(PlayerUnitState.Idle);
+        ChangeUnitState(PlayerUnitState.ReadyAction);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

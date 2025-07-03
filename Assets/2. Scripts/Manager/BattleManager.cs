@@ -34,7 +34,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
         }
 
-        SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
+        if (PlayerDeckContainer.Instance.SelectedStage == null)
+            SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
+        else
+        {
+            SetEnemiesUnit(PlayerDeckContainer.Instance.SelectedStage.Monsters);
+        }
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
@@ -117,9 +122,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
 
         Debug.Log("배틀 턴이 종료 되었습니다.");
-        allUnits.RemoveAll(u => u.IsDead);
+        // allUnits.RemoveAll(u => u.IsDead);
+        PartyUnits.ForEach(x => x.ChangeUnitState(PlayerUnitState.Idle));
+        if (EnemyUnits.TrueForAll(x => x.IsDead))
+        {
+            Debug.Log("승리");
+            PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
+        }
+
         TurnHandler.RefillTurnQueue();
-        CommandPlanner.Instance.Clear(); // 턴 종료되면 전략 플래너도 초기화
+        CommandPlanner?.Clear();            // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         OnBattleEnd?.Invoke();
     }

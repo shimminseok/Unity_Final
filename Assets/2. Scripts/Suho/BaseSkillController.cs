@@ -34,6 +34,15 @@ public abstract class BaseSkillController : MonoBehaviour
     {
         return skills.FindIndex(s => s == skill);
     }
+    public virtual void ChangeCurrentSkill(int index) { }
+    public bool CheckAllSkills()
+    {
+        foreach (SkillData skill in skills)
+        {
+            if(skill.CheckCanUseSkill()) return true;
+        }
+        return false;
+    }
 
     // 인덱스 -> 스킬 데이터
     public SkillData GetSkillData(int index)
