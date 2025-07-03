@@ -9,6 +9,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AnimationEventListener))]
+[RequireComponent(typeof(NavMeshAgent))]
 public abstract class BaseController<TController, TState> : Unit where TController : BaseController<TController, TState>
     where TState : Enum
 
