@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 
 /* 스킬 데이터 ScriptableObject
@@ -26,5 +27,6 @@ public class ActiveSkillSO : ScriptableObject
     public int coolTime;
     public Sprite skillIcon;
     public AnimationClip skillAnimation;
+    public PlayableAsset skillTimeLine;
 
 }
