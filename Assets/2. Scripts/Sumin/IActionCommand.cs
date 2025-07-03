@@ -2,25 +2,25 @@
 public interface IActionCommand
 {
     Unit Executer { get; }
-    void Execute();
+    Unit Target { get; }
+    public SkillData SkillData { get; }
 }
 
-// 기본 공격 커맨드
-public class AttackCommand : IActionCommand
+// 액션 커맨드 저장
+public class ActionCommand : IActionCommand
 {
     public Unit Executer { get; private set; }
-    private Unit target;
+    public Unit Target { get; private set; }
 
-    public AttackCommand(Unit executer, Unit target)
+    public SkillData SkillData { get; private set; }
+    public ActionType ActionType => SkillData == null ? ActionType.Attack : ActionType.SKill;
+
+    public ActionCommand(Unit executer, Unit target, SkillData skillData = null)
     {
         this.Executer = executer;
-        this.target = target;
+        this.Target = target;
+        this.SkillData = skillData;
     }
 
 
-    public void Execute()
-    {
-        // 기본공격 실행
-        Executer.Attack();
-    }
 }

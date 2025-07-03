@@ -33,15 +33,16 @@ public class StatManager : MonoBehaviour
         Owner = owner;
         foreach (StatData stat in statProvider.Stats)
         {
+            float finalStatValue = stat.Value;
             foreach (StatData data in stageSo.MonsterIncrease.IncreaseStats)
             {
                 if (data.StatType == stat.StatType)
                 {
-                    stat.Value += (data.Value * stageSo.MonsterLevel);
+                    finalStatValue += (data.Value * stageSo.MonsterLevel);
                 }
             }
 
-            Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
+            Stats[stat.StatType] = BaseStatFactory(stat.StatType, finalStatValue);
         }
     }
 
