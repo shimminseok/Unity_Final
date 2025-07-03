@@ -110,9 +110,10 @@ public enum EquipmentType
  */
 public enum SelectTargetType
 {
-    Single,
+    MainTarget,
     All,
     RandomOne,
+    Sector,
 }
 
 /* 선택 가능한 진영

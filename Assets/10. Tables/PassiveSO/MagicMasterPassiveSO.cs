@@ -14,6 +14,6 @@ public class MagicMasterPassiveSo : PassiveSO
 
     public void AddCost()
     {
-        
+        Owner.SkillController.generateCost = 2;
     }
 }
