@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class BattleSceneSkillSlot : MonoBehaviour
 {
+    [Header("스킬 슬롯 하이라이트")]
+    [SerializeField] private GameObject highLight;
+
     [Header("스킬 슬롯 앞면 : 남은 재사용 횟수")]
     [SerializeField] private Button FrontSkillBtn;
     [SerializeField] private Image skillIconImage;
@@ -63,12 +66,9 @@ public class BattleSceneSkillSlot : MonoBehaviour
         InputManager.Instance.SelectSkill(currentskillIndex);
     }
 
-    public void HighlightSkillBtn()
+    public void ToggleHighlightSkillBtn(bool toggle)
     {
-        ColorBlock colorBlock = FrontSkillBtn.colors;
-        colorBlock.normalColor = new Color(0, 0, 0);
-
-        Debug.Log("스킬 하이라이트");
+        highLight.SetActive(toggle);
     }
 
     // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌

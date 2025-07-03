@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattleSceneSkillUI : UIBase
 {
@@ -22,15 +19,13 @@ public class BattleSceneSkillUI : UIBase
         }
     }
 
-    public void HighlightSkillSlot(int index)
+    // 스킬 선택중 표시
+    public void ToggleHighlightSkillSlot(bool toggle, int index)
     {
-        for (int i = 0; i < skillSlot.Count; i++)
-        {
-            skillSlot[i].HighlightSkillBtn();
-        }
+        skillSlot[index].ToggleHighlightSkillBtn(toggle);
     }
-    public void HighlightBasicAttack()
+    public void ToggleHighlightBasicAttack(bool toggle)
     {
-        attackSlot.HighlightAttackBtn();
+        attackSlot.ToggleHighlightAttackBtn(toggle);
     }
 }
