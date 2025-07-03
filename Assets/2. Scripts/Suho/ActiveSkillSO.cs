@@ -23,6 +23,7 @@ public class ActiveSkillSO : ScriptableObject
     public SelectCampType selectCamp;
     public StatBaseSkillEffect skillEffect;
     public JobType jobType;
+    public Tier activeSkillTier;
     public int reuseMaxCount;
     public int coolTime;
     public Sprite skillIcon;
