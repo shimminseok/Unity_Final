@@ -26,8 +26,10 @@ public class RangeSkillSO : RangeActionSo
             }
         }
 
-
-        ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+        if (ProjectileComponent != null)
+        {
+            ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+        }
     }
 
 
