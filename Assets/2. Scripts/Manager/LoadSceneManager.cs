@@ -1,32 +1,33 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LoadSceneManager : Singleton<LoadSceneManager>
 {
-    public event Action<float> OnLoadingProgressChanged;
-    public float               LoadingProgress { get; private set; }
+    public event Action<float> OnLoadingProgressChanged; // 로딩 퍼센트 변경 알림 이벤트
+    public float LoadingProgress { get; private set; }   // 현재 로딩 퍼센트
 
     protected override void Awake()
     {
         base.Awake();
     }
 
-    private void Start()
+    public void LoadScene(string sceneName, Action onComplete = null)
     {
+        StartCoroutine(InternalLoadScene(sceneName, LoadSceneMode.Single, onComplete));
     }
 
-    public void LoadScene(string sceneName)
+    // 씬을 현재 씬에 Additive 방식으로 추가 로드
+    public void LoadSceneAdditive(string sceneName, Action onComplete = null)
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        StartCoroutine(LoadSceneAsync(sceneName));
+        StartCoroutine(InternalLoadScene(sceneName, LoadSceneMode.Additive, onComplete));
     }
 
-    private IEnumerator LoadSceneAsync(string sceneName)
+    // 내부 공통 처리 (Single or Additive)
+    private IEnumerator InternalLoadScene(string sceneName, LoadSceneMode mode, Action onComplete)
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, mode);
         asyncLoad.allowSceneActivation = false;
 
         while (!asyncLoad.isDone)
@@ -41,11 +42,14 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
 
             yield return null;
         }
-    }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        UIManager.Instance.InitializeUIRoot(); // 공개 메서드로 변경 필요
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        //  Single 모드 → UI 루트 재초기화
+        if (mode == LoadSceneMode.Single)
+        {
+            UIManager.Instance.InitializeUIRoot();
+        }
+
+        // 후처리 콜백 실행 (ex: 대사 출력)
+        onComplete?.Invoke();
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,7 +7,7 @@ public class DialogueController : Singleton<DialogueController>
     private DialogueGroupSO currentGroup;
     private int currentLineIndex = 0;
 
-    // 이전 씬 이름 기억
+    // 풀스크린 대사 후 되돌아갈 이전 씬 이름 저장
     private string previousSceneName;
 
     protected override void Awake()
@@ -16,39 +15,35 @@ public class DialogueController : Singleton<DialogueController>
         base.Awake();
     }
 
-    // DialogueController가 활성화될 때 씬 로드 이벤트에 등록
     private void OnEnable()
     {
+        // 씬 로드 완료 후 자동 호출될 이벤트 등록
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    // DialogueController가 비활성화될 때 씬 로드 이벤트에서 제거 (메모리 누수 방지)
     private void OnDisable()
     {
+        // 이벤트 해제 (중복 실행, 메모리 누수 방지)
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     // 씬이 완전히 로드된 직후 호출되는 콜백
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // 현재 대사 그룹이 존재하고, Fullscreen 모드이며, DialogueScene으로 진입한 경우
-        if (currentGroup != null && currentGroup.mode == DialogueMode.Fullscreen && scene.name == "DialogueScene")
+        // Additive로 DialogueScene이 로드되었을 때만 실행
+        if (currentGroup != null &&
+            currentGroup.mode == DialogueMode.Fullscreen &&
+            scene.name == "DialogueScene")
         {
-            // 대사 출력 시작
             ShowCurrentLine();
         }
     }
 
-    // 특정 그룹 키에 해당하는 대사 시퀀스 재생
-    // 대사 출력 방식에 따라 다른 UI로 분기
+    // 특정 그룹 키의 대사 재생 시작
     public void Play(string groupKey)
     {
-        // 그룹 키를 기준으로 DialogueGroupSO를 찾아서 반환
         var table = TableManager.Instance.GetTable<DialogueGroupTable>();
         var group = table.GetDataByID(groupKey);
-
-        previousSceneName = SceneManager.GetActiveScene().name;
-
 
         if (group == null)
         {
@@ -59,22 +54,21 @@ public class DialogueController : Singleton<DialogueController>
         currentGroup = group;
         currentLineIndex = 0;
 
-        // 출력 방식에 따라 분기
         if (group.mode == DialogueMode.Fullscreen)
         {
-            // 전용 대사 연출을 위한 DialogueScene으로 이동
-            LoadSceneManager.Instance.LoadScene("DialogueScene");
-            // 민석님이 씬 두개 띄우고 LoadScene.Mode(additive)
+            // 현재 씬 이름 기억
+            previousSceneName = SceneManager.GetActiveScene().name;
+
+            // DialogueScene을 현재 씬 위에 Additive로 로드
+            LoadSceneManager.Instance.LoadSceneAdditive("DialogueScene");
         }
         else
         {
-            // 현재 씬에서 Overlay UI로 바로 출력
             ShowCurrentLine();
         }
     }
 
-    // 유저 입력으로 다음 대사 줄로 이동
-    // 대사 끝에 도달하면 자동 종료 처리
+    // 다음 대사 줄로 이동
     public void Next()
     {
         if (currentGroup == null) return;
@@ -83,8 +77,7 @@ public class DialogueController : Singleton<DialogueController>
         ShowCurrentLine();
     }
 
-    // 현재 인덱스의 대사 줄을 화면에 출력
-    // 출력 방식에 따라 서로 다른 UI를 사용
+    // 현재 대사 줄을 출력
     private void ShowCurrentLine()
     {
         if (currentGroup == null || currentLineIndex >= currentGroup.lines.Count)
@@ -95,41 +88,37 @@ public class DialogueController : Singleton<DialogueController>
 
         var line = currentGroup.lines[currentLineIndex];
 
-        // 출력 방식 분기
         if (currentGroup.mode == DialogueMode.Overlay)
         {
-            // Overlay UI를 열고 대사 출력
             var ui = UIManager.Instance.GetUIComponent<OverlayDialogueUI>();
             ui.Show(line);
         }
         else
         {
-            // Fullscreen UI는 씬 내부에 존재하는 오브젝트에서 찾음
-            var fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
+            var fullscreenUI = Object.FindObjectOfType<FullscreenDialogueUI>();
             fullscreenUI?.Show(line);
         }
     }
 
-    // 대사 시퀀스 종료 처리
-    // UI 닫기 및 상태 초기화 수행
+    // 대사 종료 처리
     private void EndDialogue()
     {
         if (currentGroup.mode == DialogueMode.Fullscreen)
         {
-            LoadSceneManager.Instance.LoadScene(previousSceneName);
+            // 현재 DialogueScene을 언로드 → 원래 씬 복귀
+            SceneManager.UnloadSceneAsync("DialogueScene");
         }
         else
         {
             UIManager.Instance.GetUIComponent<OverlayDialogueUI>()?.Close();
         }
 
-        // 상태 초기화
         currentGroup = null;
         currentLineIndex = 0;
     }
 }
 
-// 리소스 (초상화, 배경) 로더
+// 리소스 로더
 public static class DialogueResourceLoader
 {
     public static Sprite LoadPortrait(string key)
