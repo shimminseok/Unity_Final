@@ -1,8 +1,9 @@
 // 행동 커맨드 인터페이스
+
 public interface IActionCommand
 {
-    Unit Executer { get; }
-    Unit Target { get; }
+    Unit             Executer  { get; }
+    Unit             Target    { get; }
     public SkillData SkillData { get; }
 
     void Execute();
@@ -12,7 +13,7 @@ public interface IActionCommand
 public class AttackCommand : IActionCommand
 {
     public Unit Executer { get; }
-    public Unit Target { get; }
+    public Unit Target   { get; }
 
     public SkillData SkillData { get; }
 
@@ -20,21 +21,21 @@ public class AttackCommand : IActionCommand
     {
         Executer = executer;
         Target = target;
+        Executer.ChangeAction(ActionType.Attack);
     }
 
     // 유닛이 할 행동 커맨드를 저장할 때 유닛에게 반영해줌.
     public void Execute()
     {
         Executer.SetTarget(Target);
-        Executer.ChangeAction(ActionType.Attack);
     }
 }
 
 // 스킬 커맨드
 public class SkillCommand : IActionCommand
 {
-    public Unit Executer { get; }
-    public Unit Target { get; }
+    public Unit      Executer  { get; }
+    public Unit      Target    { get; }
     public SkillData SkillData { get; }
 
     public SkillCommand(Unit executer, Unit target, SkillData skillData)
@@ -53,7 +54,7 @@ public class SkillCommand : IActionCommand
             player.SkillController.ChangeCurrentSkill(index);
         }
 
-        Executer.SetTarget(Target);
         Executer.ChangeAction(ActionType.SKill);
+        Executer.SetTarget(Target);
     }
 }

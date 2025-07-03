@@ -13,12 +13,21 @@ public class FullscreenDialogueUI : MonoBehaviour
     // 한 줄의 대사를 받아 화면에 출력한다
     public void Show (DialogueLine line)
     {
+        Debug.Log("풀스크린");
         nameText.text = line.characterName;
         dialogueText.text = line.dialogue;
 
-        // TODO: 리소스 로드 방식에 따라 초상화/배경 이미지 설정
-        // portraitImage.sprite = LoadPortrait(line.portraitKey);
-        // backgroundImage.sprite = LoadBackground(line.backgroundKey);
+        var portrait = DialogueResourceLoader.LoadPortrait(line.portraitKey);
+        portraitImage.sprite = portrait;
+        portraitImage.gameObject.SetActive(portrait != null);
+
+        var background = DialogueResourceLoader.LoadBackground(line.backgroundKey);
+        backgroundImage.sprite = background;
+        backgroundImage.gameObject.SetActive(background != null);
+        Debug.Log(line.backgroundKey);
+        Debug.Log(background);
+
+        gameObject.SetActive(true);
     }
 
     public void OnClickNext()

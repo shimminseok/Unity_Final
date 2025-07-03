@@ -13,8 +13,14 @@ public class OverlayDialogueUI : UIBase
     {
         nameText.text = line.characterName;
         dialogueText.text = line.dialogue;
-        // TODO: Resources나 Addressable에서 portraitKey로 스프라이트 로드
-        // portraitImage.sprite = LoadPortrait(line.portraitKey);
+
+        var sprite = DialogueResourceLoader.LoadPortrait(line.portraitKey);
+
+        if (sprite == null)
+            Debug.LogWarning($"초상화 스프라이트를 찾을 수 없습니다: {line.portraitKey}");
+
+        portraitImage.sprite = sprite;
+        portraitImage.gameObject.SetActive(sprite != null);
         Open();
     }
 
