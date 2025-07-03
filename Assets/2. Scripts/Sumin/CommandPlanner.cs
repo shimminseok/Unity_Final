@@ -14,10 +14,13 @@ public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
         plannedCommands[unit] = command;
     }
 
-    public List<IActionCommand> GetPlannedCommands()
+    public IActionCommand GetPlannedCommand(Unit unit)
     {
-        return plannedCommands.Values.ToList();
+        plannedCommands.TryGetValue(unit, out var command);
+        return command;
     }
+
+    public bool HasPlannedCommand(Unit unit) => plannedCommands.ContainsKey(unit);
 
     public void Clear()
     {

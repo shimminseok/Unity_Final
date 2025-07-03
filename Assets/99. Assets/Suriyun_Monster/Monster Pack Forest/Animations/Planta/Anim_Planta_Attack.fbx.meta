@@ -1,77 +1,11 @@
 fileFormatVersion: 2
 guid: 3ee7f83216ef3404eb2e70175185b526
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: center
-    100004: hair_a_01
-    100006: hair_a_02
-    100008: hair_a_03
-    100010: hair_a_04
-    100012: hair_a_05
-    100014: head
-    100016: head_b
-    100018: laef_b_1
-    100020: laef_b_2
-    100022: laef_b_3
-    100024: laef_b_4
-    100026: leaf_0
-    100028: leaf_1
-    100030: leaf_2
-    100032: leaf_a_0
-    100034: leaf_a_1
-    100036: leaf_a_2
-    100038: leaf_a_3
-    100040: leaf_a_4
-    100042: leaf_a_5
-    100044: leaf_a_6
-    100046: leaf_a_7
-    100048: leg_01_l
-    100050: leg_01_r
-    100052: leg_02_l
-    100054: leg_02_r
-    100056: mustache_01
-    100058: mustache_02
-    100060: Root
-    100062: stalk_01
-    400000: //RootNode
-    400002: center
-    400004: hair_a_01
-    400006: hair_a_02
-    400008: hair_a_03
-    400010: hair_a_04
-    400012: hair_a_05
-    400014: head
-    400016: head_b
-    400018: laef_b_1
-    400020: laef_b_2
-    400022: laef_b_3
-    400024: laef_b_4
-    400026: leaf_0
-    400028: leaf_1
-    400030: leaf_2
-    400032: leaf_a_0
-    400034: leaf_a_1
-    400036: leaf_a_2
-    400038: leaf_a_3
-    400040: leaf_a_4
-    400042: leaf_a_5
-    400044: leaf_a_6
-    400046: leaf_a_7
-    400048: leg_01_l
-    400050: leg_01_r
-    400052: leg_02_l
-    400054: leg_02_r
-    400056: mustache_01
-    400058: mustache_02
-    400060: Root
-    400062: stalk_01
-    7400000: Planta_Attack
-    9500000: //RootNode
+  serializedVersion: 22200
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -80,6 +14,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -96,61 +31,44 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: Planta_Attack
-      takeName: Planta_Attack
-      firstFrame: 61
-      lastFrame: 75
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    isReadable: 1
+    clipAnimations: []
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -159,10 +77,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -172,13 +90,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
