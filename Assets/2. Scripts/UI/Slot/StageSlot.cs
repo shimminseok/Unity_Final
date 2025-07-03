@@ -16,6 +16,11 @@ public class StageSlot : MonoBehaviour
 
     public void OnClickStageSlot()
     {
+        if (stageSo.HasBeforeDialogue)
+        {
+            DialogueController.Instance.Play(stageSo.beforeDialogueKey);
+        }
+
         stageSelectUI.SetStageInfo(stageSo);
     }
 }
