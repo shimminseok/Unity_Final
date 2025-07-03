@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 // 유닛의 타겟 선택
 public class SelectTargetState : IInputState
 {

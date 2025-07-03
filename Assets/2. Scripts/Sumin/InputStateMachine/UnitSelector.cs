@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
 
 // 유닛 선택하는 기능을 하는 클래스
 public class UnitSelector

@@ -1,5 +1,4 @@
 // 인풋에서 관여하는 데이터, Delegate
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 

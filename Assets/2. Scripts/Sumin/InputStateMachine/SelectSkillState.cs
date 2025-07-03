@@ -1,6 +1,4 @@
 // 유닛의 행동 선택
-using System.Diagnostics;
-
 public class SelectSkillState : IInputState
 {
     private readonly InputContext context;
