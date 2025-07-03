@@ -18,13 +18,14 @@ public class SelectExecuterState : IInputState
     public void Enter()
     {
         // 이전에 선택해뒀던게 있으면 Indicator 지우기
-        if (context.SelectedExcuter != null)
+        if (context.SelectedExecuter != null)
         {
-            context.SelectedExcuter.ToggleSelectedIndicator(false);
+            context.SelectedExecuter.ToggleSelectedIndicator(false);
         }
 
         // 선택 가능한 플레이어 유닛 표시
         selector.ShowSelectableUnits(context.PlayerUnitLayer, true);
+        InputManager.Instance.DebugMethod();
         
         // 유닛 선택하기 전까지는 SkillUI 꺼둠
         context.CloseSkillUI?.Invoke();
@@ -35,32 +36,19 @@ public class SelectExecuterState : IInputState
         if (selector.TrySelectUnit(context.PlayerUnitLayer, out ISelectable unit))
         {
             // Unit Select하면 context의 SelectedUnit에 넘겨줌
-            context.SelectedExcuter = unit;
+            context.SelectedExecuter = unit;
 
             // 인디케이터 표시 전환
             selector.ShowSelectableUnits(context.PlayerUnitLayer, false);
-            context.SelectedExcuter.PlaySelectEffect();
-            context.SelectedExcuter.ToggleSelectedIndicator(true);
+            context.SelectedExecuter.PlaySelectEffect();
+            context.SelectedExecuter.ToggleSelectedIndicator(true);
 
-            var command = CommandPlanner.Instance.GetPlannedCommand(unit.SelectedUnit);
-            if (command is ActionCommand actionCommand)
-            {
-                
-                if (actionCommand.SkillData != null)
-                {
-                    int index = unit.SelectedUnit.SkillController.GetSkillIndex(actionCommand.SkillData);
-                    context.HighlightSkillSlotUI?.Invoke(index);
-                }
-                else
-                {
-                    context.HighlightBasicAttackUI?.Invoke();
-                }
-                actionCommand.Target?.ToggleSelectedIndicator(true);
-            }
+            // 이전에 지정한 명령이 있다면 보여줌
+            selector.ShowPrevCommand(unit.SelectedUnit);
 
             // SkillUI는 켜주고 StartButton은 꺼주기
             context.CloseStartButtonUI?.Invoke();
-            context.OpenSkillUI?.Invoke(context.SelectedExcuter.SelectedUnit);
+            context.OpenSkillUI?.Invoke(context.SelectedExecuter.SelectedUnit);
 
             // 스킬 선택 상태로 넘어감
             inputStateMachine.ChangeState<SelectSkillState>();

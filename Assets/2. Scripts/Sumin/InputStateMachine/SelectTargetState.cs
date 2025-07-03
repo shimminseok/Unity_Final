@@ -21,33 +21,36 @@ public class SelectTargetState : IInputState
     {
         if (selector.TrySelectUnit(context.TargetLayer, out ISelectable target))
         {
+            selector.InitializeHighlight();
+
             // Unit Select하면 context의 SelectedTarget에 넘겨줌
             context.SelectedTarget = target;
 
-            Unit executerUnit = context.SelectedExcuter.SelectedUnit;
+            Unit executerUnit = context.SelectedExecuter.SelectedUnit;
             Unit targetUnit = context.SelectedTarget.SelectedUnit;
 
             // 선택 이펙트
             targetUnit.PlaySelectEffect();
 
             // executerUnit의 타겟 지정하여 전달
-            executerUnit.SetTarget(targetUnit);
+            //executerUnit.SetTarget(targetUnit);
 
             // 커맨드 생성
             context.PlanActionCommand?.Invoke(executerUnit, targetUnit, context.SelectedSkill);
 
             // 선택 단계로 이동
             inputStateMachine.ChangeState<SelectExecuterState>();
-
-            // 인디케이터 표시 전환
-            selector.ShowSelectableUnits(context.TargetLayer, false);
-            context.SelectedExcuter.ToggleSelectedIndicator(false);
-
-            // Start 버튼 활성화
-            context.OpenStartButtonUI?.Invoke();
         }
     }
 
-    public void Exit() {}
+    public void Exit() 
+    {
+        // 인디케이터 표시 전환
+        selector.ShowSelectableUnits(context.TargetLayer, false);
+        context.SelectedExecuter.ToggleSelectedIndicator(false);
+
+        // Start 버튼 활성화
+        context.OpenStartButtonUI?.Invoke();
+    }
 }
 

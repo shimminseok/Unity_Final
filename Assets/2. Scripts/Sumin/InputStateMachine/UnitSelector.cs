@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.UI.CanvasScaler;
 
 // 유닛 선택하는 기능을 하는 클래스
 public class UnitSelector
@@ -64,5 +67,44 @@ public class UnitSelector
             SelectCampType.BothSide => context.UnitLayer,
             _ => context.UnitLayer
         };
+    }
+
+    // 하이라이트 초기화
+    public void InitializeHighlight()
+    {
+        Unit executer = context.SelectedExecuter.SelectedUnit;
+
+        if (executer is PlayerUnitController playerUnit)
+        {
+            int skillCount = executer.SkillController.skills.Count;
+            for (int i = 0; i < skillCount; i++)
+            {
+                context.HighlightSkillSlotUI?.Invoke(false, i);
+            }
+        }
+        context.HighlightBasicAttackUI?.Invoke(false);
+
+        var command = CommandPlanner.Instance.GetPlannedCommand(executer);
+        if (CommandPlanner.Instance.HasPlannedCommand(executer))
+            command.Target?.ToggleSelectedIndicator(false);
+    }
+
+    public void ShowPrevCommand(Unit unit)
+    {
+        InitializeHighlight();
+        var command = CommandPlanner.Instance.GetPlannedCommand(unit);
+        if (CommandPlanner.Instance.HasPlannedCommand(unit))
+        {
+            if (command.SkillData != null)
+            {
+                int index = unit.SkillController.GetSkillIndex(command.SkillData);
+                context.HighlightSkillSlotUI?.Invoke(true, index);
+            }
+            else
+            {
+                context.HighlightBasicAttackUI?.Invoke(true);
+            }
+            command.Target?.ToggleSelectedIndicator(true);
+        }
     }
 }

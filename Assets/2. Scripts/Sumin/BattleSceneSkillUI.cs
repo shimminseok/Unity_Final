@@ -22,15 +22,12 @@ public class BattleSceneSkillUI : UIBase
         }
     }
 
-    public void HighlightSkillSlot(int index)
+    public void ToggleHighlightSkillSlot(bool toggle, int index)
     {
-        for (int i = 0; i < skillSlot.Count; i++)
-        {
-            skillSlot[i].HighlightSkillBtn();
-        }
+        skillSlot[index].ToggleHighlightSkillBtn(toggle);
     }
-    public void HighlightBasicAttack()
+    public void ToggleHighlightBasicAttack(bool toggle)
     {
-        attackSlot.HighlightAttackBtn();
+        attackSlot.ToggleHighlightAttackBtn(toggle);
     }
 }

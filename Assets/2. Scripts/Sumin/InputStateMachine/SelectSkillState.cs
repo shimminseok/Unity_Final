@@ -16,10 +16,9 @@ public class SelectSkillState : IInputState
 
     public void HandleInput() 
     {
-        // 스킬 또는 기본 공격이 선택되면 타겟 선택 상태로 전환
-        if (context.SelectedSkill != null || context.SelectedExcuter?.SelectedUnit?.CurrentAction == ActionType.Attack)
+        // 스킬이 선택되면 타겟 선택 상태로 전환
+        if (context.SelectedSkill != null)
         {
-            InputManager.Instance.DebugMethod();
             inputStateMachine.ChangeState<SelectTargetState>();
         }
     }
