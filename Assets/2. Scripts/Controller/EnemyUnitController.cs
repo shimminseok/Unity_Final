@@ -95,6 +95,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         {
             sc.InitSkillSelector();
         }
+
+        ChangeEmotion(MonsterSo.StartEmotion);
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
