@@ -31,10 +31,19 @@ public class InputManager : SceneOnlySingleton<InputManager>
             CloseSkillUI = () => UIManager.Instance.Close<BattleSceneSkillUI>(),
             CloseStartButtonUI = () => UIManager.Instance.Close<BattleSceneStartButton>(),
             OpenStartButtonUI = () => UIManager.Instance.Open<BattleSceneStartButton>(),
-            PlanAttackCommand = (executor, target) =>
+            PlanActionCommand = (executor, target, skillData) =>
             {
-                IActionCommand command = new AttackCommand(executor, target);
+                IActionCommand command = new ActionCommand(executor, target, skillData);
                 CommandPlanner.Instance.PlanAction(executor, command);
+                Debug.Log($"커맨드 등록 : {executor}, {target}, {skillData.skillSo.name}");
+            },
+            HighlightSkillSlotUI = index =>
+            {
+                UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().HighlightSkillSlot(index);
+            },
+            HighlightBasicAttackUI = () =>
+            {
+                UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().HighlightBasicAttack();
             }
         };
 
@@ -62,6 +71,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
         inputStateMachine.Update();
     }
 
+    public void DebugMethod()
+    {
+        Debug.Log($"context.SelectedExcuter?.SelectedUnit?.CurrentAction");
+    }
+
     // Input매니저 초기화
     public void Initialize()
     {
@@ -71,6 +85,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // Skill 선택 중 나가기 버튼
     public void OnClickSkillExitButton()
     {
+        selector.ShowSelectableUnits(context.UnitLayer, false);
         inputStateMachine.ChangeState<SelectExecuterState>();
     }
 
@@ -102,6 +117,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 기본 공격 선택 버튼
     public void SelectBasicAttack()
     {
+        context.SelectedSkill = null;
         ChangeSelectedUnitAction(ActionType.Attack);
 
         // 타겟 인디케이터 업데이트

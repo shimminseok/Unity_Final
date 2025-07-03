@@ -36,12 +36,27 @@ public class SelectExecuterState : IInputState
         {
             // Unit Select하면 context의 SelectedUnit에 넘겨줌
             context.SelectedExcuter = unit;
-            Debug.Print("플레이어 선택");
 
             // 인디케이터 표시 전환
             selector.ShowSelectableUnits(context.PlayerUnitLayer, false);
             context.SelectedExcuter.PlaySelectEffect();
             context.SelectedExcuter.ToggleSelectedIndicator(true);
+
+            var command = CommandPlanner.Instance.GetPlannedCommand(unit.SelectedUnit);
+            if (command is ActionCommand actionCommand)
+            {
+                
+                if (actionCommand.SkillData != null)
+                {
+                    int index = unit.SelectedUnit.SkillController.GetSkillIndex(actionCommand.SkillData);
+                    context.HighlightSkillSlotUI?.Invoke(index);
+                }
+                else
+                {
+                    context.HighlightBasicAttackUI?.Invoke();
+                }
+                actionCommand.Target?.ToggleSelectedIndicator(true);
+            }
 
             // SkillUI는 켜주고 StartButton은 꺼주기
             context.CloseStartButtonUI?.Invoke();

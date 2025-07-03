@@ -63,6 +63,14 @@ public class BattleSceneSkillSlot : MonoBehaviour
         InputManager.Instance.SelectSkill(currentskillIndex);
     }
 
+    public void HighlightSkillBtn()
+    {
+        ColorBlock colorBlock = FrontSkillBtn.colors;
+        colorBlock.normalColor = new Color(0, 0, 0);
+
+        Debug.Log("스킬 하이라이트");
+    }
+
     // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
     public void OnBackSkillBtn()
     {

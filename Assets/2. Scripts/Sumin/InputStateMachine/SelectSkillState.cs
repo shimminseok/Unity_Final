@@ -1,4 +1,6 @@
 // 유닛의 행동 선택
+using System.Diagnostics;
+
 public class SelectSkillState : IInputState
 {
     private readonly InputContext context;
@@ -17,6 +19,7 @@ public class SelectSkillState : IInputState
         // 스킬 또는 기본 공격이 선택되면 타겟 선택 상태로 전환
         if (context.SelectedSkill != null || context.SelectedExcuter?.SelectedUnit?.CurrentAction == ActionType.Attack)
         {
+            InputManager.Instance.DebugMethod();
             inputStateMachine.ChangeState<SelectTargetState>();
         }
     }

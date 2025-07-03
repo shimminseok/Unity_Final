@@ -28,4 +28,9 @@ public abstract class BaseSkillController : MonoBehaviour
     public abstract void EndTurn();
 
     public virtual void ChangeSkill(int index) { }
+
+    public int GetSkillIndex(SkillData skill)
+    {
+        return skills.FindIndex(s => s == skill);
+    }
 }
