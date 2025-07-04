@@ -19,7 +19,7 @@ public class TopBar : MonoBehaviour
 
         var equipUI = uiManager.GetUIComponent<SelectEquipUI>();
         var skillUI = uiManager.GetUIComponent<SelectSkillUI>();
-        var mainUI = uiManager.GetUIComponent<SelectMainUI>();
+        var mainUI  = uiManager.GetUIComponent<SelectMainUI>();
 
         EntryDeckData currentEntry = DeckSelectManager.Instance.GetCurrentSelectedCharacter();
 
@@ -32,7 +32,7 @@ public class TopBar : MonoBehaviour
             // 메인 UI 갱신
             if (mainUI != null && currentEntry != null)
             {
-                mainUI.UpdateCharacterInfoPanel(currentEntry.characterSO);
+                // mainUI.UpdateCharacterInfoPanel(currentEntry.characterSO);
             }
         }
         else if (skillUI != null && skillUI.gameObject.activeSelf)
@@ -43,7 +43,7 @@ public class TopBar : MonoBehaviour
             // 메인 UI 갱신
             if (mainUI != null && currentEntry != null)
             {
-                mainUI.UpdateCharacterInfoPanel(currentEntry.characterSO);
+                // mainUI.UpdateCharacterInfoPanel(currentEntry.characterSO);
             }
         }
         else if (mainUI != null && mainUI.gameObject.activeSelf)
