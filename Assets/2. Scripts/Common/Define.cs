@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
 
 public static class Define
 {
@@ -17,4 +18,13 @@ public static class Define
     public static readonly string DeadClipName = "Die";
     public static readonly string VictoryClipName = "Victory";
     public static readonly string ReadyActionClipName = "ReadyAction";
+
+    // 티어 별 가챠 확률
+    public static readonly Dictionary<Tier, float> TierRates = new()
+    {
+        { Tier.A, 89f },
+        { Tier.S, 10f },
+        { Tier.SR, 0.8f },
+        { Tier.SSR, 0.2f }
+    };
 }
