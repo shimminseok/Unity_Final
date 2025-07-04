@@ -9,7 +9,7 @@ public class AccountManager : Singleton<AccountManager>
     public int BestStage { get; private set; } = 1010101;
 
     public Dictionary<int, PlayerUnitData> MyPlayerUnits = new Dictionary<int, PlayerUnitData>();
-
+    public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
     public event Action<int> OnGoldChanged;
 
     protected override void Awake()
@@ -65,6 +65,18 @@ public class AccountManager : Singleton<AccountManager>
         else
         {
             data.Amount++;
+        }
+    }
+
+    public void AddSkill(ActiveSkillSO skill)
+    {
+        if (!MySkills.ContainsKey(skill.ID))
+        {
+            MySkills[skill.ID] = skill;
+        }
+        else
+        {
+            //TODO : 재화 돌려줌
         }
     }
 }
