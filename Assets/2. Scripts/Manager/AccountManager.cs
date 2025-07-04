@@ -9,6 +9,7 @@ public class AccountManager : Singleton<AccountManager>
     public int BestStage { get; private set; } = 1010101;
 
     public Dictionary<int, PlayerUnitData> MyPlayerUnits = new Dictionary<int, PlayerUnitData>();
+
     public event Action<int> OnGoldChanged;
 
     protected override void Awake()

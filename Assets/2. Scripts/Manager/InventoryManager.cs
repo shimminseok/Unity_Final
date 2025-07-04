@@ -83,7 +83,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         //     AddStackableItem(item, amount);
         // }
         // else
-        AddNonStackableItem(item, amount);
+        // AddNonStackableItem(item, amount);
+
+        AddStackableItem(item, amount);
     }
 
     /// <summary>
@@ -134,35 +136,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             OnInventorySlotUpdate?.Invoke(index);
         }
     }
-
-    // public void UseItem(InventoryItem item, int amount = 1)
-    // {
-    //     int index = Inventory.IndexOf(item);
-    //
-    //     if (index < 0 || item.Quantity < amount) return;
-    //     if (item.ItemSo is not ConsumableItemSO consumableItemSo)
-    //         return;
-    //     foreach (StatusEffectData itemSoStatusEffect in consumableItemSo.StatusEffects)
-    //     {
-    //         gameManager.PlayerController.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(itemSoStatusEffect));
-    //     }
-    //
-    //     item.ChangeQuantity(-amount);
-    //     if (item.Quantity <= 0)
-    //         RemoveItem(index);
-    // }
-
-    public void DropItem(int index, int amount)
-    {
-        InventoryItem data = Inventory[index];
-        if (data == null || data.Quantity < amount)
-            return;
-
-        data.ChangeQuantity(-amount);
-        if (data.Quantity == 0)
-            RemoveItem(index);
-    }
-
 
     public void SwichItem(int from, int to)
     {
