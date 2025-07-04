@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: MiddleTackle
   m_EditorClassIdentifier: 
-  ID: 1010
+  ID: 101112
   skillName: 
   skillDescription: 
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
@@ -25,17 +25,17 @@ MonoBehaviour:
       selectTarget: 0
       projectileID: 
       damageEffects:
-      - attackCount: 3
+      - attackCount: 1
         ownerStatType: 4
         weight: 0
         value: 500
       buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
   jobType: 7
   reuseMaxCount: 5
   coolTime: 2
   skillIcon: {fileID: 0}
-  skillAnimation: {fileID: -150089887294474680, guid: eb340672e17c0af4089e561b61cdc548,
-    type: 3}
-  castingEffect: {fileID: 0}
-  skillVfx: {fileID: 0}
-  hitEffect: {fileID: 0}
+  skillAnimation: {fileID: 7400000, guid: 404cc80cf4d09294bb1bb810517365d9, type: 2}
+  skillTimeLine: {fileID: 0}
