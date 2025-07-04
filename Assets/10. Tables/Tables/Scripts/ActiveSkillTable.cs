@@ -31,6 +31,6 @@ public class ActiveSkillTable : BaseTable<int, ActiveSkillSO>
 
     public List<ActiveSkillSO> GetActiveSkillsByJob(JobType jobType)
     {
-        return ActiveSkillByJob.TryGetValue(jobType, out List<ActiveSkillSO> passiveSkills) ? passiveSkills : new List<ActiveSkillSO>();
+        return ActiveSkillByJob.TryGetValue(jobType, out List<ActiveSkillSO> activeSkill) ? activeSkill : new List<ActiveSkillSO>();
     }
 }
