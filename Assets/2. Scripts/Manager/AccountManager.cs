@@ -2,16 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class AccountManager : Singleton<AccountManager>
 {
     public int Gold      { get; private set; } = 0;
     public int BestStage { get; private set; } = 1010101;
 
-
-    public List<EntryDeckData> MyDeckLists { get; private set; } = new List<EntryDeckData>();
-    public event Action<int>   OnGoldChanged;
+    public Dictionary<int, PlayerUnitData> MyPlayerUnits = new Dictionary<int, PlayerUnitData>();
+    public event Action<int> OnGoldChanged;
 
     protected override void Awake()
     {
@@ -20,9 +18,10 @@ public class AccountManager : Singleton<AccountManager>
 
     private void Start()
     {
+        //Test
         foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
         {
-            AddDeck(playerUnitSo);
+            AddPlayerUnit(playerUnitSo);
         }
     }
 
@@ -55,10 +54,16 @@ public class AccountManager : Singleton<AccountManager>
         BestStage = stage;
     }
 
-    public void AddDeck(PlayerUnitSO unit)
+    public void AddPlayerUnit(PlayerUnitSO unit)
     {
-        EntryDeckData newCard = new EntryDeckData();
-        newCard.characterSO = unit;
-        MyDeckLists.Add(newCard);
+        if (!MyPlayerUnits.TryGetValue(unit.ID, out PlayerUnitData data))
+        {
+            data = new PlayerUnitData(unit.ID);
+            MyPlayerUnits[unit.ID] = data;
+        }
+        else
+        {
+            data.Amount++;
+        }
     }
 }
