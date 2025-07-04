@@ -8,7 +8,7 @@ public class AccountManager : Singleton<AccountManager>
     public int Gold      { get; private set; } = 0;
     public int BestStage { get; private set; } = 1010101;
 
-    public Dictionary<int, PlayerUnitData> MyPlayerUnits = new Dictionary<int, PlayerUnitData>();
+    public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
     public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
     public event Action<int> OnGoldChanged;
 
@@ -57,14 +57,14 @@ public class AccountManager : Singleton<AccountManager>
 
     public void AddPlayerUnit(PlayerUnitSO unit)
     {
-        if (!MyPlayerUnits.TryGetValue(unit.ID, out PlayerUnitData data))
+        if (!MyPlayerUnits.TryGetValue(unit.ID, out EntryDeckData data))
         {
-            data = new PlayerUnitData(unit.ID);
+            data = new EntryDeckData() { characterSO = unit };
             MyPlayerUnits[unit.ID] = data;
         }
         else
         {
-            data.Amount++;
+            data.AddAmount();
         }
     }
 

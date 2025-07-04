@@ -17,4 +17,22 @@ public static class Define
     public static readonly string DeadClipName = "Die";
     public static readonly string VictoryClipName = "Victory";
     public static readonly string ReadyActionClipName = "ReadyAction";
+
+
+    public static string GetStatName(StatType statType)
+    {
+        return statType switch
+        {
+            StatType.MaxHp        => "최대 HP",
+            StatType.AttackPow    => "공격력",
+            StatType.Counter      => "반격 확률",
+            StatType.Defense      => "방어력",
+            StatType.Speed        => "속도",
+            StatType.CriticalRate => "치명타 확률",
+            StatType.CriticalDam  => "치명타 대미지",
+            StatType.HitRate      => "명중률",
+
+            _ => string.Empty
+        };
+    }
 }

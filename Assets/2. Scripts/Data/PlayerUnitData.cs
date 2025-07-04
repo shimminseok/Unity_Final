@@ -10,8 +10,6 @@
     private const int MaxTranscendLevel = 5;
 
     public int MaxLevel => BaseMaxLevel + (TranscendLevel * BaseMaxLevel);
-    //초월 0 => level = 10;
-    //초월 1 => level = 20;
 
     public PlayerUnitData(int unitSoId)
     {
@@ -37,10 +35,5 @@
     public void Transcend()
     {
         TranscendLevel++;
-    }
-
-    public PlayerUnitSO GetUnitSo()
-    {
-        return TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(UnitSoId);
     }
 }
