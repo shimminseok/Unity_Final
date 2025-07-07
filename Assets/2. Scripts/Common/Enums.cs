@@ -75,6 +75,7 @@ public enum StatusEffectType
     TurnBasedModifierBuff,
     Trigger,
     TurnBasedPeriodicDamageDebuff,
+    TurnBasedStunDebuff,
 }
 
 public enum EmotionType
