@@ -13,6 +13,9 @@ public class UICharacterSetting : UIBase
     private SelectEquipUI selectEquipUI;
     private SelectSkillUI selectSkillUI;
 
+    private Dictionary<int, CharacterButton> slotDic = new();
+
+
     private void Start()
     {
         selectEquipUI = UIManager.Instance.GetUIComponent<SelectEquipUI>();
@@ -36,17 +39,24 @@ public class UICharacterSetting : UIBase
     public override void Open()
     {
         base.Open();
-        foreach (EntryDeckData playerUnit in AccountManager.Instance.MyPlayerUnits.Values)
+
+        var units = AccountManager.Instance.MyPlayerUnits;
+
+        foreach (KeyValuePair<int, EntryDeckData> entryDeckData in units)
         {
-            //Slot생성
+            if (slotDic.ContainsKey(entryDeckData.Key))
+                continue;
+
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
-            slot.Initialize(playerUnit.CharacterSo, false, OnClickPlayerUnitSlot);
+            slot.Initialize(entryDeckData.Value.CharacterSo, true, OnClickPlayerUnitSlot);
+            slotDic.Add(entryDeckData.Key, slot);
         }
     }
 
     public override void Close()
     {
         base.Close();
+        characterInfoPanel.ClosePanel();
     }
 
 

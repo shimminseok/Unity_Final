@@ -69,15 +69,16 @@ public class AccountManager : Singleton<AccountManager>
         }
     }
 
-    public void AddSkill(ActiveSkillSO skill)
+    public void AddSkill(ActiveSkillSO skill, out bool isDuplicate)
     {
-        if (!MySkills.ContainsKey(skill.ID))
+        if (MySkills.TryAdd(skill.ID, skill))
         {
-            MySkills[skill.ID] = skill;
+            isDuplicate = false;
         }
         else
         {
             //TODO : 재화 돌려줌
+            isDuplicate = true;
         }
     }
 
