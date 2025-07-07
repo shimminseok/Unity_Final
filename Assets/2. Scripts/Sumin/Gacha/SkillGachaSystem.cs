@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class SkillGachaSystem : MonoBehaviour
 {
@@ -40,6 +38,7 @@ public class SkillGachaSystem : MonoBehaviour
             if (skill != null)
             {
                 results[i] = skill;
+                AccountManager.Instance.AddSkill(skill);
             }
             else
             {
