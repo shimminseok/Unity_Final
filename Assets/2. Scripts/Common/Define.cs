@@ -22,9 +22,9 @@ public static class Define
     // 티어 별 가챠 확률
     public static readonly Dictionary<Tier, float> TierRates = new()
     {
-        { Tier.A, 89f },
-        { Tier.S, 10f },
-        { Tier.SR, 0.8f },
-        { Tier.SSR, 0.2f }
+        { Tier.A, 90f },
+        { Tier.S, 9f },
+        { Tier.SR, 0.98f },
+        { Tier.SSR, 0.02f }
     };
 }

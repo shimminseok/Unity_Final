@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SkillGachaSystem : MonoBehaviour
 {
@@ -13,17 +14,44 @@ public class SkillGachaSystem : MonoBehaviour
         gachaManager = new GachaManager<ActiveSkillSO>(new RandoomSkillGachaStrategy());
     }
 
-    public ActiveSkillSO RollSkill()
+    // 몬스터 스킬 제외
+    private List<ActiveSkillSO> GetSkillDatas()
     {
-        List<ActiveSkillSO> skillData = new();
+        List<ActiveSkillSO> skills = new();
 
-        // 몬스터 스킬은 제외
-        for (int i=0; i<(int)JobType.Monster; i++)
+        for (int i = 0; i < (int)JobType.Monster; i++)
         {
-            var jobSkills = activeSkillTable.GetActiveSkillsByJob((JobType)i);
-            skillData.AddRange(jobSkills);
+            skills.AddRange(activeSkillTable.GetActiveSkillsByJob((JobType)i));
         }
 
+        return skills;
+    }
+
+    public ActiveSkillSO DrawSkill()
+    {
+        List<ActiveSkillSO> skillData = GetSkillDatas();
+
         return gachaManager.Draw(skillData, Define.TierRates);
+    }
+
+    public List<ActiveSkillSO> DrawSkillMultiple(int count)
+    {
+        List<ActiveSkillSO> skillData = GetSkillDatas();
+        List<ActiveSkillSO> results = new();
+
+        for (int i=0; i<count; i++)
+        {
+            var skill = gachaManager.Draw(skillData, Define.TierRates);
+            if (skill != null)
+            {
+                results.Add(skill);
+            }
+            else
+            {
+                Debug.LogWarning($"{i}번째 뽑기에 실패했습니다.");
+            }
+        }
+
+        return results;
     }
 }

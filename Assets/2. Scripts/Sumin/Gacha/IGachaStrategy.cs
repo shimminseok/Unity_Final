@@ -13,7 +13,7 @@ public class RandoomSkillGachaStrategy : IGachaStrategy<ActiveSkillSO>
 {
     public ActiveSkillSO Pull(List<ActiveSkillSO> candidates, Dictionary<Tier, float> tierRates)
     {
-        // 등급별로 데이터 후보 분리
+        // 티어별로 데이터 후보 분리
         Dictionary<Tier, List<ActiveSkillSO>> skillTierGroups = new();
 
         foreach(ActiveSkillSO skill in candidates)
