@@ -1,6 +1,17 @@
 using System;
 using UnityEngine;
 
+/*
+ * RangeSkill을 사용할 경우에 투사체에 추가되는 컴포넌트
+ * poolId로 오브젝트 풀링에 사용되는 id값 입력
+ * poolSize는 미리 만들어놓을 오브젝트의 수 입력
+ * projectileSpeed는 투사체의 속도조절
+ * ProjectileInterpolationMode는 투사체의 발사가 어떻게 이루어지는지 조절
+ * => 추후 메테오의 경우에는 타겟의 머리위에서 투사체가 시작되도록 Mode추가
+ * EffectData는 스킬의 효과를 담아둔다.
+ * direction은 투사체의 방향조절
+ * StartPosiion은 투사체의 시작위치조절
+ */
 public class SkillProjectile : MonoBehaviour, IPoolObject
 {
     [SerializeField] private string poolId;

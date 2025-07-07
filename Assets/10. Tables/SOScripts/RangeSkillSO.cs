@@ -13,7 +13,7 @@ public class RangeSkillSO : RangeActionSo
     {
         var skillController = attacker.SkillController;
 
-        TargetSelect targetSelect = new TargetSelect(target as Unit);
+        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
         foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {

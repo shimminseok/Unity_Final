@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
 
+/*
+ * TargetSelect => 메인타겟을 기준으로 SelectTargetType에 따라 실제로 목표로 정할 타겟들을 리턴해주는 클래스
+ * attacker => 스킬을 사용하는 유닛도 타겟으로 지정가능해야 하므로 추가
+ */
 public class TargetSelect
 {   
     private Unit mainTargetUnit;
+    private Unit attacker;
     private int column = 3;
-    public TargetSelect(Unit mainTarget)
+    public TargetSelect(Unit mainTarget, Unit attacker)
     {
         mainTargetUnit = mainTarget;
+        this.attacker = attacker;
     }
 
     public bool IsValidSector(int tempTargetindex, int column, int length)
