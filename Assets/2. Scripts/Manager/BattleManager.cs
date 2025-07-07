@@ -18,6 +18,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private List<Unit> allUnits = new List<Unit>();
     public event Action OnBattleEnd;
 
+
     protected override void Awake()
     {
         base.Awake();

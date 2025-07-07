@@ -84,6 +84,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             if (skills[i] == activeSkill)
             {
                 skills[i] = null;
+                currentSelectedCharacter.InvokeSkillChanged();
                 return;
             }
         }
@@ -94,6 +95,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             if (skills[i] == null)
             {
                 skills[i] = activeSkill;
+                currentSelectedCharacter.InvokeSkillChanged();
                 return;
             }
         }
@@ -124,7 +126,8 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     // 캐릭터에 장비 장착
     public void SelectEquipment(EquipmentItem equip)
     {
-        if (currentSelectedCharacter == null) return;
+        if (currentSelectedCharacter == null)
+            return;
 
         // 장비 타입 받아옴
         EquipmentType type     = equip.EquipmentItemSo.EquipmentType;
@@ -141,6 +144,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
                 // 디버깅용
                 currentSelectedCharacter.SyncDebugEquipments();
+                currentSelectedCharacter.InvokeEquipmentChanged();
                 return;
             }
 
@@ -154,6 +158,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
+        currentSelectedCharacter.InvokeEquipmentChanged();
     }
 
     // 게임 시작 버튼 클릭 시 호출

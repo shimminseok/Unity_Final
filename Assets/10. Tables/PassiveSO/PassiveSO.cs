@@ -4,6 +4,7 @@
 public class PassiveSO : ScriptableObject
 {
     public JobType JobType;
+    public Sprite PassiveIcon;
     public int PassiveID;
     public string PassiveName;
     public string Description;

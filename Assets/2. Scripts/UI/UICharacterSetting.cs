@@ -19,10 +19,6 @@ public class UICharacterSetting : UIBase
         selectSkillUI = UIManager.Instance.GetUIComponent<SelectSkillUI>();
     }
 
-    private void Update()
-    {
-    }
-
     public void SetPlayerUnitData(EntryDeckData playerUnitData)
     {
         characterInfoPanel.OpenPanel(playerUnitData);

@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class CharacterInfo : MonoBehaviour
 {
-    [SerializeField] StatSlot[] statSlots;
+    [SerializeField] private StatSlot[] statSlots;
 
+    [SerializeField] private EquipButton[] equipButtons = new EquipButton[3];
     private UICharacterSetting uiCharacterSetting;
+
     private EntryDeckData selectedPlayerUnitData;
 
     private void Start()
@@ -31,13 +33,36 @@ public class CharacterInfo : MonoBehaviour
         }
     }
 
+    private void SetCharacterEquipmentInfo()
+    {
+        foreach (KeyValuePair<EquipmentType, EquipmentItem> equipmentItem in selectedPlayerUnitData.equippedItems)
+        {
+            equipButtons[(int)equipmentItem.Key].Initialize(equipmentItem.Value, true, false, null);
+        }
+    }
+
     public void OpenPanel(EntryDeckData unitData)
     {
+        if (selectedPlayerUnitData != null)
+        {
+            selectedPlayerUnitData.OnEquipmmmentChanged -= RefreshUI;
+            selectedPlayerUnitData.OnSkillChanged -= RefreshUI;
+        }
+
         selectedPlayerUnitData = unitData;
+        selectedPlayerUnitData.OnEquipmmmentChanged += RefreshUI;
+        selectedPlayerUnitData.OnSkillChanged += RefreshUI;
         SetCharacterStatInfo();
+        SetCharacterEquipmentInfo();
     }
 
     public void ClosePanel()
     {
+    }
+
+    private void RefreshUI()
+    {
+        SetCharacterStatInfo();
+        SetCharacterEquipmentInfo();
     }
 }

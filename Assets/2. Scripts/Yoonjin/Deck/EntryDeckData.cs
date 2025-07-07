@@ -24,6 +24,10 @@ public class EntryDeckData
 
     public PlayerUnitSO CharacterSo { get; private set; }
 
+
+    public event Action OnEquipmmmentChanged;
+    public event Action OnSkillChanged;
+
     public EntryDeckData(int id)
     {
         Level = 1;
@@ -60,6 +64,15 @@ public class EntryDeckData
         public EquipmentItem item;
     }
 
+    public void InvokeEquipmentChanged()
+    {
+        OnEquipmmmentChanged?.Invoke();
+    }
+
+    public void InvokeSkillChanged()
+    {
+        OnSkillChanged?.Invoke();
+    }
 
     /// <summary>
     /// 딕셔너리 디버깅용
