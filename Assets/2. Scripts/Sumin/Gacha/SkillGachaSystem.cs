@@ -27,24 +27,19 @@ public class SkillGachaSystem : MonoBehaviour
         return skills;
     }
 
-    public ActiveSkillSO DrawSkill()
+    // 스킬 count회 뽑기 
+    // 어차피 1뽑, 10뽑만 할거니까 array로
+    public ActiveSkillSO[] DrawSkills(int count)
     {
         List<ActiveSkillSO> skillData = GetSkillDatas();
-
-        return gachaManager.Draw(skillData, Define.TierRates);
-    }
-
-    public List<ActiveSkillSO> DrawSkillMultiple(int count)
-    {
-        List<ActiveSkillSO> skillData = GetSkillDatas();
-        List<ActiveSkillSO> results = new();
+        ActiveSkillSO[] results = new ActiveSkillSO[count];
 
         for (int i=0; i<count; i++)
         {
             var skill = gachaManager.Draw(skillData, Define.TierRates);
             if (skill != null)
             {
-                results.Add(skill);
+                results[i] = skill;
             }
             else
             {

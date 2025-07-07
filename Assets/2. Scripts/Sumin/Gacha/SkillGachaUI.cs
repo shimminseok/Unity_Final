@@ -11,37 +11,32 @@ public class SkillGachaUI : MonoBehaviour
     [SerializeField] private GameObject resultPannel;
     [SerializeField] private SkillSlotUI[] slots;
 
+    // 1회 뽑기 버튼
     public void OnDrawOneBtn()
     {
-        var skill = gachaSystem.DrawSkill();
-        if (skill != null)
-        {
-            Debug.Log($"1뽑 결과 : {skill.skillName} ({skill.activeSkillTier})");
-            resultPannel.SetActive(true);
-            slots[0].gameObject.SetActive(true);
-            slots[0].Initialize(skill);
-        }
-        else
-        {
-            Debug.LogError("스킬 뽑기 실패");
-        }
+        DrawAndDisplayResult(1);
     }
 
+    // 10회 뽑기 버튼
     public void OnDrawTenBtn()
     {
-        List<ActiveSkillSO> skills = gachaSystem.DrawSkillMultiple(10);
-        foreach (var skill in skills)
-        {
-            Debug.Log($"10연 결과 : {skill.skillName} ({skill.activeSkillTier})");
-            resultPannel.SetActive(true);
-        }
-        for (int i=0; i<skills.Count; i++)
+        DrawAndDisplayResult(10);
+    }
+
+    // 스킬 뽑기 UI 디스플레이
+    private void DrawAndDisplayResult(int count)
+    {
+        ActiveSkillSO[] skills = gachaSystem.DrawSkills(count);
+        resultPannel.SetActive(true);
+
+        for (int i = 0; i < skills.Length; i++)
         {
             slots[i].gameObject.SetActive(true);
             slots[i].Initialize(skills[i]);
         }
     }
 
+    // 결과창 나가기 버튼
     public void OnResultPannelExitBtn()
     {
         resultPannel.SetActive(false);
