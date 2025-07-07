@@ -11,8 +11,6 @@ public class StatSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statValue;
 
 
-    public event Action<float> OnValueChanged;
-
     public StatType StatType => statType;
 
     private void Start()
@@ -20,13 +18,13 @@ public class StatSlot : MonoBehaviour
         statName.text = Define.GetStatName(statType);
     }
 
-    public void Initialize(StatData statData)
+    public void Initialize(float statValue, float equipValue)
     {
-        UpdateStatValue(statData.Value);
+        UpdateStatValue(statValue, equipValue);
     }
 
-    public void UpdateStatValue(float value)
+    public void UpdateStatValue(float value, float equipValue = 0)
     {
-        statValue.text = $"{value:N1}";
+        statValue.text = $"{value:N1} +({equipValue:N1})";
     }
 }

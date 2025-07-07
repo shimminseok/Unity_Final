@@ -47,6 +47,7 @@ public class UICharacterSetting : UIBase
     public override void Close()
     {
         base.Close();
+        characterInfoPanel.ClosePanel();
     }
 
 

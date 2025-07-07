@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,10 @@ using UnityEngine;
 
 public class CharacterInfo : MonoBehaviour
 {
+    [SerializeField] private RectTransform panelRect;
+    [SerializeField] private Vector2 onScreenPos;
+    [SerializeField] private Vector2 offScreenPos;
+
     [SerializeField] private StatSlot[] statSlots;
 
     [SerializeField] private EquipButton[] equipButtons = new EquipButton[3];
@@ -12,6 +17,15 @@ public class CharacterInfo : MonoBehaviour
     private UICharacterSetting uiCharacterSetting;
 
     private EntryDeckData selectedPlayerUnitData;
+
+
+    private void Awake()
+    {
+        onScreenPos = panelRect.anchoredPosition;
+        offScreenPos = new Vector2(Screen.width, panelRect.anchoredPosition.y);
+
+        panelRect.anchoredPosition = offScreenPos;
+    }
 
     private void Start()
     {
@@ -29,7 +43,17 @@ public class CharacterInfo : MonoBehaviour
                 break;
             if (statSlots[index].StatType == stat.StatType)
             {
-                statSlots[index++].Initialize(stat);
+                float statValue  = stat.Value; //레벨당 증가 스탯도 같이 해주기
+                float equipValue = 0;
+
+                foreach (EquipmentItem equipmentItem in selectedPlayerUnitData.equippedItems.Values)
+                {
+                    var equipStat = equipmentItem.EquipmentItemSo.Stats.Find(s => s.StatType == stat.StatType);
+                    if (equipStat != null)
+                        equipValue += equipStat.Value;
+                }
+
+                statSlots[index++].Initialize(statValue, equipValue);
             }
         }
     }
@@ -44,7 +68,7 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitSkillInfo()
     {
-        skillSlots[0].SetSkillIcon(selectedPlayerUnitData.passiveSkill);
+        skillSlots[0].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill);
         int index = 1;
         foreach (ActiveSkillSO activeSkillSo in selectedPlayerUnitData.skillDatas)
         {
@@ -65,10 +89,19 @@ public class CharacterInfo : MonoBehaviour
         selectedPlayerUnitData.OnSkillChanged += RefreshUI;
 
         RefreshUI();
+
+        panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 
     public void ClosePanel()
     {
+        if (selectedPlayerUnitData != null)
+        {
+            selectedPlayerUnitData.OnEquipmmmentChanged -= RefreshUI;
+            selectedPlayerUnitData.OnSkillChanged -= RefreshUI;
+        }
+
+        selectedPlayerUnitData = null;
     }
 
     private void RefreshUI()
