@@ -8,6 +8,7 @@ public class CharacterInfo : MonoBehaviour
     [SerializeField] private StatSlot[] statSlots;
 
     [SerializeField] private EquipButton[] equipButtons = new EquipButton[3];
+    [SerializeField] private SkillSlot[] skillSlots = new SkillSlot[4];
     private UICharacterSetting uiCharacterSetting;
 
     private EntryDeckData selectedPlayerUnitData;
@@ -33,11 +34,21 @@ public class CharacterInfo : MonoBehaviour
         }
     }
 
-    private void SetCharacterEquipmentInfo()
+    private void SetPlayerUnitEquipmentInfo()
     {
         foreach (KeyValuePair<EquipmentType, EquipmentItem> equipmentItem in selectedPlayerUnitData.equippedItems)
         {
             equipButtons[(int)equipmentItem.Key].Initialize(equipmentItem.Value, true, false, null);
+        }
+    }
+
+    private void SetPlayerUnitSkillInfo()
+    {
+        skillSlots[0].SetSkillIcon(selectedPlayerUnitData.passiveSkill);
+        int index = 1;
+        foreach (ActiveSkillSO activeSkillSo in selectedPlayerUnitData.skillDatas)
+        {
+            skillSlots[index++].SetSkillIcon(activeSkillSo);
         }
     }
 
@@ -52,8 +63,8 @@ public class CharacterInfo : MonoBehaviour
         selectedPlayerUnitData = unitData;
         selectedPlayerUnitData.OnEquipmmmentChanged += RefreshUI;
         selectedPlayerUnitData.OnSkillChanged += RefreshUI;
-        SetCharacterStatInfo();
-        SetCharacterEquipmentInfo();
+
+        RefreshUI();
     }
 
     public void ClosePanel()
@@ -63,6 +74,7 @@ public class CharacterInfo : MonoBehaviour
     private void RefreshUI()
     {
         SetCharacterStatInfo();
-        SetCharacterEquipmentInfo();
+        SetPlayerUnitEquipmentInfo();
+        SetPlayerUnitSkillInfo();
     }
 }
