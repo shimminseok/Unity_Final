@@ -49,7 +49,7 @@ public class TargetSelect
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
                 return filteredUnits;
             
-            case SelectTargetType.RandomOne:
+            case SelectTargetType.RandomOneExceptMainTarget:
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
                 Unit randomTarget = filteredUnits[Random.Range(0, filteredUnits.Count)];
                 targets.Add(randomTarget);
