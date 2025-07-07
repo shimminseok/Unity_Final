@@ -1,0 +1,46 @@
+﻿public class PlayerUnitData
+{
+    public int UnitSoId;
+    public int Level;
+    public int Amount;
+    public int TranscendLevel;
+
+
+    private const int BaseMaxLevel = 10;
+    private const int MaxTranscendLevel = 5;
+
+    public int MaxLevel => BaseMaxLevel + (TranscendLevel * BaseMaxLevel);
+    //초월 0 => level = 10;
+    //초월 1 => level = 20;
+
+    public PlayerUnitData(int unitSoId)
+    {
+        UnitSoId = unitSoId;
+        Level = 1;
+        Amount = 1;
+        TranscendLevel = 0;
+    }
+
+    public void LevelUp(out bool canLevelUp)
+    {
+        if (Level >= MaxLevel)
+        {
+            canLevelUp = false;
+        }
+        else
+        {
+            Level++;
+            canLevelUp = true;
+        }
+    }
+
+    public void Transcend()
+    {
+        TranscendLevel++;
+    }
+
+    public PlayerUnitSO GetUnitSo()
+    {
+        return TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(UnitSoId);
+    }
+}

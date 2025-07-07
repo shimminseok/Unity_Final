@@ -8,5 +8,5 @@ public class ItemSO : ScriptableObject
     public string ItemDescription;
     public ItemType ItemType;
     public Sprite ItemSprite;
-    public int ItemGrade;
+    public Tier Tier;
 }

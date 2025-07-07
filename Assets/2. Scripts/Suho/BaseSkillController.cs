@@ -27,12 +27,6 @@ public abstract class BaseSkillController : MonoBehaviour
     public abstract void UseSkill();
     public abstract void EndTurn();
 
-    public virtual void ChangeSkill(int index) { }
-
-    public int GetSkillIndex(SkillData skill)
-    {
-        return skills.FindIndex(s => s == skill);
-    }
     public virtual void ChangeCurrentSkill(int index) { }
     public bool CheckAllSkills()
     {
@@ -41,5 +35,17 @@ public abstract class BaseSkillController : MonoBehaviour
             if(skill.CheckCanUseSkill()) return true;
         }
         return false;
+    }
+
+    // 인덱스 -> 스킬 데이터
+    public SkillData GetSkillData(int index)
+    {
+        return skills[index];
+    }
+
+    // 스킬 데이터 -> 인덱스
+    public int GetSkillIndex(SkillData skill)
+    {
+        return skills.FindIndex(s => s == skill);
     }
 }

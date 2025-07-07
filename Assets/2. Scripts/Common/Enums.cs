@@ -75,6 +75,7 @@ public enum StatusEffectType
     TurnBasedModifierBuff,
     Trigger,
     TurnBasedPeriodicDamageDebuff,
+    TurnBasedStunDebuff,
 }
 
 public enum EmotionType
@@ -149,6 +150,14 @@ public enum JobType
     Priest,
     Mage,
     Monster
+}
+
+public enum Tier
+{
+    A,
+    S,
+    SR,
+    SSR,
 }
 
 public enum AttackDistanceType

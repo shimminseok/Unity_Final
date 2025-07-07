@@ -98,12 +98,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void ChangeEmotion(EmotionType newType)
     {
+        if (newType == EmotionType.None) return;
+
         if (CurrentEmotion.EmotionType != newType)
         {
             if (Random.value < CurrentEmotion.Stack * ResistancePerStack)
                 return;
 
-            CurrentEmotion.Exit(this);
+            CurrentEmotion?.Exit(this);
             CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
 
