@@ -60,9 +60,17 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitEquipmentInfo()
     {
-        foreach (KeyValuePair<EquipmentType, EquipmentItem> equipmentItem in selectedPlayerUnitData.equippedItems)
+        var equipItem = selectedPlayerUnitData.equippedItems;
+        for (int i = 0; i < equipButtons.Length; i++)
         {
-            equipButtons[(int)equipmentItem.Key].Initialize(equipmentItem.Value, true, false, null);
+            if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))
+            {
+                equipButtons[i].Initialize(item, true, false, null);
+            }
+            else
+            {
+                equipButtons[i].Initialize(null, false, false, null);
+            }
         }
     }
 

@@ -25,6 +25,6 @@ public class StatSlot : MonoBehaviour
 
     public void UpdateStatValue(float value, float equipValue = 0)
     {
-        statValue.text = $"{value:N1} +({equipValue:N1})";
+        statValue.text = $"{value + equipValue:N1} (+{equipValue:N1})";
     }
 }
