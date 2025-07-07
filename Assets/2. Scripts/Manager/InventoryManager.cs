@@ -83,9 +83,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         //     AddStackableItem(item, amount);
         // }
         // else
-        // AddNonStackableItem(item, amount);
+        AddNonStackableItem(item, amount);
 
-        AddStackableItem(item, amount);
+        // AddStackableItem(item, amount);
     }
 
     /// <summary>

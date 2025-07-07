@@ -53,6 +53,14 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    public void CloseLastOpenedUI()
+    {
+        if (openedUIList.Count > 0)
+        {
+            openedUIList[openedUIList.Count - 1].Close();
+        }
+    }
+
     public T GetUIComponent<T>() where T : UIBase
     {
         return UIDict.TryGetValue(typeof(T), out var ui) ? ui as T : null;

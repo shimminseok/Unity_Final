@@ -6,7 +6,7 @@ public class MeleeSkillSO : CombatActionSo
     public override void Execute(Unit attacker, IDamageable target)
     {
         //이펙트 추가
-        TargetSelect targetSelect = new TargetSelect(target as Unit);
+        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
         foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
