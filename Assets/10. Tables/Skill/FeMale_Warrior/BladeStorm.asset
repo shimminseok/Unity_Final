@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: BladeStorm
   m_EditorClassIdentifier: 
   ID: 1002
-  skillName: "\uBC29\uD328\uCE58\uAE30"
-  skillDescription: "\uBC29\uD328\uB85C \uC801\uC744 \uCCD0 \uAE30\uC808\uC744 \uAC74\uB2E4."
+  skillName: "\uCE7C\uB0A0 \uD3ED\uD48D"
+  skillDescription: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uAC80\uAE30 \uD3ED\uD48D\uC744
+    \uB0A0\uB824 \uB370\uBBF8\uC9C0\uB97C \uC900\uB2E4. \uBA54\uC778 \uD0C0\uAC9F\uC758
+    \uC801\uC5D0\uAC90 \uB354 \uAC15\uD55C \uB370\uBBF8\uC9C0\uB97C \uC900\uB2E4."
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 0
   skillEffect:
@@ -24,27 +26,25 @@ MonoBehaviour:
       selectCamp: 1
       selectTarget: 0
       projectileID: 
-      damageEffects: []
-      buffEffects:
-      - ID: 90000
+      damageEffects:
+      - attackCount: 3
         ownerStatType: 4
-        weight: 0
-        value: 100
-        opponentStatType: 0
-        lastTurn: 2
-        statusEffectType: 12
-        modifierType: 0
-        emotionType: 0
-        StatusEffect:
-          ID: 0
-          EffectType: 0
-          Stat:
-            StatType: 0
-            ModifierType: 0
-            Value: 0
-          Duration: 0
-          TickInterval: 0
-          IsStackable: 0
+        weight: 0.7
+        value: 80
+      buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 1
+      projectileID: 
+      damageEffects:
+      - attackCount: 0
+        ownerStatType: 4
+        weight: 0.3
+        value: 40
+      buffEffects: []
       castingEffect: {fileID: 0}
       skillVfx: {fileID: 0}
       hitEffect: {fileID: 0}
@@ -53,5 +53,5 @@ MonoBehaviour:
   reuseMaxCount: 3
   coolTime: 2
   skillIcon: {fileID: 0}
-  skillAnimation: {fileID: 0}
+  skillAnimation: {fileID: 7400000, guid: e724c617927a9bd49a9203cf05693dd0, type: 3}
   skillTimeLine: {fileID: 0}

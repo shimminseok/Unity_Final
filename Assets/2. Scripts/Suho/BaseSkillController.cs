@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
- *
+/* 스킬을 사용하는 클래스
+ * mainTarget => 선택한 메인 타겟 유닛
+ * targets => 메인 타겟 유닛을 기반으로 선택된 진짜 target유닛들
+    - 실제로 효과를 받는 유닛들
+ * generateCost => 스킬들의 쿨다운을 감소시켜주는 값, 이번 턴에 사용한 스킬의 경우에는 쿨타운이 감소하지않음.
  */
 [RequireComponent(typeof(SkillManager))]
 public abstract class BaseSkillController : MonoBehaviour
@@ -12,7 +15,7 @@ public abstract class BaseSkillController : MonoBehaviour
     public SkillData CurrentSkillData;
     public Unit mainTarget;
     public List<Unit> targets = new List<Unit>();
-    public int generateCost = 1; // 턴 종료 시 cost각 스킬 코스트 추가 defalut 값 = 1
+    public int generateCost = 1; // 턴 종료 시 coolDown을 1감소, defalut 값 = 1
 
 
     public SkillManager SkillManager { get; private set; }
