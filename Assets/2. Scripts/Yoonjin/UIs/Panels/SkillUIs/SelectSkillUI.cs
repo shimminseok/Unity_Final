@@ -44,6 +44,12 @@ public class SelectSkillUI : UIBase
         }
     }
 
+    public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
+    {
+        DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
+        currentCharacter = currentUnit;
+    }
+
     public override void Close()
     {
         base.Close();

@@ -32,11 +32,16 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
-
         if (currentCharacter != null)
         {
             AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
         }
+    }
+
+    public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
+    {
+        DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
+        currentCharacter = currentUnit;
     }
 
     public override void Close()
@@ -48,9 +53,8 @@ public class SelectEquipUI : UIBase
     // UI 갱신
     public void UpdateEquipUI()
     {
-        currentCharacter = DeckSelectManager.Instance.GetCurrentSelectedCharacter();
-
-        if (currentCharacter == null) return;
+        if (currentCharacter == null)
+            return;
 
         ClearEquipInfo();
         ClearAllSlots();
@@ -144,6 +148,8 @@ public class SelectEquipUI : UIBase
             Debug.Log("이 직업은 이 장비를 장착할 수 없습니다.");
             return;
         }
+
+        // currentCharacter.
 
         DeckSelectManager.Instance.SelectEquipment(item);
         UpdateEquipUI();

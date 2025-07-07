@@ -17,10 +17,10 @@ public class CharacterButton : MonoBehaviour
     private bool isSelected;
 
     // 버튼 클릭 후 UI 갱신을 위한 콜백
-    private Action<PlayerUnitSO, bool> onAfterClick;
+    private Action<int, bool> onAfterClick;
 
     // 버튼에 데이터를 집어넣는 초기화 작업
-    public void Initialize(PlayerUnitSO data, bool isSelectedCharacter, Action<PlayerUnitSO, bool> onClick)
+    public void Initialize(PlayerUnitSO data, bool isSelectedCharacter, Action<int, bool> onClick)
     {
         characterSO = data;
         isSelected = isSelectedCharacter;
@@ -39,7 +39,7 @@ public class CharacterButton : MonoBehaviour
     private void OnClicked()
     {
         // 외부에서 갱신
-        onAfterClick?.Invoke(characterSO, isSelected);
+        onAfterClick?.Invoke(characterSO.ID, isSelected);
     }
 
     public PlayerUnitSO GetCharacterSO() => characterSO;

@@ -80,4 +80,10 @@ public class AccountManager : Singleton<AccountManager>
             //TODO : 재화 돌려줌
         }
     }
+
+
+    public EntryDeckData GetPlayerUnit(int id)
+    {
+        return MyPlayerUnits.GetValueOrDefault(id);
+    }
 }

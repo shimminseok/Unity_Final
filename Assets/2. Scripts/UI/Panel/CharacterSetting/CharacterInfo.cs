@@ -22,7 +22,8 @@ public class CharacterInfo : MonoBehaviour
         int index = 0;
         foreach (StatData stat in selectedPlayerUnitData.CharacterSo.Stats)
         {
-            if (index >= statSlots.Length) break;
+            if (index >= statSlots.Length)
+                break;
             if (statSlots[index].StatType == stat.StatType)
             {
                 statSlots[index++].Initialize(stat);
