@@ -45,7 +45,7 @@ public class TargetSelect
                 targets.Add(mainTargetUnit);
                 return targets;
 
-            case SelectTargetType.All:
+            case SelectTargetType.AllExceptMainTarget:
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
                 return filteredUnits;
             
@@ -65,9 +65,19 @@ public class TargetSelect
                 int mainTargetIndex = combinedUnits.IndexOf(mainTargetUnit);
                 int tempTargetIndex = mainTargetIndex + column-1;
                 int secondTempTargetIndex = mainTargetIndex + column;
-                if(IsValidSector(tempTargetIndex,column,combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead) targets.Add(combinedUnits[tempTargetIndex]);
-                if(IsValidSector(secondTempTargetIndex,column,combinedUnits.Count)&& !combinedUnits[secondTempTargetIndex].IsDead) targets.Add(combinedUnits[secondTempTargetIndex]);
+                if(IsValidSector(tempTargetIndex,column,combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead)
+                    targets.Add(combinedUnits[tempTargetIndex]);
+                if(IsValidSector(secondTempTargetIndex,column,combinedUnits.Count)&& !combinedUnits[secondTempTargetIndex].IsDead) 
+                    targets.Add(combinedUnits[secondTempTargetIndex]);
                 return targets;
+            
+            case SelectTargetType.onSelf:
+                targets.Add(attacker);
+                return targets;
+            
+            case SelectTargetType.All:
+                filteredUnits.Add(mainTargetUnit);
+                return filteredUnits;
             
             default:
                 return null;
