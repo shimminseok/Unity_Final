@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Define
@@ -37,11 +38,5 @@ public static class Define
     }
 
     // 티어 별 가챠 확률
-    public static readonly Dictionary<Tier, float> TierRates = new()
-    {
-        { Tier.A, 90f },
-        { Tier.S, 9f },
-        { Tier.SR, 0.98f },
-        { Tier.SSR, 0.02f }
-    };
+    public static readonly Dictionary<Tier, float> TierRates = new() { { Tier.A, 90f }, { Tier.S, 9f }, { Tier.SR, 0.98f }, { Tier.SSR, 0.02f } };
 }
