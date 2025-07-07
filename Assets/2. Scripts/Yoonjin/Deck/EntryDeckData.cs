@@ -9,7 +9,6 @@ public class EntryDeckData
     // 캐릭터 직업, 액티브 스킬 3개, 패시브 스킬
     // 장비 등등 equipItem
     // 패시브SO
-    public PlayerUnitSO characterSO;
     public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
     public PassiveSO passiveSkill;
 
@@ -23,12 +22,14 @@ public class EntryDeckData
     private const int Max_TRANSCEND_LEVEL = 5;
     public int MaxLevel => BASE_MAX_LEVEL + (TranscendLevel * BASE_MAX_LEVEL);
 
+    public PlayerUnitSO CharacterSo { get; private set; }
 
-    public EntryDeckData()
+    public EntryDeckData(int id)
     {
         Level = 1;
         Amount = 1;
         TranscendLevel = 0;
+        CharacterSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
     }
 
     public void LevelUp(out bool result)

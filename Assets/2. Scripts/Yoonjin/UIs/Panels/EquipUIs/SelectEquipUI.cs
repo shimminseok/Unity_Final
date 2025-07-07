@@ -8,22 +8,24 @@ public class SelectEquipUI : UIBase
 {
     [Header("장비 슬롯")]
     [SerializeField] private Transform weaponSlot;
+
     [SerializeField] private Transform armorSlot;
     [SerializeField] private Transform accessorySlot;
 
     [Header("보유 장비 인벤토리 & 장착 버튼 프리팹")]
     [SerializeField] private Transform inventoryParent;
+
     [SerializeField] private EquipButton equipButtonPrefab;
 
     [Header("장비 정보 표시")]
     [SerializeField] private TMP_Text itemName;
+
     [SerializeField] private TMP_Text itemDescription;
 
     [Header("아바타 표시")]
     [SerializeField] private RawImage avatarImage;
 
     private EntryDeckData currentCharacter;
-
 
 
     public override void Open()
@@ -33,7 +35,7 @@ public class SelectEquipUI : UIBase
 
         if (currentCharacter != null)
         {
-            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.characterSO, avatarImage);
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
         }
     }
 
@@ -66,7 +68,6 @@ public class SelectEquipUI : UIBase
     }
 
 
-
     // 보유 중인 장비 버튼 생성
     /// <summary>
     /// !!! 임시조치로 현재 테이블에 있는 모든 장비 가져옴!!!
@@ -74,33 +75,33 @@ public class SelectEquipUI : UIBase
     private void GenerateOwnedEquipButtons()
     {
         // 현재 선택한 캐릭터의 직업
-        var job = currentCharacter.characterSO.JobType;
+        var job = currentCharacter.CharacterSo.JobType;
 
         // 테이블에서 장비 목록 가져오기
         var equipList = TableManager.Instance.GetTable<ItemTable>().GetEquipmentsByJob(job);
 
-        foreach(var equipSO in equipList)
+        foreach (var equipSO in equipList)
         {
             EquipmentType type = equipSO.EquipmentType;
             EquipmentItem equipItem;
-            bool isEquipped = false;
+            bool          isEquipped = false;
 
-        // 현재 해당 타입 슬롯에 장착된 장비가 있다면
-        if (currentCharacter.equippedItems.TryGetValue(type, out var equippedItem) &&
-            equippedItem.EquipmentItemSo == equipSO)
-        {
-            // 기존 인스턴스를 재사용
-            equipItem = equippedItem;
-            isEquipped = true;
-        }
-        else
-        {
-            // 새 장비 인스턴스를 생성
-            equipItem = new EquipmentItem(equipSO);
-        }
+            // 현재 해당 타입 슬롯에 장착된 장비가 있다면
+            if (currentCharacter.equippedItems.TryGetValue(type, out var equippedItem) &&
+                equippedItem.EquipmentItemSo == equipSO)
+            {
+                // 기존 인스턴스를 재사용
+                equipItem = equippedItem;
+                isEquipped = true;
+            }
+            else
+            {
+                // 새 장비 인스턴스를 생성
+                equipItem = new EquipmentItem(equipSO);
+            }
 
-        var btn = Instantiate(equipButtonPrefab, inventoryParent);
-        btn.Initialize(equipItem, isEquipped, false, OnEquipButtonClicked);
+            var btn = Instantiate(equipButtonPrefab, inventoryParent);
+            btn.Initialize(equipItem, isEquipped, false, OnEquipButtonClicked);
         }
     }
 
@@ -120,14 +121,13 @@ public class SelectEquipUI : UIBase
     }
 
 
-
     // 클릭 콜백
     private void OnEquipButtonClicked(EquipButton btn, bool isEquipped)
-    { 
+    {
         ClearEquipInfo();
 
         var item = btn.GetEquipmentItem();
-        var job = currentCharacter.characterSO.JobType;
+        var job  = currentCharacter.CharacterSo.JobType;
 
         // 장착된 장비를 클릭하면 정보만 표시한다
         if (btn.IsSlotButton)
@@ -138,7 +138,7 @@ public class SelectEquipUI : UIBase
 
         // 장착 제한 체크
         // !!!임시조치: 추후 장비를 다 띄워줄 수도 있기에!!!
-        if(!item.EquipmentItemSo.IsEquipableByAllJobs &&
+        if (!item.EquipmentItemSo.IsEquipableByAllJobs &&
             item.EquipmentItemSo.JobType != job)
         {
             Debug.Log("이 직업은 이 장비를 장착할 수 없습니다.");
@@ -148,8 +148,6 @@ public class SelectEquipUI : UIBase
         DeckSelectManager.Instance.SelectEquipment(item);
         UpdateEquipUI();
     }
-
-
 
 
     // 장비 정보 텍스트 표시
@@ -172,10 +170,10 @@ public class SelectEquipUI : UIBase
     {
         return type switch
         {
-            EquipmentType.Weapon => weaponSlot,
-            EquipmentType.Armor => armorSlot,
+            EquipmentType.Weapon    => weaponSlot,
+            EquipmentType.Armor     => armorSlot,
             EquipmentType.Accessory => accessorySlot,
-            _ => null
+            _                       => null
         };
     }
 

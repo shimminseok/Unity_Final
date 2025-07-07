@@ -11,7 +11,6 @@ public class UICharacterSetting : UIBase
 
     private void Start()
     {
-        SetPlayerUnitData(new EntryDeckData() { characterSO = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(1) });
     }
 
     private void Update()
@@ -26,10 +25,15 @@ public class UICharacterSetting : UIBase
 
     public override void Open()
     {
-        SetPlayerUnitData(new EntryDeckData() { characterSO = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(1) });
+        base.Open();
+        foreach (EntryDeckData playerUnit in AccountManager.Instance.MyPlayerUnits.Values)
+        {
+            //Slot생성
+        }
     }
 
     public override void Close()
     {
+        base.Close();
     }
 }

@@ -20,7 +20,7 @@ public class CharacterInfo : MonoBehaviour
     {
         //TODO : 캐릭터 능력치, 기본 능력치 * 레벨업 능력치, + 장비 장착
         int index = 0;
-        foreach (StatData stat in selectedPlayerUnitData.characterSO.Stats)
+        foreach (StatData stat in selectedPlayerUnitData.CharacterSo.Stats)
         {
             if (index >= statSlots.Length) break;
             if (statSlots[index].StatType == stat.StatType)

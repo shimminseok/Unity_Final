@@ -15,15 +15,16 @@ public class AccountManager : Singleton<AccountManager>
     protected override void Awake()
     {
         base.Awake();
+
+        foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
+        {
+            AddPlayerUnit(playerUnitSo);
+        }
     }
 
     private void Start()
     {
         //Test
-        foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
-        {
-            AddPlayerUnit(playerUnitSo);
-        }
     }
 
     public void AddGold(int amount)
@@ -59,7 +60,7 @@ public class AccountManager : Singleton<AccountManager>
     {
         if (!MyPlayerUnits.TryGetValue(unit.ID, out EntryDeckData data))
         {
-            data = new EntryDeckData() { characterSO = unit };
+            data = new EntryDeckData(unit.ID);
             MyPlayerUnits[unit.ID] = data;
         }
         else

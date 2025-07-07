@@ -7,6 +7,7 @@ public class SelectMainUI : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
+
     [SerializeField] private CharacterButton characterButtonPrefab;
 
     [Header("현재 선택한 캐릭터 영역")]
@@ -28,7 +29,6 @@ public class SelectMainUI : UIBase
     private List<PlayerUnitSO> selectedCharacters = new();
 
 
-
     private void Start()
     {
         // TODO: 나중에 실제 보유한 캐릭터 데이터를 ownedCharacters에 할당한다
@@ -47,13 +47,21 @@ public class SelectMainUI : UIBase
         ownedCharacters.Clear();
 
         // ID 순회: 현재 캐릭터 id가 1부터 7까지이므로 임시 조치
-        for (int id = 1; id <= 20; id++)
+        // for (int id = 1; id <= 20; id++)
+        // {
+        //     var unit = table.GetDataByID(id);
+        //
+        //     if (unit != null)
+        //     {
+        //         ownedCharacters.Add(unit);
+        //     }
+        // }
+        foreach (KeyValuePair<int, EntryDeckData> unit in AccountManager.Instance.MyPlayerUnits)
         {
-            var unit = table.GetDataByID(id);
-
-            if (unit != null)
+            var unitSo = unit.Value.CharacterSo;
+            if (unitSo != null)
             {
-                ownedCharacters.Add(unit);
+                ownedCharacters.Add(unitSo);
             }
         }
 
@@ -74,10 +82,10 @@ public class SelectMainUI : UIBase
         selectedCharacterButtons.Clear();
 
         // 새로운 버튼 생성
-        foreach(var entry in selectedDeck)
+        foreach (var entry in selectedDeck)
         {
             var btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
-            btn.Initialize(entry.characterSO, true, OnCharacterButtonClicked);
+            btn.Initialize(entry.CharacterSo, true, OnCharacterButtonClicked);
             selectedCharacterButtons.Add(btn);
         }
     }
@@ -87,7 +95,7 @@ public class SelectMainUI : UIBase
     {
         // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
-            .Find(entry => entry.characterSO == character);
+            .Find(entry => entry.CharacterSo == character);
 
         if (entry != null)
         {
@@ -110,11 +118,11 @@ public class SelectMainUI : UIBase
     private void OnCharacterButtonClicked(PlayerUnitSO character, bool isSelected)
     {
         // 선택된 경우는 정보 갱신
-        if(isSelected)
+        if (isSelected)
         {
             // 덱에 존재하는지 확인하고
             var entry = DeckSelectManager.Instance.GetSelectedDeck()
-                .Find(entry => entry.characterSO == character);
+                .Find(entry => entry.CharacterSo == character);
 
             if (entry != null)
             {
@@ -134,5 +142,4 @@ public class SelectMainUI : UIBase
             UpdateCharacterInfoPanel(character);
         }
     }
-
 }

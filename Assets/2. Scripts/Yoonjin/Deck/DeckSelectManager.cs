@@ -18,6 +18,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
 
     #region getter
+
     public List<EntryDeckData> GetSelectedDeck()
     {
         return selectedDeck;
@@ -27,6 +28,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     {
         return currentSelectedCharacter;
     }
+
     #endregion
 
     protected override void Awake()
@@ -40,7 +42,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
 
-
     // 현재 편집 중인 캐릭터
     public void SetCurrentSelectedCharacter(EntryDeckData entry)
     {
@@ -51,21 +52,18 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void SelectCharacter(PlayerUnitSO newCharacterSO)
     {
         // 이미 선택됐는지 확인
-        var alreadySelected = selectedDeck.Find(alreadySelected => alreadySelected.characterSO == newCharacterSO);
+        var alreadySelected = selectedDeck.Find(alreadySelected => alreadySelected.CharacterSo == newCharacterSO);
 
         if (alreadySelected != null)
         {
-            selectedDeck.Remove(alreadySelected);   // 이미 선택한 캐릭터면 해제
+            selectedDeck.Remove(alreadySelected); // 이미 선택한 캐릭터면 해제
             currentSelectedCharacter = null;
         }
 
         else if (selectedDeck.Count < maxCharacterCount)
         {
             // 새로운 캐릭터 데이터 추가
-            EntryDeckData newEntry = new EntryDeckData()
-            {
-                characterSO = newCharacterSO
-            };
+            EntryDeckData newEntry = new EntryDeckData(newCharacterSO.ID);
 
             selectedDeck.Add(newEntry);
             currentSelectedCharacter = newEntry;
@@ -99,7 +97,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
                 return;
             }
         }
-
     }
 
     // 캐릭터에 패시브 스킬 장착 (1개만)
@@ -122,23 +119,22 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         {
             currentSelectedCharacter.passiveSkill = passive;
         }
-
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment (EquipmentItem equip)
+    public void SelectEquipment(EquipmentItem equip)
     {
         if (currentSelectedCharacter == null) return;
 
         // 장비 타입 받아옴
-        EquipmentType type = equip.EquipmentItemSo.EquipmentType;
-        var equipped = currentSelectedCharacter.equippedItems;
+        EquipmentType type     = equip.EquipmentItemSo.EquipmentType;
+        var           equipped = currentSelectedCharacter.equippedItems;
 
         // 현재 type 슬롯에 장착된 아이템
-        if(equipped.TryGetValue(type, out var currentEquipped))
+        if (equipped.TryGetValue(type, out var currentEquipped))
         {
             // 같은 아이템을 다시 클릭한 경우에 해제
-            if(currentEquipped == equip)
+            if (currentEquipped == equip)
             {
                 equip.IsEquipped = false;
                 equipped.Remove(type);
