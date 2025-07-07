@@ -15,6 +15,7 @@
             StatusEffectType.TurnBasedModifierBuff => new TurnBasedModifierBuff(),
             StatusEffectType.Trigger               => new TriggerBuff(),
             StatusEffectType.TurnBasedPeriodicDamageDebuff => new TurnBasedPeriodicDamageDebuff(),
+            StatusEffectType.TurnBasedStunDebuff => new StunDebuff(),
             _                                      => null
         };
         if (effect == null)

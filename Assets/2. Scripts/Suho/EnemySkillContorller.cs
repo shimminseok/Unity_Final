@@ -1,15 +1,26 @@
 using System;
 using UnityEngine;
 
+/* EnemySkillContorller => 적들의 스킬사용 로직을 담당하는 클래스
+ * selector => 가중치의 값과 유효한 엔트리인 지 확인하는 클래스
+ */
+
 public class EnemySkillContorller : BaseSkillController
 {
     public WeightedSelector<SkillData> selector;
 
+    /*
+     * SelectTargets 메서드 => 적의 mainTarget을 정하는 메서드
+     */
     public override void SelectTargets(Unit mainTarget)
     {
         this.mainTarget = mainTarget;
     }
 
+    /*
+     * mainTarget을 기반으로 스킬을 사용하는 메서드
+     * 플레이어 스킬 컨트롤러와 로직이 동일하다.
+     */
     public override void UseSkill()
     {
         if (!CurrentSkillData.CheckCanUseSkill())
@@ -25,11 +36,20 @@ public class EnemySkillContorller : BaseSkillController
         EndTurn();
     }
 
+    /*
+     * 사용할 스킬을 선택하는 로직
+     * selector에서 사용가능한 스킬과 각 스킬의 가중치에 따라서 사용할 스킬의 index를 반환
+     */
     public void SelectSkill()
     {
         ChangeCurrentSkill(selector.Select());
     }
 
+    
+    /*
+     * 처음에 스킬을 선택하는 로직클래스인 selector를 초기화 시켜주는 메서드
+     * 현재 몬스터의 SO를 확인하여 스킬 관련 데이터를 갖고 초기화가 이루어진다.
+     */
     public void InitSkillSelector()
     {
         selector = new WeightedSelector<SkillData>();
@@ -48,6 +68,11 @@ public class EnemySkillContorller : BaseSkillController
         }
     }
 
+    /*
+     * EndTurn메서드 => 스킬 사용 이후 종료로직
+     * 스킬의 쿨다운을 미리 재생 ( 현재 턴에서 어떤 스킬을 사용했는 지 알기 위함 )
+     * 현재 사용한 스킬과 타겟들을 모두 초기화
+     */
     public override void EndTurn()
     {
         foreach (SkillData skill in skills)
@@ -61,7 +86,11 @@ public class EnemySkillContorller : BaseSkillController
         this.mainTarget = null;
         targets = null;
     }
-
+    
+    /*
+     * ChangeCurrentSkill => 현재 사용할 스킬을 인덱스값을 통해 바꿔준다.
+     * 스킬을 바꿔주면 애니메이션 클립을 스킬데이터에 등록되어있는 클립으로 바꾼다.
+     */
     public override void ChangeCurrentSkill(int index)
     {
         CurrentSkillData = skills[index];
@@ -73,6 +102,11 @@ public class EnemySkillContorller : BaseSkillController
         // skillAnimationListener.skillData = CurrentSkillData;
     }
 
+    /*
+     * ChangeCurrentSkill => 현재 사용할 스킬을 스킬데이터를 통해 바꿔준다.
+     * 스킬을 바꿔주면 애니메이션 클립을 스킬데이터에 등록되어있는 클립으로 바꾼다.
+     */
+    
     public void ChangeCurrentSkill(SkillData skill)
     {
         CurrentSkillData = skill;
