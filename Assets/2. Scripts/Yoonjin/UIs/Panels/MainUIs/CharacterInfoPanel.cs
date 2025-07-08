@@ -27,6 +27,8 @@ public class CharacterInfoPanel : MonoBehaviour
     [Header("패시브 스킬 슬롯")]
     [SerializeField] private Image passiveSkillSlotImage;
 
+    private EntryDeckData selectedUnitData;
+
     private void Awake()
     {
         // 편집 버튼에 클릭 이벤트 연결
@@ -39,6 +41,7 @@ public class CharacterInfoPanel : MonoBehaviour
         if (data == null) return;
 
         // 이름 표시
+        selectedUnitData = data;
         characterNameText.text = data.CharacterSo.UnitName;
 
         // 장비 표시
@@ -96,7 +99,9 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<SelectEquipUI>();
+            SelectEquipUI ui = UIManager.Instance.GetUIComponent<SelectEquipUI>();
+            ui.SetCurrentSelectedUnit(selectedUnitData);
+            UIManager.Instance.Open(ui);
         }
     }
 
@@ -107,7 +112,9 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<SelectSkillUI>();
+            SelectSkillUI ui = UIManager.Instance.GetUIComponent<SelectSkillUI>();
+            ui.SetCurrentSelectedUnit(selectedUnitData);
+            UIManager.Instance.Open(ui);
         }
     }
 }

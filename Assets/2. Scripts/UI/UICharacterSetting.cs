@@ -66,12 +66,12 @@ public class UICharacterSetting : UIBase
     {
         selectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
 
-        UIManager.Instance.Open<SelectEquipUI>();
+        UIManager.Instance.Open(selectEquipUI);
     }
 
     public void OpenSetSkill()
     {
         selectSkillUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-        UIManager.Instance.Open<SelectSkillUI>();
+        UIManager.Instance.Open(selectSkillUI);
     }
 }

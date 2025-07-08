@@ -7,6 +7,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
+
     [SerializeField] private LayerMask playerUnitLayer;
     [SerializeField] private LayerMask enemyUnitLayer;
 
@@ -27,9 +28,9 @@ public class InputManager : SceneOnlySingleton<InputManager>
             PlayerUnitLayer = playerUnitLayer,
             EnemyUnitLayer = enemyUnitLayer,
             OpenSkillUI = unit => UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().UpdateSkillList(unit),
-            CloseSkillUI = () => UIManager.Instance.Close<BattleSceneSkillUI>(),
-            CloseStartButtonUI = () => UIManager.Instance.Close<BattleSceneStartButton>(),
-            OpenStartButtonUI = () => UIManager.Instance.Open<BattleSceneStartButton>(),
+            CloseSkillUI = () => UIManager.Instance.Close(UIManager.Instance.GetUIComponent<BattleSceneSkillUI>()),
+            CloseStartButtonUI = () => UIManager.Instance.Close(UIManager.Instance.GetUIComponent<BattleSceneStartButton>()),
+            OpenStartButtonUI = () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<BattleSceneStartButton>()),
             PlanActionCommand = (executer, target, skillData) =>
             {
                 IActionCommand command;
@@ -40,7 +41,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
                 CommandPlanner.Instance.PlanAction(command);
                 Debug.Log($"커맨드 등록 : {executer}, {target}, {(skillData == null ? "기본공격" : skillData.skillSo.name)}");
-
             },
             HighlightSkillSlotUI = (toggle, index) =>
             {
@@ -89,10 +89,10 @@ public class InputManager : SceneOnlySingleton<InputManager>
         // 인디케이터 꺼주기
         selector.InitializeHighlight();
         selector.ShowSelectableUnits(context.UnitLayer, false);
-        
+
         // Start 버튼 활성화
         context.OpenStartButtonUI?.Invoke();
-        
+
         inputStateMachine.ChangeState<SelectExecuterState>();
     }
 
@@ -105,7 +105,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         // 배틀매니저 턴 시작
         BattleManager.Instance.StartTurn();
-        
+
         // 인풋 불가 상태로 진입
         inputStateMachine.ChangeState<InputDisabledState>();
     }

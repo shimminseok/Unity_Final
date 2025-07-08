@@ -56,9 +56,10 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
     public void OnClickEnterStage()
     {
         //TODO : StageManager에 해당 Stage 넘겨주기
-        UIManager.Instance.Close<UIStageSelect>();
 
-        UIManager.Instance.Open<SelectMainUI>();
+        UIManager.Instance.Close(this);
+        SelectMainUI selectMainUI = UIManager.Instance.GetUIComponent<SelectMainUI>();
+        UIManager.Instance.Open(selectMainUI);
     }
 
     public override void Open()

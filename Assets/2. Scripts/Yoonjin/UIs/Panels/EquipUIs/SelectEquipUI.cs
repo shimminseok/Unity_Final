@@ -32,10 +32,7 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
-        if (currentCharacter != null)
-        {
-            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
-        }
+        AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
     }
 
     public void SetCurrentSelectedUnit(EntryDeckData currentUnit)

@@ -926,6 +926,36 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -17
       objectReference: {fileID: 0}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1557059960}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenStageSeletUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: OpenSeleteStageUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 9060578978656515702, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9177979893143305388, guid: efea74f32d2fa0e4090e8c444cef4df9,
         type: 3}
       propertyPath: onScreenPos.x
@@ -939,7 +969,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4349417678925340452, guid: efea74f32d2fa0e4090e8c444cef4df9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1557059960}
   m_SourcePrefab: {fileID: 100100000, guid: efea74f32d2fa0e4090e8c444cef4df9, type: 3}
 --- !u!1 &278567470
 GameObject:
@@ -1560,6 +1594,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1557059955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4349417678925340452, guid: efea74f32d2fa0e4090e8c444cef4df9,
+    type: 3}
+  m_PrefabInstance: {fileID: 174720733}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1557059960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557059955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58a64ca51c49fed47be0b0c2cfbbedfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1607421024
 GameObject:
   m_ObjectHideFlags: 0
