@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 0
   skillName: "\uB9C8\uBC95 \uD68C\uBCF5"
   skillDescription: "\uAC04\uB2E8\uD55C \uC790\uAC00 \uD790"
-  skillType: {fileID: 0}
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   skillEffect:
     owner: {fileID: 0}
@@ -23,7 +23,7 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 3
-      projectileID: 
+      projectileID: Buff
       damageEffects: []
       buffEffects:
       - ID: 0
@@ -37,10 +37,10 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 6
           Stat:
             StatType: 0
-            ModifierType: 0
+            ModifierType: 1
             Value: 0
           Duration: 0
           TickInterval: 0
@@ -52,6 +52,6 @@ MonoBehaviour:
   activeSkillTier: 0
   reuseMaxCount: 2
   coolTime: 3
-  skillIcon: {fileID: 0}
+  skillIcon: {fileID: 21300000, guid: 31731dc5fee34b2449bbf70a424ab6e5, type: 3}
   skillAnimation: {fileID: 0}
   skillTimeLine: {fileID: 0}
