@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 0
   skillName: 
   skillDescription: 
-  skillType: {fileID: 0}
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   skillEffect:
     owner: {fileID: 0}
@@ -24,15 +24,19 @@ MonoBehaviour:
       selectCamp: 0
       selectTarget: 0
       projectileID: Arrow_Projectile
-      damageEffects: []
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0
+        value: 100
       buffEffects: []
       castingEffect: {fileID: 0}
       skillVfx: {fileID: 0}
       hitEffect: {fileID: 0}
   jobType: 7
   activeSkillTier: 0
-  reuseMaxCount: 0
-  coolTime: 0
+  reuseMaxCount: 3
+  coolTime: 3
   skillIcon: {fileID: 0}
-  skillAnimation: {fileID: 0}
+  skillAnimation: {fileID: 7400000, guid: 404cc80cf4d09294bb1bb810517365d9, type: 2}
   skillTimeLine: {fileID: 0}

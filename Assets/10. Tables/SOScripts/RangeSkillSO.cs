@@ -1,3 +1,4 @@
+using System;
 using System.Buffers;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,8 +40,17 @@ public class RangeSkillSO : RangeActionSo
             foreach (var subTarget in targets)
             {
                 if(subTarget.IsDead) continue;
-                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
-                ProjectileComponent.Initialize(attacker, skillController.SkillManager.Owner.GetCenter(), target.Collider.bounds.center);
+                if (effect.projectileID != String.Empty)
+                {
+                    ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID)
+                        .GetComponent<SkillProjectile>();
+                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(),
+                        target.Collider.bounds.center, target);
+                }
+                else
+                {
+                  effect.AffectTargetWithSkill(subTarget);
+                }
             }
             if (ProjectileComponent != null)
             {

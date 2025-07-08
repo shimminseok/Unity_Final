@@ -32,6 +32,7 @@ public abstract class BaseSkillController : MonoBehaviour
     {
         foreach (SkillData skill in skills)
         {
+            if(skill == null) continue;
             if(skill.CheckCanUseSkill()) return true;
         }
         return false;

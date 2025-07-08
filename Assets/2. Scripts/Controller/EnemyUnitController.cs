@@ -267,22 +267,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        // if (ShouldUseSkill())
-        // {
-        //     EnemySkillContorller sc = SkillController as EnemySkillContorller;
-        //     if (sc != null)
-        //     {
-        //         sc.SelectSkill();
-        //         ChangeAction(ActionType.SKill);
-        //     }
-        // }
-        // else
-        // {
-        //     ChangeAction(ActionType.Attack);
-        // }
-        //
-        // var enemies = BattleManager.Instance.GetEnemies(this);
-        // SetTarget(enemies[Random.Range(0, enemies.Count)]);
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

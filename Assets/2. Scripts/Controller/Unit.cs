@@ -30,7 +30,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public NavMeshAgent               Agent                      { get; protected set; }
     public UnitSO                     UnitSo                     { get; protected set; }
     public AnimationEventListener     AnimationEventListener     { get; protected set; }
-    public Unit                       CounterTarget              { get; private set; }
+    public IDamageable                       CounterTarget              { get; private set; }
 
     public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
     public IAttackAction CurrentAttackAction { get; private set; }

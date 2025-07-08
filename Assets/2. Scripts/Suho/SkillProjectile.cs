@@ -31,7 +31,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     public string     PoolID     => poolId;
     public int        PoolSize   => poolSize;
 
-    public Unit Target;
+    public IDamageable Target;
 
 
     public SkillEffectData EffectData      => effectData;
@@ -85,10 +85,15 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
                 Vector3 offset = Vector3.Slerp(startPosition, direction, delta);
                 transform.position = direction + offset;
                 break;
+            
+            case ProjectileInterpolationMode.Fall:
+                transform.position = direction + Vector3.up * 10;
+                mode = ProjectileInterpolationMode.MoveTowards;
+                break;
         }
     }
 
-    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, Unit target)
+    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, IDamageable target)
     {
         //기존 구독되어있던 이벤트 해제
         trigger.OnTriggerTarget -= HandleTrigger;
@@ -96,7 +101,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         startPosition = startPos;
         direction = dir;
         this.gameObject.transform.position = startPosition;
-        this.gameObject.transform.LookAt(target.transform);
+        this.gameObject.transform.LookAt(target.Collider.transform);
         Target = target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleTrigger;
@@ -111,7 +116,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         direction = dir;
         this.gameObject.transform.position = startPosition;
         this.gameObject.transform.LookAt(dir);
-        Target = attacker.IsCounterAttack ? attacker.CounterTarget : attacker.Target as Unit;
+        Target = attacker.IsCounterAttack ? attacker.CounterTarget as Unit : attacker.Target as Unit;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleAttackTrigger;
         OnSpawnFromPool();
