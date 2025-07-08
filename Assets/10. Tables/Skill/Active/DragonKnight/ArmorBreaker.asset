@@ -10,35 +10,35 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: RoarOfFury
+  m_Name: ArmorBreaker
   m_EditorClassIdentifier: 
   ID: 0
-  skillName: "\uD3ED\uB82C\uC758 \uD3EC\uD6A8"
-  skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
+  skillName: "\uBC29\uBCBD \uD30C\uC1C4"
+  skillDescription: "\uB2E8\uC77C \uC801 \uACF5\uACA9, \uBC29\uC5B4\uB825 \uAC10\uC18C"
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   skillEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
-      selectCamp: 1
+      selectCamp: 0
       selectTarget: 0
       projectileID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
-        weight: 0.6
-        value: 50
+        weight: 0.3
+        value: 30
       buffEffects:
       - ID: 0
-        ownerStatType: 0
-        weight: 0
-        value: 0
-        opponentStatType: 0
-        lastTurn: 0
-        statusEffectType: 0
-        modifierType: 0
-        emotionType: 2
+        ownerStatType: 4
+        weight: 0.3
+        value: -10
+        opponentStatType: 6
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
         StatusEffect:
           ID: 0
           EffectType: 0
@@ -53,9 +53,9 @@ MonoBehaviour:
       skillVfx: {fileID: 0}
       hitEffect: {fileID: 0}
   jobType: 3
-  activeSkillTier: 2
+  activeSkillTier: 3
   reuseMaxCount: 2
-  coolTime: 4
+  coolTime: 3
   skillIcon: {fileID: 0}
   skillAnimation: {fileID: 0}
   skillTimeLine: {fileID: 0}

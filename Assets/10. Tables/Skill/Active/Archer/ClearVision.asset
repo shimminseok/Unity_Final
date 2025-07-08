@@ -10,35 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: RoarOfFury
+  m_Name: ClearVision
   m_EditorClassIdentifier: 
   ID: 0
-  skillName: "\uD3ED\uB82C\uC758 \uD3EC\uD6A8"
-  skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
-  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
-  selectCamp: 1
+  skillName: ClearVision
+  skillDescription: "\uBCF8\uC778\uC758 \uBA85\uC911\uB960 \uC0C1\uC2B9"
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 0
   skillEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
-      selectCamp: 1
-      selectTarget: 0
+      selectCamp: 0
+      selectTarget: 3
       projectileID: 
-      damageEffects:
-      - attackCount: 1
-        ownerStatType: 4
-        weight: 0.6
-        value: 50
+      damageEffects: []
       buffEffects:
       - ID: 0
-        ownerStatType: 0
-        weight: 0
-        value: 0
-        opponentStatType: 0
-        lastTurn: 0
-        statusEffectType: 0
+        ownerStatType: 4
+        weight: 0.3
+        value: 10
+        opponentStatType: 10
+        lastTurn: 3
+        statusEffectType: 9
         modifierType: 0
-        emotionType: 2
+        emotionType: 0
         StatusEffect:
           ID: 0
           EffectType: 0
@@ -52,10 +48,10 @@ MonoBehaviour:
       castingEffect: {fileID: 0}
       skillVfx: {fileID: 0}
       hitEffect: {fileID: 0}
-  jobType: 3
-  activeSkillTier: 2
+  jobType: 4
+  activeSkillTier: 1
   reuseMaxCount: 2
-  coolTime: 4
+  coolTime: 3
   skillIcon: {fileID: 0}
   skillAnimation: {fileID: 0}
   skillTimeLine: {fileID: 0}
