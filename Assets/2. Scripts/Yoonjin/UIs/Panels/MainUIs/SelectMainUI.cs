@@ -89,7 +89,7 @@ public class SelectMainUI : UIBase
     {
         // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
-            .Find(entry => entry.CharacterSo == character);
+            .Find(entry => entry.CharacterSo.ID == character.ID);
 
         if (entry != null)
         {
