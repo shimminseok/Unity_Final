@@ -25,7 +25,7 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 3
-      projectileID: 
+      projectileID: Buff
       damageEffects: []
       buffEffects:
       - ID: 0
@@ -39,12 +39,12 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 9
           Stat:
-            StatType: 0
+            StatType: 5
             ModifierType: 0
             Value: 0
-          Duration: 0
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
       castingEffect: {fileID: 0}
@@ -54,6 +54,6 @@ MonoBehaviour:
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2
-  skillIcon: {fileID: 0}
+  skillIcon: {fileID: 21300000, guid: 61a6682410503fc4dae72c37ef4bcb91, type: 3}
   skillAnimation: {fileID: 7400000, guid: a1101064477cd334097208cfb752aa4e, type: 3}
   skillTimeLine: {fileID: 0}

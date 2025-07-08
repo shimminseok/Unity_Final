@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: Shield
+  m_EditorClassIdentifier: 
+  ID: 1000
+  skillName: "\uC2E4\uB4DC"
+  skillDescription: "\uC544\uAD70\uC804\uCCB4\uC5D0\uAC8C \uC274\uB4DC\uB97C \uC900\uB2E4.
+    \uBA54\uC778 \uD0C0\uAC9F\uC778 \uC544\uAD70\uC5D0\uAC8C\uB294 \uB354 \uD070
+    \uC2E4\uB4DC\uB97C \uC900\uB2E4."
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 0
+  skillEffect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 1
+      projectileID: Buff
+      damageEffects: []
+      buffEffects:
+      - ID: 40001
+        ownerStatType: 0
+        weight: 0.1
+        value: 0
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 40001
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 1
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 0
+      projectileID: 
+      damageEffects: []
+      buffEffects:
+      - ID: 40001
+        ownerStatType: 0
+        weight: 0.3
+        value: 0
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 40001
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 1
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+  jobType: 0
+  activeSkillTier: 0
+  reuseMaxCount: 2
+  coolTime: 4
+  skillIcon: {fileID: 21300000, guid: 96cd7f89cdb318846bfc8aa6a21fcd40, type: 3}
+  skillAnimation: {fileID: 7400000, guid: 66d6e931fba18384eb02381bec3bce88, type: 3}
+  skillTimeLine: {fileID: 0}

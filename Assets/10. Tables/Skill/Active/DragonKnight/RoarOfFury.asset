@@ -13,17 +13,49 @@ MonoBehaviour:
   m_Name: RoarOfFury
   m_EditorClassIdentifier: 
   ID: 0
-  skillName: 
-  skillDescription: 
-  skillType: {fileID: 0}
-  selectCamp: 0
+  skillName: "\uD3ED\uB82C\uC758 \uD3EC\uD6A8"
+  skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
   skillEffect:
     owner: {fileID: 0}
-    skillEffectDatas: []
-  jobType: 0
-  activeSkillTier: 0
-  reuseMaxCount: 0
-  coolTime: 0
-  skillIcon: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectileID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.6
+        value: 50
+      buffEffects:
+      - ID: 0
+        ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 2
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+  jobType: 3
+  activeSkillTier: 2
+  reuseMaxCount: 2
+  coolTime: 4
+  skillIcon: {fileID: 21300000, guid: 2b98b8b95d10fb149acd2ae1837dba1d, type: 3}
   skillAnimation: {fileID: 0}
   skillTimeLine: {fileID: 0}
