@@ -19,7 +19,7 @@ public class EntryDeckData
 
 
     private const int BASE_MAX_LEVEL = 10;
-    private const int Max_TRANSCEND_LEVEL = 5;
+    private const int MAX_TRANSCEND_LEVEL = 5;
     public int MaxLevel => BASE_MAX_LEVEL + (TranscendLevel * BASE_MAX_LEVEL);
 
     public PlayerUnitSO CharacterSo { get; private set; }
@@ -27,11 +27,13 @@ public class EntryDeckData
 
     public event Action OnEquipmmmentChanged;
     public event Action OnSkillChanged;
+    public event Action OnTranscendChanged;
+    public event Action OnLevelUp;
 
     public EntryDeckData(int id)
     {
         Level = 1;
-        Amount = 1;
+        Amount = 0;
         TranscendLevel = 0;
         CharacterSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
     }
@@ -42,14 +44,18 @@ public class EntryDeckData
         if (result)
         {
             Level++;
+            OnLevelUp?.Invoke();
         }
     }
 
     public void Transcend(out bool result)
     {
-        result = TranscendLevel < Max_TRANSCEND_LEVEL;
+        result = TranscendLevel < MAX_TRANSCEND_LEVEL && Amount >= Define.DupeCountByTranscend[TranscendLevel];
         if (result)
+        {
             TranscendLevel++;
+            OnTranscendChanged?.Invoke();
+        }
     }
 
     public void AddAmount(int amount = 1)

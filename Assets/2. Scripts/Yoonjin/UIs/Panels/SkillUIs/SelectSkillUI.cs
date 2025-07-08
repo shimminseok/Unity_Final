@@ -116,7 +116,7 @@ public class SelectSkillUI : UIBase
         if (currentCharacter.passiveSkill != null)
         {
             var btn = Instantiate(skillButtonPrefab, passiveSkillSlot);
-            btn.Initialize(currentCharacter.passiveSkill, true, OnSkillButtonClicked);
+            btn.Initialize(currentCharacter.CharacterSo.PassiveSkill, true, OnSkillButtonClicked);
         }
 
         // 액티브 슬롯
