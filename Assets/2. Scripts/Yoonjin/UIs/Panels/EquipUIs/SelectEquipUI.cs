@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,7 +27,9 @@ public class SelectEquipUI : UIBase
     [SerializeField] private RawImage avatarImage;
 
     private EntryDeckData currentCharacter;
-
+    private List<EquipButton> ownedEquipButtonPool = new();
+    private List<EquipButton> selectedEquipButtonPool = new();
+    public event Action<EntryDeckData> OnEquipChanged;
 
     public override void Open()
     {
@@ -45,6 +48,7 @@ public class SelectEquipUI : UIBase
     {
         base.Close();
         AvatarPreviewManager.Instance.HideAllAvatars();
+        OnEquipChanged?.Invoke(currentCharacter);
     }
 
     // UI 갱신
@@ -54,31 +58,16 @@ public class SelectEquipUI : UIBase
             return;
 
         ClearEquipInfo();
-        ClearAllSlots();
         GenerateOwnedEquipButtons();
         GenerateSelectedEquipButtons();
     }
 
-    // 모두 삭제
-    private void ClearAllSlots()
-    {
-        DestroyChildren(weaponSlot);
-        DestroyChildren(armorSlot);
-        DestroyChildren(accessorySlot);
-        DestroyChildren(inventoryParent);
-    }
 
-
-    // 보유 중인 장비 버튼 생성
-    /// <summary>
-    /// !!! 임시조치로 현재 테이블에 있는 모든 장비 가져옴!!!
-    /// </summary>
     private void GenerateOwnedEquipButtons()
     {
-        // 현재 선택한 캐릭터의 직업
-        var job = currentCharacter.CharacterSo.JobType;
+        int poolIndex = 0;
+        var job       = currentCharacter.CharacterSo.JobType;
 
-        // 테이블에서 장비 목록 가져오기
         var equipList = TableManager.Instance.GetTable<ItemTable>().GetEquipmentsByJob(job);
 
         foreach (var equipSO in equipList)
@@ -87,40 +76,42 @@ public class SelectEquipUI : UIBase
             EquipmentItem equipItem;
             bool          isEquipped = false;
 
-            // 현재 해당 타입 슬롯에 장착된 장비가 있다면
             if (currentCharacter.equippedItems.TryGetValue(type, out var equippedItem) &&
                 equippedItem.EquipmentItemSo == equipSO)
             {
-                // 기존 인스턴스를 재사용
                 equipItem = equippedItem;
                 isEquipped = true;
             }
             else
             {
-                // 새 장비 인스턴스를 생성
                 equipItem = new EquipmentItem(equipSO);
             }
 
-            var btn = Instantiate(equipButtonPrefab, inventoryParent);
+            var btn = GetOrCreateEquipButton(poolIndex++, inventoryParent, ownedEquipButtonPool);
             btn.Initialize(equipItem, isEquipped, false, OnEquipButtonClicked);
         }
+
+        DisableRemainingButtons(poolIndex, ownedEquipButtonPool);
     }
 
     // 선택 중인 장비 슬롯 채우기
     private void GenerateSelectedEquipButtons()
     {
-        foreach (var item in currentCharacter.equippedItems)
-        {
-            if (item.Value == null) continue;
+        int poolIndex = 0;
 
-            var slot = GetSlotTransform(item.Key);
+        foreach (var kvp in currentCharacter.equippedItems)
+        {
+            if (kvp.Value == null) continue;
+
+            var slot = GetSlotTransform(kvp.Key);
             if (slot == null) continue;
 
-            var btn = Instantiate(equipButtonPrefab, slot);
-            btn.Initialize(item.Value, true, true, OnEquipButtonClicked);
+            var btn = GetOrCreateEquipButton(poolIndex++, slot, selectedEquipButtonPool);
+            btn.Initialize(kvp.Value, true, true, OnEquipButtonClicked);
         }
-    }
 
+        DisableRemainingButtons(poolIndex, selectedEquipButtonPool);
+    }
 
     // 클릭 콜백
     private void OnEquipButtonClicked(EquipButton btn, bool isEquipped)
@@ -146,12 +137,36 @@ public class SelectEquipUI : UIBase
             return;
         }
 
-        // currentCharacter.
-
         DeckSelectManager.Instance.SelectEquipment(item);
         UpdateEquipUI();
     }
 
+    private EquipButton GetOrCreateEquipButton(int index, Transform parent, List<EquipButton> pool)
+    {
+        EquipButton btn;
+
+        if (index < pool.Count)
+        {
+            btn = pool[index];
+        }
+        else
+        {
+            btn = Instantiate(equipButtonPrefab, parent);
+            pool.Add(btn);
+        }
+
+        btn.transform.SetParent(parent, false);
+        btn.gameObject.SetActive(true);
+        return btn;
+    }
+
+    private void DisableRemainingButtons(int fromIndex, List<EquipButton> pool)
+    {
+        for (int i = fromIndex; i < pool.Count; i++)
+        {
+            pool[i].gameObject.SetActive(false);
+        }
+    }
 
     // 장비 정보 텍스트 표시
     private void ShowEquipInfo(EquipmentItem item)

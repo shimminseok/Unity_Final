@@ -54,7 +54,6 @@ public class CharacterInfoPanel : MonoBehaviour
         {
             if (data.skillDatas[i] != null)
             {
-                Debug.Log("액티브 스프라이트 할당됨");
                 activeSkillSlotImage[i].sprite = data.skillDatas[i].skillIcon;
             }
 
@@ -65,11 +64,10 @@ public class CharacterInfoPanel : MonoBehaviour
         }
 
         // 패시브 스킬 표시
-        if (data.passiveSkill != null)
+        if (data.CharacterSo.PassiveSkill != null)
         {
             // !!!현재 패시브 스킬 아이콘이 없음!!!
-            //passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
-            Debug.Log("패시브 스프라이트 할당됨");
+            passiveSkillSlotImage.sprite = data.CharacterSo.PassiveSkill.PassiveIcon;
         }
 
         else
@@ -100,8 +98,10 @@ public class CharacterInfoPanel : MonoBehaviour
         if (entry != null)
         {
             SelectEquipUI ui = UIManager.Instance.GetUIComponent<SelectEquipUI>();
+            ui.OnEquipChanged -= SetData;
             ui.SetCurrentSelectedUnit(selectedUnitData);
             UIManager.Instance.Open(ui);
+            ui.OnEquipChanged += SetData;
         }
     }
 
@@ -113,8 +113,10 @@ public class CharacterInfoPanel : MonoBehaviour
         if (entry != null)
         {
             SelectSkillUI ui = UIManager.Instance.GetUIComponent<SelectSkillUI>();
+            ui.OnSkillChanged -= SetData;
             ui.SetCurrentSelectedUnit(selectedUnitData);
             UIManager.Instance.Open(ui);
+            ui.OnSkillChanged += SetData;
         }
     }
 }

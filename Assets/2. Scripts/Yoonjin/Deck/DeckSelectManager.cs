@@ -101,28 +101,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         }
     }
 
-    // 캐릭터에 패시브 스킬 장착 (1개만)
-    public void SelectPassiveSkill(PassiveSO passive)
-    {
-        if (currentSelectedCharacter == null)
-        {
-            Debug.LogWarning("캐릭터 없음");
-            return;
-        }
-
-        // 이미 선택했으면 해제
-        if (currentSelectedCharacter.passiveSkill == passive)
-        {
-            currentSelectedCharacter.passiveSkill = null;
-        }
-
-
-        else
-        {
-            currentSelectedCharacter.passiveSkill = passive;
-        }
-    }
-
     // 캐릭터에 장비 장착
     public void SelectEquipment(EquipmentItem equip)
     {

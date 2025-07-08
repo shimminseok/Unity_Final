@@ -26,7 +26,7 @@ public class SelectMainUI : UIBase
     // 보유 캐릭터 & 선택 캐릭터 SO들을 담는 리스트
 
     private Dictionary<int, CharacterButton> characterSlotDic = new();
-    
+
 
     private void Start()
     {
@@ -59,17 +59,28 @@ public class SelectMainUI : UIBase
     // 선택된 캐릭터 목록 버튼 생성
     private void GenerateSelectedCharacterButtons(List<EntryDeckData> selectedDeck)
     {
-        // 기존 버튼 모두 제거
-        foreach (var btn in selectedCharacterButtons)
-            Destroy(btn.gameObject);
-        selectedCharacterButtons.Clear();
-
-        // 새로운 버튼 생성
-        foreach (var entry in selectedDeck)
+        // 1. 필요한 만큼 버튼 활성화 및 초기화
+        for (int i = 0; i < selectedDeck.Count; i++)
         {
-            var btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
-            btn.Initialize(entry.CharacterSo, true, OnCharacterButtonClicked);
-            selectedCharacterButtons.Add(btn);
+            CharacterButton btn;
+
+            if (i < selectedCharacterButtons.Count)
+            {
+                btn = selectedCharacterButtons[i];
+                btn.gameObject.SetActive(true);
+            }
+            else
+            {
+                btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
+                selectedCharacterButtons.Add(btn);
+            }
+
+            btn.Initialize(selectedDeck[i].CharacterSo, true, OnCharacterButtonClicked);
+        }
+
+        for (int i = selectedDeck.Count; i < selectedCharacterButtons.Count; i++)
+        {
+            selectedCharacterButtons[i].gameObject.SetActive(false);
         }
     }
 
