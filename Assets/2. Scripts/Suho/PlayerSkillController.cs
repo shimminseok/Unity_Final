@@ -22,7 +22,7 @@ using UnityEngine;
 public class PlayerSkillController : BaseSkillController
 {
     public AnimationClip skillAttackAnim;
-    public override void SelectTargets(IDamageable target)
+    public override void SelectSkillSubTargets(IDamageable target)
     {
         if (CurrentSkillData != null)
         {
@@ -39,7 +39,6 @@ public class PlayerSkillController : BaseSkillController
         if (index >= skills.Count) return;
         CurrentSkillData = skills[index];
         if (CurrentSkillData == null) return;
-        SelectTargets(SkillManager.Owner.Target);
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
 
         // skillAnimationListener.skillData = CurrentSkillData;
@@ -72,6 +71,6 @@ public class PlayerSkillController : BaseSkillController
 
         CurrentSkillData = null;
         this.SkillManager.Owner.SetTarget(null);
-        SkillSubTargets = null;
+        SkillSubTargets.Clear();
     }
 }

@@ -93,6 +93,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             go.transform.localRotation = Quaternion.identity;
             EnemyUnitController unit = go.GetComponent<EnemyUnitController>();
             unit.Initialize(enemyUnitSo);
+            unit.ChoiceAction();
             EnemyUnits.Add(unit);
             index++;
         }
@@ -128,7 +129,14 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
         }
 
-        TurnHandler.RefillTurnQueue();
+        foreach (var enemy in EnemyUnits)
+        {
+            EnemyUnitController enemyUnit = enemy as EnemyUnitController;
+            if (enemyUnit != null && !enemyUnit.IsDead)
+            {
+                enemyUnit.ChoiceAction();
+            }
+        }
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         OnBattleEnd?.Invoke();

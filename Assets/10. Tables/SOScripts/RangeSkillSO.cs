@@ -39,7 +39,6 @@ public class RangeSkillSO : RangeActionSo
             foreach (var subTarget in targets)
             {
                 if(subTarget.IsDead) continue;
-                effect.AffectTargetWithSkill(subTarget);
                 ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
                 ProjectileComponent.Initialize(attacker, skillController.SkillManager.Owner.GetCenter(), target.Collider.bounds.center);
             }

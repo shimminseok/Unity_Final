@@ -112,6 +112,7 @@ public enum EquipmentType
  */
 public enum SelectTargetType
 {
+    MainTarget,
     AllExceptMainTarget,
     OnSelf,
     RandomOneExceptMainTarget,

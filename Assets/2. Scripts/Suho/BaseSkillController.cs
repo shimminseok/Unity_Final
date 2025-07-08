@@ -22,7 +22,7 @@ public abstract class BaseSkillController : MonoBehaviour
         SkillManager = manager;
     }
 
-    public abstract void SelectTargets(IDamageable mainTarget);
+    public abstract void SelectSkillSubTargets(IDamageable mainTarget);
 
     public abstract void UseSkill();
     public abstract void EndTurn();

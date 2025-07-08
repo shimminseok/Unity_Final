@@ -211,14 +211,31 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
                 ()=> !playerUnit.IsDead
             );
         }
-
     }
 
-    public void WeightedSelectTarget()
+    public void WeightedMainTargetSelector(SelectCampType campType)
     {
-
+        if (campType == SelectCampType.Enemy)
+        {
+            var allies = BattleManager.Instance.GetAllies(this);
+            SetTarget(allies[Random.Range(0, allies.Count)]);
+        }
+        else if (campType == SelectCampType.Player)
+        {
+            SetTarget(mainTargetSelector.Select());
+        }
+    }
+    public void SelectMainTarget(ActionType actionType)
+    {
+        if (actionType == ActionType.SKill)
+        {
             EnemySkillContorller sc = SkillController as EnemySkillContorller;
-            
+            WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
+        }
+        else if (actionType == ActionType.Attack)
+        {
+            WeightedMainTargetSelector(SelectCampType.Player);
+        }
     }
 
     public void ChoiceAction()
@@ -230,11 +247,13 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             {
                 sc.WeightedSelectSkill();
                 ChangeAction(ActionType.SKill);
+                SelectMainTarget(ActionType.SKill);
             }
         }
         else
         {
             ChangeAction(ActionType.Attack);
+            SelectMainTarget(ActionType.Attack);
         }
     }
 

@@ -8,5 +8,5 @@
     
     public void        Attack();
 
-    public void SetTarget(Unit target);
+    public void SetTarget(IDamageable target);
 }

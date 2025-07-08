@@ -51,6 +51,9 @@ public class TargetSelect
         if (combinedUnits == null) return targets;
         switch (type)
         {
+            case SelectTargetType.MainTarget:
+                targets.Add(mainTargetUnit);
+                return targets;
             case SelectTargetType.AllExceptMainTarget:
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
                 return TransLateUnitToIDamagable(filteredUnits);

@@ -13,7 +13,7 @@ public class EnemySkillContorller : BaseSkillController
     /*
      * SelectTargets 메서드 => 적의 mainTarget을 정하는 메서드
      */
-    public override void SelectTargets(IDamageable target)
+    public override void SelectSkillSubTargets(IDamageable target)
     {
         if (CurrentSkillData != null)
         {
@@ -94,7 +94,7 @@ public class EnemySkillContorller : BaseSkillController
 
         CurrentSkillData = null;
         this.SkillManager.Owner.SetTarget(null);
-        SkillSubTargets = null;
+        SkillSubTargets.Clear();
     }
     
     /*
