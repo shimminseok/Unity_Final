@@ -35,9 +35,9 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
 
     public SkillEffectData EffectData      => effectData;
-    public float               ProjectileSpeed => projectileSpeed;
-    public Vector3             Direction       => direction;
-    public Vector3             StartPosition   => startPosition;
+    public float           ProjectileSpeed => projectileSpeed;
+    public Vector3         Direction       => direction;
+    public Vector3         StartPosition   => startPosition;
 
     public bool isShooting = false;
     public ProjectileInterpolationMode mode;
@@ -111,7 +111,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         direction = dir;
         this.gameObject.transform.position = startPosition;
         this.gameObject.transform.LookAt(dir);
-        Target = attacker.Target as Unit;
+        Target = attacker.IsCounterAttack ? attacker.CounterTarget : attacker.Target as Unit;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleAttackTrigger;
         OnSpawnFromPool();
