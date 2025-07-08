@@ -446,11 +446,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (6)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -571,7 +566,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &359664492
@@ -724,7 +719,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &366698443
@@ -1164,11 +1159,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 359664493}
-  m_Father: {fileID: 1545173728}
+  m_Father: {fileID: 1530574589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -403, y: 115}
+  m_AnchoredPosition: {x: -343, y: 65.600006}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &432961363
@@ -1589,7 +1584,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &600730548
@@ -1651,7 +1646,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!224 &624469186 stripped
@@ -1669,7 +1664,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &656434871
@@ -2005,11 +2000,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (7)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -2222,11 +2212,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 398170039}
-  m_Father: {fileID: 1921139159}
+  m_Father: {fileID: 1530574589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 501, y: 115}
+  m_AnchoredPosition: {x: 121, y: 65.600006}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &756294865
@@ -2430,7 +2420,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &824452661
@@ -2845,8 +2835,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeSkillTable: {fileID: 11400000, guid: 5e80c6835a811114aaf4ad3903c58560, type: 2}
-  CanDraw: 0
-  drawCost: 0
 --- !u!224 &874903289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3416,8 +3404,6 @@ RectTransform:
   m_Children:
   - {fileID: 874903289}
   - {fileID: 1530574589}
-  - {fileID: 1921139159}
-  - {fileID: 1545173728}
   - {fileID: 773029396}
   m_Father: {fileID: 458910993}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4246,11 +4232,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4388,11 +4369,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2030511425}
-  m_Father: {fileID: 1545173728}
+  m_Father: {fileID: 1530574589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -175, y: 115}
+  m_AnchoredPosition: {x: -115, y: 65.600006}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1308946237
@@ -4489,11 +4470,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (9)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
@@ -4613,11 +4589,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (4)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4735,7 +4706,7 @@ GameObject:
   - component: {fileID: 1530574591}
   - component: {fileID: 1530574590}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4752,7 +4723,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 756294864}
+  - {fileID: 1589453099}
+  - {fileID: 432961362}
+  - {fileID: 1308946236}
   m_Father: {fileID: 1052104712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -4813,7 +4788,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1534565674
@@ -4951,43 +4926,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534565674}
   m_CullTransparentMesh: 1
---- !u!1 &1545173727
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1545173728}
-  m_Layer: 5
-  m_Name: GachaDrawButtons
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1545173728
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545173727}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1308946236}
-  - {fileID: 432961362}
-  m_Father: {fileID: 1052104712}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &1559083836 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
@@ -5003,7 +4941,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1589453098
@@ -5038,11 +4976,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 460290257}
-  m_Father: {fileID: 1921139159}
+  m_Father: {fileID: 1530574589}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 721, y: 115}
+  m_AnchoredPosition: {x: 341, y: 65.600006}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1589453100
@@ -5327,11 +5265,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5517,11 +5450,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
@@ -5761,7 +5689,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1918200613
@@ -5885,43 +5813,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918200613}
   m_CullTransparentMesh: 1
---- !u!1 &1921139158
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1921139159}
-  m_Layer: 5
-  m_Name: GachaInfoButtons
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1921139159
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1921139158}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1589453099}
-  - {fileID: 756294864}
-  m_Father: {fileID: 1052104712}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1938729096
 GameObject:
   m_ObjectHideFlags: 0
@@ -6207,7 +6098,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c31511b7242a6ed43b2a9a0bed3088e4, type: 3}
+  m_Script: {fileID: 11500000, guid: fa36561d88c1f0546bda08af34e9a07d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2030511424
@@ -6493,11 +6384,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SkillSlot (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -6736,11 +6622,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SkillSlot (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1146849574781479864, guid: 0d7a9a664429fd14f982a58aadbaea2d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3611164842237100291, guid: 0d7a9a664429fd14f982a58aadbaea2d,
         type: 3}

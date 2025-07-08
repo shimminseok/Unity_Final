@@ -35,7 +35,7 @@ public class SkillGachaUI : MonoBehaviour
         }
         confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
         confirmPanel.OnCancel += () => Debug.Log("취소됨");
-        confirmPanel.ShowPopup(gachaSystem.drawCost * count);
+        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
     }
 
     // 스킬 뽑고 결과 보여주기
