@@ -30,7 +30,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     private float remainDistance;
     public Vector3 StartPostion { get; private set; }
-
+    public WeightedSelector<Unit> mainTargetSelector;
+    
+    
     protected override void Awake()
     {
         SkillController = GetComponent<EnemySkillContorller>();
@@ -95,7 +97,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         {
             sc.InitSkillSelector();
         }
-
+        InitTargetSelector();
         ChangeEmotion(MonsterSo.StartEmotion);
     }
 
@@ -196,6 +198,46 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (SkillController.CheckAllSkills() && Random.value < MonsterSo.skillActionProbability) return true;
         else return false;
     }
+    
+    public void InitTargetSelector()
+    {
+        mainTargetSelector = new WeightedSelector<Unit>();
+        var playerUnits = BattleManager.Instance.PartyUnits;
+        foreach (var playerUnit in playerUnits)
+        {
+            mainTargetSelector.Add(
+                playerUnit,
+                () => playerUnit.StatManager.GetValue(StatType.Aggro),
+                ()=> !playerUnit.IsDead
+            );
+        }
+
+    }
+
+    public void SelectTarget()
+    {
+        
+        
+    }
+
+    public void ChoiceAction()
+    {
+        if (ShouldUseSkill())
+        {
+            EnemySkillContorller sc = SkillController as EnemySkillContorller;
+            if (sc != null)
+            {
+                sc.WeightedSelectSkill();
+                ChangeAction(ActionType.SKill);
+            }
+        }
+        else
+        {
+            ChangeAction(ActionType.Attack);
+        }
+    }
+
+
 
     public override void StartTurn()
     {
@@ -205,22 +247,22 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        if (ShouldUseSkill())
-        {
-            EnemySkillContorller sc = SkillController as EnemySkillContorller;
-            if (sc != null)
-            {
-                sc.SelectSkill();
-                ChangeAction(ActionType.SKill);
-            }
-        }
-        else
-        {
-            ChangeAction(ActionType.Attack);
-        }
-
-        var enemies = BattleManager.Instance.GetEnemies(this);
-        SetTarget(enemies[Random.Range(0, enemies.Count)]);
+        // if (ShouldUseSkill())
+        // {
+        //     EnemySkillContorller sc = SkillController as EnemySkillContorller;
+        //     if (sc != null)
+        //     {
+        //         sc.SelectSkill();
+        //         ChangeAction(ActionType.SKill);
+        //     }
+        // }
+        // else
+        // {
+        //     ChangeAction(ActionType.Attack);
+        // }
+        //
+        // var enemies = BattleManager.Instance.GetEnemies(this);
+        // SetTarget(enemies[Random.Range(0, enemies.Count)]);
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

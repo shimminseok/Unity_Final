@@ -20,7 +20,8 @@ public enum StatType
     CriticalRate,
 
     HitRate,
-    Shield
+    Shield,
+    Aggro,
 }
 
 public enum StatModifierType
