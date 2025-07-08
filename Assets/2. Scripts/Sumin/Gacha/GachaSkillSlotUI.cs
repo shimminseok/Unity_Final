@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillSlotUI : MonoBehaviour
+public class GachaSkillSlotUI : MonoBehaviour
 {
     [SerializeField] private Image skillIamge;
     [SerializeField] private TextMeshProUGUI skillNameText;

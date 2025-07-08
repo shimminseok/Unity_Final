@@ -30,7 +30,7 @@ public class SkillGachaUI : MonoBehaviour
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            UIManager.Instance.Open<CantDrawPopupUI>();
+            UIManager.Instance.Open<GachaCantDrawPopupUI>();
             return;
         }
         confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);

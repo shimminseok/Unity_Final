@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CantDrawPopupUI : UIBase
+public class GachaCantDrawPopupUI : UIBase
 {
     [SerializeField] private Button exitBtn;
 

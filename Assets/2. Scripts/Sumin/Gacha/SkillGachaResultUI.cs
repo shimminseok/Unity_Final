@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SkillGachaResultUI : UIBase
 {
     [SerializeField] private Button resultExitBtn;
-    [SerializeField] private SkillSlotUI[] slots;
+    [SerializeField] private GachaSkillSlotUI[] slots;
 
     private void Start()
     {
