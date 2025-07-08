@@ -6,11 +6,13 @@ using UnityEngine;
 public class AccountManager : Singleton<AccountManager>
 {
     public int Gold      { get; private set; } = 0;
+    public int Opal      { get; private set; } = 3000;
     public int BestStage { get; private set; } = 1010101;
 
     public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
     public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
     public event Action<int> OnGoldChanged;
+    public event Action<int> OnOpalChanged;
 
     protected override void Awake()
     {
@@ -45,6 +47,30 @@ public class AccountManager : Singleton<AccountManager>
         Gold -= amount;
         result = true;
         OnGoldChanged?.Invoke(Gold);
+    }
+
+    public void AddOpal(int amount)
+    {
+        Opal += amount;
+
+        OnOpalChanged?.Invoke(Opal);
+    }
+
+    public void UseOpal(int amount)
+    {
+        if (Opal < amount)
+        {
+            return;
+        }
+
+        Opal -= amount;
+        OnOpalChanged?.Invoke(Opal);
+    }
+
+    // Opal 사용 가능한지 보고 UI에서 판단
+    public bool CanUseOpal(int amount)
+    {
+         return Opal >= amount;
     }
 
     public void UpdateBestStage(int stage)
