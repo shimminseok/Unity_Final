@@ -1,4 +1,5 @@
 using System.Buffers;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
@@ -9,26 +10,43 @@ public class RangeSkillSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
+        // var skillController = attacker.SkillController;
+        //
+        // TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
+        //
+        // foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        // {
+        //     skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+        //     foreach (Unit unit in skillController.targets)
+        //     {
+        //         if (unit == null) continue;
+        //         ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+        //         ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+        //     }
+        // }
+        //
+        // if (ProjectileComponent != null)
+        // {
+        //     ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+        // }
         var skillController = attacker.SkillController;
-
-        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
-
-        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
-            foreach (Unit unit in skillController.targets)
+            List<IDamageable> targets = attacker.SkillController.SkillSubTargets[effect];
+            if(targets == null) return;
+            foreach (var subTarget in targets)
             {
-                if (unit == null) continue;
+                if(subTarget.IsDead) continue;
+                effect.AffectTargetWithSkill(subTarget);
                 ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
-                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+                ProjectileComponent.Initialize(attacker, skillController.SkillManager.Owner.GetCenter(), target.Collider.bounds.center);
             }
-        }
-
-        if (ProjectileComponent != null)
-        {
-            ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+            if (ProjectileComponent != null)
+            {
+                ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+            }
         }
     }
 

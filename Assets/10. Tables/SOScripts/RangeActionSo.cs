@@ -5,7 +5,7 @@
     public          SkillProjectile    ProjectileComponent { get; protected set; }
     public override AttackDistanceType DistanceType        => AttackDistanceType.Range;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
     }
 }

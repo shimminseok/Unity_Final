@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable, IStatContext
 {
     private const float ResistancePerStack = 0.08f;
 
@@ -22,7 +22,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public StatManager                StatManager                { get; protected set; }
     public StatusEffectManager        StatusEffectManager        { get; protected set; }
     public StatBase                   AttackStat                 { get; protected set; }
-    public SkillManager               SkillManager               { get; protected set; }
+    public SkillManager               SkillManager               { get; set; }
     public Animator                   Animator                   { get; protected set; }
     public BaseSkillController        SkillController            { get; protected set; }
     public AnimatorOverrideController AnimatorOverrideController { get; protected set; }
@@ -127,10 +127,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void SetTarget(Unit target)
     {
         Target = target;
-        if (CurrentAction == ActionType.SKill)
-        {
-            SkillController.SelectTargets(target);
-        }
     }
 
     // 유닛 선택 가능 토글

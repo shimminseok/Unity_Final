@@ -16,7 +16,7 @@ public class SkillEffectData
     public ParticleSystem skillVfx;
     public ParticleSystem hitEffect;
     
-    public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
+    public void AffectTargetWithSkill(IDamageable target) // 실질적으로 영향을 끼치는 부분
     {
         foreach (var result in buffEffects)
         {
@@ -51,7 +51,6 @@ public class StatBaseSkillEffect
                 buffSkillEffect.StatusEffect = new StatusEffectData();
                 {
                     //불변 데이터
-                    buffSkillEffect.StatusEffect.ID = buffSkillEffect.ID;
                     buffSkillEffect.StatusEffect.EffectType = buffSkillEffect.statusEffectType;
                     buffSkillEffect.StatusEffect.Duration = buffSkillEffect.lastTurn;
                     buffSkillEffect.StatusEffect.Stat = new StatData();
@@ -81,13 +80,13 @@ public class StatBaseDamageEffect
     public float value; // 기본 고정 값 : weight와 관계없이 고정으로 부여할 수 있는 값
 
     // 데미지 계산 식 => value + (weight * attackCount * statValue) 
-    public void DamageEffect(Unit target, Unit owner)
+    public void DamageEffect(IDamageable target, Unit owner)
     {
         float finalValue = value + (weight * owner.StatManager.GetValue(ownerStatType));
         target.TakeDamage(finalValue);
     }
 
-    public IEnumerator DamageEffectCoroutine(Unit target, Unit owner)
+    public IEnumerator DamageEffectCoroutine(IDamageable target, Unit owner)
     {
         int currentCount = 0;
 
@@ -109,8 +108,6 @@ public class StatBaseDamageEffect
 [System.Serializable]
 public class StatBaseBuffSkillEffect
 {
-    public int ID;
-
     [Header("영향을 주는 스텟")]
     public StatType ownerStatType; // 사용자에 의해 강해지거나 약해지는 사용자의 스텟타입 => ex) 남기사 실드스킬에서 남기사의 최대체력
 

@@ -214,10 +214,11 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     }
 
-    public void SelectTarget()
+    public void WeightedSelectTarget()
     {
-        
-        
+
+            EnemySkillContorller sc = SkillController as EnemySkillContorller;
+            
     }
 
     public void ChoiceAction()

@@ -13,9 +13,16 @@ public class EnemySkillContorller : BaseSkillController
     /*
      * SelectTargets 메서드 => 적의 mainTarget을 정하는 메서드
      */
-    public override void SelectTargets(Unit mainTarget)
+    public override void SelectTargets(IDamageable target)
     {
-        this.mainTarget = mainTarget;
+        if (CurrentSkillData != null)
+        {
+            TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
+            foreach (var effectData in CurrentSkillData.skillEffect.skillEffectDatas)
+            {
+                SkillSubTargets.Add(effectData,targetSelect.FindTargets(effectData.selectTarget,effectData.selectCamp));
+            }
+        }
     }
 
     /*
@@ -32,7 +39,7 @@ public class EnemySkillContorller : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
+        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
 
         EndTurn();
     }
@@ -86,8 +93,8 @@ public class EnemySkillContorller : BaseSkillController
         }
 
         CurrentSkillData = null;
-        this.mainTarget = null;
-        targets = null;
+        this.SkillManager.Owner.SetTarget(null);
+        SkillSubTargets = null;
     }
     
     /*

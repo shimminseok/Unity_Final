@@ -44,7 +44,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
 
     public ProjectileTrigger trigger;
 
-    private Unit attacker;
+    private IAttackable attacker;
 
     private void Awake()
     {
@@ -103,7 +103,7 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
         OnSpawnFromPool();
     }
 
-    public void Initialize(Unit attacker, Vector3 startPos, Vector3 dir)
+    public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir)
     {
         trigger.OnTriggerTarget -= HandleAttackTrigger;
         this.attacker = attacker;
@@ -137,8 +137,12 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
     private void HandleAttackTrigger()
     {
         //감정별 대미지
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
-        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
+        IDamageable attackerDamagable = attacker as IDamageable;
+        if (attackerDamagable == null) return;
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
+        IStatContext isc = attacker as IStatContext;
+        if (isc == null) return;
+        Target.TakeDamage(isc.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

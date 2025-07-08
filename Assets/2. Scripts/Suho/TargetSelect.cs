@@ -9,10 +9,10 @@ using Random = UnityEngine.Random;
  */
 public class TargetSelect
 {   
-    private Unit mainTargetUnit;
-    private Unit attacker;
+    private IDamageable mainTargetUnit;
+    private IAttackable attacker;
     private int column = 3;
-    public TargetSelect(Unit mainTarget, Unit attacker)
+    public TargetSelect(IDamageable mainTarget, IAttackable attacker)
     {
         mainTargetUnit = mainTarget;
         this.attacker = attacker;
@@ -24,9 +24,19 @@ public class TargetSelect
         if (tempTargetindex >= length) return false;
         return true;
     }
-    public List<Unit> FindTargets(SelectTargetType type, SelectCampType camp)
+
+    public List<IDamageable> TransLateUnitToIDamagable(List<Unit> units)
     {
-        List<Unit> targets = new List<Unit>();
+        List<IDamageable> targets = new List<IDamageable>();
+        foreach (Unit unit in units)
+        {
+            targets.Add(unit);
+        }
+        return targets;
+    }
+    public List<IDamageable> FindTargets(SelectTargetType type, SelectCampType camp)
+    {
+        List<IDamageable> targets = new List<IDamageable>();
         if(mainTargetUnit == null) return null;
         List<Unit> combinedUnits = camp switch
         {
@@ -41,13 +51,9 @@ public class TargetSelect
         if (combinedUnits == null) return targets;
         switch (type)
         {
-            case SelectTargetType.MainTarget:
-                targets.Add(mainTargetUnit);
-                return targets;
-
             case SelectTargetType.AllExceptMainTarget:
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
-                return filteredUnits;
+                return TransLateUnitToIDamagable(filteredUnits);
             
             case SelectTargetType.RandomOneExceptMainTarget:
                 if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
@@ -62,7 +68,7 @@ public class TargetSelect
                     SelectCampType.Player => BattleManager.Instance.PartyUnits,
                     _ => null
                 };
-                int mainTargetIndex = combinedUnits.IndexOf(mainTargetUnit);
+                int mainTargetIndex = combinedUnits.IndexOf(mainTargetUnit as Unit);
                 int tempTargetIndex = mainTargetIndex + column-1;
                 int secondTempTargetIndex = mainTargetIndex + column;
                 if(IsValidSector(tempTargetIndex,column,combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead)
@@ -71,13 +77,10 @@ public class TargetSelect
                     targets.Add(combinedUnits[secondTempTargetIndex]);
                 return targets;
             
-            case SelectTargetType.onSelf:
-                targets.Add(attacker);
+            case SelectTargetType.OnSelf:
+                targets.Add(attacker as IDamageable);
                 return targets;
             
-            case SelectTargetType.All:
-                filteredUnits.Add(mainTargetUnit);
-                return filteredUnits;
             
             default:
                 return null;

@@ -13,20 +13,17 @@ public abstract class BaseSkillController : MonoBehaviour
 {
     public List<SkillData> skills = new List<SkillData>();
     public SkillData CurrentSkillData;
-    public Unit mainTarget;
-    public List<Unit> targets = new List<Unit>();
+    public Dictionary<SkillEffectData, List<IDamageable>> SkillSubTargets = new Dictionary<SkillEffectData, List<IDamageable>>();
     public int generateCost = 1; // 턴 종료 시 coolDown을 1감소, defalut 값 = 1
-
-
-    public SkillManager SkillManager { get; private set; }
-
+    public SkillManager SkillManager { get; set; }
 
     public void Initialize(SkillManager manager)
     {
         SkillManager = manager;
     }
 
-    public abstract void SelectTargets(Unit mainTarget);
+    public abstract void SelectTargets(IDamageable mainTarget);
+
     public abstract void UseSkill();
     public abstract void EndTurn();
 
