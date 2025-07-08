@@ -2,20 +2,26 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CharacterInfo : MonoBehaviour
 {
     [SerializeField] private RectTransform panelRect;
-    [SerializeField] private Vector2 onScreenPos;
-    [SerializeField] private Vector2 offScreenPos;
-
+    [SerializeField] private TextMeshProUGUI unitName;
+    [SerializeField] private TextMeshProUGUI unitLevel;
     [SerializeField] private StatSlot[] statSlots;
 
     [SerializeField] private EquipButton[] equipButtons = new EquipButton[3];
     [SerializeField] private SkillSlot[] skillSlots = new SkillSlot[4];
-    private UICharacterSetting uiCharacterSetting;
 
+    [Header("UnitLevelUpPanel")]
+    [SerializeField] private UnitLevelUpPanel unitLevelUpPanel;
+
+
+    private UICharacterSetting uiCharacterSetting;
+    private Vector2 onScreenPos;
+    private Vector2 offScreenPos;
     private EntryDeckData selectedPlayerUnitData;
 
 
@@ -84,20 +90,27 @@ public class CharacterInfo : MonoBehaviour
         }
     }
 
+    private void UpdateUnitLevel()
+    {
+        unitLevel.text = $"Lv. {selectedPlayerUnitData.Level}";
+    }
+
     public void OpenPanel(EntryDeckData unitData)
     {
         if (selectedPlayerUnitData != null)
         {
             selectedPlayerUnitData.OnEquipmmmentChanged -= RefreshUI;
-            selectedPlayerUnitData.OnSkillChanged -= RefreshUI;
+            selectedPlayerUnitData.OnSkillChanged -= SetPlayerUnitSkillInfo;
         }
 
         selectedPlayerUnitData = unitData;
         selectedPlayerUnitData.OnEquipmmmentChanged += RefreshUI;
-        selectedPlayerUnitData.OnSkillChanged += RefreshUI;
+        selectedPlayerUnitData.OnSkillChanged += SetPlayerUnitSkillInfo;
+
+        unitName.text = selectedPlayerUnitData.CharacterSo.UnitName;
 
         RefreshUI();
-
+        SetPlayerUnitSkillInfo();
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 
@@ -106,7 +119,7 @@ public class CharacterInfo : MonoBehaviour
         if (selectedPlayerUnitData != null)
         {
             selectedPlayerUnitData.OnEquipmmmentChanged -= RefreshUI;
-            selectedPlayerUnitData.OnSkillChanged -= RefreshUI;
+            selectedPlayerUnitData.OnSkillChanged -= SetPlayerUnitSkillInfo;
         }
 
         selectedPlayerUnitData = null;
@@ -116,6 +129,15 @@ public class CharacterInfo : MonoBehaviour
     {
         SetCharacterStatInfo();
         SetPlayerUnitEquipmentInfo();
-        SetPlayerUnitSkillInfo();
+    }
+
+
+    public void OpenUnitLevelUpPanel()
+    {
+        if (selectedPlayerUnitData != null)
+            selectedPlayerUnitData.OnLevelUp -= UpdateUnitLevel;
+
+        selectedPlayerUnitData.OnLevelUp += UpdateUnitLevel;
+        unitLevelUpPanel.OpenPanel(selectedPlayerUnitData);
     }
 }

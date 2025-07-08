@@ -7,6 +7,8 @@ public class UICharacterSetting : UIBase
     [SerializeField] private Transform playerUnitSlotRoot;
     [SerializeField] private CharacterInfo characterInfoPanel;
     [SerializeField] private CharacterButton playerUnitSlot;
+
+
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
 
