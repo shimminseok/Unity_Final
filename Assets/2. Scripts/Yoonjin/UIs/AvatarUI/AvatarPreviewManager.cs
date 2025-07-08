@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 {
+    [SerializeField] private Camera avatarCam;
+
     [System.Serializable]
     public class AvatarEntry
     {
         // 고유 캐릭터SO와 전용 카메라
-        public PlayerUnitSO characterSO;
-        public Camera avatarCam;
+        public GameObject avatar;
+        public PlayerUnitSO characterSo;
     }
 
     protected override void Awake()
@@ -31,26 +33,16 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     /// 해당 카메라의 렌더 결과를 RawImage에 연결
     public void ShowAvatar(PlayerUnitSO characterSo, RawImage targetRawImage)
     {
+        avatarCam.gameObject.SetActive(true);
         foreach (var entry in avatarEntries)
         {
-            // 선택된 캐릭터만 카메라 활성화
-            bool isMatch = entry.characterSO == characterSo;
-            entry.avatarCam.gameObject.SetActive(isMatch);
-
-            if (isMatch)
-            {
-                // 선택된 카메라의 렌더텍스처를 RawImage에 연결
-                targetRawImage.texture = entry.avatarCam.targetTexture;
-            }
+            entry.avatar.SetActive(entry.characterSo == characterSo);
         }
     }
 
     // 모든 아바타 카메라 비활성화
     public void HideAllAvatars()
     {
-        foreach (var entry in avatarEntries)
-        {
-            entry.avatarCam.gameObject.SetActive(false);
-        }
+        avatarCam.gameObject.SetActive(false);
     }
 }

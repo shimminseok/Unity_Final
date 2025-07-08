@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine;
 
 public static class Define
 {
@@ -17,4 +18,25 @@ public static class Define
     public static readonly string DeadClipName = "Die";
     public static readonly string VictoryClipName = "Victory";
     public static readonly string ReadyActionClipName = "ReadyAction";
+
+
+    public static string GetStatName(StatType statType)
+    {
+        return statType switch
+        {
+            StatType.MaxHp        => "최대 HP",
+            StatType.AttackPow    => "공격력",
+            StatType.Counter      => "반격 확률",
+            StatType.Defense      => "방어력",
+            StatType.Speed        => "속도",
+            StatType.CriticalRate => "치명타 확률",
+            StatType.CriticalDam  => "치명타 대미지",
+            StatType.HitRate      => "명중률",
+
+            _ => string.Empty
+        };
+    }
+
+    // 티어 별 가챠 확률
+    public static readonly Dictionary<Tier, float> TierRates = new() { { Tier.A, 90f }, { Tier.S, 9f }, { Tier.SR, 0.98f }, { Tier.SSR, 0.02f } };
 }

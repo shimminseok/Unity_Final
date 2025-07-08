@@ -9,6 +9,7 @@ public class CharacterInfoPanel : MonoBehaviour
 {
     [Header("편집 버튼")]
     public Button equipEditButton;
+
     public Button skillEditButton;
 
     [Header("캐릭터 이름")]
@@ -16,6 +17,7 @@ public class CharacterInfoPanel : MonoBehaviour
 
     [Header("장비 슬롯")]
     [SerializeField] private Image weaponSlotImage;
+
     [SerializeField] private Image armorSlotImage;
     [SerializeField] private Image accessorySlotImage;
 
@@ -37,7 +39,7 @@ public class CharacterInfoPanel : MonoBehaviour
         if (data == null) return;
 
         // 이름 표시
-        characterNameText.text = data.characterSO.UnitName;
+        characterNameText.text = data.CharacterSo.UnitName;
 
         // 장비 표시
         weaponSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Weapon);
@@ -92,7 +94,7 @@ public class CharacterInfoPanel : MonoBehaviour
     {
         var entry = DeckSelectManager.Instance.GetSelectedDeck();
 
-        if(entry != null)
+        if (entry != null)
         {
             UIManager.Instance.Open<SelectEquipUI>();
         }
@@ -106,8 +108,6 @@ public class CharacterInfoPanel : MonoBehaviour
         if (entry != null)
         {
             UIManager.Instance.Open<SelectSkillUI>();
-
         }
-
     }
 }

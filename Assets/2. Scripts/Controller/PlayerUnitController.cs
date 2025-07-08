@@ -126,8 +126,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        Debug.Log("Attack");
-
         PlayerUnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -50,6 +51,18 @@ public class UIManager : Singleton<UIManager>
         {
             openedUIList.Remove(ui);
             ui.Close();
+        }
+    }
+
+    public void CloseLastOpenedUI()
+    {
+        if (openedUIList.Count > 0)
+        {
+            openedUIList[openedUIList.Count - 1].Close();
+        }
+        else
+        {
+            openedUIList.First().Close();
         }
     }
 

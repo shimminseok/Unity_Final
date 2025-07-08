@@ -8,6 +8,7 @@ public class EquipButton : MonoBehaviour
 {
     [Header("이미지 / 타입")]
     [SerializeField] private Image icon;
+
     [SerializeField] private TMP_Text typeText;
     [SerializeField] private Button button;
 
@@ -18,6 +19,12 @@ public class EquipButton : MonoBehaviour
 
     public void Initialize(EquipmentItem item, bool isEquipped, bool isSlotButton, Action<EquipButton, bool> callback)
     {
+        if (item == null)
+        {
+            EmptySlot();
+            return;
+        }
+
         equip = item;
         this.isEquipped = isEquipped;
         this.isSlotButton = isSlotButton;
@@ -30,14 +37,25 @@ public class EquipButton : MonoBehaviour
         button.onClick.AddListener(OnClick);
     }
 
+    private void EmptySlot()
+    {
+        equip = null;
+        icon.sprite = null;
+        button.onClick.RemoveAllListeners();
+        typeText.text = string.Empty;
+        this.isEquipped = false;
+    }
+
     private void OnClick()
     {
         onClick?.Invoke(this, isEquipped);
     }
 
     #region
+
     public EquipmentItem GetEquipmentItem() => equip;
-    public bool IsEquipped => isEquipped;
-    public bool IsSlotButton => isSlotButton;   
+    public bool          IsEquipped         => isEquipped;
+    public bool          IsSlotButton       => isSlotButton;
+
     #endregion
 }

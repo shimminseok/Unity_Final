@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: TestSkill7
+  m_EditorClassIdentifier: 
+  ID: 107
+  skillName: TestSkill7
+  skillDescription: 
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  skillEffect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectileID: Arrow_Projectile
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0
+        value: 100
+      buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 1
+      projectileID: Arrow_Projectile
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0
+        value: 100
+      buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+  jobType: 4
+  activeSkillTier: 1
+  reuseMaxCount: 5
+  coolTime: 1
+  skillIcon: {fileID: 21300000, guid: 7ba25a677bb1b4f469152cb2b038ab31, type: 3}
+  skillAnimation: {fileID: 7400000, guid: 3468435cb73ff414eb2099e5810f9854, type: 3}
+  skillTimeLine: {fileID: 0}

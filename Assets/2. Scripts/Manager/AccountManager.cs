@@ -8,22 +8,23 @@ public class AccountManager : Singleton<AccountManager>
     public int Gold      { get; private set; } = 0;
     public int BestStage { get; private set; } = 1010101;
 
-    public Dictionary<int, PlayerUnitData> MyPlayerUnits = new Dictionary<int, PlayerUnitData>();
-
+    public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
+    public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
     public event Action<int> OnGoldChanged;
 
     protected override void Awake()
     {
         base.Awake();
+
+        foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
+        {
+            AddPlayerUnit(playerUnitSo);
+        }
     }
 
     private void Start()
     {
         //Test
-        foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
-        {
-            AddPlayerUnit(playerUnitSo);
-        }
     }
 
     public void AddGold(int amount)
@@ -57,14 +58,33 @@ public class AccountManager : Singleton<AccountManager>
 
     public void AddPlayerUnit(PlayerUnitSO unit)
     {
-        if (!MyPlayerUnits.TryGetValue(unit.ID, out PlayerUnitData data))
+        if (!MyPlayerUnits.TryGetValue(unit.ID, out EntryDeckData data))
         {
-            data = new PlayerUnitData(unit.ID);
+            data = new EntryDeckData(unit.ID);
             MyPlayerUnits[unit.ID] = data;
         }
         else
         {
-            data.Amount++;
+            data.AddAmount();
         }
+    }
+
+    public void AddSkill(ActiveSkillSO skill, out bool isDuplicate)
+    {
+        if (MySkills.TryAdd(skill.ID, skill))
+        {
+            isDuplicate = false;
+        }
+        else
+        {
+            //TODO : 재화 돌려줌
+            isDuplicate = true;
+        }
+    }
+
+
+    public EntryDeckData GetPlayerUnit(int id)
+    {
+        return MyPlayerUnits.GetValueOrDefault(id);
     }
 }
