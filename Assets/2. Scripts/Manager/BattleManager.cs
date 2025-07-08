@@ -13,10 +13,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public List<int> EnemyUnitsID;
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
-    public TurnHandler    TurnHandler    { get; private set; }
+    public TurnHandler TurnHandler { get; private set; }
 
     private List<Unit> allUnits = new List<Unit>();
     public event Action OnBattleEnd;
+
 
     protected override void Awake()
     {
@@ -64,12 +65,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         int index = 0;
         foreach (EntryDeckData deckData in playerDeck.deckDatas)
         {
-            GameObject go = Instantiate(deckData.characterSO.UnitPrefab, Vector3.zero, Quaternion.identity);
+            GameObject go = Instantiate(deckData.CharacterSo.UnitPrefab, Vector3.zero, Quaternion.identity);
             go.transform.SetParent(PartyUnitsTrans[index].transform);
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
             PlayerUnitController unit = go.GetComponent<PlayerUnitController>();
-            unit.Initialize(deckData.characterSO);
+            unit.Initialize(deckData.CharacterSo);
             PartyUnits.Add(unit);
             foreach (EquipmentItem equipment in deckData.equippedItems.Values)
             {

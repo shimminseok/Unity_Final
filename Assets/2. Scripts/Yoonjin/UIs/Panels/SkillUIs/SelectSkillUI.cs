@@ -14,10 +14,12 @@ public class SelectSkillUI : UIBase
 
     [Header("장착 스킬 슬롯")]
     [SerializeField] private Transform passiveSkillSlot;
+
     [SerializeField] private Transform[] activeSkillSlots;
 
     [Header("장착한 스킬 이름 / 설명 / 효과")]
     [SerializeField] private TMP_Text skillName;
+
     [SerializeField] private TMP_Text skillDescription;
     [SerializeField] private TMP_Text skillEffect;
 
@@ -31,7 +33,6 @@ public class SelectSkillUI : UIBase
     private EntryDeckData currentCharacter;
 
 
-
     public override void Open()
     {
         base.Open();
@@ -39,8 +40,14 @@ public class SelectSkillUI : UIBase
 
         if (currentCharacter != null)
         {
-            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.characterSO, avatarImage);
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
         }
+    }
+
+    public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
+    {
+        DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
+        currentCharacter = currentUnit;
     }
 
     public override void Close()
@@ -73,7 +80,6 @@ public class SelectSkillUI : UIBase
             DestroyChildren(t);
 
         DestroyChildren(passiveSkillSlot);
-
     }
 
     // 보유 중인 스킬 버튼 생성
@@ -83,10 +89,10 @@ public class SelectSkillUI : UIBase
     private void GenerateOwnedSkillButtons()
     {
         // 현재 선택한 캐릭터의 직업
-        var job = currentCharacter.characterSO.JobType;
+        var job = currentCharacter.CharacterSo.JobType;
 
         // 테이블에서 액티브, 패시브 스킬 목록 가져오기
-        var activeList = TableManager.Instance.GetTable<ActiveSkillTable>().GetActiveSkillsByJob(job);
+        var activeList  = TableManager.Instance.GetTable<ActiveSkillTable>().GetActiveSkillsByJob(job);
         var passiveList = TableManager.Instance.GetTable<PassiveSkillTable>().GetPassiveSkillsByJob(job);
 
         foreach (var active in activeList)
@@ -110,7 +116,7 @@ public class SelectSkillUI : UIBase
         if (currentCharacter.passiveSkill != null)
         {
             var btn = Instantiate(skillButtonPrefab, passiveSkillSlot);
-            btn.Initialize(currentCharacter.passiveSkill, true, OnSkillButtonClicked);
+            btn.Initialize(currentCharacter.CharacterSo.PassiveSkill, true, OnSkillButtonClicked);
         }
 
         // 액티브 슬롯
@@ -177,12 +183,11 @@ public class SelectSkillUI : UIBase
     }
 
     // 초기화: 자식 오브젝트 삭제 (SkillInfo 진입할 때)
-    private void DestroyChildren (Transform parent)
+    private void DestroyChildren(Transform parent)
     {
-        foreach(Transform child in parent)
+        foreach (Transform child in parent)
         {
-            Destroy(child.gameObject); 
+            Destroy(child.gameObject);
         }
     }
-
 }

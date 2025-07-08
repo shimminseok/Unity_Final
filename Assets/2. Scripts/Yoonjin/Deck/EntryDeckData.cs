@@ -9,13 +9,59 @@ public class EntryDeckData
     // 캐릭터 직업, 액티브 스킬 3개, 패시브 스킬
     // 장비 등등 equipItem
     // 패시브SO
-    public PlayerUnitSO characterSO;  
-
     public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
     public PassiveSO passiveSkill;
 
-    // 딕셔너리로 줘!!! 
     public Dictionary<EquipmentType, EquipmentItem> equippedItems = new();
+    public int Level          { get; private set; }
+    public int Amount         { get; private set; }
+    public int TranscendLevel { get; private set; }
+
+
+    private const int BASE_MAX_LEVEL = 10;
+    private const int MAX_TRANSCEND_LEVEL = 5;
+    public int MaxLevel => BASE_MAX_LEVEL + (TranscendLevel * BASE_MAX_LEVEL);
+
+    public PlayerUnitSO CharacterSo { get; private set; }
+
+
+    public event Action OnEquipmmmentChanged;
+    public event Action OnSkillChanged;
+    public event Action OnTranscendChanged;
+    public event Action OnLevelUp;
+
+    public EntryDeckData(int id)
+    {
+        Level = 1;
+        Amount = 0;
+        TranscendLevel = 0;
+        CharacterSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id);
+    }
+
+    public void LevelUp(out bool result)
+    {
+        result = Level < MaxLevel;
+        if (result)
+        {
+            Level++;
+            OnLevelUp?.Invoke();
+        }
+    }
+
+    public void Transcend(out bool result)
+    {
+        result = TranscendLevel < MAX_TRANSCEND_LEVEL && Amount >= Define.DupeCountByTranscend[TranscendLevel];
+        if (result)
+        {
+            TranscendLevel++;
+            OnTranscendChanged?.Invoke();
+        }
+    }
+
+    public void AddAmount(int amount = 1)
+    {
+        Amount += amount;
+    }
 
     [System.Serializable]
     public class EquipmentEntry
@@ -24,6 +70,15 @@ public class EntryDeckData
         public EquipmentItem item;
     }
 
+    public void InvokeEquipmentChanged()
+    {
+        OnEquipmmmentChanged?.Invoke();
+    }
+
+    public void InvokeSkillChanged()
+    {
+        OnSkillChanged?.Invoke();
+    }
 
     /// <summary>
     /// 딕셔너리 디버깅용
@@ -37,11 +92,7 @@ public class EntryDeckData
 
         foreach (var kvp in equippedItems)
         {
-            debugEquippedItems.Add(new EquipmentEntry
-            {
-                type = kvp.Key,
-                item = kvp.Value
-            });
+            debugEquippedItems.Add(new EquipmentEntry { type = kvp.Key, item = kvp.Value });
         }
     }
 }

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: BladeStorm
+  m_EditorClassIdentifier: 
+  ID: 2001
+  skillName: "\uCE7C\uB0A0 \uD3ED\uD48D"
+  skillDescription: "\uBAA8\uB4E0 \uC801\uC5D0\uAC8C \uAC80\uAE30 \uD3ED\uD48D\uC744
+    \uB0A0\uB824 \uB370\uBBF8\uC9C0\uB97C \uC900\uB2E4. \uBA54\uC778 \uD0C0\uAC9F\uC758
+    \uC801\uC5D0\uAC90 \uB354 \uAC15\uD55C \uB370\uBBF8\uC9C0\uB97C \uC900\uB2E4."
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  skillEffect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 2
+      projectileID: 
+      damageEffects:
+      - attackCount: 3
+        ownerStatType: 4
+        weight: 0.7
+        value: 80
+      buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 1
+      projectileID: 
+      damageEffects:
+      - attackCount: 0
+        ownerStatType: 4
+        weight: 0.3
+        value: 40
+      buffEffects: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
+  jobType: 1
+  activeSkillTier: 3
+  reuseMaxCount: 3
+  coolTime: 2
+  skillIcon: {fileID: 21300000, guid: bab0f58596897ab42891bd590ac1fa7d, type: 3}
+  skillAnimation: {fileID: 7400000, guid: e724c617927a9bd49a9203cf05693dd0, type: 3}
+  skillTimeLine: {fileID: 0}
