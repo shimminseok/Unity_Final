@@ -23,14 +23,13 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 0
-      projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
-        type: 3}
+      projectileID: Buff
       damageEffects: []
       buffEffects:
       - ID: 0
-        ownerStatType: 7
+        ownerStatType: 0
         weight: 0
-        value: 5
+        value: 2
         opponentStatType: 7
         lastTurn: 2
         statusEffectType: 9
@@ -42,11 +41,13 @@ MonoBehaviour:
           Stat:
             StatType: 7
             ModifierType: 1
-            Value: 5
+            Value: 2
           Duration: 2
           TickInterval: 0
           IsStackable: 0
-      skillVFX: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
   jobType: 5
   activeSkillTier: 3
   reuseMaxCount: 2

@@ -40,8 +40,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public bool          IsCounterAttack     { get; private set; }
 
     public virtual bool IsAtTargetPosition => false;
-    public virtual bool IsAnimationDone    => false;
-    public         Unit SelectedUnit       => this;
+    public virtual bool IsAnimationDone    { get; set; }
+
+    public Unit SelectedUnit => this;
 
     public abstract void StartTurn();
     public abstract void EndTurn();

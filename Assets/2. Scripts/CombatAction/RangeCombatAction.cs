@@ -17,15 +17,29 @@ public class RangeCombatAction : ICombatAction
 
     public void Execute(Unit attacker)
     {
-        attacker.ExecuteCoroutine(WaitForSpawnProjectile());
+        if (attackData.IsProjectile)
+        {
+            attacker.ExecuteCoroutine(WaitForSpawnProjectile());
+        }
+        else
+        {
+            attacker.ExecuteCoroutine(WaitForAnimationDone(attacker));
+        }
     }
 
     private IEnumerator WaitForSpawnProjectile()
     {
         yield return new WaitUntil(() => attackData.ProjectileComponent != null);
+
         attackData.ProjectileComponent.trigger.OnTriggerTarget += () =>
         {
             OnActionComplete?.Invoke();
         };
+    }
+
+    private IEnumerator WaitForAnimationDone(Unit attacker)
+    {
+        yield return new WaitUntil(() => attacker.IsAnimationDone);
+        OnActionComplete?.Invoke();
     }
 }

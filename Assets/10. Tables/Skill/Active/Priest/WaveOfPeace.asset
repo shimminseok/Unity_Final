@@ -23,8 +23,7 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 2
-      projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
-        type: 3}
+      projectileID: 
       damageEffects: []
       buffEffects:
       - ID: 0
@@ -46,7 +45,9 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-      skillVFX: []
+      castingEffect: {fileID: 0}
+      skillVfx: {fileID: 0}
+      hitEffect: {fileID: 0}
   jobType: 5
   activeSkillTier: 3
   reuseMaxCount: 3

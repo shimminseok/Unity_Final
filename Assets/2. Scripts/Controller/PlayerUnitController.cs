@@ -24,21 +24,20 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
     public PassiveSO        PassiveSo        { get; private set; }
 
+    public override bool IsAnimationDone
+    {
+        get
+        {
+            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+        }
+    }
 
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
 
     public float setRemainDistance;
 
     private HPBarUI hpBar;
-
-    public override bool IsAnimationDone
-    {
-        get
-        {
-            var info = Animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsTag("Action") && info.normalizedTime >= 0.95f;
-        }
-    }
 
 
     private float remainDistance;
@@ -222,8 +221,16 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-            return;
+            if (CurrentAction == ActionType.None || Target == null)
+            {
+                EndTurn();
+                return;
+            }
+            else
+            {
+                BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+                return;
+            }
         }
 
         if (PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
@@ -249,6 +256,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
+        SkillController.EndTurn();
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }
