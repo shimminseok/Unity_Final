@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolableVFX : MonoBehaviour
+public class PoolableVFX : MonoBehaviour, IPoolObject
 {
-    // Start is called before the first frame update
-    void Start()
+    private string poolId;
+    private int poolSize;
+    private ParticleSystem particle;
+    public GameObject GameObject => gameObject;
+    public string PoolID => poolId;
+    public int PoolSize => poolSize;
+
+    public IAttackable Attacker;
+    public IDamageable Target;
+
+    public PoolableVFX(VFXData vfxData)
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void OnSpawnFromPool()
     {
-        
+    }
+
+    public void OnReturnToPool()
+    {
     }
 }
