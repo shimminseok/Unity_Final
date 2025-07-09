@@ -103,7 +103,7 @@ public class AccountManager : Singleton<AccountManager>
         }
         else
         {
-            //TODO : 재화 돌려줌
+            //TODO : 재화 돌려줌 -> 재화 돌려주는걱 가챠 시스템쪽에서 처리함
             isDuplicate = true;
         }
     }

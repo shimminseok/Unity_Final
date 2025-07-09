@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquipmentGachaSlotUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private Image equipmentImage;
+    [SerializeField] private TextMeshProUGUI equipmentNameText;
+    [SerializeField] private TextMeshProUGUI equipmentTierText; // 나중에 프레임으로 변경
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize(EquipmentItemSO equipment)
     {
-        
+        equipmentImage.sprite = equipment.ItemSprite;
+        equipmentNameText.text = equipment.ItemName;
+        equipmentTierText.text = $"{equipment.Tier}";
     }
 }

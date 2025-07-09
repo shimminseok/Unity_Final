@@ -7,15 +7,28 @@ public class EquipmentGachaResultUI : UIBase
 {
     [SerializeField] private Button resultExitBtn;
     [SerializeField] private EquipmentGachaSlotUI[] slots;
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+        resultExitBtn.onClick.RemoveAllListeners();
+        resultExitBtn.onClick.AddListener(() => OnResultPanelExitBtn());
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowEquipments(EquipmentItemSO[] equipments)
     {
-        
+        for (int i=0; i<equipments.Length; i++)
+        {
+            slots[i].gameObject.SetActive(false);
+            slots[i].Initialize(equipments[i]);
+        }
+    }
+
+    public void OnResultPanelExitBtn()
+    {
+        for (int i=0; i<slots.Length; i++)
+        {
+            slots[i].gameObject.SetActive(false);
+        }
+        Close();
     }
 }
