@@ -16,6 +16,9 @@ public class SkillGachaUI : MonoBehaviour
     [Header("뽑기 결과 창")]
     [SerializeField] private SkillGachaResultUI resultPanel;
 
+    private UIManager uiManager;
+    private GachaCantDrawPopupUI cantDrawPopupUI;
+
     private void Start()
     {
         oneDrawBtn.onClick.RemoveAllListeners();
@@ -23,6 +26,9 @@ public class SkillGachaUI : MonoBehaviour
 
         tenDrawBtn.onClick.RemoveAllListeners();
         tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
+
+        uiManager = UIManager.Instance;
+        cantDrawPopupUI = uiManager.GetUIComponent<GachaCantDrawPopupUI>();
     }
 
     // n회 뽑기 버튼
@@ -30,7 +36,7 @@ public class SkillGachaUI : MonoBehaviour
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            // UIManager.Instance.Open<GachaCantDrawPopupUI>();
+            uiManager.Open(cantDrawPopupUI);
             return;
         }
 
