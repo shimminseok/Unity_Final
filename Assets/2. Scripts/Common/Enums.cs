@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -175,4 +175,11 @@ public enum ProjectileInterpolationMode
     MoveTowards,
     SmoothDamp,
     Slerp
+}
+
+public enum GachaType
+{
+    Skill,
+    Unit,
+    Equipment
 }
