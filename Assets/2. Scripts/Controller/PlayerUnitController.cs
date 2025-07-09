@@ -221,8 +221,16 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-            return;
+            if (CurrentAction == ActionType.None || Target == null)
+            {
+                EndTurn();
+                return;
+            }
+            else
+            {
+                BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+                return;
+            }
         }
 
         if (PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
