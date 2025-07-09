@@ -6564,6 +6564,7 @@ GameObject:
   - component: {fileID: 7833236281148503680}
   - component: {fileID: 642944432265213030}
   - component: {fileID: 4250553049770767443}
+  - component: {fileID: 7408693998936628702}
   m_Layer: 0
   m_Name: StatSlot (2)
   m_TagString: Untagged
@@ -6632,6 +6633,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7408693998936628702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360557381766381441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46444cfbb72a268408d73f30a5a17a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statType: 6
+  statName: {fileID: 901781117073701432}
+  statValueTxt: {fileID: 629702716816209176}
+  nextValueTxt: {fileID: 9173976226252589403}
 --- !u!1 &2385690580201197771
 GameObject:
   m_ObjectHideFlags: 0
@@ -6994,6 +7011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cdc9b516e30e874e9621181de85bfab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statIncreaseSo: {fileID: 11400000, guid: f947402864edc58459b1648978fd1d09, type: 2}
   panelRect: {fileID: 3944871700890727798}
   unitName: {fileID: 5406382490226256346}
   unitLevel: {fileID: 3994548782267583767}
@@ -13875,11 +13893,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61adb5c222ebdc84dad645045ac6f42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  increaseSo: {fileID: 11400000, guid: f947402864edc58459b1648978fd1d09, type: 2}
   panelRect: {fileID: 4819545853953565151}
   currentLevelTxt: {fileID: 523080504153742629}
   maxLevelTxt: {fileID: 997455822574903754}
   requiredDupeCountFill: {fileID: 355520989012245478}
   requiredDupeCountTxt: {fileID: 188356005204134123}
+  increaseStatSlots:
+  - {fileID: 8477499898651910131}
+  - {fileID: 1589903896774149443}
+  - {fileID: 7408693998936628702}
 --- !u!114 &2911715112682061136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15330,6 +15353,7 @@ GameObject:
   - component: {fileID: 2173166197877447195}
   - component: {fileID: 8352530883586244339}
   - component: {fileID: 1786121596652538592}
+  - component: {fileID: 8477499898651910131}
   m_Layer: 0
   m_Name: StatSlot
   m_TagString: Untagged
@@ -15398,6 +15422,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8477499898651910131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5108603367102504804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46444cfbb72a268408d73f30a5a17a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statType: 0
+  statName: {fileID: 8157610178700916085}
+  statValueTxt: {fileID: 6241152516956305298}
+  nextValueTxt: {fileID: 1440009353652504883}
 --- !u!1 &5132760611605710934
 GameObject:
   m_ObjectHideFlags: 0
@@ -21871,6 +21911,7 @@ GameObject:
   - component: {fileID: 2898718628364073489}
   - component: {fileID: 3314248067867227565}
   - component: {fileID: 2596656104662214746}
+  - component: {fileID: 1589903896774149443}
   m_Layer: 0
   m_Name: StatSlot (1)
   m_TagString: Untagged
@@ -21939,6 +21980,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1589903896774149443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6987857616629853922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46444cfbb72a268408d73f30a5a17a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statType: 4
+  statName: {fileID: 964559696987723291}
+  statValueTxt: {fileID: 3898715294959119915}
+  nextValueTxt: {fileID: 5499542783493431246}
 --- !u!1 &6996260423515436349
 GameObject:
   m_ObjectHideFlags: 0
