@@ -47,8 +47,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void EndTurn();
     public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
+    
+    public Action OnTakeDamageHandler { get; }
 
     public abstract void Dead();
+    
 
     public void SetStunned(bool isStunned)
     {
