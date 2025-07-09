@@ -43,7 +43,44 @@ public class RandoomSkillGachaStrategy : IGachaStrategy<ActiveSkillSO>
                 break; // 해당 티어가 선택되면 루프 종료
             }
         }
-
         return null; // 아무 티어도 선택되지 않았을 경우의 예외
     }
 }
+
+// Equipment용. 위와 동일함. 나중에 제너릭 등으로 하나로 정리.
+public class RandoomEquipmentGachaStrategy : IGachaStrategy<EquipmentItemSO>
+{
+    public EquipmentItemSO Pull(List<EquipmentItemSO> candidates, Dictionary<Tier, float> tierRates)
+    {
+        Dictionary<Tier, List<EquipmentItemSO>> equipmentTierGroups = new();
+
+        foreach (EquipmentItemSO equipment in candidates)
+        {
+            if (!equipmentTierGroups.ContainsKey(equipment.Tier))
+            {
+                equipmentTierGroups[equipment.Tier] = new List<EquipmentItemSO>();
+            }
+            equipmentTierGroups[equipment.Tier].Add(equipment);
+        }
+
+        float rand = Random.Range(0f, 100f);
+        float accumulated = 0;
+
+        foreach(var pair in tierRates)
+        {
+            accumulated += pair.Value;
+            if (rand <= accumulated)
+            {
+                if (equipmentTierGroups.TryGetValue(pair.Key, out var group) && group.Count > 0)
+                {
+                    return group[Random.Range(0, group.Count)];
+                }
+
+                Debug.Log($"{pair.Key} 티어에 해당되는 장비 아이템이 존재하지 않습니다. rand={rand}, 누적확률={accumulated}");
+                break;
+            }
+        }
+        return null;
+    }
+}
+

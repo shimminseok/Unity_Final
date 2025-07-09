@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillGachaUI : MonoBehaviour
+public class EquipmentGachaUI : MonoBehaviour
 {
-    [SerializeField] private SkillGachaSystem gachaSystem;
+    [SerializeField] private EquipmentGachaSystem gachaSystem;
 
     [Header("뽑기 버튼")]
     [SerializeField] private Button oneDrawBtn;
@@ -19,12 +19,11 @@ public class SkillGachaUI : MonoBehaviour
     {
         oneDrawBtn.onClick.RemoveAllListeners();
         oneDrawBtn.onClick.AddListener(() => OnDrawCountBtn(1));
-        
+
         tenDrawBtn.onClick.RemoveAllListeners();
-        tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
+
     }
 
-    // n회 뽑기 버튼
     public void OnDrawCountBtn(int count)
     {
         if (!gachaSystem.CheckCanDraw(count))
@@ -33,16 +32,13 @@ public class SkillGachaUI : MonoBehaviour
             return;
         }
         confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
-        confirmPanel.OnCancel += () => Debug.Log("취소됨");
-        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
     }
 
-    // 스킬 뽑고 결과 보여주기
     private void DrawAndDisplayResult(int count)
     {
-        GachaResult<ActiveSkillSO>[] skills = gachaSystem.DrawSkills(count);
+        EquipmentItemSO[] equipments = gachaSystem.DrawEquipments(count);
 
         resultPanel.Open();
-        resultPanel.ShowSkills(skills);
+        //resultPanel.ShowEquipments(equipments);
     }
 }
