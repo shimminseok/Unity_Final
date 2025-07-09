@@ -54,7 +54,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
             Unit unit = go.GetComponent<Unit>();
-            unit.Initialize(playerUnitSo);
+            unit.Initialize(new UnitSpawnData { UnitSo = playerUnitSo });
             PartyUnits.Add(unit);
             index++;
         }
@@ -62,40 +62,30 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     public void SetAlliesUnit(PlayerDeck playerDeck)
     {
-        int index = 0;
-        foreach (EntryDeckData deckData in playerDeck.deckDatas)
+        for (int i = 0; i < playerDeck.deckDatas.Count; i++)
         {
-            GameObject go = Instantiate(deckData.CharacterSo.UnitPrefab, Vector3.zero, Quaternion.identity);
-            go.transform.SetParent(PartyUnitsTrans[index].transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            PlayerUnitController unit = go.GetComponent<PlayerUnitController>();
-            unit.Initialize(deckData.CharacterSo);
-            PartyUnits.Add(unit);
-            foreach (EquipmentItem equipment in deckData.equippedItems.Values)
-            {
-                unit.EquipmentManager.EquipItem(equipment);
-            }
+            EntryDeckData deckData = playerDeck.deckDatas[i];
+            GameObject    go       = Instantiate(deckData.CharacterSo.UnitPrefab, PartyUnitsTrans[i], false);
+            Unit          unit     = go.GetComponent<Unit>();
+            unit.Initialize(new UnitSpawnData { UnitSo = deckData.CharacterSo, DeckData = deckData });
 
-            unit.SkillManager.selectedSkill = deckData.skillDatas.ToList();
-
-            index++;
+            PartyUnits.Add(unit as PlayerUnitController);
         }
     }
 
     public void SetEnemiesUnit(List<EnemyUnitSO> units)
     {
-        int index = 0;
-        foreach (EnemyUnitSO enemyUnitSo in units)
+        for (int i = 0; i < units.Count; i++)
         {
-            GameObject go = Instantiate(enemyUnitSo.UnitPrefab, Vector3.zero, Quaternion.identity);
-            go.transform.SetParent(EnemyUnitsTrans[index].transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            EnemyUnitController unit = go.GetComponent<EnemyUnitController>();
-            unit.Initialize(enemyUnitSo);
-            EnemyUnits.Add(unit);
-            index++;
+            EnemyUnitSO unitSo = units[i];
+            GameObject  go     = Instantiate(unitSo.UnitPrefab, EnemyUnitsTrans[i], false);
+            Unit        unit   = go.GetComponent<Unit>();
+            unit.Initialize(new UnitSpawnData
+            {
+                UnitSo = unitSo, DeckData = null // Enemy
+            });
+
+            EnemyUnits.Add(unit as EnemyUnitController);
         }
     }
 
@@ -155,4 +145,10 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         base.OnDestroy();
     }
+}
+
+public class UnitSpawnData
+{
+    public UnitSO UnitSo;
+    public EntryDeckData DeckData; // null이면 Enemy
 }

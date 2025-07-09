@@ -31,8 +31,6 @@ public class SelectMainUI : UIBase
     private void Start()
     {
         // TODO: 나중에 실제 보유한 캐릭터 데이터를 ownedCharacters에 할당한다
-
-        GenerateOwnedCharacterButtons();
         startBattleButton.onClick.AddListener(OnClickStartBattle);
     }
 
@@ -136,5 +134,18 @@ public class SelectMainUI : UIBase
             GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
             UpdateCharacterInfoPanel(playerUnit);
         }
+    }
+
+    public override void Open()
+    {
+        base.Open();
+        GenerateOwnedCharacterButtons();
+        GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
     }
 }

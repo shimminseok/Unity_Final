@@ -63,10 +63,10 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         else if (selectedDeck.Count < maxCharacterCount)
         {
             // 새로운 캐릭터 데이터 추가
-            EntryDeckData newEntry = new EntryDeckData(newCharacterSO.ID);
+            var netry = AccountManager.Instance.MyPlayerUnits[newCharacterSO.ID];
 
-            selectedDeck.Add(newEntry);
-            currentSelectedCharacter = newEntry;
+            selectedDeck.Add(netry);
+            currentSelectedCharacter = netry;
         }
     }
 

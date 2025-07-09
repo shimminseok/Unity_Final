@@ -28,17 +28,17 @@ public class StatManager : MonoBehaviour
     }
 
     //몬스터 전용 Initialize
-    public void Initialize(IStatProvider statProvider, IDamageable owner, StageSO stageSo)
+    public void Initialize(IStatProvider statProvider, IDamageable owner, int level, IIncreaseStat increaseStat)
     {
         Owner = owner;
         foreach (StatData stat in statProvider.Stats)
         {
             float finalStatValue = stat.Value;
-            foreach (StatData data in stageSo.MonsterIncrease.IncreaseStats)
+            foreach (StatData data in increaseStat.Stats)
             {
-                if (data.StatType == stat.StatType)
+                if (data.StatType == stat.StatType && level > 1) //1일땐 적용 안되도록
                 {
-                    finalStatValue += (data.Value * stageSo.MonsterLevel);
+                    finalStatValue += (data.Value * level - 1);
                 }
             }
 

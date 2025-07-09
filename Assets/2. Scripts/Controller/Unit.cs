@@ -178,7 +178,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void ChangeUnitState(Enum newState);
 
-    public abstract void Initialize(UnitSO unit);
+    public abstract void Initialize(UnitSpawnData spawnData);
 
     public void ChangeClip(string changedClipName, AnimationClip changeClip)
     {

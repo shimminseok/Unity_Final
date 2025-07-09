@@ -2,8 +2,9 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewMonsterIncreaseSO", menuName = "ScriptableObjects/MonsterIncrease/MonsterIncrease", order = 0)]
-public class MonsterIncreaseSO : ScriptableObject
+[CreateAssetMenu(fileName = "NewMonsterIncreaseSO", menuName = "ScriptableObjects/Increase/MonsterIncrease", order = 0)]
+public class MonsterIncreaseSO : ScriptableObject, IIncreaseStat
 {
     public List<StatData> IncreaseStats;
+    public List<StatData> Stats => IncreaseStats;
 }
