@@ -1,14 +1,12 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillGachaUI : MonoBehaviour
+public class SkillGachaUI : UIBase
 {
     [SerializeField] private SkillGachaSystem gachaSystem;
 
     [Header("뽑기 버튼")]
     [SerializeField] private Button oneDrawBtn;
-
     [SerializeField] private Button tenDrawBtn;
 
     [Header("뽑기 확인 창")]
@@ -17,6 +15,12 @@ public class SkillGachaUI : MonoBehaviour
     [Header("뽑기 결과 창")]
     [SerializeField] private SkillGachaResultUI resultPanel;
 
+    private UIManager uiManager;
+    private GachaCantDrawPopupUI cantDrawPopupUI;
+    private SkillGachaResultUI resultUI;
+
+    private int drawCount;
+
     private void Start()
     {
         oneDrawBtn.onClick.RemoveAllListeners();
@@ -24,6 +28,16 @@ public class SkillGachaUI : MonoBehaviour
 
         tenDrawBtn.onClick.RemoveAllListeners();
         tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
+
+        uiManager = UIManager.Instance;
+        cantDrawPopupUI = uiManager.GetUIComponent<GachaCantDrawPopupUI>();
+        resultUI = uiManager.GetUIComponent<SkillGachaResultUI>();
+    }
+
+    private void OnDisable()
+    {
+        confirmPanel.OnConfirm -= HandleConfirm;
+        confirmPanel.OnConfirm -= HandleCancel;
     }
 
     // n회 뽑기 버튼
@@ -31,13 +45,25 @@ public class SkillGachaUI : MonoBehaviour
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            // UIManager.Instance.Open<GachaCantDrawPopupUI>();
+            uiManager.Open(cantDrawPopupUI);
             return;
         }
 
-        confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
-        confirmPanel.OnCancel += () => Debug.Log("취소됨");
+        drawCount = count;
+
+        confirmPanel.OnConfirm += HandleConfirm;
+        confirmPanel.OnConfirm += HandleCancel;
         confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
+    }
+
+    private void HandleConfirm()
+    {
+        DrawAndDisplayResult(drawCount);
+    }
+
+    private void HandleCancel()
+    {
+        Debug.Log("취소됨");
     }
 
     // 스킬 뽑고 결과 보여주기
@@ -45,7 +71,7 @@ public class SkillGachaUI : MonoBehaviour
     {
         GachaResult<ActiveSkillSO>[] skills = gachaSystem.DrawSkills(count);
 
-        resultPanel.Open();
+        uiManager.Open(resultUI);
         resultPanel.ShowSkills(skills);
     }
 }
