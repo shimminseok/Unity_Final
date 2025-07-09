@@ -14,4 +14,16 @@ public class UnitSO : ScriptableObject, IStatProvider
     public Sprite UnitIcon;
 
     public AnimationClip AttackAniClip;
+
+    private Dictionary<StatType, StatData> statDic = new Dictionary<StatType, StatData>();
+
+    public StatData GetStat(StatType statType)
+    {
+        if (!statDic.ContainsKey(statType))
+        {
+            statDic[statType] = UnitStats.Find(x => x.StatType == statType);
+        }
+
+        return statDic[statType];
+    }
 }

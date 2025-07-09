@@ -7,17 +7,23 @@ using UnityEngine.UI;
 
 public class UnitLevelUpPanel : MonoBehaviour
 {
+    [SerializeField] private PlayerUnitIncreaseSo increaseSo;
+
     [SerializeField] private RectTransform panelRect;
     [SerializeField] private TextMeshProUGUI currentLevelTxt;
     [SerializeField] private TextMeshProUGUI maxLevelTxt;
 
     [SerializeField] private Image requiredDupeCountFill;
     [SerializeField] private TextMeshProUGUI requiredDupeCountTxt;
+    [SerializeField] private List<IncreaseStatSlot> increaseStatSlots;
     private Vector2 onScreenScale;
     private Vector2 offScreenPos;
 
 
     private EntryDeckData currentPlayerUnitData;
+
+    private Dictionary<StatType, IncreaseStatSlot> increaseStatSlotDic = new();
+
 
     private void Awake()
     {
@@ -25,6 +31,19 @@ public class UnitLevelUpPanel : MonoBehaviour
         panelRect.localScale = Vector3.zero;
 
         gameObject.SetActive(false);
+
+        InitializeIncreaseStatSlotDic();
+    }
+
+    private void InitializeIncreaseStatSlotDic()
+    {
+        increaseStatSlotDic.Clear();
+
+        foreach (var slot in increaseStatSlots)
+        {
+            if (!increaseStatSlotDic.TryAdd(slot.StatType, slot))
+                Debug.LogWarning($"Duplicate increase slot for StatType: {slot.StatType}");
+        }
     }
 
     private void UpdateDupeCount()
@@ -40,6 +59,24 @@ public class UnitLevelUpPanel : MonoBehaviour
     private void UpdateLevelText()
     {
         currentLevelTxt.text = $"{currentPlayerUnitData.Level}";
+        int    level  = currentPlayerUnitData.Level;
+        UnitSO unitSo = currentPlayerUnitData.CharacterSo;
+
+        foreach (StatData increaseStat in increaseSo.Stats)
+        {
+            StatType statType = increaseStat.StatType;
+
+            if (!increaseStatSlotDic.TryGetValue(statType, out IncreaseStatSlot slot))
+                continue;
+
+            var   baseStat  = unitSo.GetStat(statType);
+            float baseValue = baseStat != null ? baseStat.Value : 0;
+
+            float curValue  = baseValue + increaseStat.Value * (level - 1);
+            float nextValue = baseValue + increaseStat.Value * level;
+
+            slot.SetStatSlot(curValue, nextValue);
+        }
     }
 
     public void OpenPanel(EntryDeckData unitData)
