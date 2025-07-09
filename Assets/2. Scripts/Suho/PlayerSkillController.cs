@@ -50,7 +50,7 @@ public class PlayerSkillController : BaseSkillController
         CurrentSkillData.reuseCount--;
         CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
 
-        EndTurn();
+        // EndTurn();
     }
 
 
