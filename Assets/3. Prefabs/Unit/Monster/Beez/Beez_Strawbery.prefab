@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1386519982034404001}
   - component: {fileID: 1386519982047974283}
+  - component: {fileID: 1807635216961142261}
   m_Layer: 0
   m_Name: Beez
   m_TagString: Untagged
@@ -96,6 +97,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.060567804, z: 0.00054588914}
     m_Extent: {x: 0.39729437, y: 0.27043414, z: 0.19177926}
   m_DirtyAABB: 0
+--- !u!114 &1807635216961142261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386519982034378369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d920476fea175f34dac90092aef48a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
 --- !u!1 &1386519982034378371
 GameObject:
   m_ObjectHideFlags: 0

@@ -105,8 +105,8 @@ public class MoveToTargetState : ITurnState
             return;
         }
 
-        if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.ChangeTurnState(TurnStateType.Act);
+        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
+        //     unit.ChangeTurnState(TurnStateType.Act);
     }
 
     public void OnExit(Unit unit)
@@ -175,7 +175,10 @@ public class ActState : ITurnState
     private void ProceedToNextState(Unit unit)
     {
         if (unit.IsDead)
-            unit.ChangeUnitState(TurnStateType.EndTurn);
+        {
+            unit.ChangeTurnState(TurnStateType.EndTurn);
+            return;
+        }
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
             unit.ChangeTurnState(TurnStateType.Return);
@@ -197,8 +200,8 @@ public class ReturnState : ITurnState
 
     public void OnUpdate(Unit unit)
     {
-        if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.ChangeTurnState(TurnStateType.EndTurn);
+        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
+        //     unit.ChangeTurnState(TurnStateType.EndTurn);
     }
 
     public void OnExit(Unit unit)

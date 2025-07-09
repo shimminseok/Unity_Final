@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2150605593437465985}
   - component: {fileID: 2150605593425607859}
+  - component: {fileID: 8731084506019364014}
   m_Layer: 0
   m_Name: Planta_Geezer
   m_TagString: Untagged
@@ -94,6 +95,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000000014901161, y: 0.42712402, z: 0.07735601}
     m_Extent: {x: 0.47838008, y: 0.5336884, z: 0.28099772}
   m_DirtyAABB: 0
+--- !u!114 &8731084506019364014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2150605593437106593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d920476fea175f34dac90092aef48a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
 --- !u!1 &2150605593437106595
 GameObject:
   m_ObjectHideFlags: 0

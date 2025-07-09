@@ -131,7 +131,7 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
 
     private IEnumerator DelayedReturnObject(GameObject obj, UnityAction action, float returnTime)
     {
-        if (!obj.TryGetComponent<IPoolObject>(out IPoolObject iPoolObject))
+        if (!obj.TryGetComponent(out IPoolObject iPoolObject))
         {
             Debug.LogError("풀링 오브젝트가 아닙니다.");
             yield break;
