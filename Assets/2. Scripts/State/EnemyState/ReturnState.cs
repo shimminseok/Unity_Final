@@ -17,6 +17,10 @@ namespace EnemyState
 
         public void OnUpdate(EnemyUnitController owner)
         {
+            if (owner.IsDead)
+            {
+                owner.ChangeUnitState(EnemyUnitState.Die);
+            }
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)

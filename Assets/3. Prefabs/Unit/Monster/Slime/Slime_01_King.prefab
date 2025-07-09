@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6930227276097328837}
   - component: {fileID: 8204356664671392489}
   - component: {fileID: 2965041497989536600}
+  - component: {fileID: 7314779910097205209}
   m_Layer: 0
   m_Name: Slime_01_King
   m_TagString: Untagged
@@ -173,8 +174,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainTarget: {fileID: 0}
-  subTargets: []
+  targets: []
   generateCost: 1
+--- !u!114 &7314779910097205209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873531700701352353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2555473679859470979
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5925414060475628767}
   - component: {fileID: 1875645275194409195}
+  - component: {fileID: 7249277961405082622}
   m_Layer: 0
   m_Name: Slime_01
   m_TagString: Untagged
@@ -390,6 +404,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.24500029, z: 0.0007519424}
     m_Extent: {x: 0.29999995, y: 0.24500029, z: 0.2818529}
   m_DirtyAABB: 0
+--- !u!114 &7249277961405082622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610034490362017182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d920476fea175f34dac90092aef48a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
 --- !u!1 &8409913829827614460
 GameObject:
   m_ObjectHideFlags: 0

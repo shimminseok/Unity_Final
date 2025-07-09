@@ -516,6 +516,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7566651046371590198}
   - component: {fileID: 7566651046375067904}
+  - component: {fileID: 7488267469886634388}
   m_Layer: 0
   m_Name: Planta_Shadow
   m_TagString: Untagged
@@ -601,6 +602,19 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 0.38812554, z: -0.00062546134}
     m_Extent: {x: 0.32940552, y: 0.49468994, z: 0.32940552}
   m_DirtyAABB: 0
+--- !u!114 &7488267469886634388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7566651046371957782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d920476fea175f34dac90092aef48a8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
 --- !u!1 &7566651046371957784
 GameObject:
   m_ObjectHideFlags: 0

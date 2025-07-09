@@ -175,7 +175,10 @@ public class ActState : ITurnState
     private void ProceedToNextState(Unit unit)
     {
         if (unit.IsDead)
-            unit.ChangeUnitState(TurnStateType.EndTurn);
+        {
+            unit.ChangeTurnState(TurnStateType.EndTurn);
+            return;
+        }
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
             unit.ChangeTurnState(TurnStateType.Return);
