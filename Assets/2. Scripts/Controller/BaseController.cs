@@ -52,11 +52,6 @@ public abstract class BaseController<TController, TState> : Unit where TControll
         stateMachine?.Update();
     }
 
-    protected virtual void FixedUpdate()
-    {
-        stateMachine?.FixedUpdate();
-    }
-
     private void SetupState()
     {
         Array values = Enum.GetValues(typeof(TState));

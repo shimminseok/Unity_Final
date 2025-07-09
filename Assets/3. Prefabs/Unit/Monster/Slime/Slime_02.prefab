@@ -81,6 +81,7 @@ GameObject:
   - component: {fileID: 8312651432243848466}
   - component: {fileID: 7972055332060156088}
   - component: {fileID: 4558901962933364633}
+  - component: {fileID: 9213053895104592686}
   m_Layer: 0
   m_Name: Slime_02
   m_TagString: Untagged
@@ -203,7 +204,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -237,8 +238,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainTarget: {fileID: 0}
-  subTargets: []
+  targets: []
   generateCost: 1
+--- !u!114 &9213053895104592686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2795397902362475942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2988591986747077261
 GameObject:
   m_ObjectHideFlags: 0
