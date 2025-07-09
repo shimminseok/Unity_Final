@@ -11,6 +11,7 @@ public class SkillButton : MonoBehaviour
     [Header("이미지 / 코스트")]
     [SerializeField] private Image icon;
     [SerializeField] private TMP_Text cost;
+    [SerializeField] private TMP_Text skillName;
     [SerializeField] private Button button;
 
     // 현재 버튼에 할당된 스킬 데이터
@@ -37,6 +38,7 @@ public class SkillButton : MonoBehaviour
 
         icon.sprite = active.skillIcon;
         cost.text = active.coolTime.ToString();
+        skillName.text = active.skillName;
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);
@@ -49,6 +51,8 @@ public class SkillButton : MonoBehaviour
         isPassive = true;
         this.isSelected = isSelectedSkill;
         this.onClick = onClick;
+
+        skillName.text = passive.PassiveName;
 
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(OnClick);

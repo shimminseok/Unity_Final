@@ -32,7 +32,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public AnimationEventListener     AnimationEventListener     { get; protected set; }
     public Unit                       CounterTarget              { get; private set; }
 
-    public IDamageable   Target              { get; protected set; }
+    public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
     public IAttackAction CurrentAttackAction { get; private set; }
     public bool          IsDead              { get; protected set; }
     public bool          IsCompletedAttack   { get; protected set; }

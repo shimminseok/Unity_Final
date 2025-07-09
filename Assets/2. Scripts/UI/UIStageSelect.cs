@@ -55,10 +55,20 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
 
     public void OnClickEnterStage()
     {
-        //TODO : StageManager에 해당 Stage 넘겨주기
-        UIManager.Instance.Close<UIStageSelect>();
+        if (DeckSelectManager.Instance.GetSelectedDeck().Count == 0)
+        {
+            Debug.Log("Please select a deck");
+            OnClickEditDeckButton();
+            return;
+        }
 
-        UIManager.Instance.Open<SelectMainUI>();
+        LoadSceneManager.Instance.LoadScene("BattleScene_Main");
+    }
+
+    public void OnClickEditDeckButton()
+    {
+        SelectMainUI selectMainUI = UIManager.Instance.GetUIComponent<SelectMainUI>();
+        UIManager.Instance.Open(selectMainUI);
     }
 
     public override void Open()

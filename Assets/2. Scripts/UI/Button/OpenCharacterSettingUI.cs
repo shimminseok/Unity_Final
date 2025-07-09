@@ -4,18 +4,8 @@ using UnityEngine;
 
 public class OpenCharacterSettingUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void OnClickOpenCharacterSettingUI()
     {
-        UIManager.Instance.Open<UICharacterSetting>();
+        UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UICharacterSetting>());
     }
 }

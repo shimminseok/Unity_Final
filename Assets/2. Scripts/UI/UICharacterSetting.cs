@@ -7,6 +7,8 @@ public class UICharacterSetting : UIBase
     [SerializeField] private Transform playerUnitSlotRoot;
     [SerializeField] private CharacterInfo characterInfoPanel;
     [SerializeField] private CharacterButton playerUnitSlot;
+
+
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
 
@@ -64,12 +66,12 @@ public class UICharacterSetting : UIBase
     {
         selectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
 
-        UIManager.Instance.Open<SelectEquipUI>();
+        UIManager.Instance.Open(selectEquipUI);
     }
 
     public void OpenSetSkill()
     {
         selectSkillUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-        UIManager.Instance.Open<SelectSkillUI>();
+        UIManager.Instance.Open(selectSkillUI);
     }
 }

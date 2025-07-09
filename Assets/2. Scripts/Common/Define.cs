@@ -20,6 +20,15 @@ public static class Define
     public static readonly string ReadyActionClipName = "ReadyAction";
 
 
+    public static readonly Dictionary<int, int> DupeCountByTranscend = new Dictionary<int, int>()
+    {
+        { 0, 10 },
+        { 1, 20 },
+        { 2, 30 },
+        { 3, 40 },
+        { 4, 50 }
+    };
+
     public static string GetStatName(StatType statType)
     {
         return statType switch
