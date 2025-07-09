@@ -9,12 +9,10 @@ public class SkillEffectData
     [HideInInspector] public Unit owner;
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
-    public string projectileID;
+    public GameObject projectilePrefab;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
-    public ParticleSystem castingEffect;
-    public ParticleSystem skillVfx;
-    public ParticleSystem hitEffect;
+    public List<VFXData> skillVFX;
     
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {

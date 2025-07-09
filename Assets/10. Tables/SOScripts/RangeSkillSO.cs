@@ -18,18 +18,27 @@ public class RangeSkillSO : RangeActionSo
         foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
             skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            string projectileID = effect.projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
             foreach (Unit unit in skillController.targets)
             {
                 if (unit == null) continue;
-                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+                GameObject projectile = ObjectPoolManager.Instance.GetObject(projectileID);
+                if (projectile == null)
+                {
+                    projectile = Instantiate(effect.projectilePrefab);
+                }
+                ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
                 ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+
+                if (ProjectileComponent != null)
+                { 
+                    ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+                }
+                
             }
         }
 
-        if (ProjectileComponent != null)
-        {
-            ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
-        }
+
     }
 
 

@@ -12,7 +12,7 @@ using UnityEngine;
  * direction은 투사체의 방향조절
  * StartPosiion은 투사체의 시작위치조절
  */
-public class SkillProjectile : MonoBehaviour, IPoolObject
+public class PoolableProjectile : MonoBehaviour, IPoolObject
 {
     [SerializeField] private string poolId;
 
