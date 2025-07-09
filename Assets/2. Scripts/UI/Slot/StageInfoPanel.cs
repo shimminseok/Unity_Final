@@ -19,13 +19,14 @@ public class StageInfoPanel : MonoBehaviour
 
     private void Awake()
     {
+        onScreenPos = panelRect.anchoredPosition;
+        offScreenPos = new Vector2(-Screen.width, panelRect.anchoredPosition.y);
     }
 
     public void OpenPanel()
     {
         DOTween.KillAll();
         gameObject.SetActive(true);
-        // panelRect.anchoredPosition = offScreenPos;
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             panelRect.anchoredPosition = onScreenPos;
@@ -35,7 +36,6 @@ public class StageInfoPanel : MonoBehaviour
     public void ClosePanel()
     {
         DOTween.KillAll();
-        panelRect.anchoredPosition = onScreenPos;
         panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutExpo).OnComplete(() =>
         {
             panelRect.anchoredPosition = offScreenPos;

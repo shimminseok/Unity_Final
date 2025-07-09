@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
-    private readonly Dictionary<Type, UIBase> UIDict = new();
+    private readonly Dictionary<Type, UIBase> uiDict = new();
     private List<UIBase> openedUIList = new();
 
 
@@ -19,7 +19,7 @@ public class UIManager : Singleton<UIManager>
 
     public void InitializeUIRoot()
     {
-        UIDict.Clear();
+        uiDict.Clear();
 
         Transform uiRoot = GameObject.Find("UIRoot")?.transform;
         if (uiRoot == null)
@@ -31,23 +31,32 @@ public class UIManager : Singleton<UIManager>
         UIBase[] uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
         foreach (UIBase uiComponent in uiComponents)
         {
-            UIDict[uiComponent.GetType()] = uiComponent;
+            uiDict[uiComponent.GetType()] = uiComponent;
             uiComponent.Close();
         }
     }
 
-    public void Open<T>() where T : UIBase
+    // public void Open<T>() where T : UIBase
+    // {
+    //     if (uiDict.TryGetValue(typeof(T), out UIBase ui))
+    //     {
+    //         if (!openedUIList.Contains(ui))
+    //             openedUIList.Add(ui);
+    //         ui.Open();
+    //     }
+    // }
+
+    public void Open(UIBase ui)
     {
-        if (UIDict.TryGetValue(typeof(T), out UIBase ui))
-        {
+        if (!openedUIList.Contains(ui))
             openedUIList.Add(ui);
-            ui.Open();
-        }
+
+        ui.Open();
     }
 
-    public void Close<T>() where T : UIBase
+    public void Close(UIBase ui)
     {
-        if (UIDict.TryGetValue(typeof(T), out UIBase ui) && openedUIList.Contains(ui))
+        if (openedUIList.Contains(ui))
         {
             openedUIList.Remove(ui);
             ui.Close();
@@ -56,19 +65,16 @@ public class UIManager : Singleton<UIManager>
 
     public void CloseLastOpenedUI()
     {
-        if (openedUIList.Count > 0)
-        {
-            openedUIList[openedUIList.Count - 1].Close();
-        }
-        else
-        {
-            openedUIList.First().Close();
-        }
+        if (openedUIList.Count == 0)
+            return;
+
+        UIBase ui = openedUIList.Last();
+        Close(ui);
     }
 
     public T GetUIComponent<T>() where T : UIBase
     {
-        return UIDict.TryGetValue(typeof(T), out var ui) ? ui as T : null;
+        return uiDict.TryGetValue(typeof(T), out var ui) ? ui as T : null;
     }
 }
 
