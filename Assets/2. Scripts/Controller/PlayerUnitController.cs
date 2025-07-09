@@ -101,6 +101,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
         }
 
+        foreach (var skillData in deckData.DeckData.skillDatas)
+        {
+            SkillManager.AddActiveSkill(skillData);
+        }
+
+        SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);

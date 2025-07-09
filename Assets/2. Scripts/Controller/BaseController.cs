@@ -42,7 +42,7 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 
     protected virtual void Start()
     {
-        SkillManager.InitializeSkillManager(this);
+        // SkillManager.InitializeSkillManager(this);
     }
 
     protected virtual void Update()
