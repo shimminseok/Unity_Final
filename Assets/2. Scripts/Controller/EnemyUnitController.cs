@@ -187,7 +187,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
-
+        Agent.enabled = false;
         dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         // gameObject.SetActive(false);
     }
