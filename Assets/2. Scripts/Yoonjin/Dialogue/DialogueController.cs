@@ -12,7 +12,7 @@ public class DialogueController : Singleton<DialogueController>
     private HashSet<string> readGroups = new();
 
     [Header("디버깅 중 대사 스킵")]
-    [SerializeField] private bool dialogueSkip = true; 
+    [SerializeField] private bool dialogueSkip = false; 
 
     protected override void Awake()
     {
@@ -113,7 +113,7 @@ public class DialogueController : Singleton<DialogueController>
     // 대사 종료 처리
     private void EndDialogue()
     {
-        // 다 읽은 대사는 HashSet에 추가
+        // 다 읽은 대사는 스킵
         if (currentGroup != null)
         {
             readGroups.Add(currentGroup.groupKey);
