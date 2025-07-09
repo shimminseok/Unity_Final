@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,8 +20,7 @@ public enum StatType
     CriticalRate,
 
     HitRate,
-    Shield,
-    Aggro,
+    Shield
 }
 
 public enum StatModifierType
@@ -114,7 +113,8 @@ public enum SelectTargetType
 {
     MainTarget,
     AllExceptMainTarget,
-    OnSelf,
+    All,
+    onSelf,
     RandomOneExceptMainTarget,
     Sector,
 }
@@ -165,8 +165,7 @@ public enum Tier
 public enum AttackDistanceType
 {
     Melee,
-    Range,
-    RangeNoProjectile,
+    Range
 }
 
 public enum ProjectileInterpolationMode
@@ -175,6 +174,12 @@ public enum ProjectileInterpolationMode
     Lerp,
     MoveTowards,
     SmoothDamp,
-    Slerp,
-    Fall
+    Slerp
+}
+
+public enum GachaType
+{
+    Skill,
+    Unit,
+    Equipment
 }

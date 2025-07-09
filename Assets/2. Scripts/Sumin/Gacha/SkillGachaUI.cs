@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,42 +5,47 @@ using UnityEngine.UI;
 public class SkillGachaUI : MonoBehaviour
 {
     [SerializeField] private SkillGachaSystem gachaSystem;
-    [SerializeField] private GameObject resultPannel;
-    [SerializeField] private SkillSlotUI[] slots;
 
-    // 1회 뽑기 버튼
-    public void OnDrawOneBtn()
+    [Header("뽑기 버튼")]
+    [SerializeField] private Button oneDrawBtn;
+
+    [SerializeField] private Button tenDrawBtn;
+
+    [Header("뽑기 확인 창")]
+    [SerializeField] private GachaConfirmPopupUI confirmPanel;
+
+    [Header("뽑기 결과 창")]
+    [SerializeField] private SkillGachaResultUI resultPanel;
+
+    private void Start()
     {
-        DrawAndDisplayResult(1);
+        oneDrawBtn.onClick.RemoveAllListeners();
+        oneDrawBtn.onClick.AddListener(() => OnDrawCountBtn(1));
+
+        tenDrawBtn.onClick.RemoveAllListeners();
+        tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
     }
 
-    // 10회 뽑기 버튼
-    public void OnDrawTenBtn()
+    // n회 뽑기 버튼
+    public void OnDrawCountBtn(int count)
     {
-        DrawAndDisplayResult(10);
+        if (!gachaSystem.CheckCanDraw(count))
+        {
+            // UIManager.Instance.Open<GachaCantDrawPopupUI>();
+            return;
+        }
+
+        confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
+        confirmPanel.OnCancel += () => Debug.Log("취소됨");
+        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
     }
 
-    // 스킬 뽑기 UI 디스플레이
+    // 스킬 뽑고 결과 보여주기
     private void DrawAndDisplayResult(int count)
     {
-        ActiveSkillSO[] skills = gachaSystem.DrawSkills(count);
-        resultPannel.SetActive(true);
+        GachaResult<ActiveSkillSO>[] skills = gachaSystem.DrawSkills(count);
 
-        for (int i = 0; i < skills.Length; i++)
-        {
-            slots[i].gameObject.SetActive(true);
-            slots[i].Initialize(skills[i]);
-        }
+        resultPanel.Open();
+        resultPanel.ShowSkills(skills);
     }
-
-    // 결과창 나가기 버튼
-    public void OnResultPannelExitBtn()
-    {
-        resultPannel.SetActive(false);
-        for (int i = 0; i < slots.Length; i++)
-        {
-            slots[i].gameObject.SetActive(false);
-        }
-    }
-
 }

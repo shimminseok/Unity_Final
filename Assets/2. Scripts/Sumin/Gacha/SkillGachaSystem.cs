@@ -1,11 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class SkillGachaSystem : MonoBehaviour
 {
     [SerializeField] ActiveSkillTable activeSkillTable;
+
+    private int drawCost = 0;
+    public int DrawCost => drawCost;
 
     private GachaManager<ActiveSkillSO> gachaManager;
 
@@ -29,17 +31,31 @@ public class SkillGachaSystem : MonoBehaviour
 
     // 스킬 count회 뽑기 
     // 어차피 1뽑, 10뽑만 할거니까 array로
-    public ActiveSkillSO[] DrawSkills(int count)
+    // 가챠 결과를 구조체로 가지고 UI에게 넘겨줌
+    public GachaResult<ActiveSkillSO>[] DrawSkills(int count)
     {
         List<ActiveSkillSO> skillData = GetSkillDatas();
-        ActiveSkillSO[] results = new ActiveSkillSO[count];
+        GachaResult<ActiveSkillSO>[] results = new GachaResult<ActiveSkillSO>[count];
+
+        AccountManager.Instance.UseOpal(drawCost * count); // 오팔 사용
 
         for (int i=0; i<count; i++)
         {
-            var skill = gachaManager.Draw(skillData, Define.TierRates);
+            ActiveSkillSO skill = gachaManager.Draw(skillData, Define.TierRates); // 하나씩 뽑아서 skill에 저장
+
             if (skill != null)
             {
-                results[i] = skill;
+                results[i].GachaReward = skill; // 저장한 skill Data는 구조체의 GachaReward에
+                
+                AccountManager.Instance.AddSkill(skill, out bool isDuplicate); // 중복이 아니라면 스킬 추가
+                results[i].IsDuplicate = isDuplicate;
+                
+                // 중복이면 재화 보상 일부 지급
+                if (results[i].IsDuplicate)
+                {
+                    results[i].CompensationAmount = (int)(drawCost * Define.GetCompensationAmount(skill.activeSkillTier));
+                    AccountManager.Instance.AddOpal(results[i].CompensationAmount);
+                }
             }
             else
             {
@@ -48,5 +64,15 @@ public class SkillGachaSystem : MonoBehaviour
         }
 
         return results;
+    }
+
+    // 오팔 사용 가능 여부 체크.
+    // false 되면 UI쪽에서 다른 창 띄우면서 못뽑게 할 것.
+    public bool CheckCanDraw(int drawCount)
+    {
+        drawCost = Define.GachaDrawCosts[GachaType.Skill];
+        bool canUse = AccountManager.Instance.CanUseOpal(drawCost * drawCount);
+
+        return canUse;
     }
 }

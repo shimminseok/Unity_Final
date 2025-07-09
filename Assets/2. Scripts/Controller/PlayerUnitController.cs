@@ -78,9 +78,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         CurrentState = (PlayerUnitState)newState;
     }
 
-    public override void Initialize(UnitSO unitSo)
+    public override void Initialize(UnitSpawnData deckData)
     {
-        UnitSo = unitSo;
+        UnitSo = deckData.UnitSo;
 
         if (UnitSo is PlayerUnitSO playerUnitSo)
         {
@@ -92,7 +92,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         passiveSo = PlayerUnitSo.PassiveSkill;
         passiveSo.Initialize(this);
-        StatManager.Initialize(PlayerUnitSo);
+        if (PlayerDeckContainer.Instance.SelectedStage == null)
+            StatManager.Initialize(PlayerUnitSo);
+        else
+        {
+            StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
+        }
+
         AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);

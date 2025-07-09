@@ -21,19 +21,16 @@ public class SelectMainUI : UIBase
 
 
     // 생성된 보유 캐릭터 & 선택 캐릭터 버튼들을 담는 리스트
-    private List<CharacterButton> ownedCharacterButtons = new();
     private List<CharacterButton> selectedCharacterButtons = new();
 
     // 보유 캐릭터 & 선택 캐릭터 SO들을 담는 리스트
-    private List<PlayerUnitSO> ownedCharacters = new();
-    private List<PlayerUnitSO> selectedCharacters = new();
+
+    private Dictionary<int, CharacterButton> characterSlotDic = new();
 
 
     private void Start()
     {
         // TODO: 나중에 실제 보유한 캐릭터 데이터를 ownedCharacters에 할당한다
-
-        GenerateOwnedCharacterButtons();
         startBattleButton.onClick.AddListener(OnClickStartBattle);
     }
 
@@ -43,50 +40,45 @@ public class SelectMainUI : UIBase
     {
         // !!!임시로 더미 전체 캐릭터풀의 데이터 집어넣음!!!
         // 테이블 데이터에서 전체 캐릭터 목록 get table 로 받아옴
-        var table = TableManager.Instance.GetTable<PlayerUnitTable>();
-        ownedCharacters.Clear();
 
-        // ID 순회: 현재 캐릭터 id가 1부터 7까지이므로 임시 조치
-        // for (int id = 1; id <= 20; id++)
-        // {
-        //     var unit = table.GetDataByID(id);
-        //
-        //     if (unit != null)
-        //     {
-        //         ownedCharacters.Add(unit);
-        //     }
-        // }
-        foreach (EntryDeckData unit in AccountManager.Instance.MyPlayerUnits.Values)
-        {
-            var unitSo = unit.CharacterSo;
-            if (unitSo != null)
-            {
-                ownedCharacters.Add(unitSo);
-            }
-        }
+        var units = AccountManager.Instance.MyPlayerUnits;
 
-        foreach (PlayerUnitSO unit in ownedCharacters)
+        foreach (KeyValuePair<int, EntryDeckData> entryDeckData in units)
         {
-            CharacterButton btn = Instantiate(characterButtonPrefab, ownedCharacterParent);
-            btn.Initialize(unit, false, OnCharacterButtonClicked);
-            ownedCharacterButtons.Add(btn);
+            if (characterSlotDic.ContainsKey(entryDeckData.Key))
+                continue;
+
+            var slot = Instantiate(characterButtonPrefab, ownedCharacterParent);
+            slot.Initialize(entryDeckData.Value.CharacterSo, false, OnCharacterButtonClicked);
+            characterSlotDic.Add(entryDeckData.Key, slot);
         }
     }
 
     // 선택된 캐릭터 목록 버튼 생성
     private void GenerateSelectedCharacterButtons(List<EntryDeckData> selectedDeck)
     {
-        // 기존 버튼 모두 제거
-        foreach (var btn in selectedCharacterButtons)
-            Destroy(btn.gameObject);
-        selectedCharacterButtons.Clear();
-
-        // 새로운 버튼 생성
-        foreach (var entry in selectedDeck)
+        // 1. 필요한 만큼 버튼 활성화 및 초기화
+        for (int i = 0; i < selectedDeck.Count; i++)
         {
-            var btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
-            btn.Initialize(entry.CharacterSo, true, OnCharacterButtonClicked);
-            selectedCharacterButtons.Add(btn);
+            CharacterButton btn;
+
+            if (i < selectedCharacterButtons.Count)
+            {
+                btn = selectedCharacterButtons[i];
+                btn.gameObject.SetActive(true);
+            }
+            else
+            {
+                btn = Instantiate(characterButtonPrefab, selectedCharacterParent);
+                selectedCharacterButtons.Add(btn);
+            }
+
+            btn.Initialize(selectedDeck[i].CharacterSo, true, OnCharacterButtonClicked);
+        }
+
+        for (int i = selectedDeck.Count; i < selectedCharacterButtons.Count; i++)
+        {
+            selectedCharacterButtons[i].gameObject.SetActive(false);
         }
     }
 
@@ -95,7 +87,7 @@ public class SelectMainUI : UIBase
     {
         // 현재 선택된 덱에서 찾음
         var entry = DeckSelectManager.Instance.GetSelectedDeck()
-            .Find(entry => entry.CharacterSo == character);
+            .Find(entry => entry.CharacterSo.ID == character.ID);
 
         if (entry != null)
         {
@@ -142,5 +134,18 @@ public class SelectMainUI : UIBase
             GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
             UpdateCharacterInfoPanel(playerUnit);
         }
+    }
+
+    public override void Open()
+    {
+        base.Open();
+        GenerateOwnedCharacterButtons();
+        GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
     }
 }

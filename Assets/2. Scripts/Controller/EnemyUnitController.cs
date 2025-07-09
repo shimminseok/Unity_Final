@@ -61,9 +61,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         CurrentState = (EnemyUnitState)newState;
     }
 
-    public override void Initialize(UnitSO unitSO)
+    public override void Initialize(UnitSpawnData spawnData)
     {
-        UnitSo = unitSO;
+        UnitSo = spawnData.UnitSo;
         if (UnitSo is EnemyUnitSO enemyUnitSo)
         {
             MonsterSo = enemyUnitSo;
@@ -77,7 +77,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             StatManager.Initialize(MonsterSo);
         else
         {
-            StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage);
+            StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
         }
 
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);

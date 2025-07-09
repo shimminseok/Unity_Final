@@ -63,10 +63,10 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         else if (selectedDeck.Count < maxCharacterCount)
         {
             // 새로운 캐릭터 데이터 추가
-            EntryDeckData newEntry = new EntryDeckData(newCharacterSO.ID);
+            var netry = AccountManager.Instance.MyPlayerUnits[newCharacterSO.ID];
 
-            selectedDeck.Add(newEntry);
-            currentSelectedCharacter = newEntry;
+            selectedDeck.Add(netry);
+            currentSelectedCharacter = netry;
         }
     }
 
@@ -98,28 +98,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
                 currentSelectedCharacter.InvokeSkillChanged();
                 return;
             }
-        }
-    }
-
-    // 캐릭터에 패시브 스킬 장착 (1개만)
-    public void SelectPassiveSkill(PassiveSO passive)
-    {
-        if (currentSelectedCharacter == null)
-        {
-            Debug.LogWarning("캐릭터 없음");
-            return;
-        }
-
-        // 이미 선택했으면 해제
-        if (currentSelectedCharacter.passiveSkill == passive)
-        {
-            currentSelectedCharacter.passiveSkill = null;
-        }
-
-
-        else
-        {
-            currentSelectedCharacter.passiveSkill = passive;
         }
     }
 
@@ -166,7 +144,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ConfirmDeckAndStartBattle()
     {
         PlayerDeckContainer.Instance.SetDeck(selectedDeck);
-        LoadSceneManager.Instance.LoadScene("BattleScene_Main");
     }
 
     // 덱 전체 초기화

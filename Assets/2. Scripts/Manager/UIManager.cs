@@ -36,19 +36,27 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void Open<T>() where T : UIBase
+    // public void Open<T>() where T : UIBase
+    // {
+    //     if (uiDict.TryGetValue(typeof(T), out UIBase ui))
+    //     {
+    //         if (!openedUIList.Contains(ui))
+    //             openedUIList.Add(ui);
+    //         ui.Open();
+    //     }
+    // }
+
+    public void Open(UIBase ui)
     {
-        if (uiDict.TryGetValue(typeof(T), out UIBase ui))
-        {
-            if (!openedUIList.Contains(ui))
-                openedUIList.Add(ui);
-            ui.Open();
-        }
+        if (!openedUIList.Contains(ui))
+            openedUIList.Add(ui);
+
+        ui.Open();
     }
 
-    public void Close<T>() where T : UIBase
+    public void Close(UIBase ui)
     {
-        if (uiDict.TryGetValue(typeof(T), out UIBase ui) && openedUIList.Contains(ui))
+        if (openedUIList.Contains(ui))
         {
             openedUIList.Remove(ui);
             ui.Close();
@@ -57,18 +65,11 @@ public class UIManager : Singleton<UIManager>
 
     public void CloseLastOpenedUI()
     {
-        if (openedUIList.Count > 0)
-        {
-            // UIBase close = openedUIList[openedUIList.Count - 1];
-            // if (uiDict.TryGetValue(close.GetType(), out UIBase ui))
-            // {
-            //     Close(ui.GetType());
-            // }
-        }
-        else
-        {
-            openedUIList.First().Close();
-        }
+        if (openedUIList.Count == 0)
+            return;
+
+        UIBase ui = openedUIList.Last();
+        Close(ui);
     }
 
     public T GetUIComponent<T>() where T : UIBase

@@ -27,6 +27,8 @@ public class CharacterInfoPanel : MonoBehaviour
     [Header("패시브 스킬 슬롯")]
     [SerializeField] private Image passiveSkillSlotImage;
 
+    private EntryDeckData selectedUnitData;
+
     private void Awake()
     {
         // 편집 버튼에 클릭 이벤트 연결
@@ -34,24 +36,21 @@ public class CharacterInfoPanel : MonoBehaviour
         skillEditButton.onClick.AddListener(OnClickSkillUI);
     }
 
-    public void SetData(EntryDeckData data)
+    private void UpdateEquipment(EntryDeckData data)
     {
-        if (data == null) return;
-
-        // 이름 표시
-        characterNameText.text = data.CharacterSo.UnitName;
-
         // 장비 표시
         weaponSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Weapon);
         armorSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Armor);
         accessorySlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Accessory);
+    }
 
+    private void UpdateEquipmentSkill(EntryDeckData data)
+    {
         // 액티브 스킬들 표시
         for (int i = 0; i < activeSkillSlotImage.Length; i++)
         {
             if (data.skillDatas[i] != null)
             {
-                Debug.Log("액티브 스프라이트 할당됨");
                 activeSkillSlotImage[i].sprite = data.skillDatas[i].skillIcon;
             }
 
@@ -60,19 +59,18 @@ public class CharacterInfoPanel : MonoBehaviour
                 activeSkillSlotImage[i].sprite = null;
             }
         }
+    }
 
-        // 패시브 스킬 표시
-        if (data.passiveSkill != null)
-        {
-            // !!!현재 패시브 스킬 아이콘이 없음!!!
-            //passiveSkillSlotImage.sprite = data.passiveSkill.skillIcon;
-            Debug.Log("패시브 스프라이트 할당됨");
-        }
+    public void SetData(EntryDeckData data)
+    {
+        if (data == null) return;
 
-        else
-        {
-            passiveSkillSlotImage.sprite = null;
-        }
+        // 이름 표시
+        selectedUnitData = data;
+        characterNameText.text = data.CharacterSo.UnitName;
+
+        UpdateEquipment(selectedUnitData);
+        UpdateEquipmentSkill(selectedUnitData);
     }
 
     // 장비 딕셔너리에서 원하는 장비 타입을 꺼내, 아이콘을 반환한다
@@ -96,7 +94,11 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<SelectEquipUI>();
+            SelectEquipUI ui = UIManager.Instance.GetUIComponent<SelectEquipUI>();
+            ui.OnEquipChanged -= UpdateEquipment;
+            ui.SetCurrentSelectedUnit(selectedUnitData);
+            UIManager.Instance.Open(ui);
+            ui.OnEquipChanged += UpdateEquipment;
         }
     }
 
@@ -107,7 +109,11 @@ public class CharacterInfoPanel : MonoBehaviour
 
         if (entry != null)
         {
-            UIManager.Instance.Open<SelectSkillUI>();
+            SelectSkillUI ui = UIManager.Instance.GetUIComponent<SelectSkillUI>();
+            ui.OnSkillChanged -= UpdateEquipmentSkill;
+            ui.SetCurrentSelectedUnit(selectedUnitData);
+            UIManager.Instance.Open(ui);
+            ui.OnSkillChanged += UpdateEquipmentSkill;
         }
     }
 }

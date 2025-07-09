@@ -48,4 +48,10 @@ public static class Define
 
     // 티어 별 가챠 확률
     public static readonly Dictionary<Tier, float> TierRates = new() { { Tier.A, 90f }, { Tier.S, 9f }, { Tier.SR, 0.98f }, { Tier.SSR, 0.02f } };
+    
+    // 티어 별 중복 보상 값 계수
+    public static float GetCompensationAmount(Tier tier) { return tier switch { Tier.A => 0.1f, Tier.S => 0.2f, Tier.SR => 0.3f, Tier.SSR => 0.4f, _ => 0 }; }
+
+    // 가챠 비용
+    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Unit, 150 }, { GachaType.Equipment, 150 } };
 }

@@ -10,7 +10,6 @@ public class EntryDeckData
     // 장비 등등 equipItem
     // 패시브SO
     public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
-    public PassiveSO passiveSkill;
 
     public Dictionary<EquipmentType, EquipmentItem> equippedItems = new();
     public int Level          { get; private set; }
