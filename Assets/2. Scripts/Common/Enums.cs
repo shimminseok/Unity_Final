@@ -174,7 +174,8 @@ public enum ProjectileInterpolationMode
     Lerp,
     MoveTowards,
     SmoothDamp,
-    Slerp
+    Slerp,
+    Fall
 }
 
 public enum GachaType

@@ -25,10 +25,11 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 1
-      projectileID: Buff
+      projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
+        type: 3}
       damageEffects: []
       buffEffects:
-      - ID: 40001
+      - ID: 0
         ownerStatType: 0
         weight: 0.1
         value: 0
@@ -38,25 +39,24 @@ MonoBehaviour:
         modifierType: 1
         emotionType: 0
         StatusEffect:
-          ID: 40001
+          ID: 0
           EffectType: 9
           Stat:
             StatType: 11
             ModifierType: 1
-            Value: 0
+            Value: 101.06
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX: []
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 0
-      projectileID: 
+      projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
+        type: 3}
       damageEffects: []
       buffEffects:
-      - ID: 40001
+      - ID: 0
         ownerStatType: 0
         weight: 0.3
         value: 0
@@ -66,18 +66,16 @@ MonoBehaviour:
         modifierType: 1
         emotionType: 0
         StatusEffect:
-          ID: 40001
+          ID: 0
           EffectType: 9
           Stat:
             StatType: 11
             ModifierType: 1
-            Value: 0
+            Value: 303.18
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX: []
   jobType: 0
   activeSkillTier: 0
   reuseMaxCount: 2

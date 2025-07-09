@@ -85,6 +85,10 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
                 Vector3 offset = Vector3.Slerp(startPosition, direction, delta);
                 transform.position = direction + offset;
                 break;
+            case ProjectileInterpolationMode.Fall:
+                transform.position = direction + Vector3.up * 10;
+                mode = ProjectileInterpolationMode.MoveTowards;
+                break;
         }
     }
 
