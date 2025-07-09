@@ -105,8 +105,8 @@ public class MoveToTargetState : ITurnState
             return;
         }
 
-        if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.ChangeTurnState(TurnStateType.Act);
+        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
+        //     unit.ChangeTurnState(TurnStateType.Act);
     }
 
     public void OnExit(Unit unit)
@@ -200,8 +200,8 @@ public class ReturnState : ITurnState
 
     public void OnUpdate(Unit unit)
     {
-        if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-            unit.ChangeTurnState(TurnStateType.EndTurn);
+        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
+        //     unit.ChangeTurnState(TurnStateType.EndTurn);
     }
 
     public void OnExit(Unit unit)
