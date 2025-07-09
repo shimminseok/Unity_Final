@@ -1,10 +1,13 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewMeleeSkillSO", menuName = "ScriptableObjects/SKillType/Melee", order = 0)]
-public class MeleeSkillSO : CombatActionSo
+[CreateAssetMenu(fileName = "NewRangeNoProjectileSkillSO", menuName = "ScriptableObjects/SKillType/RangeNoProjectile", order = 0)]
+public class RangeSkillNoProjectileSO : RangeActionSo
 {
-    public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
+    public override AttackDistanceType DistanceType => AttackDistanceType.RangeNoProjectile;
+    public override CombatActionSo     ActionSo     => this;
+
     public override void Execute(IAttackable attacker, IDamageable target)
     {
         foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
@@ -16,8 +19,6 @@ public class MeleeSkillSO : CombatActionSo
                 effect.AffectTargetWithSkill(subTarget);
             }
         }
-        
-        
     }
 
 }
