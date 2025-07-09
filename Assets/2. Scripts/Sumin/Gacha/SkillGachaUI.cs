@@ -1,13 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillGachaUI : MonoBehaviour
+public class SkillGachaUI : UIBase
 {
     [SerializeField] private SkillGachaSystem gachaSystem;
 
     [Header("뽑기 버튼")]
     [SerializeField] private Button oneDrawBtn;
-
     [SerializeField] private Button tenDrawBtn;
 
     [Header("뽑기 확인 창")]

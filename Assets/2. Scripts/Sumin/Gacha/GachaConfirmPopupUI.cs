@@ -15,14 +15,10 @@ public class GachaConfirmPopupUI : UIBase
 
     private UIManager uiManager;
 
-    private void Start()
-    {
-        uiManager = UIManager.Instance;
-    }
-
     // 팝업 띄우고, ok 버튼 누르면 뽑기 진행, cancel 버튼 누르면 팝업 닫기
     public void ShowPopup(int drawCost)
     {
+        uiManager = UIManager.Instance;
         uiManager.Open(this);
         drawCostText.text = $"{drawCost}"; // 뽑기 비용 표시
 

@@ -18,7 +18,7 @@ public class EquipmentGachaResultUI : UIBase
     {
         for (int i=0; i<equipments.Length; i++)
         {
-            slots[i].gameObject.SetActive(false);
+            slots[i].gameObject.SetActive(true);
             slots[i].Initialize(equipments[i]);
         }
     }
@@ -29,6 +29,6 @@ public class EquipmentGachaResultUI : UIBase
         {
             slots[i].gameObject.SetActive(false);
         }
-        Close();
+        UIManager.Instance.Close(this);
     }
 }

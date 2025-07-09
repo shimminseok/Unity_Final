@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentGachaUI : MonoBehaviour
+public class EquipmentGachaUI : UIBase
 {
     [SerializeField] private EquipmentGachaSystem gachaSystem;
 
@@ -13,10 +13,13 @@ public class EquipmentGachaUI : MonoBehaviour
     [SerializeField] private GachaConfirmPopupUI confirmPanel;
 
     [Header("뽑기 결과 창")]
-    [SerializeField] private SkillGachaResultUI resultPanel;
+    [SerializeField] private EquipmentGachaResultUI resultPanel;
 
-    private GachaCantDrawPopupUI cantDrawPopupUI;
     private UIManager uiManager;
+    private GachaCantDrawPopupUI cantDrawPopupUI;
+    private EquipmentGachaResultUI resultUI;
+
+    private int drawCount;
 
     private void Start()
     {
@@ -24,10 +27,17 @@ public class EquipmentGachaUI : MonoBehaviour
         oneDrawBtn.onClick.AddListener(() => OnDrawCountBtn(1));
 
         tenDrawBtn.onClick.RemoveAllListeners();
+        tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
 
         uiManager = UIManager.Instance;
         cantDrawPopupUI = uiManager.GetUIComponent<GachaCantDrawPopupUI>();
-        
+        resultUI = uiManager.GetUIComponent<EquipmentGachaResultUI>();
+    }
+
+    private void OnDisable()
+    {
+        confirmPanel.OnConfirm -= HandleConfirm;
+        confirmPanel.OnConfirm -= HandleCancel;
     }
 
     public void OnDrawCountBtn(int count)
@@ -37,14 +47,28 @@ public class EquipmentGachaUI : MonoBehaviour
             uiManager.Open(cantDrawPopupUI);
             return;
         }
-        confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
+        drawCount = count;
+
+        confirmPanel.OnConfirm += HandleConfirm;
+        confirmPanel.OnConfirm += HandleCancel;
+        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
+    }
+
+    private void HandleConfirm()
+    {
+        DrawAndDisplayResult(drawCount);
+    }
+
+    private void HandleCancel()
+    {
+        Debug.Log("취소됨");
     }
 
     private void DrawAndDisplayResult(int count)
     {
         EquipmentItemSO[] equipments = gachaSystem.DrawEquipments(count);
 
-        resultPanel.Open();
-        //resultPanel.ShowEquipments(equipments);
+        uiManager.Open(resultUI);
+        resultPanel.ShowEquipments(equipments);
     }
 }
