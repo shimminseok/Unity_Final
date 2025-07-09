@@ -178,6 +178,7 @@ public class CharacterInfo : MonoBehaviour
     private void RefreshUI()
     {
         SetCharacterStatInfo();
+        UpdateUnitLevel();
         SetPlayerUnitEquipmentInfo();
     }
 
