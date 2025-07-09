@@ -144,7 +144,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ConfirmDeckAndStartBattle()
     {
         PlayerDeckContainer.Instance.SetDeck(selectedDeck);
-        LoadSceneManager.Instance.LoadScene("BattleScene_Main");
     }
 
     // 덱 전체 초기화

@@ -8,6 +8,7 @@ public class SkillGachaUI : MonoBehaviour
 
     [Header("뽑기 버튼")]
     [SerializeField] private Button oneDrawBtn;
+
     [SerializeField] private Button tenDrawBtn;
 
     [Header("뽑기 확인 창")]
@@ -20,7 +21,7 @@ public class SkillGachaUI : MonoBehaviour
     {
         oneDrawBtn.onClick.RemoveAllListeners();
         oneDrawBtn.onClick.AddListener(() => OnDrawCountBtn(1));
-        
+
         tenDrawBtn.onClick.RemoveAllListeners();
         tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
     }
@@ -30,9 +31,10 @@ public class SkillGachaUI : MonoBehaviour
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            UIManager.Instance.Open<GachaCantDrawPopupUI>();
+            // UIManager.Instance.Open<GachaCantDrawPopupUI>();
             return;
         }
+
         confirmPanel.OnConfirm += () => DrawAndDisplayResult(count);
         confirmPanel.OnCancel += () => Debug.Log("취소됨");
         confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
