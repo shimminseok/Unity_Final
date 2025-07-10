@@ -33,15 +33,17 @@ public class BattleSceneSkillSlot : MonoBehaviour
 
     public void Initialize(SkillData skillData, int index)
     {
-        // skill data를 넣기
+        // skill data가 없으면 뒤집고 선택불가
         if (skillData == null)
         {
-            ToggleSkillSlot(false); // 사용 가능 여부에 따라 앞or뒤 켜고 끄기
+            ToggleSkillSlot(false);
+            LockSkill();
             return;
         }
 
         ToggleSkillSlot(skillData.CheckCanUseSkill()); // 사용 가능 여부에 따라 앞or뒤 켜고 끄기
 
+        // skill data를 넣기
         selectedSkillData = skillData;
         currentskillIndex = index;
         coolDown = skillData.coolDown;
