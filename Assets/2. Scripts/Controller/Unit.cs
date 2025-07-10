@@ -15,6 +15,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public BaseEmotion                CurrentEmotion             { get; protected set; }
     public BaseEmotion[]              Emotions                   { get; private set; }
+    public event Action<BaseEmotion>  EmotionChanged;             // 감정이 바뀌었을 때 알리는 이벤트
     public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
     public TurnStateMachine           TurnStateMachine           { get; protected set; }
     public ITurnState[]               TurnStates                 { get; private set; }
@@ -65,6 +66,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         }
 
         CurrentEmotion = Emotions[(int)EmotionType.Neutral];
+
+        // 스택 변경에 대한 반응 등록
+        CurrentEmotion.StackChanged += OnEmotionStackChanged;
     }
 
     protected void CreateTurnStates()
@@ -106,9 +110,21 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             if (Random.value < CurrentEmotion.Stack * ResistancePerStack)
                 return;
 
+            // 이전 감정 스택 이벤트 제거
+            CurrentEmotion.StackChanged -= OnEmotionStackChanged;
+
             CurrentEmotion?.Exit(this);
             CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
+
+            // 새 감정 스택 이벤트 연결
+            CurrentEmotion.StackChanged += OnEmotionStackChanged;
+
+            // 외부 알림
+            EmotionChanged?.Invoke(CurrentEmotion);
+
+            // 감정이 새로 바뀐 경우에 즉시 1스택에서 시작
+            CurrentEmotion.AddStack(this);
 
             if (this is PlayerUnitController playerUnit && playerUnit.PassiveSo is IPassiveChangeEmotionTrigger passiveChangeEmotion)
             {
@@ -119,6 +135,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             CurrentEmotion.AddStack(this);
         }
+    }
+
+    // 감정 스택이 바뀔 때마다 호출됨
+    private void OnEmotionStackChanged(int newStack)
+    {
+        // Debug.Log($"{name}의 감정 스택이 {newStack}로 변경됨");
     }
 
 

@@ -1,24 +1,35 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public abstract class BaseEmotion
 {
     public EmotionType EmotionType;
-    public int Stack;
+    private int stack;
+    public int Stack
+    {
+        get => stack;
+        protected set => stack = Mathf.Clamp(value, 0, MaxStack);
+    }
+
     protected const int MaxStack = 10;
 
     public abstract void Enter(Unit unit);
     public abstract void Execute(Unit unit);
     public abstract void Exit(Unit unit);
 
+    // 외부에 스택 변경을 알리는 이벤트
+    public event Action<int> StackChanged;
+
     public void AddStack(Unit unit, int amount = 1)
     {
         Stack += amount;
-        Stack = Mathf.Clamp(Stack, 0, MaxStack);
         OnStackChanged(unit);
     }
 
     public virtual void OnStackChanged(Unit unit)
     {
+        StackChanged?.Invoke(Stack);
     }
 }
 
@@ -73,6 +84,7 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.CriticalDam, StatModifierType.BuffPercent, -critDamUpAmount);
         // 2. 새 버프 계산
@@ -129,6 +141,7 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -attackUpAmount);
         // 2. 새 버프 계산
@@ -211,6 +224,8 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
+
         float perStack = DefenseDownPerStack;
         if (unit is PlayerUnitController playerUnit)
         {
