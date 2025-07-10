@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-
 // 플레이어 유닛 선택
 public class SelectExecuterState : IInputState
 {
@@ -17,6 +14,8 @@ public class SelectExecuterState : IInputState
 
     public void Enter()
     {
+        context.SelectedSkill = null; // Excuter 고를때는 항상 SelectedSkill 비워주기
+
         // 이전에 선택해뒀던게 있으면 Indicator 지우기
         if (context.SelectedExecuter != null)
         {
@@ -43,6 +42,7 @@ public class SelectExecuterState : IInputState
             context.SelectedExecuter.ToggleSelectedIndicator(true);
 
             // 이전에 지정한 명령이 있다면 보여줌
+            // 명령이 있으면 context의 skillData에 넣어줌
             selector.ShowPrevCommand(unit.SelectedUnit);
 
             // SkillUI는 켜주고 StartButton은 꺼주기
