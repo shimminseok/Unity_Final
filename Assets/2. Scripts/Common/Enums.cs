@@ -183,3 +183,10 @@ public enum GachaType
     Unit,
     Equipment
 }
+
+public enum RewardType
+{
+    Gold,
+    Opal,
+    Item
+}

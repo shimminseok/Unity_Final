@@ -7,7 +7,7 @@ public class AccountManager : Singleton<AccountManager>
 {
     public int Gold      { get; private set; } = 0;
     public int Opal      { get; private set; } = 3000;
-    public int BestStage { get; private set; } = 1010101;
+    public int BestStage { get; private set; } = 0;
 
     public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
     public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
@@ -16,6 +16,7 @@ public class AccountManager : Singleton<AccountManager>
 
     protected override void Awake()
     {
+        Application.targetFrameRate = 60;
         base.Awake();
         foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
         {
@@ -72,8 +73,13 @@ public class AccountManager : Singleton<AccountManager>
         return Opal >= amount;
     }
 
-    public void UpdateBestStage(int stage)
+    public void UpdateBestStage(StageSO stage)
     {
+        if (BestStage > stage.ID)
+        {
+            BestStage = stage.ID;
+            RewardManager.Instance.GiveReward(stage.FirstClearReward.Id);
+        }
     }
 
     public void SetBestStage(int stage)
