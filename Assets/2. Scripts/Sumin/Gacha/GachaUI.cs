@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GachaUI : MonoBehaviour
+public class GachaUI : UIBase
 {
     private SkillGachaUI skillGachaUI;
     private EquipmentGachaUI equipmentGachaUI;
