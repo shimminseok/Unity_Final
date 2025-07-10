@@ -11,11 +11,11 @@ public class RewardManager : Singleton<RewardManager>
         base.Awake();
         if (isDuplicated)
             return;
+        rewardTable = TableManager.Instance.GetTable<RewardTable>();
     }
 
     private void Start()
     {
-        rewardTable = TableManager.Instance.GetTable<RewardTable>();
     }
 
     public void GiveReward(string id)
