@@ -17,7 +17,6 @@ public class AccountManager : Singleton<AccountManager>
     protected override void Awake()
     {
         base.Awake();
-        Application.targetFrameRate = 15;
         foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
         {
             AddPlayerUnit(playerUnitSo);
