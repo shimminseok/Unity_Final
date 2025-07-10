@@ -1,4 +1,3 @@
-using System.Buffers;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
@@ -21,10 +20,14 @@ public class RangeSkillSO : RangeActionSo
             foreach (Unit unit in skillController.targets)
             {
                 if (unit == null) continue;
-                if (effect.projectileID != string.Empty)
-                {
-                    ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+                if (effect.projectilePrefab != null)
+                {   string projectileID = effect.projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
+                    GameObject projectile = ObjectPoolManager.Instance.GetObject(projectileID);
+                    if (projectile == null)
+                        projectile = Instantiate(effect.projectilePrefab);
+                    ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
                     ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+
                 }
                 else
                 {
