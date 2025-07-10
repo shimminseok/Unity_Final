@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
@@ -8,16 +9,13 @@ public class RangeSkillSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
         var skillController = attacker.SkillController;
-
-        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
-
         foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
         {
-            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
-            foreach (Unit unit in skillController.targets)
+            List<IDamageable> targets = skillController.SkillSubTargets[effect];
+            foreach (IDamageable unit in targets)
             {
                 if (unit == null) continue;
                 if (effect.projectilePrefab != null)
@@ -26,12 +24,12 @@ public class RangeSkillSO : RangeActionSo
                     if (projectile == null)
                         projectile = Instantiate(effect.projectilePrefab);
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.Collider.bounds.center, unit);
 
                 }
                 else
                 {
-                    effect.AffectTargetWithSkill(unit);
+                    effect.AffectTargetWithSkill(unit as Unit);
                 }
             }
         }

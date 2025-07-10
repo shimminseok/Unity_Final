@@ -9,15 +9,14 @@ public class SkillEffectData
     [HideInInspector] public Unit owner;
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
-    public string projectileID;
+    public GameObject projectilePrefab;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
-    public ParticleSystem castingEffect;
-    public ParticleSystem skillVfx;
-    public ParticleSystem hitEffect;
+    public List<VFXData> skillVFX;
     
-    public void AffectTargetWithSkill(IDamageable target) // 실질적으로 영향을 끼치는 부분
+    public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
+        InitVFX(target);
         foreach (var result in buffEffects)
         {
             var statusEffect = result.StatusEffect;
@@ -30,6 +29,19 @@ public class SkillEffectData
         foreach (var result in damageEffects)
         {
             target.ExecuteCoroutine(result.DamageEffectCoroutine(target, owner));
+        }
+    }
+
+    public void InitVFX(Unit unit)
+    {
+        foreach (var vfx in skillVFX)
+        {
+            vfx.Attacker = owner;
+            vfx.Target = unit;
+            if (vfx.type == VFXType.Hit)
+            {
+                
+            }
         }
     }
 }

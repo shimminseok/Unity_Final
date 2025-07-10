@@ -135,7 +135,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
 
     private void HandleTrigger()
     {
-        effectData.AffectTargetWithSkill(Target);
+        effectData.AffectTargetWithSkill(Target as Unit);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 

@@ -13,7 +13,7 @@ public class MeleeSkillSO : CombatActionSo
             foreach (var subTarget in targets)
             {
                 if(subTarget.IsDead) continue;
-                effect.AffectTargetWithSkill(subTarget);
+                effect.AffectTargetWithSkill(subTarget as Unit);
             }
         }
         

@@ -16,7 +16,7 @@ public class RangeSkillNoProjectileSO : RangeActionSo
             foreach (var subTarget in targets)
             {
                 if(subTarget.IsDead) continue;
-                effect.AffectTargetWithSkill(subTarget);
+                effect.AffectTargetWithSkill(subTarget as Unit);
             }
         }
     }
