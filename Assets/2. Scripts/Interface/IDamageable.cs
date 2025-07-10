@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using UnityEngine;
 
 public interface IDamageable
@@ -7,11 +7,7 @@ public interface IDamageable
     public BaseEmotion CurrentEmotion { get; }
     public bool        IsDead         { get; }
     public void        TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
-    
-    public StatusEffectManager StatusEffectManager { get; }
 
-    public void ExecuteCoroutine(IEnumerator coroutine);
-
-    public void ChangeEmotion(EmotionType newType);
+    public Action OnTakeDamageHandler { get; }
     public void        Dead();
 }

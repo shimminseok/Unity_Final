@@ -13,6 +13,6 @@ public class GachaCantDrawPopupUI : UIBase
 
     public void OnClickExitBtn()
     {
-        Close();
+        UIManager.Instance.Close(this);
     }
 }

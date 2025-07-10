@@ -2607,10 +2607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 982fa3b682384334ea3649cc34557788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedSkill:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  selectedSkill: []
 --- !u!114 &880510592964360271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2623,6 +2620,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c9cc013ecfb974e83ed90ad249292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainTarget: {fileID: 0}
+  targets: []
   generateCost: 1
   skillAttackAnim: {fileID: 0}
 --- !u!114 &-3100819424120585792
@@ -2667,7 +2666,6 @@ MonoBehaviour:
   moveClip: {fileID: 7400000, guid: 3da53d6eb7d86db4984cd87a53ca69d6, type: 3}
   victoryClip: {fileID: 7400000, guid: b155e52766e83b947ab3f2ccb6b77621, type: 3}
   readyActionClip: {fileID: 7400000, guid: d44996dd7adcac34fb47453746f62255, type: 3}
-  passiveSo: {fileID: 0}
   setRemainDistance: 0
 --- !u!195 &-6156759580500302914
 NavMeshAgent:
@@ -2683,7 +2681,7 @@ NavMeshAgent:
   m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 1000
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.1
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1

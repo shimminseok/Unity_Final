@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,8 +8,11 @@ public class DialogueController : Singleton<DialogueController>
     private DialogueGroupSO currentGroup;
     private int currentLineIndex = 0;
 
-    // 풀스크린 대사 후 되돌아갈 이전 씬 이름 저장
-    private string previousSceneName;
+    // 읽은 그룹 키들을 저장
+    private HashSet<string> readGroups = new();
+
+    [Header("디버깅 중 대사 스킵")]
+    [SerializeField] private bool dialogueSkip = false; 
 
     protected override void Awake()
     {
@@ -42,29 +46,35 @@ public class DialogueController : Singleton<DialogueController>
     // 특정 그룹 키의 대사 재생 시작
     public void Play(string groupKey)
     {
-        var table = TableManager.Instance.GetTable<DialogueGroupTable>();
-        var group = table.GetDataByID(groupKey);
-
-        if (group == null)
+        if (dialogueSkip || readGroups.Contains(groupKey))
         {
-            Debug.LogError($"GroupKey '{groupKey}'를 찾을 수 없습니다.");
+            Debug.Log("스킵됨");
             return;
         }
 
-        currentGroup = group;
-        currentLineIndex = 0;
-
-        if (group.mode == DialogueMode.Fullscreen)
-        {
-            // 현재 씬 이름 기억
-            previousSceneName = SceneManager.GetActiveScene().name;
-
-            // DialogueScene을 현재 씬 위에 Additive로 로드
-            LoadSceneManager.Instance.LoadSceneAdditive("DialogueScene");
-        }
         else
         {
-            ShowCurrentLine();
+            var table = TableManager.Instance.GetTable<DialogueGroupTable>();
+            var group = table.GetDataByID(groupKey);
+
+            if (group == null)
+            {
+                Debug.LogError($"GroupKey '{groupKey}'를 찾을 수 없습니다.");
+                return;
+            }
+
+            currentGroup = group;
+            currentLineIndex = 0;
+
+            if (group.mode == DialogueMode.Fullscreen)
+            {
+                // DialogueScene을 현재 씬 위에 Additive로 로드
+                LoadSceneManager.Instance.LoadSceneAdditive("DialogueScene");
+            }
+            else
+            {
+                ShowCurrentLine();
+            }
         }
     }
 
@@ -103,6 +113,12 @@ public class DialogueController : Singleton<DialogueController>
     // 대사 종료 처리
     private void EndDialogue()
     {
+        // 다 읽은 대사는 스킵
+        if (currentGroup != null)
+        {
+            readGroups.Add(currentGroup.groupKey);
+        }
+
         if (currentGroup.mode == DialogueMode.Fullscreen)
         {
             // 현재 DialogueScene을 언로드 → 원래 씬 복귀

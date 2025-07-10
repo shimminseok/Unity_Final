@@ -1,32 +1,44 @@
-using System;
-using System.Buffers;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
 public class RangeSkillSO : RangeActionSo
 {
+    public string subProjectilePoolID;
+
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(IAttackable attacker, IDamageable target)
+    public override void Execute(Unit attacker, IDamageable target)
     {
         var skillController = attacker.SkillController;
-        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
-        {
-            List<IDamageable> targets = attacker.SkillController.SkillSubTargets[effect];
-            if(targets == null) return;
-            foreach (var subTarget in targets)
-            {
-                if(subTarget.IsDead) continue;
-                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
-                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(),target.Collider.bounds.center, target);
 
-            }
-            if (ProjectileComponent != null)
+        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
+
+        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        {
+            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
+            foreach (Unit unit in skillController.targets)
             {
-                ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
+                if (unit == null) continue;
+                if (effect.projectilePrefab != null)
+                {   string projectileID = effect.projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
+                    GameObject projectile = ObjectPoolManager.Instance.GetObject(projectileID);
+                    if (projectile == null)
+                        projectile = Instantiate(effect.projectilePrefab);
+                    ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
+                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+
+                }
+                else
+                {
+                    effect.AffectTargetWithSkill(unit);
+                }
             }
+        }
+
+        if (ProjectileComponent != null)
+        {
+            ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
     }
 

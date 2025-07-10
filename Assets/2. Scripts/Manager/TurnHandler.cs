@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class TurnHandler
 {
@@ -40,6 +41,8 @@ public class TurnHandler
     public void RefillTurnQueue()
     {
         unitList.RemoveAll(u => u.IsDead);
+        unitList = unitList.OrderByDescending(u => u.StatManager.GetValue(StatType.Speed))
+            .ToList();
         turnQueue = new Queue<Unit>(unitList);
     }
 }

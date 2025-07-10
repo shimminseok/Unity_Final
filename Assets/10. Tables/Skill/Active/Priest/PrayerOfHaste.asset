@@ -27,10 +27,10 @@ MonoBehaviour:
       damageEffects: []
       buffEffects:
       - ID: 0
-        ownerStatType: 7
-        weight: 0.1
-        value: 10
-        opponentStatType: 0
+        ownerStatType: 0
+        weight: 0
+        value: 2
+        opponentStatType: 7
         lastTurn: 2
         statusEffectType: 9
         modifierType: 1
@@ -39,9 +39,9 @@ MonoBehaviour:
           ID: 0
           EffectType: 9
           Stat:
-            StatType: 0
+            StatType: 7
             ModifierType: 1
-            Value: 0
+            Value: 2
           Duration: 2
           TickInterval: 0
           IsStackable: 0

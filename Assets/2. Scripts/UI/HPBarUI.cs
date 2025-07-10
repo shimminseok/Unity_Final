@@ -77,7 +77,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     public void UnLink()
     {
         HealthBarManager.Instance.DespawnHealthBar(this);
-        //speedStat.OnValueChanged -= UpdateSpeedText;
+        speedStat.OnValueChanged -= UpdateSpeedText;
     }
 
     public void OnSpawnFromPool()

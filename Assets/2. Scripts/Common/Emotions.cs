@@ -60,7 +60,7 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
     {
         if (unit is PlayerUnitController playerUnit)
         {
-            if (playerUnit.passiveSo is ComposurePassiveSo composurePassive)
+            if (playerUnit.PassiveSo is ComposurePassiveSo composurePassive)
             {
                 hitRate = composurePassive.ComposureValue(hitRate);
                 return;
@@ -214,7 +214,7 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
         float perStack = DefenseDownPerStack;
         if (unit is PlayerUnitController playerUnit)
         {
-            if (playerUnit.passiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            if (playerUnit.PassiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
             {
                 emotionDebuffReducer.OnDebuffReducer(ref perStack);
             }

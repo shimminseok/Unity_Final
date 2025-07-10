@@ -1,4 +1,6 @@
+#if (UNITY_EDITOR)
 using UnityEditor.Experimental.GraphView;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +37,6 @@ public class SkillGachaResultUI : UIBase
         {
             slots[i].gameObject.SetActive(false);
         }
-        Close();
+        UIManager.Instance.Close(this);
     }
 }

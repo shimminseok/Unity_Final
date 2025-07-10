@@ -5,6 +5,7 @@ namespace EnemyState
     public class ReturnState : IState<EnemyUnitController, EnemyUnitState>
     {
         private readonly int isMove = Define.MoveAnimationHash;
+        private bool waitFrame;
 
         public void OnEnter(EnemyUnitController owner)
         {
@@ -13,10 +14,24 @@ namespace EnemyState
             owner.setRemainDistance = 0.1f;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.StartPostion);
+
+            waitFrame = false;
         }
 
         public void OnUpdate(EnemyUnitController owner)
         {
+            if (owner.IsDead)
+            {
+                owner.ChangeUnitState(EnemyUnitState.Die);
+                return;
+            }
+
+
+            if (!owner.Agent.pathPending && owner.Agent.remainingDistance <= owner.Agent.stoppingDistance && !waitFrame)
+            {
+                waitFrame = true;
+                owner.ChangeTurnState(TurnStateType.EndTurn);
+            }
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)

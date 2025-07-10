@@ -1,12 +1,11 @@
+using DissolveExample;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PlayerState;
 using System;
-using IdleState = EnemyState.IdleState;
-using MoveState = EnemyState.MoveState;
+using EnemyState;
 using Random = UnityEngine.Random;
-using StunState = EnemyState.StunState;
+
 
 [RequireComponent(typeof(EnemySkillContorller))]
 public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
@@ -15,6 +14,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
+    private DissolveChilds dissolveChilds;
     private HPBarUI hpBar;
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
     public float setRemainDistance;
@@ -37,6 +37,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         SkillController = GetComponent<EnemySkillContorller>();
         base.Awake();
+        dissolveChilds = GetComponentInChildren<DissolveChilds>();
     }
 
     protected override void Start()
@@ -176,6 +177,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (finalDam > 0)
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
+        OnTakeDamageHandler?.Invoke();
         if (curHp.Value <= 0)
         {
             Dead();
@@ -188,8 +190,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
-
-
+        Agent.enabled = false;
+        dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         // gameObject.SetActive(false);
     }
 

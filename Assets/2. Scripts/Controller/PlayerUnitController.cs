@@ -19,27 +19,28 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     [SerializeField] private AnimationClip moveClip;
     [SerializeField] private AnimationClip victoryClip;
     [SerializeField] private AnimationClip readyActionClip;
-    public PassiveSO passiveSo;
     public EquipmentManager EquipmentManager { get; private set; }
-    private HPBarUI hpBar;
-    public PlayerUnitSO PlayerUnitSo { get; private set; }
-
-    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
-
-    public float setRemainDistance;
+    public Vector3          StartPostion     { get; private set; }
+    public PlayerUnitSO     PlayerUnitSo     { get; private set; }
+    public PassiveSO        PassiveSo        { get; private set; }
 
     public override bool IsAnimationDone
     {
         get
         {
             var info = Animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsTag("Action") && info.normalizedTime >= 0.95f;
+            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
         }
     }
 
+    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
+
+    public float setRemainDistance;
+
+    private HPBarUI hpBar;
+
 
     private float remainDistance;
-    public Vector3 StartPostion { get; private set; }
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -90,8 +91,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (PlayerUnitSo == null)
             return;
 
-        passiveSo = PlayerUnitSo.PassiveSkill;
-        passiveSo.Initialize(this);
+        PassiveSo = PlayerUnitSo.PassiveSkill;
+        PassiveSo.Initialize(this);
         if (PlayerDeckContainer.Instance.SelectedStage == null)
             StatManager.Initialize(PlayerUnitSo);
         else
@@ -99,6 +100,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
         }
 
+        foreach (var skillData in deckData.DeckData.skillDatas)
+        {
+            SkillManager.AddActiveSkill(skillData);
+        }
+
+        SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         ChangeClip(Define.AttackClipName, UnitSo.AttackAniClip);
@@ -182,7 +189,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (finalDam > 0)
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
-
+        OnTakeDamageHandler?.Invoke();
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {
@@ -200,7 +207,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
         var allyDeathPassives = BattleManager.Instance.GetAllies(this)
-            .Select(u => (u as PlayerUnitController)?.passiveSo)
+            .Select(u => (u as PlayerUnitController)?.PassiveSo)
             .OfType<IPassiveAllyDeathTrigger>()
             .ToList();
 
@@ -214,11 +221,19 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-            return;
+            if (CurrentAction == ActionType.None || Target == null)
+            {
+                EndTurn();
+                return;
+            }
+            else
+            {
+                BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+                return;
+            }
         }
 
-        if (passiveSo is IPassiveTurnStartTrigger turnStartTrigger)
+        if (PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
         {
             turnStartTrigger.OnTurnStart(this);
         }
@@ -230,7 +245,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
-        if (passiveSo is IPassiveEmotionStackTrigger stackPassive)
+        if (PassiveSo is IPassiveEmotionStackTrigger stackPassive)
         {
             stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
@@ -241,6 +256,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
+        SkillController.EndTurn();
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

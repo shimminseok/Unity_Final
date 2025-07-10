@@ -16,14 +16,14 @@ public class MeleeAttackSo : CombatActionSo
         if (attacker is PlayerUnitController player)
         {
             //여전사 패시브 (상성 관계없이 1.3배)
-            if (player.passiveSo is IPassiveEmotionDamageModifier modifier)
+            if (player.PassiveSo is IPassiveEmotionDamageModifier modifier)
             {
                 finalValue = modifier.ModifyEmotionDamage(finalValue);
                 target.TakeDamage(finalValue);
                 return;
             }
 
-            if (player.passiveSo is IPassiveAttackTrigger repeatPassive) //더블어택
+            if (player.PassiveSo is IPassiveAttackTrigger repeatPassive) //더블어택
                 repeatPassive.OnAttack();
         }
 
