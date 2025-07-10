@@ -114,7 +114,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         PartyUnits.ForEach(x => x.ChangeUnitState(PlayerUnitState.Idle));
         if (EnemyUnits.TrueForAll(x => x.IsDead))
         {
-            PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
+            OnStageClear();
+        }
+        else if (PartyUnits.TrueForAll(x => x.IsDead))
+        {
+            OnStageFail();
         }
 
         TurnHandler.RefillTurnQueue();
@@ -137,6 +141,17 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
+    }
+
+    private void OnStageClear()
+    {
+        PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
+        string rewardKey = $"{PlayerDeckContainer.Instance.SelectedStage.ID}_Clear_Reward";
+        RewardManager.Instance.GiveReward(rewardKey);
+    }
+
+    private void OnStageFail()
+    {
     }
 
     protected override void OnDestroy()
