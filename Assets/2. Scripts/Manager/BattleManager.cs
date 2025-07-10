@@ -111,7 +111,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
 
         Debug.Log("배틀 턴이 종료 되었습니다.");
-        // allUnits.RemoveAll(u => u.IsDead);
         PartyUnits.ForEach(x => x.ChangeUnitState(PlayerUnitState.Idle));
         if (EnemyUnits.TrueForAll(x => x.IsDead))
         {

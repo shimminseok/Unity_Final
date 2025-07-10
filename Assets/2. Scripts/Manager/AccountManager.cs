@@ -17,7 +17,7 @@ public class AccountManager : Singleton<AccountManager>
     protected override void Awake()
     {
         base.Awake();
-
+        Application.targetFrameRate = 15;
         foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
         {
             AddPlayerUnit(playerUnitSo);
@@ -70,7 +70,7 @@ public class AccountManager : Singleton<AccountManager>
     // Opal 사용 가능한지 보고 UI에서 판단
     public bool CanUseOpal(int amount)
     {
-         return Opal >= amount;
+        return Opal >= amount;
     }
 
     public void UpdateBestStage(int stage)
@@ -103,7 +103,7 @@ public class AccountManager : Singleton<AccountManager>
         }
         else
         {
-            //TODO : 재화 돌려줌
+            //TODO : 재화 돌려줌 -> 재화 돌려주는걱 가챠 시스템쪽에서 처리함
             isDuplicate = true;
         }
     }

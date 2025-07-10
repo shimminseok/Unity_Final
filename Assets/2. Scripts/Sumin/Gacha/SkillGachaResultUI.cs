@@ -35,6 +35,6 @@ public class SkillGachaResultUI : UIBase
         {
             slots[i].gameObject.SetActive(false);
         }
-        Close();
+        UIManager.Instance.Close(this);
     }
 }

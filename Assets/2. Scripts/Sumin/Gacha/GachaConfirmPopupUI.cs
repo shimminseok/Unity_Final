@@ -13,10 +13,13 @@ public class GachaConfirmPopupUI : UIBase
     public event Action OnConfirm;
     public event Action OnCancel;
 
+    private UIManager uiManager;
+
     // 팝업 띄우고, ok 버튼 누르면 뽑기 진행, cancel 버튼 누르면 팝업 닫기
     public void ShowPopup(int drawCost)
     {
-        Open();
+        uiManager = UIManager.Instance;
+        uiManager.Open(this);
         drawCostText.text = $"{drawCost}"; // 뽑기 비용 표시
 
         okBtn.onClick.RemoveAllListeners();
@@ -25,21 +28,22 @@ public class GachaConfirmPopupUI : UIBase
         okBtn.onClick.AddListener(() =>
         {
             OnConfirm?.Invoke();
-            ClearEvents();
-            Close();
+            uiManager.Close(this);
         });
 
         cancelBtn.onClick.AddListener(() =>
         {
             OnCancel?.Invoke();
-            ClearEvents();
-            Close();
+            uiManager.Close(this);
         });
     }
 
-    // 이벤트 누적 방지
-    private void ClearEvents()
+    public override void Close()
     {
+        base.Close();
+        okBtn.onClick.RemoveAllListeners();
+        cancelBtn.onClick.RemoveAllListeners();
+
         OnConfirm = null;
         OnCancel = null;
     }

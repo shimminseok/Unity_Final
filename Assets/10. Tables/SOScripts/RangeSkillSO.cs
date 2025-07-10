@@ -21,8 +21,15 @@ public class RangeSkillSO : RangeActionSo
             foreach (Unit unit in skillController.targets)
             {
                 if (unit == null) continue;
-                ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
-                ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+                if (effect.projectileID != string.Empty)
+                {
+                    ProjectileComponent = ObjectPoolManager.Instance.GetObject(effect.projectileID).GetComponent<SkillProjectile>();
+                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
+                }
+                else
+                {
+                    effect.AffectTargetWithSkill(unit);
+                }
             }
         }
 

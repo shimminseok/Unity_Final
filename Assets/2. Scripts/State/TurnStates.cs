@@ -149,6 +149,8 @@ public class ActState : ITurnState
             }
         };
 
+
+        Debug.Log("Enter ActState");
         action = CombatActionFactory.Create(unit);
         action.OnActionComplete += handler;
         action.Execute(unit);
@@ -179,6 +181,8 @@ public class ActState : ITurnState
             unit.ChangeTurnState(TurnStateType.EndTurn);
             return;
         }
+
+        Debug.Log("ProceedToNextState");
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
             unit.ChangeTurnState(TurnStateType.Return);

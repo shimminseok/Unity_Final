@@ -47,6 +47,8 @@ public class CharacterInfoPanel : MonoBehaviour
     private void UpdateEquipmentSkill(EntryDeckData data)
     {
         // 액티브 스킬들 표시
+        if (data == null)
+            return;
         for (int i = 0; i < activeSkillSlotImage.Length; i++)
         {
             if (data.skillDatas[i] != null)
