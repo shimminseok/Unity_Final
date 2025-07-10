@@ -9,16 +9,7 @@ public abstract class BaseEmotion
     public int Stack
     {
         get => stack;
-        protected set
-        {
-            int clamped = Mathf.Clamp(value, 0, MaxStack);
-            if (stack != clamped)
-            {
-                stack = clamped;
-                OnStackChanged(null);        // 내부 효과 (오버라이드 메서드) 호출
-                StackChanged?.Invoke(stack); // 외부 이벤트 알림
-            }
-        }
+        protected set => stack = Mathf.Clamp(value, 0, MaxStack);
     }
 
     protected const int MaxStack = 10;
@@ -38,6 +29,7 @@ public abstract class BaseEmotion
 
     public virtual void OnStackChanged(Unit unit)
     {
+        StackChanged?.Invoke(Stack);
     }
 }
 
@@ -92,6 +84,7 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.CriticalDam, StatModifierType.BuffPercent, -critDamUpAmount);
         // 2. 새 버프 계산
@@ -148,6 +141,7 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -attackUpAmount);
         // 2. 새 버프 계산
@@ -230,6 +224,8 @@ public class DepressionEmotion : BaseEmotion, IEmotionOnTakeDamage
 
     public override void OnStackChanged(Unit unit)
     {
+        base.OnStackChanged(unit);
+
         float perStack = DefenseDownPerStack;
         if (unit is PlayerUnitController playerUnit)
         {

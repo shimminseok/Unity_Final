@@ -123,6 +123,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             // 외부 알림
             EmotionChanged?.Invoke(CurrentEmotion);
 
+            // 감정이 새로 바뀐 경우에 즉시 1스택에서 시작
+            CurrentEmotion.AddStack(this);
+
             if (this is PlayerUnitController playerUnit && playerUnit.PassiveSo is IPassiveChangeEmotionTrigger passiveChangeEmotion)
             {
                 passiveChangeEmotion.OnChangeEmotion();
