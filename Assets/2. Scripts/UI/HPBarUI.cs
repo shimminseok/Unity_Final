@@ -26,6 +26,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     private Transform targetTransform;
     private Camera mainCamera;
     private float heightOffset;
+    private int emotionCount = 0;
 
     private StatManager statManager;
     private CalculatedStat speedStat;
@@ -72,6 +73,12 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     private void UpdateFill(float cur, float max)
     {
         fillImage.fillAmount = Mathf.Clamp01(cur / max);
+    }
+
+    // 감정 업데이트 메서드
+    private void UpdateEmotion()
+    {
+
     }
 
     public void UnLink()

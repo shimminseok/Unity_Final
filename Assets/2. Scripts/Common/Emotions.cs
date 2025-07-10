@@ -1,19 +1,38 @@
-﻿using UnityEngine;
+using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public abstract class BaseEmotion
 {
     public EmotionType EmotionType;
-    public int Stack;
+    private int stack;
+    public int Stack
+    {
+        get => stack;
+        protected set
+        {
+            int clamped = Mathf.Clamp(value, 0, MaxStack);
+            if (stack != clamped)
+            {
+                stack = clamped;
+                OnStackChanged(null);        // 내부 효과 (오버라이드 메서드) 호출
+                StackChanged?.Invoke(stack); // 외부 이벤트 알림
+            }
+        }
+    }
+
     protected const int MaxStack = 10;
 
     public abstract void Enter(Unit unit);
     public abstract void Execute(Unit unit);
     public abstract void Exit(Unit unit);
 
+    // 외부에 스택 변경을 알리는 이벤트
+    public event Action<int> StackChanged;
+
     public void AddStack(Unit unit, int amount = 1)
     {
         Stack += amount;
-        Stack = Mathf.Clamp(Stack, 0, MaxStack);
         OnStackChanged(unit);
     }
 
