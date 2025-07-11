@@ -15,8 +15,10 @@ public abstract class StatusEffect
     public float Duration;
     public float TickInterval = 1f;
     public Coroutine CoroutineRef;
+    public Action ApplyEffect;
 
     public bool IsStackable;
+    
 
     public abstract IEnumerator Apply(StatusEffectManager manager);
 
@@ -253,6 +255,7 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
     private void TakeDamage()
     {
         manager.Owner.TakeDamage(Value, ModifierType);
+        ApplyEffect?.Invoke();
         //대미지를 처리해준다?
     }
 }

@@ -11,7 +11,13 @@ public class RangeAttackSO : RangeActionSo
     {
         if (target != null)
         {
-            ProjectileComponent = ObjectPoolManager.Instance.GetObject(projectilePoolId).GetComponent<SkillProjectile>();
+            string projectilePoolId = projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
+            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolId);
+            if (projectile == null)
+            {
+                projectile = Instantiate(projectilePrefab);
+            }
+            ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
             ProjectileComponent.Initialize(attacker, attacker.GetCenter(), target.Collider.bounds.center);
 
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;

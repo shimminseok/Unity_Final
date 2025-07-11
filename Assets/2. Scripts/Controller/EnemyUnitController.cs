@@ -175,6 +175,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (finalDam > 0)
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
+        OnTakeDamageHandler?.Invoke();
         if (curHp.Value <= 0)
         {
             Dead();

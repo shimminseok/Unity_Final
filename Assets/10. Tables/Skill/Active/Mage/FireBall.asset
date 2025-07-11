@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: FireBall
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 7001
   skillName: "\uD30C\uC774\uC5B4\uBCFC"
   skillDescription: FireBall
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
@@ -23,16 +23,15 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 0
-      projectileID: FireBall
+      projectilePrefab: {fileID: 7207155656997727327, guid: 0b99c808cff0db84cbacbfdd99a819d8,
+        type: 3}
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.3
         value: 40
       buffEffects: []
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX: []
   jobType: 6
   activeSkillTier: 0
   reuseMaxCount: 3
