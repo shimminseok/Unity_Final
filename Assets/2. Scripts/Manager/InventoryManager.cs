@@ -48,7 +48,7 @@ public class SaveInventoryItem
     }
 }
 
-public class InventoryManager : SceneOnlySingleton<InventoryManager>
+public class InventoryManager : Singleton<InventoryManager>
 {
     [SerializeField] private int inventorySize;
     public List<InventoryItem> Inventory { get; private set; }
@@ -61,6 +61,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     protected override void Awake()
     {
         base.Awake();
+        if (isDuplicated)
+            return;
+
         gameManager = GameManager.Instance;
         InitInventory();
     }
@@ -143,10 +146,5 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 
         OnInventorySlotUpdate?.Invoke(from);
         OnInventorySlotUpdate?.Invoke(to);
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
     }
 }

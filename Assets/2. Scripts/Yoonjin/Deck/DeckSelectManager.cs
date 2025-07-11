@@ -36,6 +36,11 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         base.Awake();
     }
 
+    private void Start()
+    {
+        selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.deckDatas;
+    }
+
     protected override void OnDestroy()
     {
         base.OnDestroy();

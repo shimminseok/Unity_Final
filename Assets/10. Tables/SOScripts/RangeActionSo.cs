@@ -1,12 +1,13 @@
-﻿using UnityEngine.Serialization;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RangeActionSo : CombatActionSo
 {
-    public string projectilePoolId;
+    public GameObject projectilePrefab;
 
-    public SkillProjectile ProjectileComponent { get; protected set; }
+    public PoolableProjectile ProjectileComponent { get; protected set; }
 
-    public bool IsProjectile => projectilePoolId != string.Empty;
+    public bool IsProjectile => projectilePrefab != null;
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
 

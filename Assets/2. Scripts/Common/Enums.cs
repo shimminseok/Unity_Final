@@ -174,7 +174,8 @@ public enum ProjectileInterpolationMode
     Lerp,
     MoveTowards,
     SmoothDamp,
-    Slerp
+    Slerp,
+    Fall
 }
 
 public enum GachaType
@@ -182,4 +183,28 @@ public enum GachaType
     Skill,
     Unit,
     Equipment
+}
+
+public enum VFXSpawnReference
+{
+    Caster,     // 시전자 위치에 이펙트 발생
+    Target,     // 타겟위치에 이펙트 발생
+    Projectile, // 투사체위치에 이펙트 발생
+    World       // 월드좌표 기준으로 이펙트발생
+}
+
+public enum VFXType
+{
+    Dot, // 스킬로 인한 DotDamage가 발생할 때마다
+    Buff, // 스킬로 인한 Buff, Debuff가 유지되는 동안 반복
+    Hit, // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
+    
+}
+
+
+public enum RewardType
+{
+    Gold,
+    Opal,
+    Item
 }

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "AllyDeathPassive", menuName = "ScriptableObjects/PassiveSkill/AllyDeathPassive", order = 0)]
@@ -16,6 +16,6 @@ public class AllyDeathPassiveSo : PassiveSO, IPassiveAllyDeathTrigger
         if (!CanTrigger(Owner.CurrentEmotion))
             return;
 
-        Owner.CurrentEmotion.Stack += emotionStackPerAllyDeath;
+        Owner.CurrentEmotion.AddStack(Owner, emotionStackPerAllyDeath);
     }
 }
