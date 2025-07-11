@@ -1,24 +1,34 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class PoolableVFX : MonoBehaviour, IPoolObject
+public abstract class PoolableVFX : MonoBehaviour, IPoolObject
 {
     private string poolId;
     private int poolSize;
-    private ParticleSystem particle;
+    protected ParticleSystem particle;
     public GameObject GameObject => gameObject;
     public string PoolID => poolId;
     public int PoolSize => poolSize;
-
-    public IAttackable Attacker;
-    public IDamageable Target;
-
-    public PoolableVFX(VFXData vfxData)
-    {
-        
-    }
+    protected VFXData VFXData;
     
+
+    private void Awake()
+    {
+        particle = GetComponent<ParticleSystem>();
+    }
+
+    public abstract IEnumerator PlayVFX();
+
+    public abstract void AdjustTransform();
+    public virtual void SetData(VFXData data)
+    {
+        VFXData = data;
+    }
     public void OnSpawnFromPool()
     {
+        AdjustTransform();
+        StartCoroutine(PlayVFX());
     }
 
     public void OnReturnToPool()

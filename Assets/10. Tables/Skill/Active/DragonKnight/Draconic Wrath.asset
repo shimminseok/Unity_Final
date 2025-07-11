@@ -25,20 +25,28 @@ MonoBehaviour:
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 0
-      projectileID: 
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.3
         value: 60
       buffEffects: []
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX:
+      - VFXPrefab: {fileID: 0}
+        VFXPoolID: 
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0, y: 0, z: 0}
+        reference: 0
+        isParent: 0
+        type: 0
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 3
-      projectileID: 
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
       damageEffects: []
       buffEffects:
       - ID: 0
@@ -60,9 +68,7 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX: []
   jobType: 3
   activeSkillTier: 2
   reuseMaxCount: 2

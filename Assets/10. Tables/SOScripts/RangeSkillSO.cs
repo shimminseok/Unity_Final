@@ -3,8 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
 public class RangeSkillSO : RangeActionSo
 {
-    public string subProjectilePoolID;
-
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
@@ -21,8 +19,8 @@ public class RangeSkillSO : RangeActionSo
             {
                 if (unit == null) continue;
                 if (effect.projectilePrefab != null)
-                {   string projectileID = effect.projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
-                    GameObject projectile = ObjectPoolManager.Instance.GetObject(projectileID);
+                {   
+                    GameObject projectile = ObjectPoolManager.Instance.GetObject(effect.projectilePoolID);
                     if (projectile == null)
                         projectile = Instantiate(effect.projectilePrefab);
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();

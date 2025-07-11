@@ -3,6 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class VFXData
 {
+    public GameObject VFXPrefab;
     public string VFXPoolID;
     
     [Header("LocalTransform 미세조정 값")] 

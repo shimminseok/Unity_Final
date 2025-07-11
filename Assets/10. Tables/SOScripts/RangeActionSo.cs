@@ -3,6 +3,7 @@ using UnityEngine.Serialization;
 
 public class RangeActionSo : CombatActionSo
 {
+    public string projectilePoolID;
     public GameObject projectilePrefab;
 
     public PoolableProjectile ProjectileComponent { get; protected set; }
