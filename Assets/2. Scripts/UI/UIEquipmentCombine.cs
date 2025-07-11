@@ -4,13 +4,30 @@ using UnityEngine;
 
 public class UIEquipmentCombine : UIBase
 {
-    // Start is called before the first frame update
-    void Start()
+    private CombineManager combineManager;
+
+
+    public List<EquipmentItem> CombineItems { get; private set; }
+
+    private void Start()
     {
+        combineManager = CombineManager.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetCombineItem(EquipmentItem item)
     {
+        if (CombineItems.Contains(item))
+        {
+            CombineItems.Remove(item);
+        }
+        else
+        {
+            CombineItems.Add(item);
+        }
+    }
+
+    public void OnClickCombine()
+    {
+        combineManager.TryCombine(CombineItems);
     }
 }
