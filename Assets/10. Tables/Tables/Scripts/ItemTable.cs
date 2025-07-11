@@ -10,6 +10,8 @@ public class ItemTable : BaseTable<int, ItemSO>
 
     public Dictionary<JobType, List<EquipmentItemSO>> EquipmentByJob { get; private set; } = new Dictionary<JobType, List<EquipmentItemSO>>();
 
+    public Dictionary<(EquipmentType, Tier), List<EquipmentItemSO>> EquipmentByTypeAndTier { get; private set; } = new Dictionary<(EquipmentType, Tier), List<EquipmentItemSO>>();
+
     public override void CreateTable()
     {
         Type = GetType();
@@ -24,6 +26,9 @@ public class ItemTable : BaseTable<int, ItemSO>
 
             if (item is not EquipmentItemSO equipmentItem)
                 continue;
+
+            //장비 종류, 티어별로 아이템을 모아둔 딕셔너리
+            AddToEquipmentByTypeAndTier(equipmentItem);
 
             if (equipmentItem.IsEquipableByAllJobs)
             {
@@ -50,8 +55,25 @@ public class ItemTable : BaseTable<int, ItemSO>
         jobEquipList.Add(equipmentItem);
     }
 
+    private void AddToEquipmentByTypeAndTier(EquipmentItemSO equipmentItem)
+    {
+        var key = (equipmentItem.EquipmentType, equipmentItem.Tier);
+        if (!EquipmentByTypeAndTier.TryGetValue(key, out var list))
+        {
+            list = new List<EquipmentItemSO>();
+            EquipmentByTypeAndTier[key] = list;
+        }
+
+        list.Add(equipmentItem);
+    }
+
     public List<EquipmentItemSO> GetEquipmentsByJob(JobType jobType)
     {
         return EquipmentByJob.TryGetValue(jobType, out var equipmentList) ? equipmentList : new List<EquipmentItemSO>();
+    }
+
+    public List<EquipmentItemSO> GetEquipmentsByTypeAndTier(EquipmentType equipmentType, Tier tier)
+    {
+        return EquipmentByTypeAndTier.TryGetValue((equipmentType, tier), out var equipmentList) ? equipmentList : new List<EquipmentItemSO>();
     }
 }
