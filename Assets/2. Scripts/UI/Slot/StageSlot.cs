@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StageSlot : MonoBehaviour
 {
+    [SerializeField] private GameObject lockImg;
     private StageSO stageSo;
 
     UIStageSelect stageSelectUI;
@@ -12,6 +13,10 @@ public class StageSlot : MonoBehaviour
     {
         stageSo = data;
         stageSelectUI = UIManager.Instance.GetUIComponent<UIStageSelect>();
+
+
+        int nextStageID = AccountManager.Instance.GetNextStageId(AccountManager.Instance.BestStage);
+        lockImg.SetActive(nextStageID < stageSo.ID);
     }
 
     public void OnClickStageSlot()
