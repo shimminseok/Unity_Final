@@ -28541,6 +28541,7 @@ GameObject:
   - component: {fileID: 4913670616881474139}
   - component: {fileID: 8549232453758198378}
   - component: {fileID: 3956019180818518665}
+  - component: {fileID: 5677527985221871403}
   m_Layer: 5
   m_Name: Canvas_EquipmentCombine
   m_TagString: Untagged
@@ -28631,6 +28632,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5677527985221871403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8307677223683169074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3f94096a6b301f4ab5e097b88b7dc61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contents: {fileID: 4574245645113231983}
 --- !u!1 &8343496230127059407
 GameObject:
   m_ObjectHideFlags: 0
@@ -31560,7 +31574,7 @@ GameObject:
   - component: {fileID: 8706360732180676281}
   - component: {fileID: 4646294254349162259}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
