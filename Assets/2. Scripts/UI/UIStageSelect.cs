@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler
 {
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private RectTransform viewPort;
@@ -37,11 +37,6 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
         mapContent.anchoredPosition = newPos;
     }
 
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-    }
-
     private Vector2 ClampToBounds(Vector2 pos)
     {
         Vector2 minBounds = viewPort.rect.size - mapContent.rect.size;
@@ -57,7 +52,6 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler, IEndDragHa
     {
         if (DeckSelectManager.Instance.GetSelectedDeck().Count == 0)
         {
-            Debug.Log("Please select a deck");
             OnClickEditDeckButton();
             return;
         }
