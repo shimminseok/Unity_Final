@@ -13,7 +13,7 @@ using UnityEngine;
  * direction은 투사체의 방향조절
  * StartPosiion은 투사체의 시작위치조절
  */
-public class SkillProjectile : MonoBehaviour, IPoolObject
+public class PoolableProjectile : MonoBehaviour, IPoolObject
 {
     [SerializeField] private string poolId;
 
@@ -85,6 +85,10 @@ public class SkillProjectile : MonoBehaviour, IPoolObject
             case ProjectileInterpolationMode.Slerp:
                 Vector3 offset = Vector3.Slerp(startPosition, direction, delta);
                 transform.position = direction + offset;
+                break;
+            case ProjectileInterpolationMode.Fall:
+                transform.position = direction + Vector3.up * 10;
+                mode = ProjectileInterpolationMode.MoveTowards;
                 break;
         }
     }

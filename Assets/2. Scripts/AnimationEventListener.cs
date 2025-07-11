@@ -6,10 +6,12 @@ using UnityEngine;
 public class AnimationEventListener : MonoBehaviour
 {
     private Unit owner;
+    private SkillData skillData;
 
     public void Initialize(Unit unit)
     {
         owner = unit;
+        skillData = owner.SkillController.CurrentSkillData;
     }
 
     public void EventTrigger()
@@ -28,6 +30,11 @@ public class AnimationEventListener : MonoBehaviour
         {
             UseSkill();
         }
+    }
+
+    public void PlaySkillVFXTrigger()
+    {
+  
     }
 
     private void Attack()
