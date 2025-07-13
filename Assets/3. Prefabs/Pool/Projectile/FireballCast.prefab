@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2483997863579135244}
   - component: {fileID: 5096031753041883427}
   - component: {fileID: 4703724511638595436}
-  - component: {fileID: 1507988488266532430}
+  - component: {fileID: -3724342023573426865}
   m_Layer: 0
   m_Name: FireballCast
   m_TagString: Untagged
@@ -4891,7 +4891,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &1507988488266532430
+--- !u!114 &-3724342023573426865
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4903,14 +4903,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fdb31e2c1bf6140bf8149a951587d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  VFXData:
-    VFXPrefab: {fileID: 0}
-    LocalPosition: {x: 0, y: 0, z: 0}
-    LocalRotation: {x: 0, y: 0, z: 0}
-    LocalScale: {x: 1, y: 1, z: 1}
-    reference: 0
-    isParent: 0
-    type: 0
+  poolId: FireballCast
+  poolSize: 1
 --- !u!1 &2220510499574925656
 GameObject:
   m_ObjectHideFlags: 0

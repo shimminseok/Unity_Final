@@ -8,6 +8,7 @@ public class RangeSkillSO : RangeActionSo
 
     public override void Execute(Unit attacker, IDamageable target)
     {
+        base.Execute(attacker, target);
         var skillController = attacker.SkillController;
 
         TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);

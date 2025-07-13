@@ -14,5 +14,19 @@ public class RangeActionSo : CombatActionSo
 
     public override void Execute(Unit attacker, IDamageable target)
     {
+        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.skillEffect.skillEffectDatas)
+        {
+            foreach (var vfxData in data.skillVFX)
+            {
+                if (vfxData.type == VFXType.Cast)
+                {
+                    PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
+                    vfxData.Attacker = attacker.SkillManager.Owner;
+                    vfxData.Target = target;
+                    vfx.SetData(vfxData);
+                    vfx.OnSpawnFromPool();
+                }
+            }
+        }
     }
 }

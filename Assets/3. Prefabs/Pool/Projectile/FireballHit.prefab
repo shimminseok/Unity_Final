@@ -14693,6 +14693,7 @@ GameObject:
   - component: {fileID: 4962729580824646499}
   - component: {fileID: 441093087455660767}
   - component: {fileID: 5407804389926688825}
+  - component: {fileID: 3792805327519127547}
   m_Layer: 0
   m_Name: FireballHit
   m_TagString: Untagged
@@ -19573,3 +19574,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &3792805327519127547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8799239972618084933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60fdb31e2c1bf6140bf8149a951587d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolId: FireballHit
+  poolSize: 1

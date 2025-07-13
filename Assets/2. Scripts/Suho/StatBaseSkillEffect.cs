@@ -16,6 +16,17 @@ public class SkillEffectData
     public List<VFXData> skillVFX;
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
+        foreach (var vfxData in skillVFX)
+        {
+            if (vfxData.type == VFXType.Hit)
+            {
+                PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
+                vfxData.Attacker = owner;
+                vfxData.Target = target;
+                vfx.SetData(vfxData);
+                vfx.OnSpawnFromPool();
+            }
+        }
         
         foreach (var result in buffEffects)
         {

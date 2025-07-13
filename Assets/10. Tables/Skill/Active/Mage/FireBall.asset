@@ -25,6 +25,38 @@ MonoBehaviour:
       selectTarget: 0
       projectilePrefab: {fileID: 7207155656997727327, guid: 0b99c808cff0db84cbacbfdd99a819d8,
         type: 3}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.3
+        value: 40
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+          type: 3}
+        VFXPoolID: FireballHit
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 2, y: 2, z: 2}
+        reference: 1
+        isParent: 1
+        type: 2
+      - VFXPrefab: {fileID: 811919792610040567, guid: b7d5e5abe9215cd428d1ac0edc6199ff,
+          type: 3}
+        VFXPoolID: FireballCast
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 1
+        type: 2
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 1
+      projectilePrefab: {fileID: 7207155656997727327, guid: 0b99c808cff0db84cbacbfdd99a819d8,
+        type: 3}
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
