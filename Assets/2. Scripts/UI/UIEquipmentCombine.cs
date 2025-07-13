@@ -5,13 +5,14 @@ using UnityEngine;
 public class UIEquipmentCombine : UIBase
 {
     private CombineManager combineManager;
-
+    private InventoryManager inventoryManager;
 
     public List<EquipmentItem> CombineItems { get; private set; }
 
     private void Start()
     {
         combineManager = CombineManager.Instance;
+        inventoryManager = InventoryManager.Instance;
     }
 
     public void SetCombineItem(EquipmentItem item)
