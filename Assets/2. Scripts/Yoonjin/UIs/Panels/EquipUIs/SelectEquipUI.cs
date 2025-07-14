@@ -35,6 +35,8 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
+        if (currentCharacter == null)
+            return;
         AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
     }
 
