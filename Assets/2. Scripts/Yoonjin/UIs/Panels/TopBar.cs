@@ -10,6 +10,8 @@ public class TopBar : MonoBehaviour
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI opalText;
 
+    private AccountManager accountManager;
+
     private void Awake()
     {
         backButton.onClick.AddListener(OnBackButtonClicked);
@@ -17,8 +19,12 @@ public class TopBar : MonoBehaviour
 
     private void Start()
     {
-        AccountManager.Instance.OnGoldChanged += UpdateGoldText;
-        AccountManager.Instance.OnOpalChanged += UpdateOpalText;
+        accountManager = AccountManager.Instance;
+        accountManager.OnGoldChanged += UpdateGoldText;
+        accountManager.OnOpalChanged += UpdateOpalText;
+
+        UpdateGoldText(accountManager.Gold);
+        UpdateOpalText(accountManager.Opal);
     }
 
     private void OnBackButtonClicked()
@@ -40,7 +46,7 @@ public class TopBar : MonoBehaviour
 
     private void OnDisable()
     {
-        AccountManager.Instance.OnGoldChanged -= UpdateGoldText;
-        AccountManager.Instance.OnOpalChanged -= UpdateOpalText;
+        accountManager.OnGoldChanged -= UpdateGoldText;
+        accountManager.OnOpalChanged -= UpdateOpalText;
     }
 }
