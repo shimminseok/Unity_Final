@@ -12,6 +12,8 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
     public int PoolSize => poolSize;
     protected VFXData VFXData;
     public IEffectProvider VFXTarget { get; set; }
+    
+    public Action OnTrigger { get; set; }
 
 
     private void Awake()
@@ -44,10 +46,11 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         VFXTarget = effectProvider;
     }
     
-    public void SetData(VFXData data,IEffectProvider effectProvider,Action trigger)
+    public void SetData(VFXData data,IEffectProvider effectProvider, Action trigger)
     {
         VFXData = data;
         VFXTarget = effectProvider;
+        
         if (trigger != null)
         {
             trigger += OnSpawnFromPool;

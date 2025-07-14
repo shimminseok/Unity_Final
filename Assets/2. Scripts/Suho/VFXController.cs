@@ -13,8 +13,10 @@ public class VFXController : MonoBehaviour
         return vfx;
     }
 
-    public static void VFXListPlay(List<VFXData> vfxList, VFXType vfxType,VFXSpawnReference unit, IEffectProvider effectProvider)
+    
+    public static List<PoolableVFX> VFXListPlay(List<VFXData> vfxList, VFXType vfxType,VFXSpawnReference unit, IEffectProvider effectProvider, bool isAwakePlay)
     {
+        List<PoolableVFX> returnVFX = new List<PoolableVFX>();
         foreach (var vfxData in vfxList)
         {
             if (vfxData.reference != unit) continue; 
@@ -22,22 +24,14 @@ public class VFXController : MonoBehaviour
             {
                 PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
                 vfx.SetData(vfxData,effectProvider);
-                vfx.OnSpawnFromPool();
+                returnVFX.Add(vfx);
+                if (isAwakePlay)
+                { 
+                    vfx.OnSpawnFromPool();
+                }
             }
         }
-    }
-    
-    public static void VFXListPlay(List<VFXData> vfxList, VFXType vfxType,VFXSpawnReference unit, IEffectProvider effectProvider,Action trigger)
-    {
-        foreach (var vfxData in vfxList)
-        {
-            if (vfxData.reference != unit) continue; 
-            if (vfxData.type == vfxType)
-            {
-                PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
-                vfx.SetData(vfxData,effectProvider,trigger);
-            }
-        }
+        return returnVFX;
     }
     
 }

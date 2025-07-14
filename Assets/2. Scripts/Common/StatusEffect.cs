@@ -31,7 +31,11 @@ public abstract class StatusEffect
     {
         if (BuffVFX != null)
         {
-             VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,ApplyEffect);
+             List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,false);
+             foreach (var vfx in list)
+             {
+                 ApplyEffect += vfx.OnSpawnFromPool;
+             }
         }
     }
     
@@ -190,19 +194,14 @@ public class TurnBasedModifierBuff : TurnBasedBuff
 {
     public override IEnumerator Apply(StatusEffectManager manager)
     {
-        //효과 적용
-        Debug.Log($"Before AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         manager.ModifyBuffStat(StatType, ModifierType, Value);
-        Debug.Log($"After AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager manager)
     {
-        Debug.Log($"Before Remove AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
         manager.ModifyBuffStat(StatType, ModifierType, -Value);
-        Debug.Log($"After Remove AttackPow = {manager.Owner.StatManager.GetValue(StatType.AttackPow)}");
     }
 }
 
@@ -266,8 +265,8 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
 
     private void TakeDamage()
     {
-        manager.Owner.TakeDamage(Value, ModifierType);
         ApplyEffect?.Invoke();
+        manager.Owner.TakeDamage(Value, ModifierType);
         //대미지를 처리해준다?
     }
 }
