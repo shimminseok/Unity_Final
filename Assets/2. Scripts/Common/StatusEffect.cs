@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +17,7 @@ public abstract class StatusEffect
     public float TickInterval = 1f;
     public Coroutine CoroutineRef;
     public Action ApplyEffect;
-
+    public List<VFXData> BuffVFX;
     public bool IsStackable;
     
 
@@ -25,6 +26,15 @@ public abstract class StatusEffect
     public virtual void OnEffectRemoved(StatusEffectManager effect)
     {
     }
+
+    public void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
+    {
+        if (BuffVFX != null)
+        {
+             VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,ApplyEffect);
+        }
+    }
+    
 }
 
 /// <summary>
@@ -244,12 +254,14 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
     {
         this.manager = manager;
         BattleManager.Instance.OnBattleEnd += TakeDamage;
+        ApplyVFX(manager,VFXType.Dot);
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager effect)
     {
         BattleManager.Instance.OnBattleEnd -= TakeDamage;
+        ApplyEffect = null;
     }
 
     private void TakeDamage()

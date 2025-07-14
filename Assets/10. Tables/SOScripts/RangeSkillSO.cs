@@ -13,7 +13,7 @@ public class RangeSkillSO : RangeActionSo
 
         TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
-        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in skillController.CurrentSkillData.BuffEffect.skillEffectDatas)
         {
             skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
             foreach (Unit unit in skillController.targets)

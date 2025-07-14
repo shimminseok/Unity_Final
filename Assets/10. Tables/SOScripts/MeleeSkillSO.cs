@@ -5,10 +5,15 @@ public class MeleeSkillSO : CombatActionSo
 {
     public override void Execute(Unit attacker, IDamageable target)
     {
+        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.buffEffect.skillEffectDatas)
+        {
+            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider);
+            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider);
+        }
         //이펙트 추가
         TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
-        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in attacker.SkillController.CurrentSkillData.BuffEffect.skillEffectDatas)
         {
             attacker.SkillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
             foreach (Unit unit in attacker.SkillController.targets)

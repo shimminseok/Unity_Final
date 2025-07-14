@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -14,4 +15,5 @@ public class StatusEffectData
     public float Duration;
     public float TickInterval;
     public bool IsStackable;
+    public List<VFXData> VFX;
 }

@@ -16,18 +16,8 @@ public class SkillEffectData
     public List<VFXData> skillVFX;
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
-        foreach (var vfxData in skillVFX)
-        {
-            if (vfxData.type == VFXType.Hit)
-            {
-                PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
-                vfxData.Attacker = owner;
-                vfxData.Target = target;
-                vfx.SetData(vfxData);
-                vfx.OnSpawnFromPool();
-            }
-        }
-        
+        VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Target, target as IEffectProvider);
+        VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Caster, owner as IEffectProvider);
         foreach (var result in buffEffects)
         {
             var statusEffect = result.StatusEffect;
@@ -48,7 +38,7 @@ public class SkillEffectData
 }
 
 [System.Serializable]
-public class StatBaseSkillEffect
+public class StatBaseBuffEffect
 {
     [HideInInspector] public Unit owner;
     public List<SkillEffectData> skillEffectDatas;
@@ -70,6 +60,7 @@ public class StatBaseSkillEffect
                     buffSkillEffect.StatusEffect.Stat = new StatData();
                     buffSkillEffect.StatusEffect.Stat.StatType = buffSkillEffect.opponentStatType;
                     buffSkillEffect.StatusEffect.Stat.ModifierType = buffSkillEffect.modifierType;
+                    buffSkillEffect.StatusEffect.VFX = effect.skillVFX;
                 }
             }
         }

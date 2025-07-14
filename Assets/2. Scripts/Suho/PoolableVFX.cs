@@ -6,18 +6,13 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
 {
     [SerializeField]private string poolId;
     [SerializeField]private int poolSize;
-    protected ParticleSystem particle;
+    public ParticleSystem particle;
     public GameObject GameObject => gameObject;
     public string PoolID => poolId;
     public int PoolSize => poolSize;
     protected VFXData VFXData;
+    public IEffectProvider VFXTarget { get; set; }
 
-    public IDamageable Target { get; set; }
-    public IAttackable Attacker { get; set; }
-    
-    public Unit VFXTarget { get; set; }
-
-    
 
     private void Awake()
     {
@@ -43,23 +38,23 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
         transform.localScale = VFXData.LocalScale;
     }
-    public void SetData(VFXData data)
+    public void SetData(VFXData data, IEffectProvider effectProvider)
     {
         VFXData = data;
-        Attacker = data.Attacker;
-        Target = data.Target;
-        switch (VFXData.reference)
-        {
-            case VFXSpawnReference.Caster:
-                VFXTarget = Attacker as Unit;
-                break;
-            case VFXSpawnReference.Target:
-                VFXTarget = Target as Unit;
-                break;
-                default: break;
-        }
-       
+        VFXTarget = effectProvider;
     }
+    
+    public void SetData(VFXData data,IEffectProvider effectProvider,Action trigger)
+    {
+        VFXData = data;
+        VFXTarget = effectProvider;
+        if (trigger != null)
+        {
+            trigger += OnSpawnFromPool;
+        }
+    }
+    
+
     public void OnSpawnFromPool()
     {
         AdjustTransform();
