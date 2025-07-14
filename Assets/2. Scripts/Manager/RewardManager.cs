@@ -22,7 +22,6 @@ public class RewardManager : Singleton<RewardManager>
         rewardTable = TableManager.Instance.GetTable<RewardTable>();
     }
 
-    private UIReward rewardUI = UIManager.Instance.GetUIComponent<UIReward>();
 
     private void Start()
     {
@@ -49,7 +48,7 @@ public class RewardManager : Singleton<RewardManager>
         if (rewardSo == null)
             return;
 
-        rewardUI.AddReward(rewardSo);
+        UIManager.Instance.GetUIComponent<UIReward>().AddReward(rewardSo);
         GiveReward(id);
     }
 
@@ -59,6 +58,6 @@ public class RewardManager : Singleton<RewardManager>
     /// <param name="onComplete"></param>
     public void GiveRewardAndOpenUI(Action onComplete = null)
     {
-        rewardUI.OpenRewardUI(onComplete);
+        UIManager.Instance.GetUIComponent<UIReward>().OpenRewardUI(onComplete);
     }
 }
