@@ -7,30 +7,32 @@ public class UIReward : UIBase
 {
     [SerializeField] private List<RewardSlot> rewardSlotList;
 
-    Action afterAction;
+    private Action afterAction;
+    private int index = 0;
 
-    public void OpenRewardUI(RewardSo rewardSo, Action action)
+    public void OpenRewardUI(Action action)
     {
-        UIManager.Instance.Open(this);
-
-
-        int slotIndex = 0;
-
-        foreach (var reward in rewardSo.RewardList)
-        {
-            if (slotIndex >= rewardSlotList.Count)
-                break;
-
-            rewardSlotList[slotIndex].SetRewardItem(reward); // reward 데이터에 따라 슬롯 세팅
-            slotIndex++;
-        }
-
-        for (int i = slotIndex; i < rewardSlotList.Count; i++)
+        for (int i = index; i < rewardSlotList.Count; i++)
         {
             rewardSlotList[i].gameObject.SetActive(false);
         }
 
         afterAction = action;
+
+        UIManager.Instance.Open(this);
+    }
+
+    public void AddReward(RewardSo rewardSo)
+    {
+        foreach (RewardData rewardData in rewardSo.RewardList)
+        {
+            if (index >= rewardSlotList.Count)
+                break;
+
+            rewardSlotList[index].SetRewardItem(rewardData);
+            rewardSlotList[index].gameObject.SetActive(true);
+            index++;
+        }
     }
 
     public void CloseRewardUI()
@@ -46,6 +48,7 @@ public class UIReward : UIBase
     public override void Close()
     {
         base.Close();
+        index = 0;
         afterAction?.Invoke();
     }
 }

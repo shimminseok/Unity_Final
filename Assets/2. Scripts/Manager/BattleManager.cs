@@ -19,6 +19,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private List<Unit> allUnits = new List<Unit>();
     public event Action OnBattleEnd;
 
+    private UIReward uiReward;
 
     protected override void Awake()
     {
@@ -150,8 +151,10 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
-        RewardManager.Instance.GiveReward(rewardKey);
+        RewardManager.Instance.AddReward(rewardKey);
         AccountManager.Instance.UpdateBestStage(currentStage);
+
+        RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
     }
 
     private void OnStageFail()
