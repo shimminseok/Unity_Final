@@ -41,10 +41,17 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         if (VFXData.isParent == true)
         {
             transform.parent = VFXTarget.Collider.transform;
+            transform.localPosition = VFXData.LocalPosition;
+            transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
+            transform.localScale =  VFXData.LocalScale;
         }
-        transform.localPosition = VFXData.LocalPosition;
-        transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
-        transform.localScale =  VFXData.LocalScale;
+        else
+        {
+            transform.localPosition = transform.position + VFXData.LocalPosition;
+            transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles) * Quaternion.Euler(VFXData.LocalRotation);
+            transform.localScale =  VFXData.LocalScale;
+        }
+
     }
     public void SetData(VFXData data, IEffectProvider effectProvider)
     {
