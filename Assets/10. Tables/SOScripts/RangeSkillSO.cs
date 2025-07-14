@@ -11,7 +11,7 @@ public class RangeSkillSO : RangeActionSo
     {
         base.Execute(attacker, target);
         var skillController = attacker.SkillController;
-        foreach (var effect in skillController.CurrentSkillData.BuffEffect.skillEffectDatas)
+        foreach (var effect in skillController.CurrentSkillData.Effect.skillEffectDatas)
         {
             List<IDamageable> targets = skillController.SkillSubTargets[effect];
             foreach (IDamageable unit in targets)

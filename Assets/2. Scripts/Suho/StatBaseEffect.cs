@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
-public class StatBaseBuffEffect
+public class StatBaseEffect
 {
     [HideInInspector] public Unit owner;
     public List<SkillEffectData> skillEffectDatas;

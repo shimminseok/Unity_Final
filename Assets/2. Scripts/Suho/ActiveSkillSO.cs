@@ -25,7 +25,7 @@ public class ActiveSkillSO : ScriptableObject
     public string skillDescription;
     public CombatActionSo skillType;
     public SelectCampType selectCamp;
-    public StatBaseBuffEffect buffEffect;
+    public StatBaseEffect effect;
     public JobType jobType;
     public Tier activeSkillTier;
     public int reuseMaxCount;
