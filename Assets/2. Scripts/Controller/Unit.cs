@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable, IStatContext
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable, IEffectProvider
 {
     private const float ResistancePerStack = 0.08f;
 
@@ -15,6 +15,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public BaseEmotion                CurrentEmotion             { get; protected set; }
     public BaseEmotion[]              Emotions                   { get; private set; }
+    public event Action<BaseEmotion>  EmotionChanged;             // 감정이 바뀌었을 때 알리는 이벤트
     public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
     public TurnStateMachine           TurnStateMachine           { get; protected set; }
     public ITurnState[]               TurnStates                 { get; private set; }
@@ -22,7 +23,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public StatManager                StatManager                { get; protected set; }
     public StatusEffectManager        StatusEffectManager        { get; protected set; }
     public StatBase                   AttackStat                 { get; protected set; }
-    public SkillManager               SkillManager               { get; set; }
+    public SkillManager               SkillManager               { get; protected set; }
     public Animator                   Animator                   { get; protected set; }
     public BaseSkillController        SkillController            { get; protected set; }
     public AnimatorOverrideController AnimatorOverrideController { get; protected set; }
@@ -30,7 +31,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public NavMeshAgent               Agent                      { get; protected set; }
     public UnitSO                     UnitSo                     { get; protected set; }
     public AnimationEventListener     AnimationEventListener     { get; protected set; }
-    public IDamageable                       CounterTarget              { get; private set; }
+    public Unit                       CounterTarget              { get; private set; }
 
     public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
     public IAttackAction CurrentAttackAction { get; private set; }
@@ -49,7 +50,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
     
-    public Action OnTakeDamageHandler { get; }
 
     public abstract void Dead();
     
@@ -68,6 +68,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         }
 
         CurrentEmotion = Emotions[(int)EmotionType.Neutral];
+
+        // 스택 변경에 대한 반응 등록
+        CurrentEmotion.StackChanged += OnEmotionStackChanged;
     }
 
     protected void CreateTurnStates()
@@ -109,9 +112,21 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             if (Random.value < CurrentEmotion.Stack * ResistancePerStack)
                 return;
 
+            // 이전 감정 스택 이벤트 제거
+            CurrentEmotion.StackChanged -= OnEmotionStackChanged;
+
             CurrentEmotion?.Exit(this);
             CurrentEmotion = Emotions[(int)newType];
             CurrentEmotion.Enter(this);
+
+            // 새 감정 스택 이벤트 연결
+            CurrentEmotion.StackChanged += OnEmotionStackChanged;
+
+            // 외부 알림
+            EmotionChanged?.Invoke(CurrentEmotion);
+
+            // 감정이 새로 바뀐 경우에 즉시 1스택에서 시작
+            CurrentEmotion.AddStack(this);
 
             if (this is PlayerUnitController playerUnit && playerUnit.PassiveSo is IPassiveChangeEmotionTrigger passiveChangeEmotion)
             {
@@ -124,15 +139,23 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         }
     }
 
+    // 감정 스택이 바뀔 때마다 호출됨
+    private void OnEmotionStackChanged(int newStack)
+    {
+        // Debug.Log($"{name}의 감정 스택이 {newStack}로 변경됨");
+    }
+
 
     public abstract void Attack();
     public abstract void MoveTo(Vector3 destination);
 
-    public void SetTarget(IDamageable target)
+    public void SetTarget(Unit target)
     {
         Target = target;
-        SkillController.SelectSkillSubTargets(target);
-        
+        if (CurrentAction == ActionType.SKill)
+        {
+            SkillController.SelectTargets(target);
+        }
     }
 
     // 유닛 선택 가능 토글

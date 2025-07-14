@@ -17,13 +17,14 @@ MonoBehaviour:
   skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
-  skillEffect:
+  buffEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 0
-      projectileID: 
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
@@ -49,9 +50,44 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+          VFX:
+          - VFXPrefab: {fileID: 2018416911825896717, guid: ede98bb716cdb494c818fc30bd77b2e3,
+              type: 3}
+            VFXPoolID: RoarOfFuryVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+              type: 3}
+            VFXPoolID: FireballHit
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 2018416911825896717, guid: ede98bb716cdb494c818fc30bd77b2e3,
+          type: 3}
+        VFXPoolID: RoarOfFuryVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+          type: 3}
+        VFXPoolID: FireballHit
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
   jobType: 3
   activeSkillTier: 2
   reuseMaxCount: 2

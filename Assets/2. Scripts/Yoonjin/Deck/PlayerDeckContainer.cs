@@ -16,6 +16,8 @@ public class PlayerDeckContainer : Singleton<PlayerDeckContainer>
     protected override void Awake()
     {
         base.Awake();
+        if (isDuplicated)
+            return;
     }
 
     // 덱 세팅

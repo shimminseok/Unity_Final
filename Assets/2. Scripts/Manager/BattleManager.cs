@@ -15,9 +15,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public List<Unit> EnemyUnits;
     public TurnHandler TurnHandler { get; private set; }
 
+    private StageSO currentStage;
     private List<Unit> allUnits = new List<Unit>();
     public event Action OnBattleEnd;
 
+    private UIReward uiReward;
 
     protected override void Awake()
     {
@@ -26,6 +28,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
+        currentStage = PlayerDeckContainer.Instance.SelectedStage;
+
         if (PlayerDeckContainer.Instance.CurrentDeck.deckDatas.Count == 0)
             SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
         else
@@ -33,11 +37,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
         }
 
-        if (PlayerDeckContainer.Instance.SelectedStage == null)
+        if (currentStage == null)
             SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
         else
         {
-            SetEnemiesUnit(PlayerDeckContainer.Instance.SelectedStage.Monsters);
+            SetEnemiesUnit(currentStage.Monsters);
         }
 
         TurnHandler = new TurnHandler();
@@ -118,7 +122,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         PartyUnits.ForEach(x => x.ChangeUnitState(PlayerUnitState.Idle));
         if (EnemyUnits.TrueForAll(x => x.IsDead))
         {
-            PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
+            OnStageClear();
+        }
+        else if (PartyUnits.TrueForAll(x => x.IsDead))
+        {
+            OnStageFail();
         }
 
         TurnHandler.RefillTurnQueue();
@@ -141,6 +149,20 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
         else
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
+    }
+
+    private void OnStageClear()
+    {
+        PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
+        string rewardKey = $"{currentStage.ID}_Clear_Reward";
+        RewardManager.Instance.AddReward(rewardKey);
+        AccountManager.Instance.UpdateBestStage(currentStage);
+
+        RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
+    }
+
+    private void OnStageFail()
+    {
     }
 
     protected override void OnDestroy()

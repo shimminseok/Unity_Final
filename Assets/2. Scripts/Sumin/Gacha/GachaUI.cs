@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GachaUI : MonoBehaviour
+public class GachaUI : UIBase
 {
     private SkillGachaUI skillGachaUI;
     private EquipmentGachaUI equipmentGachaUI;
@@ -14,8 +14,8 @@ public class GachaUI : MonoBehaviour
     private void Start()
     {
         uiManager = UIManager.Instance;
-        skillGachaUI = UIManager.Instance.GetUIComponent<SkillGachaUI>();
-        equipmentGachaUI = UIManager.Instance.GetUIComponent<EquipmentGachaUI>();
+        skillGachaUI = uiManager.GetUIComponent<SkillGachaUI>();
+        equipmentGachaUI = uiManager.GetUIComponent<EquipmentGachaUI>();
     }
 
     public void OnClickSkillGachaBtn()

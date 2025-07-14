@@ -52,6 +52,7 @@ public class PlayerSkillController : BaseSkillController
             return;
         }
 
+  
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
         CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);

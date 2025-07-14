@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
   m_Name: MagicSurge
   m_EditorClassIdentifier: 
-  ID: 0
+  ID: 7002
   skillName: "\uB9C8\uBC95 \uD68C\uBCF5"
   skillDescription: "\uAC04\uB2E8\uD55C \uC790\uAC00 \uD790"
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
-  skillEffect:
+  buffEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
@@ -25,6 +25,7 @@ MonoBehaviour:
       selectTarget: 3
       projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
         type: 3}
+      projectilePoolID: 
       damageEffects: []
       buffEffects:
       - ID: 0
@@ -46,6 +47,7 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
+          VFX: []
       skillVFX: []
   jobType: 6
   activeSkillTier: 0

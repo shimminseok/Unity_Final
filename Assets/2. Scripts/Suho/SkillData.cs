@@ -6,14 +6,14 @@ public class SkillData
     public SkillData(ActiveSkillSO skillSo)
     {
         this.skillSo = skillSo;
-        skillEffect = skillSo.skillEffect;
+        BuffEffect = skillSo.buffEffect;
         reuseCount = skillSo.reuseMaxCount;
         coolDown = 0;
         coolTime = skillSo.coolTime;
     }
 
     public ActiveSkillSO skillSo;
-    public StatBaseSkillEffect skillEffect;
+    public StatBaseBuffEffect BuffEffect;
     public int reuseCount;
     public int coolDown = 0;
     public int coolTime;

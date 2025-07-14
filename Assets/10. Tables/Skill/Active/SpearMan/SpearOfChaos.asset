@@ -18,22 +18,60 @@ MonoBehaviour:
     \uB300\uC0C1 \uACF5\uACA9"
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
-  skillEffect:
+  buffEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 1
-      selectTarget: 2
-      projectileID: 
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.5
         value: 30
       buffEffects: []
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+      skillVFX:
+      - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
+          type: 3}
+        VFXPoolID: SpearOfChaosHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 4759061865354641271, guid: 8fd3724af8c8c77448c2f0874e5af582,
+          type: 3}
+        VFXPoolID: SpearOfChaosCastVFX
+        LocalPosition: {x: 0, y: 0.5, z: 1}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+        reference: 0
+        isParent: 1
+        type: 3
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 4
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.5
+        value: 30
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
+          type: 3}
+        VFXPoolID: SpearOfChaosHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
   jobType: 2
   activeSkillTier: 0
   reuseMaxCount: 2

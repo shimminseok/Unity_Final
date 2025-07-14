@@ -32,10 +32,6 @@ public class AnimationEventListener : MonoBehaviour
         }
     }
 
-    public void PlaySkillVFXTrigger()
-    {
-  
-    }
 
     private void Attack()
     {

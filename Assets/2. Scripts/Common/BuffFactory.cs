@@ -27,6 +27,7 @@
         effect.ModifierType = data.Stat.ModifierType;
         effect.Value = data.Stat.Value;
         effect.TickInterval = data.TickInterval;
+        effect.BuffVFX = data.VFX;
         return effect;
     }
 }

@@ -1,13 +1,13 @@
-﻿public interface IAttackable
-{
-    StatBase           AttackStat { get; }
-    public IDamageable Target     { get; }
-    public IDamageable CounterTarget { get; }
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-    BaseSkillController SkillController { get; }
-    
-    public bool IsCounterAttack { get; }
+public interface IAttackable
+{
+    StatBase AttackStat { get; }
+
+    public Collider    Collider       { get; }
+    public IDamageable Target { get; }
     public void        Attack();
 
-    public void SetTarget(IDamageable target);
+    public void SetTarget(Unit target);
 }
