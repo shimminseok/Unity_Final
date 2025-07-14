@@ -30,6 +30,7 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
 
     public void RemoveVFX()
     {
+        StopAllCoroutines();
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
