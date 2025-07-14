@@ -16,7 +16,7 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
     public void LoadScene(string sceneName, Action onComplete = null)
     {
         // 로딩창
-        // LoadingScreenController.Instance.Show();
+        LoadingScreenController.Instance.Show();
 
         StartCoroutine(InternalLoadScene(sceneName, LoadSceneMode.Single, onComplete));
     }
