@@ -16,9 +16,10 @@ public class SkillEffectData
     
     public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
     {
-        InitVFX(target);
         foreach (var result in buffEffects)
         {
+            VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Target, target as IEffectProvider,true);
+            VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Caster, owner as IEffectProvider,true);
             var statusEffect = result.StatusEffect;
             statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
             target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
@@ -32,18 +33,6 @@ public class SkillEffectData
         }
     }
 
-    public void InitVFX(Unit unit)
-    {
-        foreach (var vfx in skillVFX)
-        {
-            vfx.Attacker = owner;
-            vfx.Target = unit;
-            if (vfx.type == VFXType.Hit)
-            {
-                
-            }
-        }
-    }
 }
 
 

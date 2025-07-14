@@ -10,8 +10,6 @@ public class MeleeSkillSO : CombatActionSo
             VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
             VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
         }
-        //이펙트 추가
-        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
         foreach (var effect in attacker.SkillController.CurrentSkillData.BuffEffect.skillEffectDatas)
         {
