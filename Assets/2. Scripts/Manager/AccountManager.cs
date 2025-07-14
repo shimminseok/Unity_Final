@@ -8,7 +8,7 @@ public class AccountManager : Singleton<AccountManager>
 {
     public int Gold      { get; private set; } = 0;
     public int Opal      { get; private set; } = 3000;
-    public int BestStage { get; private set; } = 1010100;
+    public int BestStage { get; private set; } = 1010109;
 
     public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
     public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
