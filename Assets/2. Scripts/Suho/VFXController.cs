@@ -22,7 +22,7 @@ public class VFXController : MonoBehaviour
             if (vfxData.reference != unit) continue; 
             if (vfxData.type == vfxType)
             {
-                PoolableVFX vfx = VFXController.InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
+                PoolableVFX vfx = InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
                 vfx.SetData(vfxData,effectProvider);
                 returnVFX.Add(vfx);
                 if (isAwakePlay)
