@@ -152,10 +152,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void SetTarget(Unit target)
     {
         Target = target;
-        if (CurrentAction == ActionType.SKill)
-        {
-            SkillController.SelectTargets(target);
-        }
+        SkillController.SelectSkillSubTargets(target);
     }
 
     // 유닛 선택 가능 토글

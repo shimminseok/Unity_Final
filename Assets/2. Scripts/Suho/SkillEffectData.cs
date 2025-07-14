@@ -10,11 +10,12 @@ public class SkillEffectData
     public SelectCampType selectCamp;
     public SelectTargetType selectTarget;
     public GameObject projectilePrefab;
+    public string projectilePoolID;
     public List<StatBaseDamageEffect> damageEffects;
     public List<StatBaseBuffSkillEffect> buffEffects;
     public List<VFXData> skillVFX;
     
-    public void AffectTargetWithSkill(Unit target) // 실질적으로 영향을 끼치는 부분
+    public void AffectTargetWithSkill(IDamageable target) // 실질적으로 영향을 끼치는 부분
     {
         foreach (var result in buffEffects)
         {

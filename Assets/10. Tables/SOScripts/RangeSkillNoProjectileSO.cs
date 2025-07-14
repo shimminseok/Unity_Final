@@ -10,7 +10,7 @@ public class RangeSkillNoProjectileSO : RangeActionSo
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        foreach (var effect in attacker.SkillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in attacker.SkillController.CurrentSkillData.BuffEffect.skillEffectDatas)
         {
             List<IDamageable> targets = attacker.SkillController.SkillSubTargets[effect];
             foreach (var subTarget in targets)

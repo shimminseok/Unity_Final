@@ -108,7 +108,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         OnSpawnFromPool();
     }
 
-    public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir, IDamageable target)
+    public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir)
     {
         trigger.OnTriggerTarget -= HandleAttackTrigger;
         this.attacker = attacker;
@@ -116,7 +116,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         direction = dir;
         this.gameObject.transform.position = startPosition;
         this.gameObject.transform.LookAt(dir);
-        Target = target;
+        Target = attacker.Target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleAttackTrigger;
         OnSpawnFromPool();

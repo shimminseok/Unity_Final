@@ -27,7 +27,7 @@ public class PlayerSkillController : BaseSkillController
         if (CurrentSkillData != null)
         {
             TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
-            foreach (var effectData in CurrentSkillData.skillEffect.skillEffectDatas)
+            foreach (var effectData in CurrentSkillData.BuffEffect.skillEffectDatas)
             {
                 SkillSubTargets.Add(effectData,targetSelect.FindTargets(effectData.selectTarget,effectData.selectCamp));
             }

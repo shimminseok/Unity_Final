@@ -7,19 +7,22 @@ public class RangeAttackSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
         if (target != null)
         {
-            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolID);
+            string projectilePoolId = projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
+            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolId);
             if (projectile == null)
             {
                 projectile = Instantiate(projectilePrefab);
             }
             ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-            ProjectileComponent.Initialize(attacker, attacker.GetCenter(), target.Collider.bounds.center);
+            ProjectileComponent.Initialize(attacker, attacker.Collider.bounds.center, target.Collider.bounds.center);
+
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
+        
     }
 
     private void ResetProjectile()
