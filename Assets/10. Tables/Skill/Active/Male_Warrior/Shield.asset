@@ -19,13 +19,15 @@ MonoBehaviour:
     \uC2E4\uB4DC\uB97C \uC900\uB2E4."
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
-  skillEffect:
+  buffEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 1
-      projectileID: Buff
+      projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
+        type: 3}
+      projectilePoolID: Buff
       damageEffects: []
       buffEffects:
       - ID: 40001
@@ -47,37 +49,17 @@ MonoBehaviour:
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
-    - owner: {fileID: 0}
-      selectCamp: 0
-      selectTarget: 0
-      projectileID: Buff
-      damageEffects: []
-      buffEffects:
-      - ID: 40001
-        ownerStatType: 0
-        weight: 0.3
-        value: 0
-        opponentStatType: 11
-        lastTurn: 3
-        statusEffectType: 9
-        modifierType: 1
-        emotionType: 0
-        StatusEffect:
-          ID: 40001
-          EffectType: 9
-          Stat:
-            StatType: 11
-            ModifierType: 1
-            Value: 300
-          Duration: 3
-          TickInterval: 0
-          IsStackable: 0
-      castingEffect: {fileID: 0}
-      skillVfx: {fileID: 0}
-      hitEffect: {fileID: 0}
+          VFX:
+          - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
+              type: 3}
+            VFXPoolID: ShieldVFX
+            LocalPosition: {x: 0, y: 0.5, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+            reference: 1
+            isParent: 1
+            type: 2
+      skillVFX: []
   jobType: 0
   activeSkillTier: 0
   reuseMaxCount: 2

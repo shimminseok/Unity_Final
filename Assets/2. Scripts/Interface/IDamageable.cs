@@ -8,6 +8,5 @@ public interface IDamageable
     public bool        IsDead         { get; }
     public void        TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
-    public Action OnTakeDamageHandler { get; }
     public void        Dead();
 }

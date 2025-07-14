@@ -189,7 +189,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (finalDam > 0)
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
-        OnTakeDamageHandler?.Invoke();
         Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
         if (curHp.Value <= 0)
         {

@@ -3,26 +3,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
 public class RangeSkillSO : RangeActionSo
 {
-    public string subProjectilePoolID;
-
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
     public override void Execute(Unit attacker, IDamageable target)
     {
+        base.Execute(attacker, target);
         var skillController = attacker.SkillController;
 
         TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
 
-        foreach (var effect in skillController.CurrentSkillData.skillEffect.skillEffectDatas)
+        foreach (var effect in skillController.CurrentSkillData.BuffEffect.skillEffectDatas)
         {
             skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
             foreach (Unit unit in skillController.targets)
             {
                 if (unit == null) continue;
                 if (effect.projectilePrefab != null)
-                {   string projectileID = effect.projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
-                    GameObject projectile = ObjectPoolManager.Instance.GetObject(projectileID);
+                {   
+                    GameObject projectile = ObjectPoolManager.Instance.GetObject(effect.projectilePoolID);
                     if (projectile == null)
                         projectile = Instantiate(effect.projectilePrefab);
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();

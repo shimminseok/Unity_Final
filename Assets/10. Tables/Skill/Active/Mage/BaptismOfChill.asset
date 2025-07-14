@@ -17,7 +17,7 @@ MonoBehaviour:
   skillDescription: "\uC5BC\uC74C\uBE44\uB85C \uC6B0\uC6B8 \uBD80\uC5EC"
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
-  skillEffect:
+  buffEffect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
@@ -25,6 +25,7 @@ MonoBehaviour:
       selectTarget: 0
       projectilePrefab: {fileID: 8326948576380518439, guid: bfd06dcd49ac13449882ef161d62d429,
         type: 3}
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
@@ -50,6 +51,7 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
+          VFX: []
       skillVFX: []
   jobType: 6
   activeSkillTier: 2

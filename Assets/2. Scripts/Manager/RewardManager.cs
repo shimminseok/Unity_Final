@@ -22,31 +22,43 @@ public class RewardManager : Singleton<RewardManager>
         rewardTable = TableManager.Instance.GetTable<RewardTable>();
     }
 
+    private UIReward rewardUI = UIManager.Instance.GetUIComponent<UIReward>();
+
     private void Start()
     {
     }
 
     public void GiveReward(string id)
     {
-        UIReward rewardUI = UIManager.Instance.GetUIComponent<UIReward>();
-
         RewardSo rewardSo = rewardTable.GetDataByID(id);
-        if (rewardSo != null)
-        {
-            int slotIndex = 0;
+        if (rewardSo == null)
+            return;
 
-            foreach (var reward in rewardSo.RewardList)
+        foreach (RewardData reward in rewardSo.RewardList)
+        {
+            if (rewardHandlers.TryGetValue(reward.RewardType, out var handler))
             {
-                if (rewardHandlers.TryGetValue(reward.RewardType, out var handler))
-                {
-                    handler.Invoke(reward.Amount);
-                }
+                handler.Invoke(reward.Amount);
             }
         }
+    }
 
-        rewardUI.OpenRewardUI(rewardSo, () =>
-        {
-            LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
-        });
+    public void AddReward(string id)
+    {
+        RewardSo rewardSo = rewardTable.GetDataByID(id);
+        if (rewardSo == null)
+            return;
+
+        rewardUI.AddReward(rewardSo);
+        GiveReward(id);
+    }
+
+    /// <summary>
+    /// 여러곳에서 보상을 추가 후 마지막에 호출하여 보상 UI를 Open
+    /// </summary>
+    /// <param name="onComplete"></param>
+    public void GiveRewardAndOpenUI(Action onComplete = null)
+    {
+        rewardUI.OpenRewardUI(onComplete);
     }
 }

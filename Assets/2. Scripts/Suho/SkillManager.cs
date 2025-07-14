@@ -24,8 +24,8 @@ public class SkillManager : MonoBehaviour
 
             SkillData skillData = new SkillData(activeSkillSo);
             skillData.skillSo = activeSkillSo;
-            skillData.skillEffect.owner = Owner;
-            skillData.skillEffect.Init();
+            skillData.BuffEffect.owner = Owner;
+            skillData.BuffEffect.Init();
             Owner.SkillController.skills.Add(skillData);
         }
     }

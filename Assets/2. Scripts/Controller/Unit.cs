@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
-public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable
+public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectable, IUnitFsmControllable, IEffectProvider
 {
     private const float ResistancePerStack = 0.08f;
 
@@ -50,7 +50,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
     
-    public Action OnTakeDamageHandler { get; }
 
     public abstract void Dead();
     
