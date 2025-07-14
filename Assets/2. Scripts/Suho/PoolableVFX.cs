@@ -25,6 +25,11 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
     {
         particle.Play();
         yield return new WaitWhile(() => particle.IsAlive(true));
+        RemoveVFX();
+    }
+
+    public void RemoveVFX()
+    {
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
@@ -38,7 +43,7 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         }
         transform.localPosition = VFXData.LocalPosition;
         transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
-        transform.localScale = VFXData.LocalScale;
+        transform.localScale =  VFXData.LocalScale;
     }
     public void SetData(VFXData data, IEffectProvider effectProvider)
     {

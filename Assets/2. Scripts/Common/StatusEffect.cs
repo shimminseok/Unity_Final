@@ -17,6 +17,7 @@ public abstract class StatusEffect
     public float TickInterval = 1f;
     public Coroutine CoroutineRef;
     public Action ApplyEffect;
+    public Action RemoveEffect;
     public List<VFXData> BuffVFX;
     public bool IsStackable;
     
@@ -35,6 +36,7 @@ public abstract class StatusEffect
              foreach (var vfx in list)
              {
                  ApplyEffect += vfx.OnSpawnFromPool;
+                 RemoveEffect += vfx.RemoveVFX;
              }
         }
     }
@@ -195,13 +197,16 @@ public class TurnBasedModifierBuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         manager.ModifyBuffStat(StatType, ModifierType, Value);
-        
+        ApplyVFX(manager,VFXType.Buff);
+        ApplyEffect?.Invoke();
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager manager)
     {
         manager.ModifyBuffStat(StatType, ModifierType, -Value);
+        RemoveEffect?.Invoke();
+        ApplyEffect = null;
     }
 }
 
