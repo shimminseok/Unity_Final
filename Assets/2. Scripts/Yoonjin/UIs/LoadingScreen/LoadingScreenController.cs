@@ -35,11 +35,15 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
     // 로딩 시작. LoadSceneManager의 LoadScene에서 호출
     public void Show()
     {
+        StopAllCoroutines();
+
         gameObject.SetActive(true);
         progressSlider.value = 0f;
         currentProgress = 0f;
 
+        LoadSceneManager.Instance.OnLoadingProgressChanged -= OnProgressChanged;
         LoadSceneManager.Instance.OnLoadingProgressChanged += OnProgressChanged;
+
         StartCoroutine(LoadingRoutine());
     }
 
@@ -47,6 +51,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
     {
         currentProgress = value;
     }
+
 
     private IEnumerator LoadingRoutine()
     {
@@ -59,7 +64,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
         float displayedProgress = 0f;
 
         // 2. 실제 progress 따라 슬라이더 부드럽게 증가
-        while (currentProgress < 0.9f)
+        while (displayedProgress < currentProgress)
         {
             displayedProgress = Mathf.MoveTowards(displayedProgress, currentProgress, Time.deltaTime * 0.5f);
             progressSlider.value = displayedProgress;
