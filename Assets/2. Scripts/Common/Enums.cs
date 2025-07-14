@@ -201,3 +201,11 @@ public enum VFXType
     Hit, // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
     
 }
+
+
+public enum RewardType
+{
+    Gold,
+    Opal,
+    Item
+}

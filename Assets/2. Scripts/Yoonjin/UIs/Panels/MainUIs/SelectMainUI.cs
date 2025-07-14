@@ -28,10 +28,10 @@ public class SelectMainUI : UIBase
     private Dictionary<int, CharacterButton> characterSlotDic = new();
 
 
+    private bool isChangeDeck;
+
     private void Start()
     {
-        // TODO: 나중에 실제 보유한 캐릭터 데이터를 ownedCharacters에 할당한다
-        startBattleButton.onClick.AddListener(OnClickStartBattle);
     }
 
 
@@ -99,12 +99,6 @@ public class SelectMainUI : UIBase
     /// 이하 클릭 이벤트
     /// </summary>
 
-    // 전투 시작 버튼 클릭
-    private void OnClickStartBattle()
-    {
-        DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
-    }
-
     // 보유 캐릭터 버튼 클릭 처리
     // 선택 중인지에 따라 다른 처리
     private void OnCharacterButtonClicked(int id, bool isSelected)
@@ -129,8 +123,8 @@ public class SelectMainUI : UIBase
         // 선택 안 된 경우는 선택 or 해제 처리
         else
         {
+            isChangeDeck = true;
             DeckSelectManager.Instance.SelectCharacter(playerUnit);
-
             GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
             UpdateCharacterInfoPanel(playerUnit);
         }
@@ -141,11 +135,13 @@ public class SelectMainUI : UIBase
         base.Open();
         GenerateOwnedCharacterButtons();
         GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+        isChangeDeck = false;
     }
 
     public override void Close()
     {
         base.Close();
-        DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
+        if (isChangeDeck)
+            DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
     }
 }

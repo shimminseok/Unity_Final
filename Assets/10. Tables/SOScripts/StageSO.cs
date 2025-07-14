@@ -9,10 +9,14 @@ public class StageSO : ScriptableObject
     public List<EnemyUnitSO> Monsters;
     public MonsterIncreaseSO MonsterIncrease;
 
+    [Header("Stage First Clear Reward")]
+    public RewardSo FirstClearReward;
+
     [Header("스테이지 전/후에 출력되는 대사")]
     public string beforeDialogueKey;
+
     public string afterDialogueKey;
 
     public bool HasBeforeDialogue => !string.IsNullOrEmpty(beforeDialogueKey);
-    public bool HasAfterDialogue => !string.IsNullOrEmpty(afterDialogueKey);
+    public bool HasAfterDialogue  => !string.IsNullOrEmpty(afterDialogueKey);
 }

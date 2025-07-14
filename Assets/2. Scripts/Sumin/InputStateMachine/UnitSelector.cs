@@ -96,6 +96,7 @@ public class UnitSelector
             {
                 int index = unit.SkillController.GetSkillIndex(command.SkillData);
                 context.HighlightSkillSlotUI?.Invoke(true, index);
+                context.SelectedSkill = command.SkillData; // 스킬이 있으면 넣어줌.
             }
             else
             {

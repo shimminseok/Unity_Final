@@ -19,6 +19,7 @@ public class CharacterIntroManager : MonoBehaviour
     public Transform[] formationPositions;    // 각 캐릭터가 서야 할 대열 위치 (씬에 빈 오브젝트 7개)
     public Transform walkDirection;           // 걷는 방향을 나타내는 기준 오브젝트 (Z+ 방향으로 설정)
     public GameObject startButton;            // 스타트 버튼 UI (걷기 이후에 등장)
+    public GameObject startLOGO;              // 스타트 로고
     public Image overlay;                     // 시작할 때 화면 연출
 
     // 캐릭터를 추적할 리스트
@@ -99,10 +100,13 @@ public class CharacterIntroManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); // 걷기 도중 약간 대기
         startButton.SetActive(true); // 버튼 활성화
+        startLOGO.SetActive(true);
 
         // 등장 애니메이션 (스케일 점점 키움)
         startButton.transform.localScale = Vector3.zero;
+        startLOGO.transform.localScale = Vector3.zero;
         startButton.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
+        startLOGO.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBack);
     }
 
     public void OnClickStart()

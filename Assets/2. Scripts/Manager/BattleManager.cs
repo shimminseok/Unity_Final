@@ -15,6 +15,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public List<Unit> EnemyUnits;
     public TurnHandler TurnHandler { get; private set; }
 
+    private StageSO currentStage;
     private List<Unit> allUnits = new List<Unit>();
     public event Action OnBattleEnd;
 
@@ -26,6 +27,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void Start()
     {
+        currentStage = PlayerDeckContainer.Instance.SelectedStage;
+
         if (PlayerDeckContainer.Instance.CurrentDeck.deckDatas.Count == 0)
             SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
         else
@@ -33,11 +36,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
         }
 
-        if (PlayerDeckContainer.Instance.SelectedStage == null)
+        if (currentStage == null)
             SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
         else
         {
-            SetEnemiesUnit(PlayerDeckContainer.Instance.SelectedStage.Monsters);
+            SetEnemiesUnit(currentStage.Monsters);
         }
 
         TurnHandler = new TurnHandler();
@@ -146,8 +149,9 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void OnStageClear()
     {
         PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
-        string rewardKey = $"{PlayerDeckContainer.Instance.SelectedStage.ID}_Clear_Reward";
+        string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.GiveReward(rewardKey);
+        AccountManager.Instance.UpdateBestStage(currentStage);
     }
 
     private void OnStageFail()

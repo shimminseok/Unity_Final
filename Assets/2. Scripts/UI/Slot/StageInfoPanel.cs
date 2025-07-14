@@ -7,13 +7,13 @@ using DG.Tweening;
 public class StageInfoPanel : MonoBehaviour
 {
     [SerializeField] private RectTransform panelRect;
-    [SerializeField] private Vector2 onScreenPos;
-    [SerializeField] private Vector2 offScreenPos;
 
     [SerializeField] private TextMeshProUGUI stageName;
     [SerializeField] private TextMeshProUGUI stageDesc;
     [SerializeField] private List<StagePanelMonsterSlot> spawnMonsters;
 
+    private Vector2 onScreenPos;
+    private Vector2 offScreenPos;
     private StageSO stageSo;
 
 
