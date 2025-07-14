@@ -167,7 +167,6 @@ public enum AttackDistanceType
 {
     Melee,
     Range,
-    RangeNoProjectile,
 }
 
 public enum ProjectileInterpolationMode

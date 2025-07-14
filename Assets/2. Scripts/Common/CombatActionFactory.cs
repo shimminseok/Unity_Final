@@ -9,7 +9,6 @@ public static class CombatActionFactory
         {
             AttackDistanceType.Melee    => new MeleeCombatAction(),
             AttackDistanceType.Range    => new RangeCombatAction(unit.CurrentAttackAction.ActionSo as RangeActionSo, unit.Target),
-            AttackDistanceType.RangeNoProjectile => new RangeNoProjectileAction(),
             _ => throw new InvalidOperationException("Invalid Action Type")
         };
 
