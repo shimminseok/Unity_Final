@@ -14,8 +14,8 @@ public class GachaUI : UIBase
     private void Start()
     {
         uiManager = UIManager.Instance;
-        skillGachaUI = UIManager.Instance.GetUIComponent<SkillGachaUI>();
-        equipmentGachaUI = UIManager.Instance.GetUIComponent<EquipmentGachaUI>();
+        skillGachaUI = uiManager.GetUIComponent<SkillGachaUI>();
+        equipmentGachaUI = uiManager.GetUIComponent<EquipmentGachaUI>();
     }
 
     public void OnClickSkillGachaBtn()
