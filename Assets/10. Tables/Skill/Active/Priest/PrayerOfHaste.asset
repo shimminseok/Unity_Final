@@ -46,8 +46,44 @@ MonoBehaviour:
           Duration: 2
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 4159060890352726694, guid: bb6448bf3dd4c184497c5aa89f7974da,
+              type: 3}
+            VFXPoolID: PriestBuffVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 5905016914026779651, guid: 004eac940aabd5b4ba88e6c18b38cf12,
+              type: 3}
+            VFXPoolID: HasteBuffVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+            reference: 1
+            isParent: 1
+            type: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 4159060890352726694, guid: bb6448bf3dd4c184497c5aa89f7974da,
+          type: 3}
+        VFXPoolID: PriestBuffVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 5905016914026779651, guid: 004eac940aabd5b4ba88e6c18b38cf12,
+          type: 3}
+        VFXPoolID: HasteBuffVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+        reference: 1
+        isParent: 1
+        type: 2
   jobType: 5
   activeSkillTier: 3
   reuseMaxCount: 2

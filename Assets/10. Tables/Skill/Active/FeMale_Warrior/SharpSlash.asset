@@ -32,7 +32,16 @@ MonoBehaviour:
         weight: 1.5
         value: 100
       buffEffects: []
-      skillVFX: []
+      skillVFX:
+      - VFXPrefab: {fileID: 8288354508528083544, guid: 406daf5b7c58d904eb2df545fa2ca72f,
+          type: 3}
+        VFXPoolID: SlashVFX
+        LocalPosition: {x: 0, y: 0.5, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 0
+        isParent: 1
+        type: 3
   jobType: 1
   activeSkillTier: 0
   reuseMaxCount: 3
