@@ -11,8 +11,7 @@ public class RangeAttackSO : RangeActionSo
     {
         if (target != null)
         {
-            string projectilePoolId = projectilePrefab.GetComponent<PoolableProjectile>().PoolID;
-            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolId);
+            GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolID);
             if (projectile == null)
             {
                 projectile = Instantiate(projectilePrefab);
