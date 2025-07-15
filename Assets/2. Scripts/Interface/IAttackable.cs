@@ -7,6 +7,8 @@ public interface IAttackable
 
     public Collider    Collider       { get; }
     BaseSkillController SkillController { get; }
+    
+    public StatManager StatManager { get; }
     public IDamageable Target { get; }
     public void        Attack();
 

@@ -8,9 +8,7 @@ public class MeleeAttackSo : CombatActionSo
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        IStatContext isc = attacker as IStatContext;
-        if (isc == null) return;
-        float baseAttackPow = isc.StatManager.GetValue(StatType.AttackPow);
+        float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
 
         if (attacker is PlayerUnitController player)

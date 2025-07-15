@@ -145,9 +145,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         IDamageable attackerDamagable = attacker as IDamageable;
         if (attackerDamagable == null) return;
         float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
-        IStatContext isc = attacker as IStatContext;
-        if (isc == null) return;
-        Target.TakeDamage(isc.StatManager.GetValue(StatType.AttackPow) * multiplier);
+        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }
