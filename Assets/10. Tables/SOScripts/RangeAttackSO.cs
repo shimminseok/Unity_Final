@@ -17,7 +17,7 @@ public class RangeAttackSO : RangeActionSo
                 projectile = Instantiate(projectilePrefab);
             }
             ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-            ProjectileComponent.Initialize(attacker, attacker.Collider.bounds.center, target.Collider.bounds.center);
+            ProjectileComponent.Initialize(attacker, attacker.Collider.bounds.center, target.Collider.bounds.center,target);
 
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
