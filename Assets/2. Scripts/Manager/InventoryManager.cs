@@ -81,14 +81,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void AddItem(InventoryItem item, int amount = 1)
     {
-        // if (item.ItemSo is ConsumableItemSO consumableItemSo && consumableItemSo.IsStackable)
-        // {
-        //     AddStackableItem(item, amount);
-        // }
-        // else
         AddNonStackableItem(item, amount);
-
-        // AddStackableItem(item, amount);
     }
 
     /// <summary>
