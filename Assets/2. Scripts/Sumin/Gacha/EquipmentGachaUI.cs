@@ -7,6 +7,7 @@ public class EquipmentGachaUI : UIBase
 
     [Header("뽑기 버튼")]
     [SerializeField] private Button oneDrawBtn;
+
     [SerializeField] private Button tenDrawBtn;
 
     [Header("뽑기 확인 창")]
@@ -16,8 +17,6 @@ public class EquipmentGachaUI : UIBase
     [SerializeField] private EquipmentGachaResultUI resultPanel;
 
     private UIManager uiManager;
-    private GachaCantDrawPopupUI cantDrawPopupUI;
-    private EquipmentGachaResultUI resultUI;
 
     private int drawCount;
 
@@ -30,8 +29,6 @@ public class EquipmentGachaUI : UIBase
         tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
 
         uiManager = UIManager.Instance;
-        cantDrawPopupUI = uiManager.GetUIComponent<GachaCantDrawPopupUI>();
-        resultUI = uiManager.GetUIComponent<EquipmentGachaResultUI>();
     }
 
     private void OnDisable()
@@ -44,9 +41,10 @@ public class EquipmentGachaUI : UIBase
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            uiManager.Open(cantDrawPopupUI);
+            uiManager.Open(uiManager.GetUIComponent<GachaCantDrawPopupUI>());
             return;
         }
+
         drawCount = count;
 
         confirmPanel.OnConfirm += HandleConfirm;
@@ -68,7 +66,8 @@ public class EquipmentGachaUI : UIBase
     {
         EquipmentItemSO[] equipments = gachaSystem.DrawEquipments(count);
 
-        uiManager.Open(resultUI);
+
+        uiManager.Open(uiManager.GetUIComponent<EquipmentGachaResultUI>());
         resultPanel.ShowEquipments(equipments);
     }
 }
