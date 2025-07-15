@@ -145,7 +145,19 @@ public class StatManager : MonoBehaviour
     /// <param name="value">적용 값</param>
     public void ApplyStatEffect(StatType type, StatModifierType valueType, float value)
     {
-        if (Stats[type] is not CalculatedStat stat) return;
+        if (Stats[type] is not CalculatedStat stat)
+        {
+            if (value >= 0)
+            {
+                Recover(type, valueType, value);
+            }
+            else
+            {
+                Consume(type, valueType, value);
+            }
+
+            return;
+        }
 
         switch (valueType)
         {

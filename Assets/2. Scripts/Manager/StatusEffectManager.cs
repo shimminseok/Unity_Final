@@ -55,15 +55,7 @@ public class StatusEffectManager : MonoBehaviour
     /// <param name="value">적용할 값</param>
     public void ModifyBuffStat(StatType statType, StatModifierType modifierType, float value)
     {
-        switch (modifierType)
-        {
-            case StatModifierType.BuffFlat:
-                statManager.ApplyStatEffect(statType, StatModifierType.BuffFlat, value);
-                break;
-            case StatModifierType.BuffPercent:
-                statManager.ApplyStatEffect(statType, StatModifierType.BuffPercent, value);
-                break;
-        }
+        statManager.ApplyStatEffect(statType, modifierType, value);
     }
 
     /// <summary>

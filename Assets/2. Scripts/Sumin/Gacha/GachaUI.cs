@@ -32,6 +32,12 @@ public class GachaUI : UIBase
 
     private void CloseAllGachaUI()
     {
+        if (skillGachaUI == null)
+            skillGachaUI = uiManager.GetUIComponent<SkillGachaUI>();
+
+        if (equipmentGachaUI == null)
+            equipmentGachaUI = uiManager.GetUIComponent<EquipmentGachaUI>();
+
         uiManager.Close(skillGachaUI);
         uiManager.Close(equipmentGachaUI);
     }
