@@ -1,4 +1,5 @@
 // 유닛의 타겟 선택
+
 public class SelectTargetState : IInputState
 {
     private readonly InputContext context;
@@ -12,7 +13,7 @@ public class SelectTargetState : IInputState
         this.inputStateMachine = inputStateMachine;
     }
 
-    public void Enter(){}
+    public void Enter() { }
 
     public void HandleInput()
     {
@@ -24,7 +25,7 @@ public class SelectTargetState : IInputState
             context.SelectedTarget = target;
 
             Unit executerUnit = context.SelectedExecuter.SelectedUnit;
-            Unit targetUnit = context.SelectedTarget.SelectedUnit;
+            Unit targetUnit   = context.SelectedTarget.SelectedUnit;
 
             // 선택 이펙트
             targetUnit.PlaySelectEffect();
@@ -37,14 +38,17 @@ public class SelectTargetState : IInputState
         }
     }
 
-    public void Exit() 
+    public void Exit()
     {
         // 인디케이터 표시 전환
         selector.ShowSelectableUnits(context.TargetLayer, false);
         context.SelectedExecuter.ToggleSelectedIndicator(false);
+        if (context.SelectedExecuter is PlayerUnitController owner)
+        {
+            owner.ChangeUnitState(PlayerUnitState.ReadyAction);
+        }
 
         // Start 버튼 활성화
         context.OpenStartButtonUI?.Invoke();
     }
 }
-
