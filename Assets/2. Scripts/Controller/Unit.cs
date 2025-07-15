@@ -153,7 +153,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         Target = target;
         SkillController.SelectSkillSubTargets(target);
-        Debug.Log(this + ":" + target);
     }
 
     // 유닛 선택 가능 토글
