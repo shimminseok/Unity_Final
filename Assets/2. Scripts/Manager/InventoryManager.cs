@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class InventoryItem
 {
+    public int Index;
     public ItemSO ItemSo;
     public int Quantity;
 
@@ -73,7 +74,7 @@ public class InventoryManager : Singleton<InventoryManager>
         Inventory = new List<InventoryItem>(Enumerable.Repeat<InventoryItem>(null, inventorySize));
     }
 
-    private void RemoveItem(int index)
+    public void RemoveItem(int index)
     {
         Inventory[index] = null;
         OnInventorySlotUpdate?.Invoke(index);
@@ -108,6 +109,7 @@ public class InventoryManager : Singleton<InventoryManager>
             }
 
             Inventory[index] = findItem;
+            Inventory[index].Index = index;
             OnInventorySlotUpdate?.Invoke(index);
         }
         else
@@ -129,6 +131,7 @@ public class InventoryManager : Singleton<InventoryManager>
             if (index < 0)
                 return;
             Inventory[index] = item.Clone();
+            Inventory[index].Index = index;
             OnInventorySlotUpdate?.Invoke(index);
         }
     }

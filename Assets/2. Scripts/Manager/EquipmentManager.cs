@@ -7,7 +7,7 @@ public class EquipmentItem : InventoryItem
     public bool IsEquipped;
     public int EnhanceLevel;
 
-    // public InventorySlot LinkedSlot;
+    public InventorySlot LinkedSlot;
 
     public EquipmentItemSO EquipmentItemSo => base.ItemSo as EquipmentItemSO;
 
@@ -72,7 +72,7 @@ public class EquipmentManager
         }
 
         item.IsEquipped = true;
-        // item.LinkedSlot.SetEquipMark(true);
+        item.LinkedSlot.SetEquipMark(true);
         OnEquipmentChanged?.Invoke(type);
     }
 

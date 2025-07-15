@@ -43,7 +43,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
         StartPostion = transform.position;
 
-        Agent.speed = 40f;
+        Agent.speed = 15f;
+        Agent.acceleration = 100f;
     }
 
     // Update is called once per frame

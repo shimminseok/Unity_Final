@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 2876458059438586608}
   - component: {fileID: 8314520559314600585}
   m_Layer: 5
-  m_Name: ItemGrade
+  m_Name: ItemGradeStars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,6 +561,8 @@ GameObject:
   - component: {fileID: 57401161896465491}
   - component: {fileID: 2703045175498635885}
   - component: {fileID: 3231131619101891281}
+  - component: {fileID: 3770461375417715992}
+  - component: {fileID: 1746505109429675463}
   m_Layer: 5
   m_Name: InventorySlot
   m_TagString: Untagged
@@ -628,6 +630,88 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3770461375417715992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011887244397441633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b386fcd0df1364dbfc7738ed63d7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 1466170938680969824}
+  itemSlotFrame: {fileID: 3231131619101891281}
+  itemEquipmentImg: {fileID: 6574977838204371027}
+  itemGradeStars:
+  - {fileID: 3488948677578397974}
+  - {fileID: 3440207433160113398}
+  - {fileID: 468330389254616951}
+  - {fileID: 7099005287427465725}
+  emptySlotSprite: {fileID: 21300000, guid: e83727796e5d5ca4dad5508f6433a312, type: 3}
+  itemGradeSprites:
+  - {fileID: 21300000, guid: 143cbef648ff68e4cae82bce2ce4d66c, type: 3}
+  - {fileID: 21300000, guid: 004559e43de91d942a7f4fe4e26d01a8, type: 3}
+  - {fileID: 21300000, guid: c90746f3c94935f4db438a33db2f9c84, type: 3}
+  - {fileID: 21300000, guid: f3b95705b2151724c821da19d0ef62b0, type: 3}
+--- !u!114 &1746505109429675463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011887244397441633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 3231131619101891281}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3770461375417715992}
+        m_TargetAssemblyTypeName: InventorySlot, Assembly-CSharp
+        m_MethodName: OnClickSlotBtn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6041678068224853720
 GameObject:
   m_ObjectHideFlags: 0

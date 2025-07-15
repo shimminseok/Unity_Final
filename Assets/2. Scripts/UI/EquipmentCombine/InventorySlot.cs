@@ -1,17 +1,89 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Mime;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
+    [SerializeField] private Image itemIcon;
+    [SerializeField] private Image itemSlotFrame;
+    [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private List<GameObject> itemGradeStars;
+
+    [SerializeField] private Sprite emptySlotSprite;
+    [SerializeField] private List<Sprite> itemGradeSprites;
     public int Index { get; private set; }
 
 
-    public InventoryItem Item { get; private set; }
+    public EquipmentItem Item { get; private set; }
 
-    public void Initialize(int index, InventoryItem item)
+    public event Action<EquipmentItem> OnClickSlot;
+
+    public void Initialize(int index, EquipmentItem item)
     {
+        if (item == null)
+        {
+            EmptySlot();
+            return;
+        }
+
+        SetEquipMark(item.IsEquipped);
+        itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
+
+        itemIcon.gameObject.SetActive(true);
+        itemIcon.sprite = item.ItemSo.ItemSprite;
+
+        for (int i = 0; i < itemGradeStars.Count; i++)
+        {
+            itemGradeStars[i].SetActive(i <= (int)item.ItemSo.Tier);
+        }
+
         Index = index;
         Item = item;
+    }
+
+
+    public void EmptySlot()
+    {
+        // 아이템 아이콘 비우기
+        itemIcon.sprite = null;
+        itemIcon.gameObject.SetActive(false);
+
+        // 아이템 프레임 비활성화
+        itemSlotFrame.sprite = emptySlotSprite;
+        // 장비 이미지 비우기
+        itemEquipmentImg.gameObject.SetActive(false);
+        for (int i = 0; i < itemGradeStars.Count; i++)
+        {
+            itemGradeStars[i].SetActive(false);
+        }
+
+        Index = -1;
+        Item = null;
+    }
+
+    public void SetEquipMark(bool isEquip)
+    {
+        itemEquipmentImg.gameObject.SetActive(isEquip);
+    }
+
+    public void OnClickSlotBtn()
+    {
+        OnClickSlot?.Invoke(Item);
+    }
+
+    public void UpdateItemSprite()
+    {
+        itemSlotFrame.sprite = itemGradeSprites[(int)Item.ItemSo.Tier];
+        itemIcon.sprite = Item.ItemSo.ItemSprite;
+        for (int i = 0; i < itemGradeStars.Count; i++)
+        {
+            itemGradeStars[i].SetActive(i <= (int)Item.ItemSo.Tier);
+        }
     }
 }
