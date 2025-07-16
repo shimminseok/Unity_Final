@@ -69,7 +69,7 @@ public class SelectEquipUI : UIBase
         foreach (var equipmentItem in CurrentCharacter.equippedItems)
         {
             equippedItemsSlot[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
-            equippedItemsSlot[(int)equipmentItem.Key].SetEquipMark(false);
+            equippedItemsSlot[(int)equipmentItem.Key].ShowEquipMark(false);
         }
 
         inventoryUI.Initialize();

@@ -32,7 +32,7 @@ public class InventorySlot : MonoBehaviour
         }
 
         gameObject.SetActive(true);
-        SetEquipMark(item.IsEquipped);
+        ShowEquipMark(item.IsEquipped);
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
         itemIcon.gameObject.SetActive(true);
@@ -66,7 +66,7 @@ public class InventorySlot : MonoBehaviour
         gameObject.SetActive(!isHide);
     }
 
-    public void SetEquipMark(bool isEquip)
+    public void ShowEquipMark(bool isEquip)
     {
         itemEquipmentImg.gameObject.SetActive(isEquip);
     }

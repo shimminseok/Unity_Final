@@ -78,7 +78,7 @@ public class EquipmentManager
         }
 
         item.IsEquipped = true;
-        item.LinkedSlot.SetEquipMark(true);
+        item.LinkedSlot.ShowEquipMark(true);
         OnEquipmentChanged?.Invoke(type);
     }
 
