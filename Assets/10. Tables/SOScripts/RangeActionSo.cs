@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Playables;
 
 public class RangeActionSo : CombatActionSo
 {
@@ -14,11 +14,6 @@ public class RangeActionSo : CombatActionSo
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
-        {
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
-        }
         
     }
 }

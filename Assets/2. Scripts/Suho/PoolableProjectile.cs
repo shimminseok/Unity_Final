@@ -13,7 +13,7 @@ using UnityEngine;
  * direction은 투사체의 방향조절
  * StartPosiion은 투사체의 시작위치조절
  */
-public class PoolableProjectile : MonoBehaviour, IPoolObject
+public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 {
     [SerializeField] private string poolId;
 
@@ -47,9 +47,19 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
 
     private IAttackable attacker;
 
+    public Collider Collider { get; set; }
+
+ 
+
+
     private void Awake()
     {
         trigger = GetComponentInChildren<ProjectileTrigger>();
+    }
+
+    private void Start()
+    {
+        Collider = trigger.colider;
     }
 
     private void Update()
@@ -147,5 +157,10 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
         Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
+    public Vector3 GetCenter()
+    {
+        return transform.position;
     }
 }

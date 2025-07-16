@@ -32,8 +32,7 @@ MonoBehaviour:
         weight: 0.3
         value: 40
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0
         value: 50
         opponentStatType: 0
@@ -43,15 +42,42 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 11
           Stat:
             StatType: 0
             ModifierType: 0
-            Value: 0
-          Duration: 0
+            Value: 50
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
+          VFX:
+          - VFXPrefab: {fileID: 811919792610040567, guid: b7d5e5abe9215cd428d1ac0edc6199ff,
+              type: 3}
+            VFXPoolID: FireballCast
+            LocalPosition: {x: 0, y: 0.5, z: 1}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 2, y: 2, z: 2}
+            reference: 0
+            isParent: 1
+            type: 0
+          - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+              type: 3}
+            VFXPoolID: FireballHit
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 2, y: 2, z: 2}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+              type: 3}
+            VFXPoolID: FireballHit
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 2, y: 2, z: 2}
+            reference: 1
+            isParent: 1
+            type: 1
       skillVFX:
       - VFXPrefab: {fileID: 811919792610040567, guid: b7d5e5abe9215cd428d1ac0edc6199ff,
           type: 3}
@@ -86,4 +112,4 @@ MonoBehaviour:
   coolTime: 3
   skillIcon: {fileID: 21300000, guid: 50e0eceed3f7c7443a354f8f6f822d79, type: 3}
   skillAnimation: {fileID: 7400000, guid: 66d6e931fba18384eb02381bec3bce88, type: 3}
-  skillTimeLine: {fileID: 0}
+  skillTimeLine: {fileID: 11400000, guid: 57db4776dfb36094c9e3c4beb216e73c, type: 2}

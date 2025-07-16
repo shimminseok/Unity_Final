@@ -42,6 +42,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    { get; set; }
+    public virtual bool IsTimeLineDone     { get; set; }
 
     public Unit SelectedUnit => this;
 

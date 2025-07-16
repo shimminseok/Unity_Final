@@ -17,10 +17,10 @@ public class SkillEffectData
     
     public void AffectTargetWithSkill(IDamageable target) // 실질적으로 영향을 끼치는 부분
     {
+        VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Target, target as IEffectProvider,true);
+        VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Caster, owner as IEffectProvider,true);
         foreach (var result in buffEffects)
         {
-            VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Target, target as IEffectProvider,true);
-            VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Caster, owner as IEffectProvider,true);
             var statusEffect = result.StatusEffect;
             statusEffect.Stat.Value = owner.StatManager.GetValue(result.ownerStatType) * result.weight + result.value;
             target.StatusEffectManager.ApplyEffect(BuffFactory.CreateBuff(statusEffect));
