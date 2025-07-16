@@ -65,7 +65,6 @@ public class UICharacterSetting : UIBase
     public void OpenSetEquipment()
     {
         selectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-
         UIManager.Instance.Open(selectEquipUI);
     }
 

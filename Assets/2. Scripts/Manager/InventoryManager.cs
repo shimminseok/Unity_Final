@@ -59,6 +59,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private GameManager gameManager;
 
+    public Dictionary<JobType, List<InventoryItem>> JobInventory { get; private set; } = new();
+
     protected override void Awake()
     {
         base.Awake();
@@ -132,8 +134,35 @@ public class InventoryManager : Singleton<InventoryManager>
                 return;
             Inventory[index] = item.Clone();
             Inventory[index].Index = index;
+
+            if (item is EquipmentItem equipmentItem)
+            {
+                if (equipmentItem.EquipmentItemSo.IsEquipableByAllJobs)
+                {
+                    foreach (JobType job in Enum.GetValues(typeof(JobType)))
+                    {
+                        AddEquipmentItem(job, equipmentItem);
+                    }
+                }
+                else
+                {
+                    AddEquipmentItem(equipmentItem.EquipmentItemSo.JobType, equipmentItem);
+                }
+            }
+
             OnInventorySlotUpdate?.Invoke(index);
         }
+    }
+
+    private void AddEquipmentItem(JobType jobType, EquipmentItem item)
+    {
+        if (!JobInventory.TryGetValue(jobType, out List<InventoryItem> inventoryList))
+        {
+            inventoryList = new List<InventoryItem>();
+        }
+
+        inventoryList.Add(item);
+        JobInventory[jobType] = inventoryList;
     }
 
     public void SwichItem(int from, int to)

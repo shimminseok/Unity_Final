@@ -6,7 +6,7 @@ public class EquipmentItem : InventoryItem
 {
     public bool IsEquipped;
     public int EnhanceLevel;
-
+    public EntryDeckData EquippedUnit;
     public InventorySlot LinkedSlot;
 
     public EquipmentItemSO EquipmentItemSo => base.ItemSo as EquipmentItemSO;
@@ -28,6 +28,12 @@ public class EquipmentItem : InventoryItem
     public string GetEnhanceLevelString()
     {
         return EnhanceLevel > 0 ? $"+{EnhanceLevel}" : string.Empty;
+    }
+
+    public void EquipItem(EntryDeckData equipUnit)
+    {
+        IsEquipped = true;
+        EquippedUnit = equipUnit;
     }
 }
 

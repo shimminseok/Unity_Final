@@ -17,21 +17,21 @@ public class InventorySlot : MonoBehaviour
 
     [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private List<Sprite> itemGradeSprites;
-    public int Index { get; private set; }
 
 
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
 
-    public void Initialize(int index, EquipmentItem item)
+    public void Initialize(EquipmentItem item, bool isHide)
     {
         if (item == null)
         {
-            EmptySlot();
+            EmptySlot(isHide);
             return;
         }
 
+        gameObject.SetActive(true);
         SetEquipMark(item.IsEquipped);
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
@@ -43,12 +43,11 @@ public class InventorySlot : MonoBehaviour
             itemGradeStars[i].SetActive(i <= (int)item.ItemSo.Tier);
         }
 
-        Index = index;
         Item = item;
     }
 
 
-    public void EmptySlot()
+    public void EmptySlot(bool isHide)
     {
         // 아이템 아이콘 비우기
         itemIcon.sprite = null;
@@ -58,13 +57,13 @@ public class InventorySlot : MonoBehaviour
         itemSlotFrame.sprite = emptySlotSprite;
         // 장비 이미지 비우기
         itemEquipmentImg.gameObject.SetActive(false);
-        for (int i = 0; i < itemGradeStars.Count; i++)
+        foreach (GameObject go in itemGradeStars)
         {
-            itemGradeStars[i].SetActive(false);
+            go.SetActive(false);
         }
 
-        Index = -1;
         Item = null;
+        gameObject.SetActive(!isHide);
     }
 
     public void SetEquipMark(bool isEquip)
