@@ -6,7 +6,7 @@ public class UICharacterSetting : UIBase
 {
     [SerializeField] private Transform playerUnitSlotRoot;
     [SerializeField] private CharacterInfo characterInfoPanel;
-    [SerializeField] private CharacterButton playerUnitSlot;
+    [SerializeField] private UnitSlot playerUnitSlot;
 
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
@@ -15,7 +15,7 @@ public class UICharacterSetting : UIBase
     private SelectEquipUI selectEquipUI;
     private SelectSkillUI selectSkillUI;
 
-    private Dictionary<int, CharacterButton> slotDic = new();
+    private Dictionary<int, UnitSlot> slotDic = new();
 
 
     private void Start()
@@ -50,7 +50,7 @@ public class UICharacterSetting : UIBase
                 continue;
 
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
-            slot.Initialize(entryDeckData.Value.CharacterSo, true, OnClickPlayerUnitSlot);
+            slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
         }
     }

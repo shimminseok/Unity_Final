@@ -7,7 +7,7 @@ public class PlayerUnitSO : UnitSO
 {
     public PassiveSO PassiveSkill;
     public JobType JobType;
-
+    public Tier Tier;
 
     //TODO : 스킬 리스트 
 }

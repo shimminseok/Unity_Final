@@ -61,8 +61,8 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler
 
     public void OnClickEditDeckButton()
     {
-        SelectMainUI selectMainUI = UIManager.Instance.GetUIComponent<SelectMainUI>();
-        UIManager.Instance.Open(selectMainUI);
+        UIDeckBuilding uiDeckBuilding = UIManager.Instance.GetUIComponent<UIDeckBuilding>();
+        UIManager.Instance.Open(uiDeckBuilding);
     }
 
     public override void Open()

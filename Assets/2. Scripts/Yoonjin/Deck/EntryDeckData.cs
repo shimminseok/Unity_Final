@@ -21,13 +21,14 @@ public class EntryDeckData
     private const int MAX_TRANSCEND_LEVEL = 5;
     public int MaxLevel => BASE_MAX_LEVEL + (TranscendLevel * BASE_MAX_LEVEL);
 
+
+    public bool         IsCompeted  { get; private set; }
     public PlayerUnitSO CharacterSo { get; private set; }
-
-
     public event Action OnEquipmmmentChanged;
     public event Action OnSkillChanged;
     public event Action OnTranscendChanged;
     public event Action OnLevelUp;
+
 
     public EntryDeckData(int id)
     {
@@ -57,16 +58,14 @@ public class EntryDeckData
         }
     }
 
+    public void Compete(bool isCompeted)
+    {
+        IsCompeted = isCompeted;
+    }
+
     public void AddAmount(int amount = 1)
     {
         Amount += amount;
-    }
-
-    [System.Serializable]
-    public class EquipmentEntry
-    {
-        public EquipmentType type;
-        public EquipmentItem item;
     }
 
     public void InvokeEquipmentChanged()
@@ -77,6 +76,14 @@ public class EntryDeckData
     public void InvokeSkillChanged()
     {
         OnSkillChanged?.Invoke();
+    }
+
+
+    [System.Serializable]
+    public class EquipmentEntry
+    {
+        public EquipmentType type;
+        public EquipmentItem item;
     }
 
     /// <summary>

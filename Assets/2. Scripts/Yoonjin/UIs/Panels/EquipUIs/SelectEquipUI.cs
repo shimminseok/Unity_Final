@@ -11,18 +11,10 @@ public class SelectEquipUI : UIBase
     [Header("장비 슬롯")]
     [SerializeField] private List<InventorySlot> equippedItemsSlot = new();
 
-    [Header("보유 장비 인벤토리 & 장착 버튼 프리팹")]
-    [SerializeField] private Transform inventoryParent;
-
-    [SerializeField] private EquipButton equipButtonPrefab;
-
     [Header("장비 정보 표시")]
     [SerializeField] private TMP_Text itemName;
 
     [SerializeField] private TMP_Text itemDescription;
-
-    [Header("아바타 표시")]
-    [SerializeField] private RawImage avatarImage;
 
     [Header("인벤토리")]
     [SerializeField] private EquipmentUnitInventoryUI inventoryUI;
@@ -40,9 +32,10 @@ public class SelectEquipUI : UIBase
     {
         base.Open();
         UpdateEquipUI();
+
         if (CurrentCharacter == null)
             return;
-        AvatarPreviewManager.Instance.ShowAvatar(CurrentCharacter.CharacterSo, avatarImage);
+        AvatarPreviewManager.Instance.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
     public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
@@ -85,33 +78,6 @@ public class SelectEquipUI : UIBase
 
         DeckSelectManager.Instance.SelectEquipment(item);
         UpdateEquipUI();
-    }
-
-    private EquipButton GetOrCreateEquipButton(int index, Transform parent, List<EquipButton> pool)
-    {
-        EquipButton btn;
-
-        if (index < pool.Count)
-        {
-            btn = pool[index];
-        }
-        else
-        {
-            btn = Instantiate(equipButtonPrefab, parent);
-            pool.Add(btn);
-        }
-
-        btn.transform.SetParent(parent, false);
-        btn.gameObject.SetActive(true);
-        return btn;
-    }
-
-    private void DisableRemainingButtons(int fromIndex, List<EquipButton> pool)
-    {
-        for (int i = fromIndex; i < pool.Count; i++)
-        {
-            pool[i].gameObject.SetActive(false);
-        }
     }
 
     // 장비 정보 텍스트 표시
