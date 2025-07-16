@@ -29,9 +29,9 @@ public class UICharacterSetting : UIBase
         characterInfoPanel.OpenPanel(playerUnitData);
     }
 
-    private void OnClickPlayerUnitSlot(int id, bool isSelectedSlot)
+    private void OnClickPlayerUnitSlot(EntryDeckData playerUnitData)
     {
-        SelectedPlayerUnitData = AccountManager.Instance.GetPlayerUnit(id);
+        SelectedPlayerUnitData = playerUnitData;
 
         if (SelectedPlayerUnitData == null)
             return;
@@ -52,6 +52,7 @@ public class UICharacterSetting : UIBase
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
+            slot.OnClickSlot += OnClickPlayerUnitSlot;
         }
     }
 
