@@ -46,6 +46,12 @@ public class UIEquipmentCombine : UIBase
 
     private void AddCombineItem(EquipmentItem item)
     {
+        if (item.IsEquipped)
+        {
+            Debug.Log("장착 중인 장비는 합성 할 수 없습니다.");
+            return;
+        }
+
         if (CombineItems.Count > 0)
         {
             if (CombineItems[0].ItemSo.Tier != item.ItemSo.Tier)

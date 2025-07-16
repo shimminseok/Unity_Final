@@ -132,10 +132,12 @@ public class InventoryManager : Singleton<InventoryManager>
             int index = Inventory.IndexOf(null);
             if (index < 0)
                 return;
-            Inventory[index] = item.Clone();
+
+            var clonedItem = item.Clone();
+            Inventory[index] = clonedItem;
             Inventory[index].Index = index;
 
-            if (item is EquipmentItem equipmentItem)
+            if (clonedItem is EquipmentItem equipmentItem)
             {
                 if (equipmentItem.EquipmentItemSo.IsEquipableByAllJobs)
                 {
