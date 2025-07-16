@@ -22,6 +22,7 @@ using UnityEngine;
 public class PlayerSkillController : BaseSkillController
 {
     public AnimationClip skillAttackAnim;
+
     public override void SelectSkillSubTargets(IDamageable target)
     {
         if (CurrentSkillData != null)
@@ -29,7 +30,7 @@ public class PlayerSkillController : BaseSkillController
             TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
             foreach (var effectData in CurrentSkillData.Effect.skillEffectDatas)
             {
-                SkillSubTargets.Add(effectData,targetSelect.FindTargets(effectData.selectTarget,effectData.selectCamp));
+                SkillSubTargets.Add(effectData, targetSelect.FindTargets(effectData.selectTarget, effectData.selectCamp));
             }
         }
     }
@@ -52,10 +53,10 @@ public class PlayerSkillController : BaseSkillController
             return;
         }
 
-  
+
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
+        CurrentSkillData.skillSo.SkillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
 
         // EndTurn();
     }

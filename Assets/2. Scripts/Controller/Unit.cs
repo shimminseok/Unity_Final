@@ -13,9 +13,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     protected BattleManager BattleManager => BattleManager.Instance;
 
-    public BaseEmotion                CurrentEmotion             { get; protected set; }
-    public BaseEmotion[]              Emotions                   { get; private set; }
-    public event Action<BaseEmotion>  EmotionChanged;             // 감정이 바뀌었을 때 알리는 이벤트
+    public BaseEmotion                CurrentEmotion { get; protected set; }
+    public BaseEmotion[]              Emotions       { get; private set; }
+    public event Action<BaseEmotion>  EmotionChanged; // 감정이 바뀌었을 때 알리는 이벤트
     public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
     public TurnStateMachine           TurnStateMachine           { get; protected set; }
     public ITurnState[]               TurnStates                 { get; private set; }
@@ -50,10 +50,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void EndTurn();
     public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
-    
+
 
     public abstract void Dead();
-    
+
 
     public void SetStunned(bool isStunned)
     {
@@ -190,7 +190,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
-            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.skillType;
+            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
         }
     }
 

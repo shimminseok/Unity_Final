@@ -8,12 +8,16 @@ public class RangeActionSo : CombatActionSo
 
     public PoolableProjectile ProjectileComponent { get; protected set; }
 
-    public bool IsProjectile => projectilePrefab != null;
+    public bool IsProjectile { get; private set; }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        
+    }
+
+    public void SetIsProjectile(bool isProjectile)
+    {
+        IsProjectile = isProjectile;
     }
 }
