@@ -94,7 +94,5 @@ public class UIDeckBuilding : UIBase
     public override void Close()
     {
         base.Close();
-        if (isChangeDeck)
-            DeckSelectManager.Instance.ConfirmDeckAndStartBattle();
     }
 }

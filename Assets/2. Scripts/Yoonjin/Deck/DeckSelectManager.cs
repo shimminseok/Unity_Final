@@ -37,7 +37,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     private void Start()
     {
-        selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.deckDatas;
+        selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
         if (selectedDeck.Count == 0)
         {
             for (int i = 0; i < Define.MaxCharacterCount; i++)
@@ -157,12 +157,5 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
         currentSelectedCharacter.InvokeEquipmentChanged();
-    }
-
-    // 게임 시작 버튼 클릭 시 호출
-    // 덱을 PlayerDeckContainer에 저장하고, 배틀씬으로 이동한다
-    public void ConfirmDeckAndStartBattle()
-    {
-        PlayerDeckContainer.Instance.SetDeck(selectedDeck);
     }
 }

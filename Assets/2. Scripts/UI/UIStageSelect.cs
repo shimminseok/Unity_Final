@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -50,9 +51,13 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler
 
     public void OnClickEnterStage()
     {
-        if (DeckSelectManager.Instance.GetSelectedDeck().Count == 0)
+        bool isDeckEmpty = DeckSelectManager.Instance
+            .GetSelectedDeck()
+            .All(u => u == null);
+
+        if (isDeckEmpty)
         {
-            OnClickEditDeckButton();
+            OnClickEditDeckButton(); // 덱이 비어 있으면 편집 창 오픈
             return;
         }
 
