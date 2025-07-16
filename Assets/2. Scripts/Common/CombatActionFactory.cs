@@ -4,16 +4,13 @@ public static class CombatActionFactory
 {
     public static ICombatAction Create(Unit unit)
     {
-        if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+        
+        return unit.CurrentAttackAction.DistanceType  switch
         {
-            return new MeleeCombatAction();
-        }
+            AttackDistanceType.Melee    => new MeleeCombatAction(),
+            AttackDistanceType.Range    => new RangeCombatAction(unit.CurrentAttackAction.ActionSo as RangeActionSo, unit.Target),
+            _ => throw new InvalidOperationException("Invalid Action Type")
+        };
 
-        if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
-        {
-            return new RangeCombatAction(unit.CurrentAttackAction.ActionSo as RangeActionSo, unit.Target);
-        }
-
-        throw new InvalidOperationException("Invalid Action Type");
     }
 }

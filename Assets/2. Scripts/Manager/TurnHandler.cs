@@ -22,6 +22,7 @@ public class TurnHandler
     public void StartNextTurn()
     {
         currentTurnUnit = turnQueue.Dequeue();
+        CameraManager.Instance.ChangeFollowTarget(currentTurnUnit);
         currentTurnUnit.StartTurn();
     }
 

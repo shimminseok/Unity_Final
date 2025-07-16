@@ -91,8 +91,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             {
                 UnitSo = unitSo, DeckData = null // Enemy
             });
-
-            EnemyUnits.Add(unit as EnemyUnitController);
+            EnemyUnitController eu = unit as EnemyUnitController;
+            if (eu != null)
+            {
+                eu.ChoiceAction();
+                EnemyUnits.Add(eu);
+            }
         }
     }
 
