@@ -17,9 +17,6 @@ public class UIDeckBuilding : UIBase
     private Dictionary<int, UnitSlot> characterSlotDic = new();
 
 
-    private bool isChangeDeck;
-
-
     // 현재 보유 중인 캐릭터 목록 버튼 생성
     private void GenerateOwnedCharacterButtons()
     {
@@ -68,7 +65,6 @@ public class UIDeckBuilding : UIBase
     // 보유 캐릭터 버튼 클릭 처리
     private void OnCharacterButtonClicked(EntryDeckData data)
     {
-        isChangeDeck = true;
         if (data.IsCompeted)
         {
             DeckSelectManager.Instance.RemoveUnitInDeck(data);
@@ -88,7 +84,6 @@ public class UIDeckBuilding : UIBase
         base.Open();
         GenerateOwnedCharacterButtons();
         GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
-        isChangeDeck = false;
     }
 
     public override void Close()
