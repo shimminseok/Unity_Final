@@ -18,7 +18,10 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
     protected void UpdateInventorySlot(int index)
     {
-        InventorySlots[index].Initialize(InventoryManager.Inventory[index] as EquipmentItem, true);
+        if (InventorySlots.TryGetValue(index, out InventorySlot slot))
+        {
+            slot.Initialize(InventoryManager.Instance.Inventory[index] as EquipmentItem, true);
+        }
     }
 
 
