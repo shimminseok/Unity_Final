@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EquipmentGachaResultUI : UIBase
+public class CharacterGachaResultUI : UIBase
 {
     [SerializeField] private Button resultExitBtn;
-    [SerializeField] private EquipmentGachaSlotUI[] slots;
+    [SerializeField] private CharacterGachaSlotUI[] slots;
 
     void Start()
     {
@@ -12,18 +12,18 @@ public class EquipmentGachaResultUI : UIBase
         resultExitBtn.onClick.AddListener(() => OnResultPanelExitBtn());
     }
 
-    public void ShowEquipments(EquipmentItemSO[] equipments)
+    public void ShowCharacters(PlayerUnitSO[] characters)
     {
-        for (int i=0; i<equipments.Length; i++)
+        for (int i = 0; i < characters.Length; i++)
         {
             slots[i].gameObject.SetActive(true);
-            slots[i].Initialize(equipments[i]);
+            slots[i].Initialize(characters[i]);
         }
     }
 
     public void OnResultPanelExitBtn()
     {
-        for (int i=0; i<slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             slots[i].gameObject.SetActive(false);
         }

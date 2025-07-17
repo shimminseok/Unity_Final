@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.UI;
-
 public class GachaUI : UIBase
 {
     private SkillGachaUI skillGachaUI;
     private EquipmentGachaUI equipmentGachaUI;
+    private CharacterGachaUI characterGachaUI;
 
     private UIManager uiManager;
 
@@ -16,6 +11,7 @@ public class GachaUI : UIBase
         uiManager = UIManager.Instance;
         skillGachaUI = uiManager.GetUIComponent<SkillGachaUI>();
         equipmentGachaUI = uiManager.GetUIComponent<EquipmentGachaUI>();
+        characterGachaUI = uiManager.GetComponent<CharacterGachaUI>();
     }
 
     public void OnClickSkillGachaBtn()
@@ -30,6 +26,12 @@ public class GachaUI : UIBase
         uiManager.Open(equipmentGachaUI);
     }
 
+    public void OnClickCharacterGachaBtn()
+    {
+        CloseAllGachaUI();
+        uiManager.Open(characterGachaUI);
+    }
+
     private void CloseAllGachaUI()
     {
         if (skillGachaUI == null)
@@ -38,7 +40,11 @@ public class GachaUI : UIBase
         if (equipmentGachaUI == null)
             equipmentGachaUI = uiManager.GetUIComponent<EquipmentGachaUI>();
 
+        if (characterGachaUI == null)
+            characterGachaUI = uiManager.GetUIComponent<CharacterGachaUI>();
+
         uiManager.Close(skillGachaUI);
         uiManager.Close(equipmentGachaUI);
+        uiManager.Close(characterGachaUI);
     }
 }
