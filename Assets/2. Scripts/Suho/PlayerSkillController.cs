@@ -22,9 +22,17 @@ using UnityEngine;
 public class PlayerSkillController : BaseSkillController
 {
     public AnimationClip skillAttackAnim;
-    public override void SelectTargets(Unit target)
+
+    public override void SelectSkillSubTargets(IDamageable target)
     {
-        this.mainTarget = target;
+        if (CurrentSkillData != null)
+        {
+            TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
+            foreach (var effectData in CurrentSkillData.Effect.skillEffectDatas)
+            {
+                SkillSubTargets.Add(effectData, targetSelect.FindTargets(effectData.selectTarget, effectData.selectCamp));
+            }
+        }
     }
 
     public override void ChangeCurrentSkill(int index)
@@ -32,7 +40,6 @@ public class PlayerSkillController : BaseSkillController
         if (index >= skills.Count) return;
         CurrentSkillData = skills[index];
         if (CurrentSkillData == null) return;
-
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
 
         // skillAnimationListener.skillData = CurrentSkillData;
@@ -46,10 +53,10 @@ public class PlayerSkillController : BaseSkillController
             return;
         }
 
-  
+
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
+        CurrentSkillData.skillSo.SkillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
 
         // EndTurn();
     }
@@ -65,7 +72,7 @@ public class PlayerSkillController : BaseSkillController
         }
 
         CurrentSkillData = null;
-        this.mainTarget = null;
-        targets = null;
+        this.SkillManager.Owner.SetTarget(null);
+        SkillSubTargets.Clear();
     }
 }

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 [CreateAssetMenu(fileName = "NewRangeSkillSO", menuName = "ScriptableObjects/SKillType/Range", order = 0)]
 public class RangeSkillSO : RangeActionSo
@@ -6,17 +8,26 @@ public class RangeSkillSO : RangeActionSo
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
-        base.Execute(attacker, target);
         var skillController = attacker.SkillController;
-
-        TargetSelect targetSelect = new TargetSelect(target as Unit, attacker as Unit);
-
-        foreach (var effect in skillController.CurrentSkillData.BuffEffect.skillEffectDatas)
+        var currentSkill = skillController.CurrentSkillData;
+        // PlayableAsset timeline = currentSkill.skillSo.skillTimeLine;
+        // if (timeline != null)
+        // {
+        //     TimeLineManager.Instance.director.Play(timeline);
+        // }
+        
+        foreach (var data in currentSkill.skillSo.effect.skillEffectDatas)
         {
-            skillController.targets = targetSelect.FindTargets(effect.selectTarget, effect.selectCamp);
-            foreach (Unit unit in skillController.targets)
+            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
+            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
+        }
+        
+        foreach (var effect in currentSkill.Effect.skillEffectDatas)
+        {
+            List<IDamageable> targets = skillController.SkillSubTargets[effect];
+            foreach (IDamageable unit in targets)
             {
                 if (unit == null) continue;
                 if (effect.projectilePrefab != null)
@@ -25,8 +36,7 @@ public class RangeSkillSO : RangeActionSo
                     if (projectile == null)
                         projectile = Instantiate(effect.projectilePrefab);
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-                    ProjectileComponent.Initialize(effect, skillController.SkillManager.Owner.GetCenter(), unit.GetCenter(), unit);
-
+                    ProjectileComponent.Initialize(effect, attacker.Collider.bounds.center, unit.Collider.bounds.center, unit);
                 }
                 else
                 {

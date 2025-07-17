@@ -7,14 +7,22 @@ using UnityEngine;
 
 public class EnemySkillContorller : BaseSkillController
 {
-    public WeightedSelector<SkillData> selector;
+    public WeightedSelector<SkillData> skillSelector;
+
 
     /*
      * SelectTargets 메서드 => 적의 mainTarget을 정하는 메서드
      */
-    public override void SelectTargets(Unit mainTarget)
+    public override void SelectSkillSubTargets(IDamageable target)
     {
-        this.mainTarget = mainTarget;
+        if (CurrentSkillData != null)
+        {
+            TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
+            foreach (var effectData in CurrentSkillData.Effect.skillEffectDatas)
+            {
+                SkillSubTargets.Add(effectData, targetSelect.FindTargets(effectData.selectTarget, effectData.selectCamp));
+            }
+        }
     }
 
     /*
@@ -31,7 +39,7 @@ public class EnemySkillContorller : BaseSkillController
 
         CurrentSkillData.coolDown = CurrentSkillData.coolTime;
         CurrentSkillData.reuseCount--;
-        CurrentSkillData.skillSo.skillType.Execute(SkillManager.Owner, mainTarget);
+        CurrentSkillData.skillSo.SkillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
 
         EndTurn();
     }
@@ -40,19 +48,19 @@ public class EnemySkillContorller : BaseSkillController
      * 사용할 스킬을 선택하는 로직
      * selector에서 사용가능한 스킬과 각 스킬의 가중치에 따라서 사용할 스킬의 index를 반환
      */
-    public void SelectSkill()
+    public void WeightedSelectSkill()
     {
-        ChangeCurrentSkill(selector.Select());
+        ChangeCurrentSkill(skillSelector.Select());
     }
 
-    
+
     /*
      * 처음에 스킬을 선택하는 로직클래스인 selector를 초기화 시켜주는 메서드
      * 현재 몬스터의 SO를 확인하여 스킬 관련 데이터를 갖고 초기화가 이루어진다.
      */
     public void InitSkillSelector()
     {
-        selector = new WeightedSelector<SkillData>();
+        skillSelector = new WeightedSelector<SkillData>();
         EnemyUnitSO MonsterSo = SkillManager.Owner.UnitSo as EnemyUnitSO;
         if (MonsterSo == null) return;
         for (int i = 0; i < skills.Count; i++)
@@ -60,13 +68,14 @@ public class EnemySkillContorller : BaseSkillController
             int index = i; // 캡처할 새로운 지역 변수
             var skill = skills[index];
 
-            selector.Add(
+            skillSelector.Add(
                 skill,
                 () => MonsterSo.SkillDatas[index].individualProbability,
                 () => skill.CheckCanUseSkill()
             );
         }
     }
+
 
     /*
      * EndTurn메서드 => 스킬 사용 이후 종료로직
@@ -83,10 +92,10 @@ public class EnemySkillContorller : BaseSkillController
         }
 
         CurrentSkillData = null;
-        this.mainTarget = null;
-        targets = null;
+        this.SkillManager.Owner.SetTarget(null);
+        SkillSubTargets.Clear();
     }
-    
+
     /*
      * ChangeCurrentSkill => 현재 사용할 스킬을 인덱스값을 통해 바꿔준다.
      * 스킬을 바꿔주면 애니메이션 클립을 스킬데이터에 등록되어있는 클립으로 바꾼다.
@@ -106,12 +115,17 @@ public class EnemySkillContorller : BaseSkillController
      * ChangeCurrentSkill => 현재 사용할 스킬을 스킬데이터를 통해 바꿔준다.
      * 스킬을 바꿔주면 애니메이션 클립을 스킬데이터에 등록되어있는 클립으로 바꾼다.
      */
-    
+
     public void ChangeCurrentSkill(SkillData skill)
     {
         CurrentSkillData = skill;
         if (CurrentSkillData == null)
             return;
         SkillManager.Owner.ChangeClip(Define.SkillClipName, CurrentSkillData.skillSo.skillAnimation);
+    }
+
+    public SkillData GetCurrentSkillData()
+    {
+        return CurrentSkillData;
     }
 }

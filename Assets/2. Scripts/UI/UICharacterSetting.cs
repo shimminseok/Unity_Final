@@ -6,7 +6,7 @@ public class UICharacterSetting : UIBase
 {
     [SerializeField] private Transform playerUnitSlotRoot;
     [SerializeField] private CharacterInfo characterInfoPanel;
-    [SerializeField] private CharacterButton playerUnitSlot;
+    [SerializeField] private UnitSlot playerUnitSlot;
 
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
@@ -15,7 +15,7 @@ public class UICharacterSetting : UIBase
     private SelectEquipUI selectEquipUI;
     private SelectSkillUI selectSkillUI;
 
-    private Dictionary<int, CharacterButton> slotDic = new();
+    private Dictionary<int, UnitSlot> slotDic = new();
 
 
     private void Start()
@@ -29,9 +29,9 @@ public class UICharacterSetting : UIBase
         characterInfoPanel.OpenPanel(playerUnitData);
     }
 
-    private void OnClickPlayerUnitSlot(int id, bool isSelectedSlot)
+    private void OnClickPlayerUnitSlot(EntryDeckData playerUnitData)
     {
-        SelectedPlayerUnitData = AccountManager.Instance.GetPlayerUnit(id);
+        SelectedPlayerUnitData = playerUnitData;
 
         if (SelectedPlayerUnitData == null)
             return;
@@ -50,8 +50,9 @@ public class UICharacterSetting : UIBase
                 continue;
 
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
-            slot.Initialize(entryDeckData.Value.CharacterSo, true, OnClickPlayerUnitSlot);
+            slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
+            slot.OnClicked += OnClickPlayerUnitSlot;
         }
     }
 
@@ -65,7 +66,6 @@ public class UICharacterSetting : UIBase
     public void OpenSetEquipment()
     {
         selectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-
         UIManager.Instance.Open(selectEquipUI);
     }
 

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public static class Define
 {
+    public const int MaxCharacterCount = 4;
+
+
     public static readonly int MoveAnimationHash = Animator.StringToHash("IsMove");
     public static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
     public static readonly int SkillAnimationHash = Animator.StringToHash("Skill");

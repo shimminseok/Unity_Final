@@ -67,16 +67,5 @@ public abstract class BaseController<TController, TState> : Unit where TControll
     }
 
 
-    private void TryStateTransition()
-    {
-        // int currentIndex = Convert.ToInt32(CurrentState);
-        // var next         = states[currentIndex].CheckTransition((TController)this);
-        // if (!next.Equals(CurrentState))
-        // {
-        //     ChangeState(next);
-        // }
-    }
-
-
     protected abstract IState<TController, TState> GetState(TState state);
 }

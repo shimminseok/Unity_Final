@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Playables;
 
 public class RangeActionSo : CombatActionSo
 {
@@ -8,17 +8,16 @@ public class RangeActionSo : CombatActionSo
 
     public PoolableProjectile ProjectileComponent { get; protected set; }
 
-    public bool IsProjectile => projectilePrefab != null;
+    public bool IsProjectile { get; private set; }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
-        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.buffEffect.skillEffectDatas)
-        {
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
-        }
-        
+    }
+
+    public void SetIsProjectile(bool isProjectile)
+    {
+        IsProjectile = isProjectile;
     }
 }

@@ -8,6 +8,7 @@ public class MeleeCombatAction : ICombatAction
 
     public void Execute(Unit attacker)
     {
+        TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain,CameraManager.Instance.skillCameraController,attacker);
         if (attacker is PlayerUnitController player)
         {
             if (player.CurrentAction == ActionType.Attack)

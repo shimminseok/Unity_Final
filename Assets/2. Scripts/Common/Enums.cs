@@ -20,7 +20,8 @@ public enum StatType
     CriticalRate,
 
     HitRate,
-    Shield
+    Shield,
+    Aggro
 }
 
 public enum StatModifierType
@@ -114,7 +115,7 @@ public enum SelectTargetType
     MainTarget,
     AllExceptMainTarget,
     All,
-    onSelf,
+    OnSelf,
     RandomOneExceptMainTarget,
     Sector,
 }
@@ -165,7 +166,7 @@ public enum Tier
 public enum AttackDistanceType
 {
     Melee,
-    Range
+    Range,
 }
 
 public enum ProjectileInterpolationMode
