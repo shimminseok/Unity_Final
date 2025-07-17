@@ -44,7 +44,7 @@ public class SelectTargetState : IInputState
         context.SelectedExecuter.ToggleSelectedIndicator(false);
 
         // Start 버튼 활성화
-        context.OpenStartButtonUI?.Invoke();
+        context.EnableStartButtonUI?.Invoke();
     }
 }
 
