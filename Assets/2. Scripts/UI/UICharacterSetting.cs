@@ -52,7 +52,7 @@ public class UICharacterSetting : UIBase
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
-            slot.OnClickSlot += OnClickPlayerUnitSlot;
+            slot.OnClicked += OnClickPlayerUnitSlot;
         }
     }
 

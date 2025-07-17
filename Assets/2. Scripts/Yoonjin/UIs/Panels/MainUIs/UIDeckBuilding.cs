@@ -15,6 +15,8 @@ public class UIDeckBuilding : UIBase
     [FormerlySerializedAs("characterButtonPrefab")]
     [SerializeField] private UnitSlot unitSlotPrefab;
 
+    [Header("UnitInfoPanel")]
+    [SerializeField] private PanelSelectedUnitInfo unitInfoPanel;
 
     // 보유 캐릭터 & 선택 캐릭터 SO들을 담는 리스트
     private Dictionary<int, UnitSlot> characterSlotDic = new();
@@ -36,7 +38,8 @@ public class UIDeckBuilding : UIBase
             UnitSlot slot = Instantiate(unitSlotPrefab, ownedCharacterParent);
             slot.Initialize(entryDeckData.Value);
             characterSlotDic.Add(entryDeckData.Key, slot);
-            slot.OnClickSlot += OnClickHasUnitSlot;
+            slot.OnClicked += OnClickedHasUnitSlot;
+            slot.OnHeld += OnHeldHasUnitSlot;
         }
     }
 
@@ -44,7 +47,7 @@ public class UIDeckBuilding : UIBase
     private void ShowCompetedUnit(List<EntryDeckData> selectedDeck)
     {
         int index = 0;
-        foreach (var entry in selectedDeck)
+        foreach (EntryDeckData entry in selectedDeck)
         {
             if (entry == null)
             {
@@ -69,7 +72,7 @@ public class UIDeckBuilding : UIBase
     /// </summary>
 
     // 보유 캐릭터 버튼 클릭 처리
-    private void OnClickHasUnitSlot(EntryDeckData data)
+    private void OnClickedHasUnitSlot(EntryDeckData data)
     {
         if (!data.IsCompeted)
         {
@@ -83,6 +86,12 @@ public class UIDeckBuilding : UIBase
         {
             characterSlotDic[data.CharacterSo.ID].SetSelectedMarker(false);
         }
+    }
+
+    private void OnHeldHasUnitSlot(EntryDeckData data)
+    {
+        unitInfoPanel.SetInfoPanel(data);
+        unitInfoPanel.OpenPanel();
     }
 
     public void RemoveUnitInDeck(EntryDeckData data)
