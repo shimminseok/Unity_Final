@@ -56,7 +56,7 @@ public static class Define
     public static float GetCompensationAmount(Tier tier) { return tier switch { Tier.A => 0.1f, Tier.S => 0.2f, Tier.SR => 0.3f, Tier.SSR => 0.4f, _ => 0 }; }
 
     // 가챠 비용
-    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Unit, 150 }, { GachaType.Equipment, 150 } };
+    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Character, 150 }, { GachaType.Equipment, 150 } };
 
 
     public static float GetTargetColliderRadius(IDamageable target)

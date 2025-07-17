@@ -46,11 +46,18 @@ public class SelectExecuterState : IInputState
             selector.ShowPrevCommand(unit.SelectedUnit);
 
             // SkillUI는 켜주고 StartButton은 꺼주기
-            context.CloseStartButtonUI?.Invoke();
+            context.DisableStartButtonUI?.Invoke();
             context.OpenSkillUI?.Invoke(context.SelectedExecuter.SelectedUnit);
 
             // 스킬 선택 상태로 넘어감
             inputStateMachine.ChangeState<SelectSkillState>();
+        }
+
+        if (selector.TrySelectUnit(context.EnemyUnitLayer, out ISelectable enemyUnit))
+        {
+            selector.ShowSelectableUnits(context.PlayerUnitLayer, false);
+            enemyUnit.PlaySelectEffect();
+            enemyUnit.ToggleSelectedIndicator(true);
         }
     }
 

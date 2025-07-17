@@ -15,8 +15,8 @@ public class InputContext
 
     public Action<Unit> OpenSkillUI;
     public Action CloseSkillUI;
-    public Action CloseStartButtonUI;
-    public Action OpenStartButtonUI;
+    public Action DisableStartButtonUI;
+    public Action EnableStartButtonUI;
     
     public Action<Unit, Unit, SkillData> PlanActionCommand;
 
