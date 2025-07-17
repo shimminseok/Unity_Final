@@ -6,12 +6,12 @@ public class BattleSceneStartButton : UIBase
     [SerializeField] private Button startBtn;
     public void DisableStartButton()
     {
-        startBtn.enabled = false;
+        startBtn.interactable = false;
     }
 
     public void EnableStartButton()
     {
-        startBtn.enabled = true;
+        startBtn.interactable = true;
     }
 
     public void OnStartButton()

@@ -70,6 +70,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         inputStateMachine.ChangeState<SelectExecuterState>();
         UIManager.Instance.GetUIComponent<BattleSceneStartButton>().Open();
+        context.DisableStartButtonUI?.Invoke();
     }
 
     void Update()
