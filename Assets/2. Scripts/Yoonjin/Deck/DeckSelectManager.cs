@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 {
@@ -15,6 +15,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     // 최대 선택 가능한 캐릭터 수
 
+    public event Action<int> OnChangedDeck;
 
     #region getter
 
@@ -73,6 +74,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         selectedDeck[index] = entryDeck;
         entryDeck.Compete(true);
         currentSelectedCharacter = entryDeck;
+        OnChangedDeck?.Invoke(index);
     }
 
     /// <summary>
@@ -87,6 +89,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         selectedDeck[index] = null;
         entryDeck.Compete(false);
         currentSelectedCharacter = null;
+        OnChangedDeck?.Invoke(index);
     }
 
 

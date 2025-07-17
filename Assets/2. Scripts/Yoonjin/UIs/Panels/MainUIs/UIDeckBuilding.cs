@@ -59,18 +59,6 @@ public class UIDeckBuilding : UIBase
         }
     }
 
-    // 최근 선택된 캐릭터 정보를 패널에 갱신
-    public void UpdateCharacterInfoPanel(PlayerUnitSO character)
-    {
-        // 현재 선택된 덱에서 찾음
-        var entry = DeckSelectManager.Instance.GetSelectedDeck()
-            .Find(entry => entry.CharacterSo.ID == character.ID);
-    }
-
-    /// <summary>
-    /// 이하 클릭 이벤트
-    /// </summary>
-
     // 보유 캐릭터 버튼 클릭 처리
     private void OnClickedHasUnitSlot(EntryDeckData data)
     {
@@ -126,7 +114,6 @@ public class UIDeckBuilding : UIBase
         foreach (var slot in characterSlotDic.Values)
         {
             slot.Deselect();
-            slot.SetCompetedMarker(false);
         }
 
         avatarPreviewManager.HideAllBuilindUIAvatars();
