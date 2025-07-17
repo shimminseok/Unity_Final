@@ -66,4 +66,12 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
         unitAvatars[(int)jobType].transform.localPosition = Vector3.zero;
         unitAvatars[(int)jobType].transform.localRotation = Quaternion.identity;
     }
+
+    public void HideAllBuilindUIAvatars()
+    {
+        foreach (var avatar in unitAvatars)
+        {
+            avatar.SetActive(false);
+        }
+    }
 }

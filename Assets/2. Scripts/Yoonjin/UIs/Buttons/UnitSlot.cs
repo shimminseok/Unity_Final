@@ -12,16 +12,16 @@ public class UnitSlot : MonoBehaviour
     [SerializeField] private List<GameObject> unitTierStar;
     [SerializeField] private GameObject competedMarker;
     [SerializeField] private Image iconImage; // 캐릭터 이미지
-    [SerializeField] private Button button;   // 클릭 버튼
+    [SerializeField] private GameObject selectedNotiImg;
 
-
-    //선택된 유닛인지
     private bool isSelected;
     private EntryDeckData selectedUnit;
 
     // 버튼에 데이터를 집어넣는 초기화 작업
 
     public event Action<EntryDeckData> OnClickSlot;
+
+    private UIDeckBuilding uiDeckBuilding => UIManager.Instance.GetUIComponent<UIDeckBuilding>();
 
     public void Initialize(EntryDeckData data)
     {
@@ -45,9 +45,30 @@ public class UnitSlot : MonoBehaviour
         competedMarker.SetActive(isCompeted);
     }
 
-    // 버튼 클릭
+    public void SetSelectedMarker(bool isSelected)
+    {
+        selectedNotiImg.SetActive(isSelected);
+    }
+
+    public void Deselect()
+    {
+        isSelected = false;
+        SetSelectedMarker(false);
+    }
+
     public void OnClicked()
     {
-        OnClickSlot?.Invoke(selectedUnit);
+        if (!isSelected)
+        {
+            isSelected = true;
+            uiDeckBuilding.SetSelectedUnitSlot(this);
+        }
+        else
+        {
+            OnClickSlot?.Invoke(selectedUnit);
+        }
+
+        SetCompetedMarker(selectedUnit.IsCompeted);
+        SetSelectedMarker(isSelected);
     }
 }

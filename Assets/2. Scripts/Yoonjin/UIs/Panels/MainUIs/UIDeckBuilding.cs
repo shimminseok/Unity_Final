@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ public class UIDeckBuilding : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
+
+    [SerializeField] private List<CompeteUnitSlot> competedUnitSlots;
 
     [FormerlySerializedAs("characterButtonPrefab")]
     [SerializeField] private UnitSlot unitSlotPrefab;
@@ -17,8 +20,11 @@ public class UIDeckBuilding : UIBase
     private Dictionary<int, UnitSlot> characterSlotDic = new();
 
 
+    private UnitSlot selectedUnitSlot;
+    private AvatarPreviewManager avatarPreviewManager => AvatarPreviewManager.Instance;
+
     // 현재 보유 중인 캐릭터 목록 버튼 생성
-    private void GenerateOwnedCharacterButtons()
+    private void GenerateHasUnitSlots()
     {
         var units = AccountManager.Instance.MyPlayerUnits;
 
@@ -30,12 +36,12 @@ public class UIDeckBuilding : UIBase
             UnitSlot slot = Instantiate(unitSlotPrefab, ownedCharacterParent);
             slot.Initialize(entryDeckData.Value);
             characterSlotDic.Add(entryDeckData.Key, slot);
-            slot.OnClickSlot += OnCharacterButtonClicked;
+            slot.OnClickSlot += OnClickHasUnitSlot;
         }
     }
 
     // 선택된 캐릭터 목록 버튼 생성
-    private void GenerateSelectedCharacterButtons(List<EntryDeckData> selectedDeck)
+    private void ShowCompetedUnit(List<EntryDeckData> selectedDeck)
     {
         int index = 0;
         foreach (var entry in selectedDeck)
@@ -46,7 +52,7 @@ public class UIDeckBuilding : UIBase
                 continue;
             }
 
-            AvatarPreviewManager.Instance.ShowAvatar(index++, entry.CharacterSo.JobType);
+            avatarPreviewManager.ShowAvatar(index++, entry.CharacterSo.JobType);
         }
     }
 
@@ -63,31 +69,58 @@ public class UIDeckBuilding : UIBase
     /// </summary>
 
     // 보유 캐릭터 버튼 클릭 처리
-    private void OnCharacterButtonClicked(EntryDeckData data)
+    private void OnClickHasUnitSlot(EntryDeckData data)
     {
-        if (data.IsCompeted)
-        {
-            DeckSelectManager.Instance.RemoveUnitInDeck(data);
-            AvatarPreviewManager.Instance.HideAvatar(data.CharacterSo.JobType);
-        }
-        else
+        if (!data.IsCompeted)
         {
             DeckSelectManager.Instance.AddUnitInDeck(data, out int index);
             if (index == -1)
                 return;
-            AvatarPreviewManager.Instance.ShowAvatar(index, data.CharacterSo.JobType);
+            competedUnitSlots[index].SetCompeteUnitData(data);
+            avatarPreviewManager.ShowAvatar(index, data.CharacterSo.JobType);
         }
+        else
+        {
+            characterSlotDic[data.CharacterSo.ID].SetSelectedMarker(false);
+        }
+    }
+
+    public void RemoveUnitInDeck(EntryDeckData data)
+    {
+        characterSlotDic[data.CharacterSo.ID].SetCompetedMarker(false);
+        DeckSelectManager.Instance.RemoveUnitInDeck(data);
+        avatarPreviewManager.HideAvatar(data.CharacterSo.JobType);
+    }
+
+    public void SetSelectedUnitSlot(UnitSlot slot)
+    {
+        if (slot != selectedUnitSlot)
+        {
+            selectedUnitSlot?.Deselect();
+        }
+
+        selectedUnitSlot = slot;
+        selectedUnitSlot.SetSelectedMarker(true);
     }
 
     public override void Open()
     {
         base.Open();
-        GenerateOwnedCharacterButtons();
-        GenerateSelectedCharacterButtons(DeckSelectManager.Instance.GetSelectedDeck());
+        GenerateHasUnitSlots();
+        ShowCompetedUnit(DeckSelectManager.Instance.GetSelectedDeck());
     }
 
     public override void Close()
     {
         base.Close();
+
+        foreach (var slot in characterSlotDic.Values)
+        {
+            slot.Deselect();
+            slot.SetCompetedMarker(false);
+        }
+
+        avatarPreviewManager.HideAllBuilindUIAvatars();
+        selectedUnitSlot = null;
     }
 }
