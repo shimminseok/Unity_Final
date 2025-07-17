@@ -16,10 +16,7 @@ public class CharacterInfoPanel : MonoBehaviour
     [SerializeField] private TMP_Text characterNameText;
 
     [Header("장비 슬롯")]
-    [SerializeField] private Image weaponSlotImage;
-
-    [SerializeField] private Image armorSlotImage;
-    [SerializeField] private Image accessorySlotImage;
+    [SerializeField] private List<InventorySlot> equipmentSlots = new();
 
     [Header("액티브 스킬 슬롯")]
     [SerializeField] private Image[] activeSkillSlotImage = new Image[3];
@@ -34,14 +31,21 @@ public class CharacterInfoPanel : MonoBehaviour
         // 편집 버튼에 클릭 이벤트 연결
         equipEditButton.onClick.AddListener(OnClickEquipUI);
         skillEditButton.onClick.AddListener(OnClickSkillUI);
+
+        equipmentSlots.ForEach(slot => slot.Initialize(null, false));
     }
 
     private void UpdateEquipment(EntryDeckData data)
     {
         // 장비 표시
-        weaponSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Weapon);
-        armorSlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Armor);
-        accessorySlotImage.sprite = GetEquipSprite(data.equippedItems, EquipmentType.Accessory);
+        equipmentSlots.ForEach(slot => slot.Initialize(null, false));
+        if (data == null)
+            return;
+        foreach (var equipmentItem in data.equippedItems)
+        {
+            equipmentSlots[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
+            equipmentSlots[(int)equipmentItem.Key].ShowEquipMark(false);
+        }
     }
 
     private void UpdateEquipmentSkill(EntryDeckData data)
@@ -73,20 +77,6 @@ public class CharacterInfoPanel : MonoBehaviour
 
         UpdateEquipment(selectedUnitData);
         UpdateEquipmentSkill(selectedUnitData);
-    }
-
-    // 장비 딕셔너리에서 원하는 장비 타입을 꺼내, 아이콘을 반환한다
-    private Sprite GetEquipSprite(Dictionary<EquipmentType, EquipmentItem> dic, EquipmentType type)
-    {
-        if (dic.TryGetValue(type, out var item) && item != null)
-        {
-            return item.EquipmentItemSo.ItemSprite;
-        }
-
-        else
-        {
-            return null;
-        }
     }
 
     // 장비 편집창 열기

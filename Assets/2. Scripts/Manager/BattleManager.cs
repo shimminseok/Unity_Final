@@ -30,7 +30,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         currentStage = PlayerDeckContainer.Instance.SelectedStage;
 
-        if (PlayerDeckContainer.Instance.CurrentDeck.deckDatas.Count == 0)
+        if (PlayerDeckContainer.Instance.CurrentDeck.DeckDatas.Count == 0)
             SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
         else
         {
@@ -66,9 +66,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     public void SetAlliesUnit(PlayerDeck playerDeck)
     {
-        for (int i = 0; i < playerDeck.deckDatas.Count; i++)
+        for (int i = 0; i < playerDeck.DeckDatas.Count; i++)
         {
-            EntryDeckData deckData = playerDeck.deckDatas[i];
+            if (playerDeck.DeckDatas[i] == null)
+                continue;
+
+            EntryDeckData deckData = playerDeck.DeckDatas[i];
             GameObject    go       = Instantiate(deckData.CharacterSo.UnitPrefab, PartyUnitsTrans[i], false);
             Unit          unit     = go.GetComponent<Unit>();
             unit.Initialize(new UnitSpawnData { UnitSo = deckData.CharacterSo, DeckData = deckData });

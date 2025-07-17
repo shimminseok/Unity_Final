@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemTable", menuName = "Table/ItemTable", order = 0)]
@@ -15,6 +16,7 @@ public class ItemTable : BaseTable<int, ItemSO>
     public override void CreateTable()
     {
         Type = GetType();
+        dataList = dataList.OrderBy(x => x.ID).ToList();
         foreach (ItemSO item in dataList)
         {
             if (!DataDic.TryAdd(item.ID, item))

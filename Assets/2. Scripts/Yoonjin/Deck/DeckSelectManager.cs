@@ -14,7 +14,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     private EntryDeckData currentSelectedCharacter;
 
     // 최대 선택 가능한 캐릭터 수
-    private const int maxCharacterCount = 4;
 
 
     #region getter
@@ -38,7 +37,14 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     private void Start()
     {
-        selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.deckDatas;
+        selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
+        if (selectedDeck.Count == 0)
+        {
+            for (int i = 0; i < Define.MaxCharacterCount; i++)
+            {
+                selectedDeck.Add(null);
+            }
+        }
     }
 
     protected override void OnDestroy()
@@ -53,26 +59,34 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         currentSelectedCharacter = entry;
     }
 
-    // 덱에 캐릭터 넣기
-    public void SelectCharacter(PlayerUnitSO newCharacterSO)
+    /// <summary>
+    /// 덱에 Unit을 추가하는 메서드
+    /// </summary>
+    /// <param name="entryDeck"></param>
+    public void AddUnitInDeck(EntryDeckData entryDeck, out int index)
     {
-        // 이미 선택됐는지 확인
-        var alreadySelected = selectedDeck.Find(alreadySelected => alreadySelected.CharacterSo == newCharacterSO);
+        // 새로운 캐릭터 데이터 추가
+        index = selectedDeck.IndexOf(null);
+        if (index == -1)
+            return;
 
-        if (alreadySelected != null)
-        {
-            selectedDeck.Remove(alreadySelected); // 이미 선택한 캐릭터면 해제
-            currentSelectedCharacter = null;
-        }
+        selectedDeck[index] = entryDeck;
+        entryDeck.Compete(true);
+        currentSelectedCharacter = entryDeck;
+    }
 
-        else if (selectedDeck.Count < maxCharacterCount)
-        {
-            // 새로운 캐릭터 데이터 추가
-            var netry = AccountManager.Instance.MyPlayerUnits[newCharacterSO.ID];
-
-            selectedDeck.Add(netry);
-            currentSelectedCharacter = netry;
-        }
+    /// <summary>
+    /// 덱에서 Unit을 제거하는 메서드
+    /// </summary>
+    /// <param name="entryDeck"></param>
+    public void RemoveUnitInDeck(EntryDeckData entryDeck)
+    {
+        int index = selectedDeck.IndexOf(entryDeck);
+        if (index == -1)
+            return;
+        selectedDeck[index] = null;
+        entryDeck.Compete(false);
+        currentSelectedCharacter = null;
     }
 
 
@@ -113,13 +127,14 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             return;
 
         // 장비 타입 받아옴
-        EquipmentType type     = equip.EquipmentItemSo.EquipmentType;
-        var           equipped = currentSelectedCharacter.equippedItems;
+        EquipmentType type = equip.EquipmentItemSo.EquipmentType;
+
+        var equipped = currentSelectedCharacter.equippedItems;
 
         // 현재 type 슬롯에 장착된 아이템
         if (equipped.TryGetValue(type, out var currentEquipped))
         {
-            // 같은 아이템을 다시 클릭한 경우에 해제
+            // 같은 아이템을 다시 클릭한 경우 해제
             if (currentEquipped == equip)
             {
                 equip.IsEquipped = false;
@@ -136,25 +151,11 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         }
 
         // 새 장비 장착
-        equip.IsEquipped = true;
+        equip.EquipItem(currentSelectedCharacter);
         equipped[type] = equip;
 
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
         currentSelectedCharacter.InvokeEquipmentChanged();
-    }
-
-    // 게임 시작 버튼 클릭 시 호출
-    // 덱을 PlayerDeckContainer에 저장하고, 배틀씬으로 이동한다
-    public void ConfirmDeckAndStartBattle()
-    {
-        PlayerDeckContainer.Instance.SetDeck(selectedDeck);
-    }
-
-    // 덱 전체 초기화
-    public void ResetDeck()
-    {
-        selectedDeck.Clear();
-        PlayerDeckContainer.Instance.ClearDeck();
     }
 }

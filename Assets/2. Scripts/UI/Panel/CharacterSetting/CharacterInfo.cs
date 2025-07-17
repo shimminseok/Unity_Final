@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CharacterInfo : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class CharacterInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unitLevel;
     [SerializeField] private StatSlot[] statSlots;
 
-    [SerializeField] private EquipButton[] equipButtons = new EquipButton[3];
+    [SerializeField] private InventorySlot[] equippedItemSlot = new InventorySlot[3];
     [SerializeField] private SkillSlot[] skillSlots = new SkillSlot[4];
 
     [Header("UnitLevelUpPanel")]
@@ -106,23 +108,25 @@ public class CharacterInfo : MonoBehaviour
     private void SetPlayerUnitEquipmentInfo()
     {
         var equipItem = selectedPlayerUnitData.equippedItems;
-        for (int i = 0; i < equipButtons.Length; i++)
+        for (int i = 0; i < equippedItemSlot.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))
             {
-                equipButtons[i].Initialize(item, true, false, null);
+                equippedItemSlot[i].Initialize(item, false);
             }
             else
             {
-                equipButtons[i].Initialize(null, false, false, null);
+                equippedItemSlot[i].Initialize(null, false);
             }
+
+            equippedItemSlot[i].ShowEquipMark(false);
         }
     }
 
     private void SetPlayerUnitSkillInfo()
     {
-        skillSlots[0].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill);
-        int index = 1;
+        int index = 0;
+        skillSlots[index++].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill);
         foreach (ActiveSkillSO activeSkillSo in selectedPlayerUnitData.skillDatas)
         {
             skillSlots[index++].SetSkillIcon(activeSkillSo);

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class InventoryItem
 {
+    public int Index;
     public ItemSO ItemSo;
     public int Quantity;
 
@@ -58,6 +59,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private GameManager gameManager;
 
+    public Dictionary<JobType, List<InventoryItem>> JobInventory { get; private set; } = new();
+
     protected override void Awake()
     {
         base.Awake();
@@ -73,7 +76,7 @@ public class InventoryManager : Singleton<InventoryManager>
         Inventory = new List<InventoryItem>(Enumerable.Repeat<InventoryItem>(null, inventorySize));
     }
 
-    private void RemoveItem(int index)
+    public void RemoveItem(int index)
     {
         Inventory[index] = null;
         OnInventorySlotUpdate?.Invoke(index);
@@ -81,14 +84,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void AddItem(InventoryItem item, int amount = 1)
     {
-        // if (item.ItemSo is ConsumableItemSO consumableItemSo && consumableItemSo.IsStackable)
-        // {
-        //     AddStackableItem(item, amount);
-        // }
-        // else
         AddNonStackableItem(item, amount);
-
-        // AddStackableItem(item, amount);
     }
 
     /// <summary>
@@ -115,6 +111,7 @@ public class InventoryManager : Singleton<InventoryManager>
             }
 
             Inventory[index] = findItem;
+            Inventory[index].Index = index;
             OnInventorySlotUpdate?.Invoke(index);
         }
         else
@@ -135,9 +132,39 @@ public class InventoryManager : Singleton<InventoryManager>
             int index = Inventory.IndexOf(null);
             if (index < 0)
                 return;
-            Inventory[index] = item.Clone();
+
+            var clonedItem = item.Clone();
+            Inventory[index] = clonedItem;
+            Inventory[index].Index = index;
+
+            if (clonedItem is EquipmentItem equipmentItem)
+            {
+                if (equipmentItem.EquipmentItemSo.IsEquipableByAllJobs)
+                {
+                    foreach (JobType job in Enum.GetValues(typeof(JobType)))
+                    {
+                        AddEquipmentItem(job, equipmentItem);
+                    }
+                }
+                else
+                {
+                    AddEquipmentItem(equipmentItem.EquipmentItemSo.JobType, equipmentItem);
+                }
+            }
+
             OnInventorySlotUpdate?.Invoke(index);
         }
+    }
+
+    private void AddEquipmentItem(JobType jobType, EquipmentItem item)
+    {
+        if (!JobInventory.TryGetValue(jobType, out List<InventoryItem> inventoryList))
+        {
+            inventoryList = new List<InventoryItem>();
+        }
+
+        inventoryList.Add(item);
+        JobInventory[jobType] = inventoryList;
     }
 
     public void SwichItem(int from, int to)
