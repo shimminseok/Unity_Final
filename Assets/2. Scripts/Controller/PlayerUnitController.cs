@@ -33,6 +33,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
     }
 
+    public override bool IsTimeLineDone
+    {
+        get
+        {
+            return TimeLineManager.Instance.isPlaying;
+        }
+    }
+
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
 
     public float setRemainDistance;
@@ -256,6 +264,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
+        TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

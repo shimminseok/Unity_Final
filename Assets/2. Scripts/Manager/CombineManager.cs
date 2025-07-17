@@ -36,6 +36,7 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
 
         EquipmentItem combineItem = new EquipmentItem(combineItemSo);
 
+
         return combineItem;
     }
 }

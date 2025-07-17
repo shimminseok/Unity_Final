@@ -1,0 +1,88 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net.Mime;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
+
+public class InventorySlot : MonoBehaviour
+{
+    [SerializeField] private Image itemIcon;
+    [SerializeField] private Image itemSlotFrame;
+    [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private List<GameObject> itemGradeStars;
+
+    [SerializeField] private Sprite emptySlotSprite;
+    [SerializeField] private List<Sprite> itemGradeSprites;
+
+
+    public EquipmentItem Item { get; private set; }
+
+    public event Action<EquipmentItem> OnClickSlot;
+
+    public void Initialize(EquipmentItem item, bool isHide)
+    {
+        if (item == null)
+        {
+            EmptySlot(isHide);
+            return;
+        }
+
+        gameObject.SetActive(true);
+        ShowEquipMark(item.IsEquipped);
+        itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
+
+        itemIcon.gameObject.SetActive(true);
+        itemIcon.sprite = item.ItemSo.ItemSprite;
+
+        for (int i = 0; i < itemGradeStars.Count; i++)
+        {
+            itemGradeStars[i].SetActive(i <= (int)item.ItemSo.Tier);
+        }
+
+        Item = item;
+    }
+
+
+    public void EmptySlot(bool isHide)
+    {
+        // 아이템 아이콘 비우기
+        itemIcon.sprite = null;
+        itemIcon.gameObject.SetActive(false);
+
+        // 아이템 프레임 비활성화
+        itemSlotFrame.sprite = emptySlotSprite;
+        // 장비 이미지 비우기
+        itemEquipmentImg.gameObject.SetActive(false);
+        foreach (GameObject go in itemGradeStars)
+        {
+            go.SetActive(false);
+        }
+
+        Item = null;
+        gameObject.SetActive(!isHide);
+    }
+
+    public void ShowEquipMark(bool isEquip)
+    {
+        itemEquipmentImg.gameObject.SetActive(isEquip);
+    }
+
+    public void OnClickSlotBtn()
+    {
+        OnClickSlot?.Invoke(Item);
+    }
+
+    public void UpdateItemSprite()
+    {
+        itemSlotFrame.sprite = itemGradeSprites[(int)Item.ItemSo.Tier];
+        itemIcon.sprite = Item.ItemSo.ItemSprite;
+        for (int i = 0; i < itemGradeStars.Count; i++)
+        {
+            itemGradeStars[i].SetActive(i <= (int)Item.ItemSo.Tier);
+        }
+    }
+}

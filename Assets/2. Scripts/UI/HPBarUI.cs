@@ -18,8 +18,9 @@ public class HPBarUI : MonoBehaviour, IPoolObject
 
     [SerializeField] private TextMeshProUGUI speedText;
 
-    [Header ("감정 슬롯")]
+    [Header("감정 슬롯")]
     [SerializeField] private GameObject joySlot;
+
     [SerializeField] private GameObject angerSlot;
     [SerializeField] private GameObject depressionSlot;
 

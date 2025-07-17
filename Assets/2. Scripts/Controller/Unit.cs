@@ -13,9 +13,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     protected BattleManager BattleManager => BattleManager.Instance;
 
-    public BaseEmotion                CurrentEmotion             { get; protected set; }
-    public BaseEmotion[]              Emotions                   { get; private set; }
-    public event Action<BaseEmotion>  EmotionChanged;             // 감정이 바뀌었을 때 알리는 이벤트
+    public BaseEmotion                CurrentEmotion { get; protected set; }
+    public BaseEmotion[]              Emotions       { get; private set; }
+    public event Action<BaseEmotion>  EmotionChanged; // 감정이 바뀌었을 때 알리는 이벤트
     public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
     public TurnStateMachine           TurnStateMachine           { get; protected set; }
     public ITurnState[]               TurnStates                 { get; private set; }
@@ -42,6 +42,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    { get; set; }
+    public virtual bool IsTimeLineDone     { get; set; }
 
     public Unit SelectedUnit => this;
 
@@ -49,10 +50,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void EndTurn();
     public abstract void UseSkill();
     public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
-    
+
 
     public abstract void Dead();
-    
+
 
     public void SetStunned(bool isStunned)
     {
@@ -149,13 +150,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void Attack();
     public abstract void MoveTo(Vector3 destination);
 
-    public void SetTarget(Unit target)
+    public void SetTarget(IDamageable target)
     {
         Target = target;
-        if (CurrentAction == ActionType.SKill)
-        {
-            SkillController.SelectTargets(target);
-        }
+        SkillController.SelectSkillSubTargets(target);
     }
 
     // 유닛 선택 가능 토글
@@ -192,7 +190,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             CurrentAttackAction = UnitSo.AttackType;
         else if (action == ActionType.SKill)
         {
-            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.skillType;
+            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
         }
     }
 

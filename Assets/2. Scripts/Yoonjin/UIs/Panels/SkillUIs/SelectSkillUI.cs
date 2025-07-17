@@ -28,9 +28,6 @@ public class SelectSkillUI : UIBase
     [Header("스킬 버튼 프리팹")]
     [SerializeField] private SkillButton skillButtonPrefab;
 
-    [Header("아바타 표시")]
-    [SerializeField] private RawImage avatarImage;
-
     // 현재 선택된 캐릭터
     private EntryDeckData currentCharacter;
 
@@ -47,7 +44,7 @@ public class SelectSkillUI : UIBase
 
         if (currentCharacter != null)
         {
-            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo, avatarImage);
+            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo);
         }
     }
 

@@ -14,7 +14,7 @@ public class AnimationEventListener : MonoBehaviour
         skillData = owner.SkillController.CurrentSkillData;
     }
 
-    public void EventTrigger()
+     public void EventTrigger()
     {
         if (owner.IsCounterAttack)
         {

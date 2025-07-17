@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -10,7 +11,7 @@ using UnityEngine.Playables;
     - 스킬의 타입에 따라 유닛의 턴에서 행동하는 패턴이 바뀜
     - Melee 일 경우 StartTurn => MoveTo(타겟에게) => Act => EndTurn
     - Range 인 경우 StartTurn => Act => EndTurn
- * StatBaseSkillEffect : 스킬의 대상, 데미지, 효과를 주는 클래스 
+ * StatBaseSkillEffect : 스킬의 대상, 데미지, 효과를 주는 클래스
  * reuseMaxCount : 재사용가능횟수
  * coolTime : 쿨타임
  * skillIcon : 스킬아이콘
@@ -25,7 +26,7 @@ public class ActiveSkillSO : ScriptableObject
     public string skillDescription;
     public CombatActionSo skillType;
     public SelectCampType selectCamp;
-    public StatBaseBuffEffect buffEffect;
+    public StatBaseEffect effect;
     public JobType jobType;
     public Tier activeSkillTier;
     public int reuseMaxCount;
@@ -34,4 +35,15 @@ public class ActiveSkillSO : ScriptableObject
     public AnimationClip skillAnimation;
     public PlayableAsset skillTimeLine;
 
+    public CombatActionSo SkillType { get; private set; }
+
+    public void CloneSkillType()
+    {
+        SkillType = Instantiate(skillType);
+        if (SkillType is RangeSkillSO rangeSkillSo)
+        {
+            bool isHasProjectileSkill = effect.skillEffectDatas.Any(p => p.projectilePrefab != null);
+            rangeSkillSo.SetIsProjectile(isHasProjectileSkill);
+        }
+    }
 }
