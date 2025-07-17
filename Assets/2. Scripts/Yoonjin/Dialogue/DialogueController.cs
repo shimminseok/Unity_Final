@@ -131,6 +131,8 @@ public class DialogueController : Singleton<DialogueController>
 
         currentGroup = null;
         currentLineIndex = 0;
+
+        EventBus.Publish("DialogueFinished");
     }
 }
 
