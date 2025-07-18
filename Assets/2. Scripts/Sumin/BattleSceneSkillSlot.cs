@@ -66,6 +66,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void OnFrontSkillBtn()
     {
         InputManager.Instance.SelectSkill(currentskillIndex);
+        ToggleHighlightSkillBtn(true);
     }
 
     public void ToggleHighlightSkillBtn(bool toggle)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 // Unit에서 행동을 직접 수행하고 있음
@@ -6,7 +7,9 @@ public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
 {
     // Unit과 Command Dictionary에 저장
     private Dictionary<Unit, IActionCommand> plannedCommands = new Dictionary<Unit, IActionCommand>();
-    
+
+    public event Action commandUpdated;
+
     // 실행할 유닛과 커맨드 액션 plannedCommands에 저장
     public void PlanAction(IActionCommand command)
     {
@@ -14,6 +17,7 @@ public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
             return;
 
         plannedCommands[command.Executer] = command;
+        commandUpdated?.Invoke();
     }
 
     // 턴 시작될 때 저장된 커맨드들을 실행시킨다.
@@ -23,7 +27,6 @@ public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
         {
             command.Execute();
         }
-        Clear();
     }
 
     // 저장된 커맨드 받아오기
@@ -40,5 +43,6 @@ public class CommandPlanner : SceneOnlySingleton<CommandPlanner>
     public void Clear()
     {
         plannedCommands.Clear();
+        commandUpdated?.Invoke();
     }
 }

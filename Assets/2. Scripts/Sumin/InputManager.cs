@@ -70,6 +70,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
 
         inputStateMachine.ChangeState<SelectExecuterState>();
         UIManager.Instance.GetUIComponent<BattleSceneStartButton>().Open();
+        context.DisableStartButtonUI?.Invoke();
     }
 
     void Update()
@@ -114,18 +115,29 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 스킬 선택 버튼
     public void SelectSkill(int index)
     {
+        selector.InitializeHighlight();
         // 스킬 인덱스 받아서 context에 저장
         if (context.SelectedExecuter is PlayerUnitController playerUnit)
         {
             context.SelectedSkill = playerUnit.SkillController.GetSkillData(index);
-
-            UpdateTargetIndicator();
+            
+            // 만약 선택한 스킬의 타겟이 자기 자신일 경우 command에 바로 저장하고 타겟 선택하지 않음 
+            if (context.SelectedSkill.Effect.skillEffectDatas[0].selectTarget == SelectTargetType.OnSelf)
+            {
+                context.PlanActionCommand?.Invoke(context.SelectedExecuter.SelectedUnit, context.SelectedExecuter.SelectedUnit, context.SelectedSkill);
+                inputStateMachine.ChangeState<SelectExecuterState>();
+            }
+            else
+            {
+                UpdateTargetIndicator();
+            }
         }
     }
 
     // 기본 공격 선택 버튼
     public void SelectBasicAttack()
     {
+        selector.InitializeHighlight();
         context.SelectedSkill = null;
 
         inputStateMachine.ChangeState<SelectTargetState>();

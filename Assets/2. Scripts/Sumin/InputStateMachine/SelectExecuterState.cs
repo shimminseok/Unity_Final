@@ -52,13 +52,6 @@ public class SelectExecuterState : IInputState
             // 스킬 선택 상태로 넘어감
             inputStateMachine.ChangeState<SelectSkillState>();
         }
-
-        if (selector.TrySelectUnit(context.EnemyUnitLayer, out ISelectable enemyUnit))
-        {
-            selector.ShowSelectableUnits(context.PlayerUnitLayer, false);
-            enemyUnit.PlaySelectEffect();
-            enemyUnit.ToggleSelectedIndicator(true);
-        }
     }
 
     public void Exit() {}

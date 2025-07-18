@@ -8,6 +8,7 @@ public class BattleSceneAttackSlot : MonoBehaviour
     public void OnClickBasicAttack()
     {
         InputManager.Instance.SelectBasicAttack();
+        ToggleHighlightAttackBtn(true);
     }
 
     public void ToggleHighlightAttackBtn(bool toggle)
