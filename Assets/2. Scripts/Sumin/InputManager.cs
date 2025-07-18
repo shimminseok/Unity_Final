@@ -115,6 +115,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 스킬 선택 버튼
     public void SelectSkill(int index)
     {
+        selector.InitializeHighlight();
         // 스킬 인덱스 받아서 context에 저장
         if (context.SelectedExecuter is PlayerUnitController playerUnit)
         {
@@ -127,6 +128,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // 기본 공격 선택 버튼
     public void SelectBasicAttack()
     {
+        selector.InitializeHighlight();
         context.SelectedSkill = null;
 
         inputStateMachine.ChangeState<SelectTargetState>();
