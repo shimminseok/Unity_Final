@@ -40,6 +40,12 @@ public class InputManager : SceneOnlySingleton<InputManager>
                     command = new SkillCommand(executer, target, skillData);
 
                 CommandPlanner.Instance.PlanAction(command);
+
+                if (context.SelectedExecuter is PlayerUnitController owner)
+                {
+                    owner.ChangeUnitState(PlayerUnitState.ReadyAction);
+                }
+
                 Debug.Log($"커맨드 등록 : {executer}, {target}, {(skillData == null ? "기본공격" : skillData.skillSo.name)}");
             },
             HighlightSkillSlotUI = (toggle, index) =>

@@ -43,11 +43,7 @@ public class SelectTargetState : IInputState
         // 인디케이터 표시 전환
         selector.ShowSelectableUnits(context.TargetLayer, false);
         context.SelectedExecuter.ToggleSelectedIndicator(false);
-        if (context.SelectedExecuter is PlayerUnitController owner)
-        {
-            owner.ChangeUnitState(PlayerUnitState.ReadyAction);
-        }
-
+        
         // Start 버튼 활성화
         context.EnableStartButtonUI?.Invoke();
     }
