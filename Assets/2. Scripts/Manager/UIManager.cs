@@ -51,7 +51,7 @@ public class UIManager : Singleton<UIManager>
         if (!openedUIList.Contains(ui))
             openedUIList.Add(ui);
 
-        ui.Open();
+        ui?.Open();
     }
 
     public void Close(UIBase ui)
