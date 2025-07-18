@@ -72,9 +72,4 @@ public class StageInfoPanel : MonoBehaviour
             SetCompetedUnitSlot(i);
         }
     }
-
-    private void OnDestroy()
-    {
-        DeckSelectManager.Instance.OnChangedDeck -= SetCompetedUnitSlot;
-    }
 }
