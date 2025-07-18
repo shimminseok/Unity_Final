@@ -17,6 +17,7 @@ public class RangeCombatAction : ICombatAction
 
     public void Execute(Unit attacker)
     {
+        TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain,CameraManager.Instance.skillCameraController,attacker);
         if (attackData.IsProjectile)
         {
             attacker.ExecuteCoroutine(WaitForSpawnProjectile());
@@ -35,6 +36,7 @@ public class RangeCombatAction : ICombatAction
         {
             OnActionComplete?.Invoke();
         };
+        CameraManager.Instance.ChangeFollowTarget(attackData.ProjectileComponent);
     }
 
     private IEnumerator WaitForAnimationDone(Unit attacker)

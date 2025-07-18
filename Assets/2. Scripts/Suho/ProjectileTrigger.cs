@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class ProjectileTrigger : MonoBehaviour
 {
-    public Unit target;
+    public IDamageable target;
     public event Action OnTriggerTarget;
+
+    public Collider colider;
+
+    private void Awake()
+    {
+        colider = GetComponent<Collider>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Unit>() == target)
+        if (other.GetComponent<IDamageable>() == target)
         {
             OnTriggerTarget?.Invoke();
 

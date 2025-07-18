@@ -25,6 +25,8 @@ public class ActiveSkillTable : BaseTable<int, ActiveSkillSO>
                 ActiveSkillByJob[skillData.jobType] = activeSkillData;
             }
 
+            skillData.CloneSkillType();
+
             activeSkillData.Add(skillData);
         }
     }

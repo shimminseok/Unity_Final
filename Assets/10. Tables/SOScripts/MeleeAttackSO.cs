@@ -6,7 +6,7 @@ public class MeleeAttackSo : CombatActionSo
 {
     public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
 
-    public override void Execute(Unit attacker, IDamageable target)
+    public override void Execute(IAttackable attacker, IDamageable target)
     {
         float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
@@ -25,7 +25,9 @@ public class MeleeAttackSo : CombatActionSo
                 repeatPassive.OnAttack();
         }
 
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
+        IDamageable attackerDamagable = attacker as IDamageable;
+        if (attackerDamagable == null) return;
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
         target.TakeDamage(finalValue * multiplier);
     }
 }

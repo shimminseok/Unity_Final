@@ -13,7 +13,7 @@ using UnityEngine;
  * direction은 투사체의 방향조절
  * StartPosiion은 투사체의 시작위치조절
  */
-public class PoolableProjectile : MonoBehaviour, IPoolObject
+public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 {
     [SerializeField] private string poolId;
 
@@ -32,7 +32,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
     public string     PoolID     => poolId;
     public int        PoolSize   => poolSize;
 
-    public Unit Target;
+    public IDamageable Target;
 
 
     public SkillEffectData EffectData      => effectData;
@@ -45,11 +45,21 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
 
     public ProjectileTrigger trigger;
 
-    private Unit attacker;
+    private IAttackable attacker;
+
+    public Collider Collider { get; set; }
+
+ 
+
 
     private void Awake()
     {
         trigger = GetComponentInChildren<ProjectileTrigger>();
+    }
+
+    private void Start()
+    {
+        Collider = trigger.colider;
     }
 
     private void Update()
@@ -93,7 +103,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         }
     }
 
-    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, Unit target)
+    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, IDamageable target)
     {
         //기존 구독되어있던 이벤트 해제
         trigger.OnTriggerTarget -= HandleTrigger;
@@ -101,14 +111,14 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         startPosition = startPos;
         direction = dir;
         this.gameObject.transform.position = startPosition;
-        this.gameObject.transform.LookAt(target.transform);
+        this.gameObject.transform.LookAt(target.Collider.transform);
         Target = target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleTrigger;
         OnSpawnFromPool();
     }
 
-    public void Initialize(Unit attacker, Vector3 startPos, Vector3 dir)
+    public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir, IDamageable target)
     {
         trigger.OnTriggerTarget -= HandleAttackTrigger;
         this.attacker = attacker;
@@ -116,7 +126,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
         direction = dir;
         this.gameObject.transform.position = startPosition;
         this.gameObject.transform.LookAt(dir);
-        Target = attacker.IsCounterAttack ? attacker.CounterTarget : attacker.Target as Unit;
+        Target = target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleAttackTrigger;
         OnSpawnFromPool();
@@ -135,15 +145,22 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject
 
     private void HandleTrigger()
     {
-        effectData.AffectTargetWithSkill(Target);
+        effectData.AffectTargetWithSkill(Target as Unit);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 
     private void HandleAttackTrigger()
     {
         //감정별 대미지
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
+        IDamageable attackerDamagable = attacker as IDamageable;
+        if (attackerDamagable == null) return;
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
         Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
+    }
+
+    public Vector3 GetCenter()
+    {
+        return transform.position;
     }
 }

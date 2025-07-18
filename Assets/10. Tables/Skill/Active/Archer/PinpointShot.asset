@@ -17,7 +17,7 @@ MonoBehaviour:
   skillDescription: "\uC6D0\uAC70\uB9AC \uC815\uD655 \uC0AC\uACA9"
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
-  buffEffect:
+  effect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
           type: 3}
         VFXPoolID: PinpointCastVFX
         LocalPosition: {x: 0, y: 0.5, z: 0.5}
-        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 0
         isParent: 1
@@ -55,7 +55,7 @@ MonoBehaviour:
           type: 3}
         VFXPoolID: PinpointShotVFX
         LocalPosition: {x: 0, y: 0.5, z: 0.5}
-        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 0
         isParent: 1
@@ -66,4 +66,4 @@ MonoBehaviour:
   coolTime: 2
   skillIcon: {fileID: 21300000, guid: cb7b7534fcb27ac4989d098a1f3cb113, type: 3}
   skillAnimation: {fileID: 7400000, guid: 3468435cb73ff414eb2099e5810f9854, type: 3}
-  skillTimeLine: {fileID: 0}
+  skillTimeLine: {fileID: 11400000, guid: 57db4776dfb36094c9e3c4beb216e73c, type: 2}

@@ -91,8 +91,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             {
                 UnitSo = unitSo, DeckData = null // Enemy
             });
-
-            EnemyUnits.Add(unit as EnemyUnitController);
+            EnemyUnitController eu = unit as EnemyUnitController;
+            if (eu != null)
+            {
+                eu.ChoiceAction();
+                EnemyUnits.Add(eu);
+            }
         }
     }
 
@@ -156,7 +160,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.AddReward(rewardKey);
         AccountManager.Instance.UpdateBestStage(currentStage);
-
         RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
     }
 
