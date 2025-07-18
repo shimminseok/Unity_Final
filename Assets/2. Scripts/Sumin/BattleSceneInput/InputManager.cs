@@ -4,6 +4,7 @@ using UnityEngine;
 public class InputManager : SceneOnlySingleton<InputManager>
 {
     [SerializeField] private Camera mainCam;
+    [SerializeField] private BattleSceneGameUI gameUI;
 
     [Header("선택 타겟 레이어 설정")]
     [SerializeField] private LayerMask unitLayer;
@@ -22,6 +23,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
             mainCam = Camera.main;
         }
 
+        if (gameUI == null)
+        {
+            Debug.LogError("InputManager에 BattleSceneGameUI를 연결해주세요.");
+        }
+
         context = new InputContext
         {
             UnitLayer = unitLayer,
@@ -29,8 +35,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
             EnemyUnitLayer = enemyUnitLayer,
             OpenSkillUI = unit => UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().UpdateSkillList(unit),
             CloseSkillUI = () => UIManager.Instance.Close(UIManager.Instance.GetUIComponent<BattleSceneSkillUI>()),
-            DisableStartButtonUI = () => UIManager.Instance.GetUIComponent<BattleSceneStartButton>().DisableStartButton(),
-            EnableStartButtonUI = () => UIManager.Instance.GetUIComponent<BattleSceneStartButton>().EnableStartButton(),
+            DisableStartButtonUI = () => gameUI.ToggleInteractableStartButton(false),
+            EnableStartButtonUI = () => gameUI.ToggleInteractableStartButton(true),
             PlanActionCommand = (executer, target, skillData) =>
             {
                 IActionCommand command;
@@ -75,7 +81,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         yield return new WaitUntil(() => BattleManager.Instance != null && BattleManager.Instance.PartyUnits.Count > 0);
 
         inputStateMachine.ChangeState<SelectExecuterState>();
-        UIManager.Instance.GetUIComponent<BattleSceneStartButton>().Open();
+        gameUI.ToggleActiveStartBtn(true);
         context.DisableStartButtonUI?.Invoke();
     }
 
@@ -89,6 +95,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         inputStateMachine.ChangeState<SelectExecuterState>();
         selector.InitializeHighlight();
+        gameUI.ToggleActiveStartBtn(true);
     }
 
     // Skill 선택 중 나가기 버튼
@@ -109,7 +116,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         CommandPlanner.Instance.ExecutePlannedActions();
         // start 버튼 비활성화
-        context.DisableStartButtonUI?.Invoke();
+        gameUI.ToggleActiveStartBtn(false);
 
         // 배틀매니저 턴 시작
         BattleManager.Instance.StartTurn();

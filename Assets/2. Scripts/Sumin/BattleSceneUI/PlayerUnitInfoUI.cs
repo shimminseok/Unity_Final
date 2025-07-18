@@ -41,9 +41,4 @@ public class PlayerUnitInfoUI : MonoBehaviour
             slots[i].UpdateUnitSelect(units[i]);
         }
     }
-
-    private void OnDisable()
-    {
-        commandPlanner.commandUpdated -= UpdatePlayerUnitSelect;
-    }
 }

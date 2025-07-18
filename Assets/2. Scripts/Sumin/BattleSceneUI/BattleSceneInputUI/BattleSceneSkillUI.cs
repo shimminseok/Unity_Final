@@ -1,10 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleSceneSkillUI : UIBase
 {
     [SerializeField] private List<BattleSceneSkillSlot> skillSlot;
     [SerializeField] private BattleSceneAttackSlot attackSlot;
+
+    // Skill 선택 Exit 버튼
+    public void OnClickSkillExit()
+    {
+        InputManager.Instance.OnClickSkillExitButton();
+    }
 
     //유닛이 보유한 스킬 리스트들을 차례로 슬롯에 넣어주기
     public void UpdateSkillList(Unit selectedUnit)
