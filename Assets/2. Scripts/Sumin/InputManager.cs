@@ -120,8 +120,17 @@ public class InputManager : SceneOnlySingleton<InputManager>
         if (context.SelectedExecuter is PlayerUnitController playerUnit)
         {
             context.SelectedSkill = playerUnit.SkillController.GetSkillData(index);
-
-            UpdateTargetIndicator();
+            
+            // 만약 선택한 스킬의 타겟이 자기 자신일 경우 command에 바로 저장하고 타겟 선택하지 않음 
+            if (context.SelectedSkill.Effect.skillEffectDatas[0].selectTarget == SelectTargetType.OnSelf)
+            {
+                context.PlanActionCommand?.Invoke(context.SelectedExecuter.SelectedUnit, context.SelectedExecuter.SelectedUnit, context.SelectedSkill);
+                inputStateMachine.ChangeState<SelectExecuterState>();
+            }
+            else
+            {
+                UpdateTargetIndicator();
+            }
         }
     }
 
