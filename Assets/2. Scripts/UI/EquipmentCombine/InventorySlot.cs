@@ -46,6 +46,15 @@ public class InventorySlot : MonoBehaviour
         Item = item;
     }
 
+    public void Initialize(RewardData rewardData)
+    {
+        EmptySlot(false);
+
+        if (rewardData.RewardType != RewardType.Item)
+        {
+        }
+    }
+
 
     public void EmptySlot(bool isHide)
     {

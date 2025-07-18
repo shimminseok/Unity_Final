@@ -10,6 +10,8 @@ public class StageInfoPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stageName;
     [SerializeField] private List<StagePanelMonsterSlot> spawnMonsters;
     [SerializeField] private List<StagePanelHeroSlot> competedHeroes;
+    [SerializeField] private List<InventorySlot> rewardSlots;
+
 
     private Vector3 onScreenScale;
     private StageSO stageSo;
@@ -71,6 +73,17 @@ public class StageInfoPanel : MonoBehaviour
         {
             SetCompetedUnitSlot(i);
         }
+
+        RewardSo firstClearReward = stageSo.FirstClearReward;
+
+        string   rewardId    = $"{stageSo.ID}_Clear_Reward";
+        RewardSo clearReward = TableManager.Instance.GetTable<RewardTable>().GetDataByID(rewardId);
+
+        // int index = 0;
+        // foreach (RewardData rewardData in firstClearReward.RewardList)
+        // {
+        //     rewardSlots[index].Initialize(rewardData);
+        // }
     }
 
     private void OnDestroy()
