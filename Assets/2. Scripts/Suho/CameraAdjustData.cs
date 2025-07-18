@@ -7,8 +7,8 @@ public class CameraAdjustData
     public Transform DefaultTransform { get; private set; }
     public readonly float ZoomInFOVModifier  = 10f;
     public readonly float ZoomOutFOVModifier = 10f;
-    public readonly float CameraShakeAmplitude  = 20f;
-    public readonly float CameraShakeFrequency  = 20f;
+    public readonly float CameraShakeAmplitude  = 10f;
+    public readonly float CameraShakeFrequency  = 10f;
     
     
     public CameraAdjustData(CinemachineVirtualCamera virtualCamera)
