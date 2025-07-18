@@ -32,8 +32,11 @@ public class AccountManager : Singleton<AccountManager>
 
     private void Start()
     {
-        //Test
-        for (int i = 0; i < 10; i++)
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
         {
             foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
             {
@@ -42,6 +45,7 @@ public class AccountManager : Singleton<AccountManager>
             }
         }
     }
+
 
     public void AddGold(int amount)
     {

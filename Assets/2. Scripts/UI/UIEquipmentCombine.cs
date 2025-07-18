@@ -90,6 +90,14 @@ public class UIEquipmentCombine : UIBase
         MaterialItems.Clear();
 
         resultItemSlot.Initialize(resultItem, true);
+
+
+        inventoryUI.Initialize(
+            () => inventoryManager.GetInventoryItems(), (slot) =>
+            {
+                slot.OnClickSlot -= ToggleCombineItem;
+                slot.OnClickSlot += ToggleCombineItem;
+            });
     }
 
 

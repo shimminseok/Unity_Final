@@ -124,10 +124,13 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment(EquipmentItem equip)
+    public void SelectEquipment(EquipmentItem equip, out EquipmentItem beforeItem)
     {
         if (currentSelectedCharacter == null)
+        {
+            beforeItem = null;
             return;
+        }
 
         // 장비 타입 받아옴
         EquipmentType type = equip.EquipmentItemSo.EquipmentType;
@@ -146,6 +149,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
                 // 디버깅용
                 currentSelectedCharacter.SyncDebugEquipments();
                 currentSelectedCharacter.InvokeEquipmentChanged();
+                beforeItem = equip;
                 return;
             }
 
@@ -160,5 +164,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
         currentSelectedCharacter.InvokeEquipmentChanged();
+        beforeItem = currentEquipped;
     }
 }

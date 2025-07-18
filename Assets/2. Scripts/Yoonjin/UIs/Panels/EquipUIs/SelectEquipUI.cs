@@ -83,15 +83,18 @@ public class SelectEquipUI : UIBase
             return;
         }
 
-        DeckSelectManager.Instance.SelectEquipment(item);
-        UpdateEquipUI();
-    }
+        DeckSelectManager.Instance.SelectEquipment(item, out EquipmentItem beforeItem);
+        if (beforeItem != null)
+            inventoryUI.RefreshAtSlotUI(beforeItem);
 
-    // 장비 정보 텍스트 표시
-    private void ShowEquipInfo(EquipmentItem item)
-    {
-        itemName.text = item.EquipmentItemSo.ItemName;
-        itemDescription.text = item.EquipmentItemSo.ItemDescription;
+        equippedItemsSlot.ForEach(slot => slot.Initialize(null, false));
+        foreach (var equipmentItem in CurrentCharacter.equippedItems)
+        {
+            equippedItemsSlot[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
+            equippedItemsSlot[(int)equipmentItem.Key].ShowEquipMark(false);
+        }
+
+        inventoryUI.RefreshAtSlotUI(item);
     }
 
     // 장비 정보 텍스트 삭제

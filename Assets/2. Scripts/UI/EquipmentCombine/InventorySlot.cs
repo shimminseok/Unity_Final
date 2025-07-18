@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 {
-    public int SlotIndex { get; private set; }
+    public int DataIndex { get; private set; }
 
 
     [SerializeField] private Image itemIcon;
@@ -26,6 +26,8 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
+
+    private Action<InventorySlot> onClickCallback;
 
     private InventoryManager inventoryManager => InventoryManager.Instance;
 
@@ -49,6 +51,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
             itemGradeStars[i].SetActive(i <= (int)item.ItemSo.Tier);
         }
 
+        amountTxt.text = item.Quantity > 0 ? $"x{item.Quantity}" : "";
         Item = item;
     }
 
@@ -97,18 +100,15 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         OnClickSlot?.Invoke(Item);
     }
 
-    public void UpdateItemSprite()
+    public void SetOnClickCallback(Action<InventorySlot> callback)
     {
-        itemSlotFrame.sprite = itemGradeSprites[(int)Item.ItemSo.Tier];
-        itemIcon.sprite = Item.ItemSo.ItemSprite;
-        for (int i = 0; i < itemGradeStars.Count; i++)
-        {
-            itemGradeStars[i].SetActive(i <= (int)Item.ItemSo.Tier);
-        }
+        onClickCallback = callback;
+        onClickCallback?.Invoke(this);
     }
 
-    public void UpdateSlot(InventoryItem item)
+    public void UpdateSlot(ScrollData<InventoryItem> data)
     {
-        Initialize(item as EquipmentItem, isHide: false);
+        DataIndex = data.DataIndex;
+        Initialize(data.Data as EquipmentItem, isHide: false);
     }
 }

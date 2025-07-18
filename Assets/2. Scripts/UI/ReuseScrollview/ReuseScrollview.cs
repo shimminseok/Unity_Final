@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,20 @@ using UnityEngine.UI;
 
 public interface IReuseScrollData<T>
 {
-    void UpdateSlot(T data);
+    int  DataIndex { get; }
+    void UpdateSlot(ScrollData<T> data);
+}
+
+public class ScrollData<T>
+{
+    public int DataIndex { get; private set; }
+    public T   Data      { get; private set; }
+
+    public ScrollData(int dataIndex, T data)
+    {
+        DataIndex = dataIndex;
+        Data = data;
+    }
 }
 
 public class ReuseScrollview<T> : MonoBehaviour where T : class
@@ -19,7 +33,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     [SerializeField] private bool isVertical = true;
 
     private List<RectTransform> itemList = new();
-    private List<T> dataList = new();
+    private List<ScrollData<T>> dataList = new();
 
     private float itemWidth;
     private float itemHeight;
@@ -31,6 +45,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     private int rowCount;
     private bool isInitialized;
 
+    public List<RectTransform> ItemList => itemList;
+    private Dictionary<T, int> dataToIndexMap = new();
 
     private void Initialize()
     {
@@ -62,10 +78,21 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
             isInitialized = true;
         }
 
-        dataList = items;
-        SetContentSize();
+        Debug.Log(items.Count);
+        dataList.Clear();
+        dataToIndexMap.Clear();
+        for (int i = 0; i < items.Count; i++)
+        {
+            var scrollData = new ScrollData<T>(i, items[i]);
+            dataList.Add(scrollData);
+            dataToIndexMap[items[i]] = i;
+        }
 
-        CreateItems();
+        SetContentSize();
+        if (itemList.Count == 0)
+            CreateItems();
+
+        currentStartIndex = -1;
         lastContentPosition = content.anchoredPosition;
         RecycleItems();
     }
@@ -84,6 +111,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void CreateItems()
     {
+        itemList.Clear();
         int createCount = Mathf.Min(visibleItemCount, dataList.Count);
         for (int i = 0; i < createCount; i++)
         {
@@ -127,9 +155,15 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void UpdateItemPosition(int itemIndex, int dataIndex)
     {
-        if (dataIndex >= dataList.Count) return;
+        // if (dataIndex >= dataList.Count) return;
 
         RectTransform item = itemList[itemIndex];
+
+        if (dataIndex >= dataList.Count)
+        {
+            item.gameObject.SetActive(false); // 남은 슬롯 비활성화
+            return;
+        }
 
         int row, col;
         if (isVertical)
@@ -149,6 +183,44 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         item.anchoredPosition = new Vector2(x, y);
 
         if (item.TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+        {
+            scrollData.UpdateSlot(dataList[dataIndex]);
+        }
+    }
+
+    public int GetDataIndexFromItem(T slot)
+    {
+        if (dataToIndexMap.TryGetValue(slot, out int dataIndex))
+            return dataIndex;
+
+        return -1;
+    }
+
+    public void RefreshAllVisibleSlots()
+    {
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            int dataIndex = currentStartIndex + i;
+            if (dataIndex >= dataList.Count) continue;
+
+            if (itemList[i].TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+            {
+                scrollData.UpdateSlot(dataList[dataIndex]);
+            }
+        }
+    }
+
+    public void RefreshSlotAt(int dataIndex)
+    {
+        if (dataIndex < 0 || dataIndex >= dataList.Count)
+            return;
+
+        int relativeIndex = dataIndex - currentStartIndex;
+
+        if (relativeIndex < 0 || relativeIndex >= itemList.Count)
+            return;
+
+        if (itemList[relativeIndex].TryGetComponent<IReuseScrollData<T>>(out var scrollData))
         {
             scrollData.UpdateSlot(dataList[dataIndex]);
         }

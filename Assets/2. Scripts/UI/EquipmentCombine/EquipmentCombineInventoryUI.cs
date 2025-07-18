@@ -10,12 +10,4 @@ public class EquipmentCombineInventoryUI : BaseInventoryUI
     [SerializeField] private UIEquipmentCombine uiEquipmentCombine;
 
     private CombineManager combineManager;
-
-    private void Awake()
-    {
-    }
-
-    private void Start()
-    {
-    }
 }
