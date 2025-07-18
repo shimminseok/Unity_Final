@@ -6,21 +6,13 @@ using UnityEngine.UI;
 public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 {
     [SerializeField] private Camera avatarCam;
+    [SerializeField] private Transform avatarCamTransform;
 
-    [Header("아바타 프리뷰 카메라 목록")]
-    [SerializeField] private List<AvatarEntry> avatarEntries = new();
 
     [SerializeField] private Transform avatarPoolTransform;
     [SerializeField] private List<Transform> deckSlotTransforms = new();
     [SerializeField] private List<GameObject> unitAvatars = new();
 
-    [System.Serializable]
-    public class AvatarEntry
-    {
-        // 고유 캐릭터SO와 전용 카메라
-        public GameObject avatar;
-        public PlayerUnitSO characterSo;
-    }
 
     protected override void Awake()
     {
@@ -38,16 +30,18 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     public void ShowAvatar(PlayerUnitSO characterSo)
     {
         avatarCam.gameObject.SetActive(true);
-        foreach (var entry in avatarEntries)
-        {
-            entry.avatar.SetActive(entry.characterSo == characterSo);
-        }
+        unitAvatars[(int)characterSo.JobType].SetActive(true);
+        unitAvatars[(int)characterSo.JobType].transform.SetParent(avatarCamTransform);
+        unitAvatars[(int)characterSo.JobType].transform.localPosition = Vector3.zero;
+        unitAvatars[(int)characterSo.JobType].transform.localRotation = Quaternion.identity;
     }
 
     // 모든 아바타 카메라 비활성화
-    public void HideAllAvatars()
+    public void HideAvatar(PlayerUnitSO characterSo)
     {
         avatarCam.gameObject.SetActive(false);
+        if (characterSo != null)
+            HideAvatar(characterSo.JobType);
     }
 
 

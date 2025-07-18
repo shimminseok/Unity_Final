@@ -31,8 +31,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     private float remainDistance;
     public Vector3 StartPostion { get; private set; }
     public WeightedSelector<Unit> mainTargetSelector;
-    
-    
+
+
     protected override void Awake()
     {
         SkillController = GetComponent<EnemySkillContorller>();
@@ -101,6 +101,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         {
             sc.InitSkillSelector();
         }
+
         InitTargetSelector();
         ChangeEmotion(MonsterSo.StartEmotion);
     }
@@ -202,7 +203,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (SkillController.CheckAllSkills() && Random.value < MonsterSo.skillActionProbability) return true;
         else return false;
     }
-    
+
     public void InitTargetSelector()
     {
         mainTargetSelector = new WeightedSelector<Unit>();
@@ -212,7 +213,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             mainTargetSelector.Add(
                 playerUnit,
                 () => playerUnit.StatManager.GetValue(StatType.Aggro),
-                ()=> !playerUnit.IsDead
+                () => !playerUnit.IsDead
             );
         }
     }
@@ -229,6 +230,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             SetTarget(mainTargetSelector.Select());
         }
     }
+
     public void SelectMainTarget(ActionType actionType)
     {
         if (actionType == ActionType.SKill)
@@ -244,6 +246,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public void ChoiceAction()
     {
+        if (IsDead)
+            return;
+
         if (ShouldUseSkill())
         {
             EnemySkillContorller sc = SkillController as EnemySkillContorller;
@@ -262,7 +267,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     }
 
 
-
     public override void StartTurn()
     {
         if (IsDead || IsStunned)
@@ -271,6 +275,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
+        Debug.Log("Enemy Start Turn");
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

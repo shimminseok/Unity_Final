@@ -58,7 +58,7 @@ public class SelectSkillUI : UIBase
     {
         base.Close();
         OnSkillChanged?.Invoke(currentCharacter);
-        AvatarPreviewManager.Instance.HideAllAvatars();
+        AvatarPreviewManager.Instance.HideAvatar(currentCharacter?.CharacterSo);
     }
 
 

@@ -18,7 +18,7 @@ public class UIStageSelect : UIBase, IDragHandler, IBeginDragHandler
     public void SetStageInfo(StageSO stage)
     {
         PlayerDeckContainer.Instance.SetStage(stage);
-        stageInfoPanel.SetStageInfo(stage);
+        stageInfoPanel.SetStageInfo(stage, DeckSelectManager.Instance.GetSelectedDeck());
         stageInfoPanel.OpenPanel();
     }
 
