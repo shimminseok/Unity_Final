@@ -165,6 +165,7 @@ public class CharacterInfo : MonoBehaviour
 
         RefreshUI();
         SetPlayerUnitSkillInfo();
+        panelRect.DOKill();
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 
@@ -176,6 +177,8 @@ public class CharacterInfo : MonoBehaviour
             selectedPlayerUnitData.OnSkillChanged -= SetPlayerUnitSkillInfo;
         }
 
+        panelRect.DOKill();
+        panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic);
         selectedPlayerUnitData = null;
     }
 

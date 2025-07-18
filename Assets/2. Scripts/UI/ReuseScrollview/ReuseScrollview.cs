@@ -28,12 +28,11 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     [SerializeField] private RectTransform content;
     [SerializeField] private RectTransform viewportRect;
     [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private Vector2 prefabSize = new Vector2(100f, 100f);
     [SerializeField] private Vector2 spacing = new Vector2(15f, 15f);
     [SerializeField] private Vector2 gridStartOffset = new Vector2(0f, 0f);
     [SerializeField] private bool isVertical = true;
 
-    private List<RectTransform> itemList = new();
-    private List<ScrollData<T>> dataList = new();
 
     private float itemWidth;
     private float itemHeight;
@@ -45,18 +44,19 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     private int rowCount;
     private bool isInitialized;
 
+    private readonly List<RectTransform> itemList = new();
+    private readonly List<ScrollData<T>> dataList = new();
+    private readonly Dictionary<T, int> dataToIndexMap = new();
+
     public List<RectTransform> ItemList => itemList;
-    private Dictionary<T, int> dataToIndexMap = new();
 
     private void Initialize()
     {
         Canvas.ForceUpdateCanvases();
 
-        if (itemPrefab.TryGetComponent(out RectTransform itemRect))
-        {
-            itemWidth = itemRect.rect.width;
-            itemHeight = itemRect.rect.height;
-        }
+
+        itemWidth = prefabSize.x;
+        itemHeight = prefabSize.y;
 
         float viewWidth  = viewportRect.rect.width;
         float viewHeight = viewportRect.rect.height;
@@ -117,8 +117,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         {
             GameObject    item     = Instantiate(itemPrefab, content);
             RectTransform itemRect = item.GetComponent<RectTransform>();
+            itemRect.sizeDelta = prefabSize;
             itemList.Add(itemRect);
-
             UpdateItemPosition(i, i);
         }
     }
