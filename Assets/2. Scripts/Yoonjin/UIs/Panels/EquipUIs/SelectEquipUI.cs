@@ -65,7 +65,14 @@ public class SelectEquipUI : UIBase
             equippedItemsSlot[(int)equipmentItem.Key].ShowEquipMark(false);
         }
 
-        inventoryUI.Initialize();
+        var inventoryItems = InventoryManager.Instance.GetInventoryItems(CurrentCharacter.CharacterSo.JobType);
+        inventoryUI.Initialize(
+            () => inventoryItems,
+            (slot) =>
+            {
+                slot.OnClickSlot -= OnClickInventorySlot;
+                slot.OnClickSlot += OnClickInventorySlot;
+            });
     }
 
     public void OnClickInventorySlot(EquipmentItem item)

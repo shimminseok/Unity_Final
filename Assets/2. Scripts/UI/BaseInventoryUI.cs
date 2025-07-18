@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseInventoryUI : MonoBehaviour
 {
-    [SerializeField] protected InventorySlot inventorySlotPrefab;
-    [SerializeField] protected Transform inventorySlotParent;
+    [SerializeField] protected ReuseScrollview<InventoryItem> reuseScrollview;
 
     protected InventoryManager InventoryManager => InventoryManager.Instance;
     protected UIManager        UIManager        => UIManager.Instance;
@@ -13,46 +13,14 @@ public abstract class BaseInventoryUI : MonoBehaviour
     protected List<InventorySlot> InventorySlotPool = new List<InventorySlot>();
 
 
-    public abstract void Initialize();
+    protected Action<InventorySlot> OnSlotClicked;
+    protected Func<List<InventoryItem>> GetInventorySource;
 
-
-    protected void UpdateInventorySlot(int index)
+    public virtual void Initialize(Func<List<InventoryItem>> inventoryGetter, Action<InventorySlot> onClickHandler)
     {
-        if (InventorySlots.TryGetValue(index, out InventorySlot slot))
-        {
-            slot.Initialize(InventoryManager.Instance.Inventory[index] as EquipmentItem, true);
-        }
-    }
+        GetInventorySource = inventoryGetter;
+        OnSlotClicked = onClickHandler;
 
-
-    protected InventorySlot GetOrCreateInventorySlot(int index, List<InventorySlot> pool)
-    {
-        InventorySlot slot;
-
-        if (index < pool.Count)
-        {
-            slot = pool[index];
-        }
-        else
-        {
-            slot = Instantiate(inventorySlotPrefab, inventorySlotParent);
-            pool.Add(slot);
-        }
-
-        return slot;
-    }
-
-    protected void DisableRemainingSlots(int fromIndex, List<InventorySlot> pool)
-    {
-        for (int i = fromIndex; i < pool.Count; i++)
-        {
-            pool[i].EmptySlot(true);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (InventoryManager != null)
-            InventoryManager.OnInventorySlotUpdate -= UpdateInventorySlot;
+        reuseScrollview.SetData(GetInventorySource());
     }
 }

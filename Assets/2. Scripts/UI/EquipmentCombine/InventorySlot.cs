@@ -8,8 +8,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 {
+    public int SlotIndex { get; private set; }
+
+
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private Image itemEquipmentImg;
@@ -23,6 +26,8 @@ public class InventorySlot : MonoBehaviour
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
+
+    private InventoryManager inventoryManager => InventoryManager.Instance;
 
     public void Initialize(EquipmentItem item, bool isHide)
     {
@@ -100,5 +105,10 @@ public class InventorySlot : MonoBehaviour
         {
             itemGradeStars[i].SetActive(i <= (int)Item.ItemSo.Tier);
         }
+    }
+
+    public void UpdateSlot(InventoryItem item)
+    {
+        Initialize(item as EquipmentItem, isHide: false);
     }
 }

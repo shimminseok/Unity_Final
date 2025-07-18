@@ -81,7 +81,7 @@ public class UIEquipmentCombine : UIBase
 
         for (int i = 0; i < MaterialItems.Count; i++)
         {
-            inventoryManager.RemoveItem(MaterialItems[i].Index);
+            inventoryManager.RemoveItem(MaterialItems[i].InventoryId);
             materialItemSlotList[i].EmptySlot(false);
         }
 
@@ -101,6 +101,11 @@ public class UIEquipmentCombine : UIBase
     public override void Open()
     {
         base.Open();
-        inventoryUI.Initialize();
+        inventoryUI.Initialize(
+            () => inventoryManager.GetInventoryItems(), (slot) =>
+            {
+                slot.OnClickSlot -= ToggleCombineItem;
+                slot.OnClickSlot += ToggleCombineItem;
+            });
     }
 }

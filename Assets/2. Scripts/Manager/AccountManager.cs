@@ -33,10 +33,13 @@ public class AccountManager : Singleton<AccountManager>
     private void Start()
     {
         //Test
-        foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+        for (int i = 0; i < 10; i++)
         {
-            if (itemSo is EquipmentItemSO equipSo)
-                InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+            foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+            {
+                if (itemSo is EquipmentItemSO equipSo)
+                    InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+            }
         }
     }
 

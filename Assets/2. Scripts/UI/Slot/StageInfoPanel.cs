@@ -20,7 +20,7 @@ public class StageInfoPanel : MonoBehaviour
 
     private void Awake()
     {
-        onScreenScale = panelRect.localScale;
+        onScreenScale = Vector3.one;
         panelRect.localScale = Vector3.zero;
         gameObject.SetActive(false);
     }

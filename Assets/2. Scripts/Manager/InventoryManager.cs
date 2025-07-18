@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 
 public class InventoryItem
 {
-    public int Index;
+    public int InventoryId { get; set; } // 추가
     public ItemSO ItemSo;
     public int Quantity;
 
@@ -52,14 +53,15 @@ public class SaveInventoryItem
 public class InventoryManager : Singleton<InventoryManager>
 {
     [SerializeField] private int inventorySize;
-    public List<InventoryItem> Inventory { get; private set; }
-
 
     public event Action<int> OnInventorySlotUpdate;
-
     private GameManager gameManager;
 
-    public Dictionary<JobType, List<InventoryItem>> JobInventory { get; private set; } = new();
+
+    private Dictionary<int, InventoryItem> inventory = new();
+    public IReadOnlyDictionary<int, InventoryItem> Inventory    => inventory;
+    public Dictionary<JobType, List<int>>          JobInventory { get; private set; } = new();
+    private int nextId = 0;
 
     protected override void Awake()
     {
@@ -68,56 +70,26 @@ public class InventoryManager : Singleton<InventoryManager>
             return;
 
         gameManager = GameManager.Instance;
-        InitInventory();
     }
 
-    private void InitInventory()
-    {
-        Inventory = new List<InventoryItem>(Enumerable.Repeat<InventoryItem>(null, inventorySize));
-    }
-
-    public void RemoveItem(int index)
-    {
-        Inventory[index] = null;
-        OnInventorySlotUpdate?.Invoke(index);
-    }
 
     public void AddItem(InventoryItem item, int amount = 1)
     {
         AddNonStackableItem(item, amount);
+        nextId++;
     }
 
-    /// <summary>
-    /// 스택형 아이템을 추가하는 함수
-    /// </summary>
-    /// <param name="itemSo"></param>
-    /// <param name="amount"></param>
-    private void AddStackableItem(InventoryItem item, int amount = 1)
+    public void RemoveItem(int id)
     {
-        InventoryItem findItem = Inventory.Find(x => x != null && x.ItemSo.ID == item.ItemSo.ID);
+        if (!inventory.Remove(id))
+            return;
 
-        if (findItem == null)
+        foreach (var jobList in JobInventory.Values)
         {
-            // To Do 인벤토리가 꽉찼는지 확인
-            int index = Inventory.IndexOf(null);
-            if (index < 0)
-            {
-                Debug.Log("인벤토리 공간이 부족합니다.");
-                return;
-            }
-            else
-            {
-                findItem = new InventoryItem(item.ItemSo, amount);
-            }
+            jobList.Remove(id);
+        }
 
-            Inventory[index] = findItem;
-            Inventory[index].Index = index;
-            OnInventorySlotUpdate?.Invoke(index);
-        }
-        else
-        {
-            findItem.ChangeQuantity(amount);
-        }
+        OnInventorySlotUpdate?.Invoke(id);
     }
 
     /// <summary>
@@ -129,13 +101,9 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         for (int i = 0; i < amount; i++)
         {
-            int index = Inventory.IndexOf(null);
-            if (index < 0)
-                return;
-
             var clonedItem = item.Clone();
-            Inventory[index] = clonedItem;
-            Inventory[index].Index = index;
+            clonedItem.InventoryId = nextId;
+            inventory[nextId] = clonedItem;
 
             if (clonedItem is EquipmentItem equipmentItem)
             {
@@ -143,35 +111,41 @@ public class InventoryManager : Singleton<InventoryManager>
                 {
                     foreach (JobType job in Enum.GetValues(typeof(JobType)))
                     {
-                        AddEquipmentItem(job, equipmentItem);
+                        AddEquipmentItem(job, nextId);
                     }
                 }
                 else
                 {
-                    AddEquipmentItem(equipmentItem.EquipmentItemSo.JobType, equipmentItem);
+                    AddEquipmentItem(equipmentItem.EquipmentItemSo.JobType, nextId);
                 }
             }
 
-            OnInventorySlotUpdate?.Invoke(index);
+            OnInventorySlotUpdate?.Invoke(nextId);
         }
     }
 
-    private void AddEquipmentItem(JobType jobType, EquipmentItem item)
+    private void AddEquipmentItem(JobType jobType, int itemId)
     {
-        if (!JobInventory.TryGetValue(jobType, out List<InventoryItem> inventoryList))
+        if (!JobInventory.TryGetValue(jobType, out List<int> inventoryList))
         {
-            inventoryList = new List<InventoryItem>();
+            inventoryList = new List<int>();
         }
 
-        inventoryList.Add(item);
+        inventoryList.Add(itemId);
         JobInventory[jobType] = inventoryList;
     }
 
-    public void SwichItem(int from, int to)
+    public List<InventoryItem> GetInventoryItems(JobType jobType)
     {
-        (Inventory[from], Inventory[to]) = (Inventory[to], Inventory[from]);
+        if (!JobInventory.TryGetValue(jobType, out List<int> idList))
+            return new List<InventoryItem>();
 
-        OnInventorySlotUpdate?.Invoke(from);
-        OnInventorySlotUpdate?.Invoke(to);
+        var items = idList.Where(id => inventory.ContainsKey(id)).Select(id => inventory[id]).ToList();
+        return items;
+    }
+
+    public List<InventoryItem> GetInventoryItems()
+    {
+        return inventory.Values.OrderBy(item => item.InventoryId).ToList();
     }
 }
