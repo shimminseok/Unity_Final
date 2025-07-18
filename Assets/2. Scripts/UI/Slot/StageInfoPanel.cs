@@ -10,26 +10,35 @@ public class StageInfoPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stageName;
     [SerializeField] private List<StagePanelMonsterSlot> spawnMonsters;
     [SerializeField] private List<StagePanelHeroSlot> competedHeroes;
+    [SerializeField] private List<InventorySlot> rewardSlots;
+
 
     private Vector3 onScreenScale;
     private StageSO stageSo;
 
-    private List<EntryDeckData> myDeck => DeckSelectManager.Instance.GetSelectedDeck();
+    private List<EntryDeckData> currentDeck;
 
     private void Awake()
     {
         onScreenScale = panelRect.localScale;
         panelRect.localScale = Vector3.zero;
         gameObject.SetActive(false);
+    }
 
-
+    private void OnEnable()
+    {
         DeckSelectManager.Instance.OnChangedDeck += SetCompetedUnitSlot;
     }
 
+    private void OnDisable()
+    {
+        if (DeckSelectManager.Instance != null)
+            DeckSelectManager.Instance.OnChangedDeck -= SetCompetedUnitSlot;
+    }
 
     public void OpenPanel()
     {
-        DOTween.KillAll();
+        panelRect.DOKill();
         gameObject.SetActive(true);
         panelRect.DOScale(onScreenScale, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
         {
@@ -39,7 +48,7 @@ public class StageInfoPanel : MonoBehaviour
 
     public void ClosePanel()
     {
-        DOTween.KillAll();
+        panelRect.DOKill();
         panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
         {
             gameObject.SetActive(false);
@@ -48,13 +57,13 @@ public class StageInfoPanel : MonoBehaviour
 
     public void SetCompetedUnitSlot(int index)
     {
-        competedHeroes[index].SetHeroSlot(myDeck[index]?.CharacterSo);
+        competedHeroes[index].SetHeroSlot(currentDeck[index]?.CharacterSo);
     }
 
-    public void SetStageInfo(StageSO stage)
+    public void SetStageInfo(StageSO stage, List<EntryDeckData> selectedDeck)
     {
         stageSo = stage;
-
+        currentDeck = selectedDeck;
         for (int i = 0; i < spawnMonsters.Count; i++)
         {
             if (stageSo.Monsters.Count > i)
@@ -70,6 +79,31 @@ public class StageInfoPanel : MonoBehaviour
         for (int i = 0; i < competedHeroes.Count; i++)
         {
             SetCompetedUnitSlot(i);
+        }
+
+        RewardSo firstClearReward = stageSo.FirstClearReward;
+
+        string   rewardId    = $"{stageSo.ID}_Clear_Reward";
+        RewardSo clearReward = TableManager.Instance.GetTable<RewardTable>().GetDataByID(rewardId);
+
+        int index = 0;
+        TrySetRewardSlot(firstClearReward.RewardList, ref index);
+        TrySetRewardSlot(clearReward.RewardList, ref index);
+        for (int i = index; i < rewardSlots.Count; i++)
+        {
+            rewardSlots[i].Initialize(null);
+        }
+    }
+
+    private void TrySetRewardSlot(List<RewardData> rewardList, ref int index)
+    {
+        foreach (RewardData rewardData in rewardList)
+        {
+            if (index >= rewardSlots.Count)
+                break;
+
+            rewardSlots[index].Initialize(rewardData);
+            index++;
         }
     }
 }

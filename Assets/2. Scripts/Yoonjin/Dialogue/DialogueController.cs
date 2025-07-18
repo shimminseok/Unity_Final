@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,10 @@ public class DialogueController : Singleton<DialogueController>
     private HashSet<string> readGroups = new();
 
     [Header("디버깅 중 대사 스킵")]
-    [SerializeField] private bool dialogueSkip = false; 
+    [SerializeField] private bool dialogueSkip = false;
+
+
+    private Action OnCallBackAction;
 
     protected override void Awake()
     {
@@ -44,38 +48,39 @@ public class DialogueController : Singleton<DialogueController>
     }
 
     // 특정 그룹 키의 대사 재생 시작
-    public void Play(string groupKey)
+    public void Play(string groupKey, Action callback = null)
     {
         if (dialogueSkip || readGroups.Contains(groupKey))
         {
             Debug.Log("스킵됨");
+            callback?.Invoke();
             return;
         }
 
+
+        var table = TableManager.Instance.GetTable<DialogueGroupTable>();
+        var group = table.GetDataByID(groupKey);
+
+        if (group == null)
+        {
+            Debug.LogError($"GroupKey '{groupKey}'를 찾을 수 없습니다.");
+            return;
+        }
+
+        currentGroup = group;
+        currentLineIndex = 0;
+
+        if (group.mode == DialogueMode.Fullscreen)
+        {
+            // DialogueScene을 현재 씬 위에 Additive로 로드
+            LoadSceneManager.Instance.LoadSceneAdditive("DialogueScene");
+        }
         else
         {
-            var table = TableManager.Instance.GetTable<DialogueGroupTable>();
-            var group = table.GetDataByID(groupKey);
-
-            if (group == null)
-            {
-                Debug.LogError($"GroupKey '{groupKey}'를 찾을 수 없습니다.");
-                return;
-            }
-
-            currentGroup = group;
-            currentLineIndex = 0;
-
-            if (group.mode == DialogueMode.Fullscreen)
-            {
-                // DialogueScene을 현재 씬 위에 Additive로 로드
-                LoadSceneManager.Instance.LoadSceneAdditive("DialogueScene");
-            }
-            else
-            {
-                ShowCurrentLine();
-            }
+            ShowCurrentLine();
         }
+
+        OnCallBackAction = callback;
     }
 
     // 다음 대사 줄로 이동
@@ -105,7 +110,7 @@ public class DialogueController : Singleton<DialogueController>
         }
         else
         {
-            var fullscreenUI = Object.FindObjectOfType<FullscreenDialogueUI>();
+            var fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
             fullscreenUI?.Show(line);
         }
     }
@@ -131,6 +136,7 @@ public class DialogueController : Singleton<DialogueController>
 
         currentGroup = null;
         currentLineIndex = 0;
+        OnCallBackAction?.Invoke();
     }
 }
 

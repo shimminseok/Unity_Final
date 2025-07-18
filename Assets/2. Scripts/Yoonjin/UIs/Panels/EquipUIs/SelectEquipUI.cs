@@ -47,7 +47,7 @@ public class SelectEquipUI : UIBase
     public override void Close()
     {
         base.Close();
-        AvatarPreviewManager.Instance.HideAllAvatars();
+        AvatarPreviewManager.Instance.HideAvatar(CurrentCharacter?.CharacterSo);
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 

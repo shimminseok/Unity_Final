@@ -9,8 +9,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     //Test
     public List<Transform> PartyUnitsTrans;
     public List<Transform> EnemyUnitsTrans;
-    public List<int> PartyUnitsID;
-    public List<int> EnemyUnitsID;
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
     public TurnHandler TurnHandler { get; private set; }
@@ -32,19 +30,9 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         currentStage = PlayerDeckContainer.Instance.SelectedStage;
 
-        if (PlayerDeckContainer.Instance.CurrentDeck.DeckDatas.Count == 0)
-            SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
-        else
-        {
-            SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
-        }
+        SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
 
-        if (currentStage == null)
-            SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
-        else
-        {
-            SetEnemiesUnit(currentStage.Monsters);
-        }
+        SetEnemiesUnit(currentStage.Monsters);
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
@@ -143,6 +131,12 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         TurnCount++; // 턴 종료되면 턴 수 +1
         OnBattleEnd?.Invoke();
+
+        foreach (Unit unit in EnemyUnits)
+        {
+            var enemyUnit = (EnemyUnitController)unit;
+            enemyUnit.ChoiceAction();
+        }
     }
 
     public List<Unit> GetAllies(Unit unit)
