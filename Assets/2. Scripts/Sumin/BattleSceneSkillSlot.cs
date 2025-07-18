@@ -33,6 +33,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
 
     public void Initialize(SkillData skillData, int index)
     {
+        UnLockSkill();
         // skill data가 없으면 뒤집고 선택불가
         if (skillData == null)
         {
@@ -56,7 +57,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
         skillName.text = skillData.skillSo.skillName;
 
 
-        if (reuseCount <=0)
+        if (reuseCount <= 0)
         {
             LockSkill();
         }
@@ -133,5 +134,15 @@ public class BattleSceneSkillSlot : MonoBehaviour
         colorBlock.normalColor = new Color(0, 0, 0);
         lockImage.SetActive(true);
         coolDownText.gameObject.SetActive(false);
+    }
+
+    // 스킬 슬롯 활성화
+    private void UnLockSkill()
+    {
+        ColorBlock colorBlock = BackSkillBtn.colors;
+        BackSkillBtn.interactable = true;
+        colorBlock.normalColor = new Color(1, 1, 1);
+        lockImage.SetActive(false);
+        coolDownText.gameObject.SetActive(true);
     }
 }
