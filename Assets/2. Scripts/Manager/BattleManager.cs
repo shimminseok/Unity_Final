@@ -133,6 +133,10 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         }
 
         TurnHandler.RefillTurnQueue();
+        foreach (EnemyUnitController enemy in EnemyUnits)
+        {
+            enemy.ChoiceAction();
+        }
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         OnBattleEnd?.Invoke();
