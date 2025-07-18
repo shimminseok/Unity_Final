@@ -21,8 +21,10 @@ public class MonsterUnitInfoUI : MonoBehaviour
     {
         StartCoroutine(WaitForBattleManagerInit());
 
+        // rect 원본 높이 저장
         originalHeight = monsterSlotsContainer.rect.height;
 
+        // 처음엔 접어두기
         monsterSlotsContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
     }
 
@@ -39,8 +41,25 @@ public class MonsterUnitInfoUI : MonoBehaviour
             slots[i].gameObject.SetActive(true);
             slots[i].Initialize(units[i]);
         }
+
+        // 전투 종료 후 적 타겟 갱신될때마다 업데이트
+        BattleManager.Instance.OnBattleEnd -= UpdateUnits;
+        BattleManager.Instance.OnBattleEnd += UpdateUnits;
     }
 
+    private void UpdateUnits()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            if (!units[i].isActiveAndEnabled) // 유닛 사망 시 UI도 꺼줌
+            {
+                slots[i].gameObject.SetActive(false);
+            }
+            slots[i].Initialize(units[i]);
+        }
+    }
+
+    // 버튼 누르면 몬스터 정보 열고 닫기
     public void OnToggleMonsterList()
     {
         float targetHeight = isOpen ? 0 : originalHeight;
