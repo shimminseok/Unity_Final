@@ -21,6 +21,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private UIReward uiReward;
 
+    public int TurnCount = 1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -139,6 +141,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         }
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
+        TurnCount++; // 턴 종료되면 턴 수 +1
         OnBattleEnd?.Invoke();
     }
 
