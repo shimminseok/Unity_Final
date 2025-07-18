@@ -25,8 +25,9 @@ public class SelectExecuterState : IInputState
         // 선택 가능한 플레이어 유닛 표시
         selector.ShowSelectableUnits(context.PlayerUnitLayer, true);
         
-        // 유닛 선택하기 전까지는 SkillUI 꺼둠
+        // 유닛 선택하기 전까지는 SkillUI 꺼두고 전투 시작 버튼은 활성화
         context.CloseSkillUI?.Invoke();
+        context.EnableStartButtonUI?.Invoke();
     }
 
     public void HandleInput()
