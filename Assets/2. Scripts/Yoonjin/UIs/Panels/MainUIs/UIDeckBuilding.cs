@@ -43,7 +43,7 @@ public class UIDeckBuilding : UIBase
         }
     }
 
-    // 선택된 캐릭터 목록 버튼 생성
+    // 선택된 캐릭터 목록
     private void ShowCompetedUnit(List<EntryDeckData> selectedDeck)
     {
         int index = 0;
@@ -55,6 +55,7 @@ public class UIDeckBuilding : UIBase
                 continue;
             }
 
+            competedUnitSlots[index].SetCompeteUnitData(entry);
             avatarPreviewManager.ShowAvatar(index++, entry.CharacterSo.JobType);
         }
     }
