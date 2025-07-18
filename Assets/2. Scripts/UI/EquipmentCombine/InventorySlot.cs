@@ -18,6 +18,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private List<Sprite> itemGradeSprites;
 
+    [SerializeField] private TextMeshProUGUI amountTxt;
 
     public EquipmentItem Item { get; private set; }
 
@@ -48,10 +49,15 @@ public class InventorySlot : MonoBehaviour
 
     public void Initialize(RewardData rewardData)
     {
-        EmptySlot(false);
-
-        if (rewardData.RewardType != RewardType.Item)
+        EmptySlot(true);
+        if (rewardData != null)
         {
+            gameObject.SetActive(true);
+            amountTxt.gameObject.SetActive(true);
+            if (rewardData.RewardType != RewardType.Item)
+            {
+                amountTxt.text = $"x{rewardData.Amount}";
+            }
         }
     }
 
@@ -73,6 +79,7 @@ public class InventorySlot : MonoBehaviour
 
         Item = null;
         gameObject.SetActive(!isHide);
+        amountTxt.gameObject.SetActive(false);
     }
 
     public void ShowEquipMark(bool isEquip)
