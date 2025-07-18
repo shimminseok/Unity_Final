@@ -7,6 +7,7 @@ public class VirtualCameraController : MonoBehaviour
    [SerializeField]public CinemachineVirtualCamera Camera;
    private CameraAdjustData cameraAdjustData;
    private CinemachineBasicMultiChannelPerlin perlin;
+   public Animator CameraAnimator{get;set;}
    public Transform Target { get; set; }
    
 
@@ -15,6 +16,7 @@ public class VirtualCameraController : MonoBehaviour
        Camera = GetComponent<CinemachineVirtualCamera>();
        cameraAdjustData = new CameraAdjustData(Camera);
        perlin = Camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+       CameraAnimator = GetComponent<Animator>();
    }
 
    public void FocusOnUnit()

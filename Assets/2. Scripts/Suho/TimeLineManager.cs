@@ -10,12 +10,15 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public PlayableDirector director;
     public SignalReceiver receiver;
     public bool isPlaying = false;
+    public GameObject effectObject;
+    private Animator effectAnimator;
     public VirtualCameraController CurrentCameraController{get;set;}
 
     protected override void Awake()
     {
         base.Awake();
         director = GetComponent<PlayableDirector>();
+        effectAnimator = effectObject.GetComponent<Animator>();
         receiver = GetComponent<SignalReceiver>();
         director.stopped += StopTimeLine;
     }
@@ -46,9 +49,20 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
             if (track is AnimationTrack)
             {
-                Unit attackerUnit = attacker as Unit;
-                director.SetGenericBinding(track, attackerUnit?.Animator);
-                
+
+                if (track.name == "AttackerTrack")
+                {
+                    Unit attackerUnit = attacker as Unit;
+                    director.SetGenericBinding(track, attackerUnit?.Animator);
+                }
+                else if (track.name == "EffectTrack")
+                {
+                    director.SetGenericBinding(track, effectAnimator);
+                }
+                else if (track.name == "CameraAnimationTrack")
+                {
+                    director.SetGenericBinding(track, CurrentCameraController.CameraAnimator);
+                }
             }
         }
         director.Play();
