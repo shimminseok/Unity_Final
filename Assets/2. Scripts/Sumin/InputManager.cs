@@ -29,8 +29,8 @@ public class InputManager : SceneOnlySingleton<InputManager>
             EnemyUnitLayer = enemyUnitLayer,
             OpenSkillUI = unit => UIManager.Instance.GetUIComponent<BattleSceneSkillUI>().UpdateSkillList(unit),
             CloseSkillUI = () => UIManager.Instance.Close(UIManager.Instance.GetUIComponent<BattleSceneSkillUI>()),
-            CloseStartButtonUI = () => UIManager.Instance.Close(UIManager.Instance.GetUIComponent<BattleSceneStartButton>()),
-            OpenStartButtonUI = () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<BattleSceneStartButton>()),
+            DisableStartButtonUI = () => UIManager.Instance.GetUIComponent<BattleSceneStartButton>().DisableStartButton(),
+            EnableStartButtonUI = () => UIManager.Instance.GetUIComponent<BattleSceneStartButton>().EnableStartButton(),
             PlanActionCommand = (executer, target, skillData) =>
             {
                 IActionCommand command;
@@ -69,6 +69,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         yield return new WaitUntil(() => BattleManager.Instance != null && BattleManager.Instance.PartyUnits.Count > 0);
 
         inputStateMachine.ChangeState<SelectExecuterState>();
+        UIManager.Instance.GetUIComponent<BattleSceneStartButton>().Open();
     }
 
     void Update()
@@ -91,7 +92,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         selector.ShowSelectableUnits(context.UnitLayer, false);
 
         // Start 버튼 활성화
-        context.OpenStartButtonUI?.Invoke();
+        context.EnableStartButtonUI?.Invoke();
 
         inputStateMachine.ChangeState<SelectExecuterState>();
     }
@@ -101,7 +102,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         CommandPlanner.Instance.ExecutePlannedActions();
         // start 버튼 비활성화
-        context.CloseStartButtonUI?.Invoke();
+        context.DisableStartButtonUI?.Invoke();
 
         // 배틀매니저 턴 시작
         BattleManager.Instance.StartTurn();
