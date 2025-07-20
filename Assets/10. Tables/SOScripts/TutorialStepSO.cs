@@ -2,13 +2,12 @@ using UnityEngine;
 
 public enum TutorialActionType
 {
-    FadeEffect,
     Dialogue,
     HighlightUI,
     TriggerWait
 }
 
-[CreateAssetMenu(fileName = "TutorialStep", menuName = "Tutorial/Step", order = 0)]
+[CreateAssetMenu(fileName = "TutorialStep", menuName = "ScriptableObjects/Tutorial/TutorialStep", order = 0)]
 public class TutorialStepSO : ScriptableObject
 {
     public int ID;

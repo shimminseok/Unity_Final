@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialManager : Singleton<TutorialManager>
 {
     [SerializeField] private TutorialTable tutorialTable;
 
@@ -12,8 +12,10 @@ public class TutorialManager : MonoBehaviour
     private TutorialStepSO currentStep;
     public TutorialStepSO CurrentStep => currentStep;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         // 각 행동에 대한 실행기 등록
         executorMap = new Dictionary<TutorialActionType, TutorialActionExecutor>
         {
@@ -26,8 +28,8 @@ public class TutorialManager : MonoBehaviour
         foreach (var exec in executorMap.Values)
             exec.SetManager(this);
 
-        // 테이블 생성 (SO에서 데이터 불러오기)
-        tutorialTable.CreateTable();
+        // 테이블 가져오기 
+        tutorialTable = TableManager.Instance.GetTable<TutorialTable>();
     }
 
     private void Start()

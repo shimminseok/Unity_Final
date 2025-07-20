@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "TutorialTable", menuName = "Table/TutorialTable", order = 0)]
 public class TutorialTable : BaseTable<int, TutorialStepSO>
 {
-    protected override string[] DataPath => new[] { "Assets/Tutorial/Steps" };
+    protected override string[] DataPath => new[] { "Assets/10. Tables/TutorialStep" };
 
     public override void CreateTable()
     {

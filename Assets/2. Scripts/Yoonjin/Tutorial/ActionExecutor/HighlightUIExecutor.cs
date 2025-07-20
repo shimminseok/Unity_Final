@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HighlightUIExecutor : TutorialActionExecutor
 {
@@ -9,16 +8,16 @@ public class HighlightUIExecutor : TutorialActionExecutor
         var data = actionData as HighlightUIActionData;
         if (data == null) return;
 
-        if (data.autoBlockOthers)
+        var target = GameObject.Find(data.targetButtonName)?.GetComponent<Button>();
+        if (target == null)
         {
-            TutorialUIBlocker.BlockAllExcept(data.targetButton);
-        }
-        else
-        {
-            TutorialUIBlocker.BlockAllExcept(data.targetButton, data.exceptionButtons);
+            Debug.LogError($"[튜토리얼] '{data.targetButtonName}' 버튼을 찾을 수 없습니다.");
+            return;
         }
 
-        TutorialUIHighlighter.Highlight(data.targetButton);
+        TutorialUIBlocker.BlockAllExcept(target.gameObject);
+
+        TutorialUIHighlighter.Highlight(target.gameObject);
     }
 
     public override void Exit()
@@ -27,3 +26,4 @@ public class HighlightUIExecutor : TutorialActionExecutor
         TutorialUIHighlighter.Clear();
     }
 }
+
