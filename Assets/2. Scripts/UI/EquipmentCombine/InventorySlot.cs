@@ -8,8 +8,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 {
+    public int DataIndex { get; private set; }
+
+
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private Image itemEquipmentImg;
@@ -18,10 +21,15 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private List<Sprite> itemGradeSprites;
 
+    [SerializeField] private TextMeshProUGUI amountTxt;
 
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
+
+    private Action<InventorySlot> onClickCallback;
+
+    private InventoryManager inventoryManager => InventoryManager.Instance;
 
     public void Initialize(EquipmentItem item, bool isHide)
     {
@@ -43,7 +51,22 @@ public class InventorySlot : MonoBehaviour
             itemGradeStars[i].SetActive(i <= (int)item.ItemSo.Tier);
         }
 
+        amountTxt.text = item.Quantity > 0 ? $"x{item.Quantity}" : "";
         Item = item;
+    }
+
+    public void Initialize(RewardData rewardData)
+    {
+        EmptySlot(true);
+        if (rewardData != null)
+        {
+            gameObject.SetActive(true);
+            amountTxt.gameObject.SetActive(true);
+            if (rewardData.RewardType != RewardType.Item)
+            {
+                amountTxt.text = $"x{rewardData.Amount}";
+            }
+        }
     }
 
 
@@ -64,6 +87,7 @@ public class InventorySlot : MonoBehaviour
 
         Item = null;
         gameObject.SetActive(!isHide);
+        amountTxt.gameObject.SetActive(false);
     }
 
     public void ShowEquipMark(bool isEquip)
@@ -76,13 +100,15 @@ public class InventorySlot : MonoBehaviour
         OnClickSlot?.Invoke(Item);
     }
 
-    public void UpdateItemSprite()
+    public void SetOnClickCallback(Action<InventorySlot> callback)
     {
-        itemSlotFrame.sprite = itemGradeSprites[(int)Item.ItemSo.Tier];
-        itemIcon.sprite = Item.ItemSo.ItemSprite;
-        for (int i = 0; i < itemGradeStars.Count; i++)
-        {
-            itemGradeStars[i].SetActive(i <= (int)Item.ItemSo.Tier);
-        }
+        onClickCallback = callback;
+        onClickCallback?.Invoke(this);
+    }
+
+    public void UpdateSlot(ScrollData<InventoryItem> data)
+    {
+        DataIndex = data.DataIndex;
+        Initialize(data.Data as EquipmentItem, isHide: false);
     }
 }

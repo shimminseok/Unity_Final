@@ -7,7 +7,7 @@ public class StageSlot : MonoBehaviour
     [SerializeField] private GameObject lockImg;
     private StageSO stageSo;
 
-    UIStageSelect stageSelectUI;
+    private UIStageSelect stageSelectUI;
 
     public void Initialize(StageSO data)
     {
@@ -23,9 +23,14 @@ public class StageSlot : MonoBehaviour
     {
         if (stageSo.HasBeforeDialogue)
         {
-            DialogueController.Instance.Play(stageSo.beforeDialogueKey);
+            DialogueController.Instance.Play(stageSo.beforeDialogueKey, () =>
+            {
+                stageSelectUI.SetStageInfo(stageSo);
+            });
         }
-
-        stageSelectUI.SetStageInfo(stageSo);
+        else
+        {
+            stageSelectUI.SetStageInfo(stageSo);
+        }
     }
 }

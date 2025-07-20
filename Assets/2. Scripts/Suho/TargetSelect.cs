@@ -84,6 +84,11 @@ public class TargetSelect
                 targets.Add(attacker as IDamageable);
                 return targets;
             
+            case SelectTargetType.All:
+                targets = TransLateUnitToIDamagable(filteredUnits);
+                targets.Add(mainTargetUnit);
+                return targets;
+            
             
             default:
                 return null;

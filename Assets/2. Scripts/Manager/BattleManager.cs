@@ -9,8 +9,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     //Test
     public List<Transform> PartyUnitsTrans;
     public List<Transform> EnemyUnitsTrans;
-    public List<int> PartyUnitsID;
-    public List<int> EnemyUnitsID;
     public List<Unit> PartyUnits;
     public List<Unit> EnemyUnits;
     public TurnHandler TurnHandler { get; private set; }
@@ -21,6 +19,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private UIReward uiReward;
 
+    public int TurnCount = 1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -30,19 +30,9 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         currentStage = PlayerDeckContainer.Instance.SelectedStage;
 
-        if (PlayerDeckContainer.Instance.CurrentDeck.DeckDatas.Count == 0)
-            SetAlliesUnit(PartyUnitsID.Select(id => TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(id)).ToList());
-        else
-        {
-            SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
-        }
+        SetAlliesUnit(PlayerDeckContainer.Instance.CurrentDeck);
 
-        if (currentStage == null)
-            SetEnemiesUnit(EnemyUnitsID.Select(id => TableManager.Instance.GetTable<MonsterTable>().GetDataByID(id)).ToList());
-        else
-        {
-            SetEnemiesUnit(currentStage.Monsters);
-        }
+        SetEnemiesUnit(currentStage.Monsters);
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
@@ -133,9 +123,20 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         }
 
         TurnHandler.RefillTurnQueue();
+        foreach (EnemyUnitController enemy in EnemyUnits)
+        {
+            enemy.ChoiceAction();
+        }
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
+        TurnCount++; // 턴 종료되면 턴 수 +1
         OnBattleEnd?.Invoke();
+
+        foreach (Unit unit in EnemyUnits)
+        {
+            var enemyUnit = (EnemyUnitController)unit;
+            enemyUnit.ChoiceAction();
+        }
     }
 
     public List<Unit> GetAllies(Unit unit)
@@ -160,7 +161,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.AddReward(rewardKey);
         AccountManager.Instance.UpdateBestStage(currentStage);
-
         RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
     }
 

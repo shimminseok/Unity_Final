@@ -43,6 +43,13 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
             {
                 director.SetGenericBinding(track, receiver);
             }
+
+            if (track is AnimationTrack)
+            {
+                Unit attackerUnit = attacker as Unit;
+                director.SetGenericBinding(track, attackerUnit?.Animator);
+                
+            }
         }
         director.Play();
     }

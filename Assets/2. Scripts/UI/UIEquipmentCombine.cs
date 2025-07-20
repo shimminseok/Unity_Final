@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UIEquipmentCombine : UIBase
@@ -14,14 +15,14 @@ public class UIEquipmentCombine : UIBase
     private CombineManager combineManager;
     private InventoryManager inventoryManager;
 
-    public List<EquipmentItem> MaterialItems { get; private set; } = new List<EquipmentItem>();
+    private List<EquipmentItem> MaterialItems = new() { null, null, null };
 
 
     private EquipmentItem resultItem;
 
 
-    private bool IsItemInCombine(EquipmentItem item) => MaterialItems.Contains(item);
-    private bool CanAddItemToCombine()               => MaterialItems.Count < 3;
+    private bool IsItemInCombine(EquipmentItem item) => MaterialItems.Any(i => i == item);
+    private bool CanAddItemToCombine()               => MaterialItems.Any(i => i == null);
 
     private void Start()
     {
@@ -31,6 +32,7 @@ public class UIEquipmentCombine : UIBase
         for (int i = 0; i < materialItemSlotList.Count; i++)
         {
             materialItemSlotList[i].Initialize(null, false);
+            materialItemSlotList[i].OnClickSlot += RemoveCombineItem;
         }
 
         resultItemSlot.Initialize(null, false);
@@ -52,24 +54,28 @@ public class UIEquipmentCombine : UIBase
             return;
         }
 
-        if (MaterialItems.Count > 0)
+        // 티어 검사
+        if (MaterialItems.Any(e => e != null && e.ItemSo.Tier != item.ItemSo.Tier))
         {
-            if (MaterialItems[0].ItemSo.Tier != item.ItemSo.Tier)
-            {
-                Debug.Log("같은 티어의 장비만 합성 할 수 있습니다.");
-                return;
-            }
+            Debug.Log("같은 티어의 장비만 합성 할 수 있습니다.");
+            return;
         }
 
-        MaterialItems.Add(item);
-        int emptyIndex = materialItemSlotList.FindIndex(slot => slot.Item == null);
+        int emptyIndex = MaterialItems.FindIndex(i => i == null);
+        if (emptyIndex == -1)
+            return;
+
+        MaterialItems[emptyIndex] = item;
         materialItemSlotList[emptyIndex].Initialize(item, false);
     }
 
     private void RemoveCombineItem(EquipmentItem item)
     {
-        int index = MaterialItems.IndexOf(item);
-        MaterialItems.RemoveAt(index);
+        int index = MaterialItems.FindIndex(i => i == item);
+        if (index == -1)
+            return;
+
+        MaterialItems[index] = null;
         materialItemSlotList[index].Initialize(null, false);
     }
 
@@ -81,7 +87,7 @@ public class UIEquipmentCombine : UIBase
 
         for (int i = 0; i < MaterialItems.Count; i++)
         {
-            inventoryManager.RemoveItem(MaterialItems[i].Index);
+            inventoryManager.RemoveItem(MaterialItems[i].InventoryId);
             materialItemSlotList[i].EmptySlot(false);
         }
 
@@ -90,6 +96,14 @@ public class UIEquipmentCombine : UIBase
         MaterialItems.Clear();
 
         resultItemSlot.Initialize(resultItem, true);
+
+
+        inventoryUI.Initialize(
+            () => inventoryManager.GetInventoryItems(), (slot) =>
+            {
+                slot.OnClickSlot -= ToggleCombineItem;
+                slot.OnClickSlot += ToggleCombineItem;
+            });
     }
 
 
@@ -101,6 +115,11 @@ public class UIEquipmentCombine : UIBase
     public override void Open()
     {
         base.Open();
-        inventoryUI.Initialize();
+        inventoryUI.Initialize(
+            () => inventoryManager.GetInventoryItems(), (slot) =>
+            {
+                slot.OnClickSlot -= ToggleCombineItem;
+                slot.OnClickSlot += ToggleCombineItem;
+            });
     }
 }

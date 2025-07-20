@@ -10,6 +10,14 @@ public class StagePanelMonsterSlot : MonoBehaviour
 
     public void SetMonsterSlot(EnemyUnitSO enemyUnitSo)
     {
+        monsterIcon.gameObject.SetActive(true);
         monsterIcon.sprite = enemyUnitSo.UnitIcon;
+    }
+
+
+    public void EmptySlot()
+    {
+        monsterIcon.sprite = null;
+        monsterIcon.gameObject.SetActive(false);
     }
 }

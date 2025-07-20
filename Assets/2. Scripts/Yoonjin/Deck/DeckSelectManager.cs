@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 {
@@ -15,6 +15,9 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     // 최대 선택 가능한 캐릭터 수
 
+    public event Action<int> OnChangedDeck;
+
+    public event Action<EntryDeckData, EquipmentItem, EquipmentItem> OnEquipChanged;
 
     #region getter
 
@@ -73,6 +76,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         selectedDeck[index] = entryDeck;
         entryDeck.Compete(true);
         currentSelectedCharacter = entryDeck;
+        OnChangedDeck?.Invoke(index);
     }
 
     /// <summary>
@@ -87,6 +91,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         selectedDeck[index] = null;
         entryDeck.Compete(false);
         currentSelectedCharacter = null;
+        OnChangedDeck?.Invoke(index);
     }
 
 
@@ -124,13 +129,15 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void SelectEquipment(EquipmentItem equip)
     {
         if (currentSelectedCharacter == null)
+        {
             return;
+        }
 
         // 장비 타입 받아옴
         EquipmentType type = equip.EquipmentItemSo.EquipmentType;
 
-        var equipped = currentSelectedCharacter.equippedItems;
-
+        var           equipped = currentSelectedCharacter.equippedItems;
+        EquipmentItem oldItem  = null;
         // 현재 type 슬롯에 장착된 아이템
         if (equipped.TryGetValue(type, out var currentEquipped))
         {
@@ -139,10 +146,11 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             {
                 equip.IsEquipped = false;
                 equipped.Remove(type);
-
+                oldItem = equip;
                 // 디버깅용
                 currentSelectedCharacter.SyncDebugEquipments();
                 currentSelectedCharacter.InvokeEquipmentChanged();
+                OnEquipChanged?.Invoke(currentSelectedCharacter, null, oldItem);
                 return;
             }
 
@@ -157,5 +165,8 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
         currentSelectedCharacter.InvokeEquipmentChanged();
+        oldItem = equip;
+
+        OnEquipChanged?.Invoke(currentSelectedCharacter, currentEquipped, oldItem);
     }
 }

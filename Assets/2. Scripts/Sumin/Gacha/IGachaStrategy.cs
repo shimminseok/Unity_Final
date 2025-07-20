@@ -7,6 +7,43 @@ public interface IGachaStrategy<T>
     T Pull(List<T> candidates, Dictionary<Tier, float> tierRates);
 }
 
+// 캐릭터 가챠
+public class RandomCharacterGachaStrategy : IGachaStrategy<PlayerUnitSO>
+{
+    public PlayerUnitSO Pull(List<PlayerUnitSO> candidates,  Dictionary<Tier, float> tierRates)
+    {
+        Dictionary<Tier, List<PlayerUnitSO>> characterTierGroups = new();
+        
+        foreach(PlayerUnitSO character in candidates)
+        {
+            if (!characterTierGroups.ContainsKey(character.Tier))
+            {
+                characterTierGroups[character.Tier] = new List<PlayerUnitSO>();
+            }
+            characterTierGroups[character.Tier].Add(character);
+        }
+
+        float rand = Random.Range(0f, 100f);
+        float accumulated = 0;
+
+        foreach (var pair in tierRates)
+        {
+            accumulated += pair.Value;
+            if (rand <= accumulated)
+            {
+                if (characterTierGroups.TryGetValue(pair.Key, out var group) &&  group.Count > 0)
+                {
+                    return group[Random.Range(0, group.Count)];
+                }
+
+                Debug.LogWarning($"{pair.Key} 티어에 해당되는 유닛이 존재하지 않습니다. rand={rand}, 누적확률={accumulated}");
+                break;
+            }
+        }
+        return null;
+    }
+}
+
 // 쌩랜덤 가챠.
 // 나중에 픽업이나 천장 등 시스템 구현하게 되면 더 늘릴수도.
 public class RandoomSkillGachaStrategy : IGachaStrategy<ActiveSkillSO>
@@ -83,4 +120,3 @@ public class RandoomEquipmentGachaStrategy : IGachaStrategy<EquipmentItemSO>
         return null;
     }
 }
-

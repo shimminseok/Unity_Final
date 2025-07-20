@@ -1,58 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BaseInventoryUI : MonoBehaviour
 {
-    [SerializeField] protected InventorySlot inventorySlotPrefab;
-    [SerializeField] protected Transform inventorySlotParent;
+    [SerializeField] protected ReuseScrollview<InventoryItem> reuseScrollview;
 
     protected InventoryManager InventoryManager => InventoryManager.Instance;
     protected UIManager        UIManager        => UIManager.Instance;
 
-    public Dictionary<int, InventorySlot> InventorySlots { get; private set; } = new();
-    protected List<InventorySlot> InventorySlotPool = new List<InventorySlot>();
+    protected Action<InventorySlot> OnSlotClicked;
+    protected Func<List<InventoryItem>> GetInventorySource;
+    private List<InventorySlot> inventorySlots = new List<InventorySlot>();
 
-
-    public abstract void Initialize();
-
-
-    protected void UpdateInventorySlot(int index)
+    public virtual void Initialize(Func<List<InventoryItem>> inventoryGetter, Action<InventorySlot> onClickHandler)
     {
-        if (InventorySlots.TryGetValue(index, out InventorySlot slot))
+        GetInventorySource = inventoryGetter;
+
+        reuseScrollview.SetData(GetInventorySource());
+
+        for (int i = 0; i < reuseScrollview.ItemList.Count; i++)
         {
-            slot.Initialize(InventoryManager.Instance.Inventory[index] as EquipmentItem, true);
+            if (reuseScrollview.ItemList[i].TryGetComponent<InventorySlot>(out var slot))
+            {
+                slot.SetOnClickCallback(onClickHandler);
+            }
         }
     }
 
 
-    protected InventorySlot GetOrCreateInventorySlot(int index, List<InventorySlot> pool)
+    public void RefreshAtSlotUI(InventoryItem item)
     {
-        InventorySlot slot;
-
-        if (index < pool.Count)
-        {
-            slot = pool[index];
-        }
-        else
-        {
-            slot = Instantiate(inventorySlotPrefab, inventorySlotParent);
-            pool.Add(slot);
-        }
-
-        return slot;
-    }
-
-    protected void DisableRemainingSlots(int fromIndex, List<InventorySlot> pool)
-    {
-        for (int i = fromIndex; i < pool.Count; i++)
-        {
-            pool[i].EmptySlot(true);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (InventoryManager != null)
-            InventoryManager.OnInventorySlotUpdate -= UpdateInventorySlot;
+        int index = reuseScrollview.GetDataIndexFromItem(item);
+        reuseScrollview.RefreshSlotAt(index);
     }
 }

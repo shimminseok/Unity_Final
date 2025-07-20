@@ -32,13 +32,20 @@ public class AccountManager : Singleton<AccountManager>
 
     private void Start()
     {
-        //Test
-        foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F1))
         {
-            if (itemSo is EquipmentItemSO equipSo)
-                InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+            foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+            {
+                if (itemSo is EquipmentItemSO equipSo)
+                    InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+            }
         }
     }
+
 
     public void AddGold(int amount)
     {

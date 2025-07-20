@@ -23,52 +23,93 @@ public class SelectEquipUI : UIBase
 
     public event Action<EntryDeckData> OnEquipChanged;
 
+    private AvatarPreviewManager AvatarPreviewManager => AvatarPreviewManager.Instance;
+    private InventoryManager     InventoryManager     => InventoryManager.Instance;
+    private DeckSelectManager    DeckSelectManager    => DeckSelectManager.Instance;
 
-    private void Start()
+
+    private void OnEnable()
     {
+        DeckSelectManager.Instance.OnEquipChanged += HandleEquipChanged;
+    }
+
+    private void OnDisable()
+    {
+        DeckSelectManager.Instance.OnEquipChanged -= HandleEquipChanged;
+    }
+
+    private void HandleEquipChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
+    {
+        if (unit != CurrentCharacter)
+            return;
+
+        RefreshEquipUI();
+
+        if (oldItem != null)
+            inventoryUI.RefreshAtSlotUI(oldItem);
+        if (newItem != null)
+            inventoryUI.RefreshAtSlotUI(newItem);
     }
 
     public override void Open()
     {
         base.Open();
-        UpdateEquipUI();
 
         if (CurrentCharacter == null)
             return;
-        AvatarPreviewManager.Instance.ShowAvatar(CurrentCharacter.CharacterSo);
+
+        RefreshEquipUI();
+        AvatarPreviewManager.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
     public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
     {
-        DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
+        DeckSelectManager.SetCurrentSelectedCharacter(currentUnit);
         CurrentCharacter = currentUnit;
     }
 
     public override void Close()
     {
         base.Close();
-        AvatarPreviewManager.Instance.HideAllAvatars();
+        AvatarPreviewManager.HideAvatar(CurrentCharacter?.CharacterSo);
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
     // UI 갱신
-    public void UpdateEquipUI()
+    private void RefreshEquipUI()
     {
         if (CurrentCharacter == null)
             return;
 
         ClearEquipInfo();
-        equippedItemsSlot.ForEach(slot => slot.Initialize(null, false));
-        foreach (var equipmentItem in CurrentCharacter.equippedItems)
-        {
-            equippedItemsSlot[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
-            equippedItemsSlot[(int)equipmentItem.Key].ShowEquipMark(false);
-        }
+        RefreshEquippedSlots();
 
-        inventoryUI.Initialize();
+        var inventoryItems = InventoryManager.GetInventoryItems(CurrentCharacter.CharacterSo.JobType);
+        inventoryUI.Initialize(
+            () => inventoryItems,
+            (slot) =>
+            {
+                slot.OnClickSlot -= OnClickInventorySlot;
+                slot.OnClickSlot += OnClickInventorySlot;
+            });
     }
 
-    public void OnClickInventorySlot(EquipmentItem item)
+    private void RefreshEquippedSlots()
+    {
+        equippedItemsSlot.ForEach(slot => slot.Initialize(null, false));
+
+        foreach (EquipmentType type in Enum.GetValues(typeof(EquipmentType)))
+        {
+            if (CurrentCharacter.equippedItems.TryGetValue(type, out EquipmentItem item))
+            {
+                int slotIndex = (int)type;
+                equippedItemsSlot[slotIndex].Initialize(item, false);
+                equippedItemsSlot[slotIndex].ShowEquipMark(false);
+            }
+        }
+    }
+
+    private void OnClickInventorySlot(EquipmentItem item)
     {
         if (item.IsEquipped && item.EquippedUnit != CurrentCharacter)
         {
@@ -76,15 +117,7 @@ public class SelectEquipUI : UIBase
             return;
         }
 
-        DeckSelectManager.Instance.SelectEquipment(item);
-        UpdateEquipUI();
-    }
-
-    // 장비 정보 텍스트 표시
-    private void ShowEquipInfo(EquipmentItem item)
-    {
-        itemName.text = item.EquipmentItemSo.ItemName;
-        itemDescription.text = item.EquipmentItemSo.ItemDescription;
+        DeckSelectManager.SelectEquipment(item);
     }
 
     // 장비 정보 텍스트 삭제

@@ -182,7 +182,7 @@ public enum ProjectileInterpolationMode
 public enum GachaType
 {
     Skill,
-    Unit,
+    Character,
     Equipment
 }
 

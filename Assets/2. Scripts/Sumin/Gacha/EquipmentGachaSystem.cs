@@ -23,7 +23,7 @@ public class EquipmentGachaSystem : MonoBehaviour
     {
         List<EquipmentItemSO> equipments = new();
 
-        for( int i = 0; i< (int)JobType.Monster; i++)
+        for (int i = 0; i < (int)JobType.Monster; i++)
         {
             equipments.AddRange(itemTable.GetEquipmentsByJob((JobType)i));
         }
@@ -34,25 +34,26 @@ public class EquipmentGachaSystem : MonoBehaviour
     public EquipmentItemSO[] DrawEquipments(int count)
     {
         List<EquipmentItemSO> equipmentData = GetEquipmentDatas();
-        EquipmentItemSO[] results = new EquipmentItemSO[count];
+        EquipmentItemSO[]     results       = new EquipmentItemSO[count];
 
         AccountManager.Instance.UseOpal(drawCost * count);
 
-        for (int i=0; i<count; i++)
+        for (int i = 0; i < count; i++)
         {
             EquipmentItemSO equipment = gachaManager.Draw(equipmentData, Define.TierRates);
-            
-            if(equipment != null)
+
+            if (equipment != null)
             {
                 results[i] = equipment;
-                InventoryManager.Instance.AddItem(new InventoryItem(equipment, 1)); // 이거 맞나?
+                // InventoryManager.Instance.AddItem(new InventoryItem(equipment, 1)); // 이거 맞나?
+                InventoryManager.Instance.AddItem(new EquipmentItem(equipment)); // 이게 맞습니다 ㅎ
             }
             else
             {
                 Debug.LogWarning($"{i}번째 뽑기에 실패했습니다.");
             }
         }
-        
+
         return results;
     }
 

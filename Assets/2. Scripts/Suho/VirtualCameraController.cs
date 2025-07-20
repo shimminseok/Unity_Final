@@ -20,11 +20,13 @@ public class VirtualCameraController : MonoBehaviour
    public void FocusOnUnit()
    {
        Camera.LookAt = Target;
+       // Camera.Follow = Target;
    }
 
    public void Unfocus()
    {
        Camera.LookAt = null;
+       // Camera.Follow = null;
        Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
    }
 
@@ -60,3 +62,4 @@ public class VirtualCameraController : MonoBehaviour
    
    
 }
+

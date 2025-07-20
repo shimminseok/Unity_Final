@@ -267,6 +267,7 @@ GameObject:
   - component: {fileID: 8695504502292988473}
   - component: {fileID: 5542535645474919883}
   - component: {fileID: 1613297358497626057}
+  - component: {fileID: 1868499677071415313}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -348,7 +349,7 @@ MonoBehaviour:
   m_Content: {fileID: 8264117638000289601}
   m_Horizontal: 0
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
@@ -363,6 +364,27 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1868499677071415313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684789696229668524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d59145c5bc37f5143b1e7ac0e529f74f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollRect: {fileID: 1613297358497626057}
+  content: {fileID: 8264117638000289601}
+  viewportRect: {fileID: 8666407438263164616}
+  itemPrefab: {fileID: 6011887244397441633, guid: ef4a2310b7f84be49b55a8efd89822ce,
+    type: 3}
+  prefabSize: {x: 120, y: 120}
+  spacing: {x: 10, y: 10}
+  gridStartOffset: {x: 60, y: -70}
+  isVertical: 1
 --- !u!1 &3624228623738115108
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,9 +677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28636fa5489e74045bfc136d17e3c063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventorySlotPrefab: {fileID: 3770461375417715992, guid: ef4a2310b7f84be49b55a8efd89822ce,
-    type: 3}
-  inventorySlotParent: {fileID: 8264117638000289601}
+  reuseScrollview: {fileID: 1868499677071415313}
   uiEquipmentCombine: {fileID: 7121522805234923137}
 --- !u!1 &4664467811950972381
 GameObject:
@@ -668,8 +688,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8264117638000289601}
-  - component: {fileID: 4268443647813916206}
-  - component: {fileID: 6706551789561034701}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -691,49 +709,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8666407438263164616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00022162126, y: -0.000030517578}
-  m_SizeDelta: {x: -538, y: 0}
-  m_Pivot: {x: 0, y: 1}
---- !u!114 &4268443647813916206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4664467811950972381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
---- !u!114 &6706551789561034701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4664467811950972381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 15
-    m_Right: 15
-    m_Top: 15
-    m_Bottom: 15
-  m_ChildAlignment: 1
-  m_StartCorner: 0
-  m_StartAxis: 0
-  m_CellSize: {x: 110, y: 110}
-  m_Spacing: {x: 15, y: 15}
-  m_Constraint: 0
-  m_ConstraintCount: 2
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &4690155589902985615
 GameObject:
   m_ObjectHideFlags: 0
