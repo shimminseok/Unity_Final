@@ -201,8 +201,13 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         for (int i = 0; i < itemList.Count; i++)
         {
             int dataIndex = currentStartIndex + i;
-            if (dataIndex >= dataList.Count) continue;
+            if (dataIndex >= dataList.Count)
+            {
+                itemList[i].gameObject.SetActive(false);
+                continue;
+            }
 
+            itemList[i].gameObject.SetActive(true);
             if (itemList[i].TryGetComponent<IReuseScrollData<T>>(out var scrollData))
             {
                 scrollData.UpdateSlot(dataList[dataIndex]);

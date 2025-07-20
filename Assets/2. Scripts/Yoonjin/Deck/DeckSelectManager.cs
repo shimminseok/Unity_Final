@@ -17,6 +17,8 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     public event Action<int> OnChangedDeck;
 
+    public event Action<EntryDeckData, EquipmentItem, EquipmentItem> OnEquipChanged;
+
     #region getter
 
     public List<EntryDeckData> GetSelectedDeck()
@@ -124,19 +126,18 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment(EquipmentItem equip, out EquipmentItem beforeItem)
+    public void SelectEquipment(EquipmentItem equip)
     {
         if (currentSelectedCharacter == null)
         {
-            beforeItem = null;
             return;
         }
 
         // 장비 타입 받아옴
         EquipmentType type = equip.EquipmentItemSo.EquipmentType;
 
-        var equipped = currentSelectedCharacter.equippedItems;
-
+        var           equipped = currentSelectedCharacter.equippedItems;
+        EquipmentItem oldItem  = null;
         // 현재 type 슬롯에 장착된 아이템
         if (equipped.TryGetValue(type, out var currentEquipped))
         {
@@ -145,11 +146,11 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             {
                 equip.IsEquipped = false;
                 equipped.Remove(type);
-
+                oldItem = equip;
                 // 디버깅용
                 currentSelectedCharacter.SyncDebugEquipments();
                 currentSelectedCharacter.InvokeEquipmentChanged();
-                beforeItem = equip;
+                OnEquipChanged?.Invoke(currentSelectedCharacter, null, oldItem);
                 return;
             }
 
@@ -164,6 +165,8 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 디버깅용
         currentSelectedCharacter.SyncDebugEquipments();
         currentSelectedCharacter.InvokeEquipmentChanged();
-        beforeItem = currentEquipped;
+        oldItem = equip;
+
+        OnEquipChanged?.Invoke(currentSelectedCharacter, currentEquipped, oldItem);
     }
 }
