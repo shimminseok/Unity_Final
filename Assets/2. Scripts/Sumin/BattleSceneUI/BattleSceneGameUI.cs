@@ -12,10 +12,9 @@ public class BattleSceneGameUI : MonoBehaviour
 
     private BattleManager battleManager;
 
-    private void Start()
+    private void OnEnable()
     {
         battleManager = BattleManager.Instance;
-        battleManager.OnBattleEnd -= UpdateTurnCount;
         battleManager.OnBattleEnd += UpdateTurnCount;
     }
 
@@ -42,6 +41,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
     private void OnDisable()
     {
-        battleManager.OnBattleEnd -= UpdateTurnCount;
+        if (battleManager != null)
+            battleManager.OnBattleEnd -= UpdateTurnCount;
     }
 }
