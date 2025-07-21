@@ -73,6 +73,9 @@ public class BattleSceneSkillSlot : MonoBehaviour
     // 스킬 버튼 누르면 이 스킬의 슬롯 인덱스에 맞춰서 반영하여 스킬 선택
     public void OnFrontSkillBtn()
     {
+        if (skillForDetailButton != null && skillForDetailButton.IsClickBolcked)
+            return;
+
         InputManager.Instance.SelectSkill(currentskillIndex);
         ToggleHighlightSkillBtn(true);
     }
