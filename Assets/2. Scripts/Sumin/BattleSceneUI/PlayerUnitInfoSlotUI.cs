@@ -3,12 +3,21 @@ using UnityEngine.UI;
 
 public class PlayerUnitInfoSlotUI : MonoBehaviour
 {
+    [Header("HPBar와 커맨드 슬롯")]
     [SerializeField] private PlayerUnitInfoSlotHpBarUI hpBarUI;
     [SerializeField] private GameObject commandSlot;
+
+    [Header("유닛, 스킬, 타겟 이미지")]
     [SerializeField] private Image unitIcon;
     [SerializeField] private Image combatActionIcon;
     [SerializeField] private Image targetIcon;
+
+    [Header("기본공격 아이콘")]
     [SerializeField] private Sprite baseAtkIcon;
+
+    [Header("스킬 팝업")]
+    [SerializeField] private SkillDetailPopupUI skillDetailPopup;
+    [SerializeField] private SkillForDetailButton skillForDetailButton;
 
     private IActionCommand command;
 
@@ -26,10 +35,13 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
             if (command.SkillData != null)
             {
                 combatActionIcon.sprite = command.SkillData.skillSo.skillIcon;
+                skillDetailPopup.Initialize(command.SkillData);
+                skillForDetailButton.SetInteractable(true);
             }
             else
             {
                 combatActionIcon.sprite = baseAtkIcon;
+                skillForDetailButton.SetInteractable(false);
             }
             targetIcon.sprite = command.Target.UnitSo.UnitIcon;
         }
@@ -43,4 +55,5 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
     {
         hpBarUI.Initialize(owner);
     }
+
 }

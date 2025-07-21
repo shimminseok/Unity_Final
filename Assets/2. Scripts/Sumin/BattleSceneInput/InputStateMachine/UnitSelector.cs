@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 // 유닛 선택하는 기능을 하는 클래스
 public class UnitSelector
@@ -19,13 +20,39 @@ public class UnitSelector
     {
         // selected에 선택한 유닛 넣어주고, true로 반환
         selected = null;
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Vector2 inputPos;
+
+        // UI 위 클릭 시 월드 상호작용 차단
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return false;
+        }
+
+        // PC
+        if (Input.GetMouseButton(0))
+        {
+            inputPos = Input.mousePosition;
+        }
+
+        // 모바일
+        else if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            inputPos = Input.GetTouch(0).position;
+        }
+
+        else
+        {
+            return false;
+        }
+
+        Ray ray = cam.ScreenPointToRay(inputPos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableUnit))
         {
             selected = hit.transform.GetComponent<ISelectable>();
-            if (Input.GetMouseButtonDown(0)) return selected != null;
+            return selected != null;
         }
+
         return false;
     }
 

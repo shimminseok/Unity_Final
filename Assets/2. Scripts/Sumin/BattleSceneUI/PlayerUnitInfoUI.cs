@@ -9,7 +9,7 @@ public class PlayerUnitInfoUI : MonoBehaviour
     private CommandPlanner commandPlanner;
     private List<Unit> units;
 
-    private void Start()
+    private void OnEnable()
     {
         StartCoroutine(WaitForBattleManagerInit());
     }
@@ -29,7 +29,7 @@ public class PlayerUnitInfoUI : MonoBehaviour
             slots[i].UpdateHpBar(units[i] as IDamageable);
         }
         commandPlanner = CommandPlanner.Instance;
-        commandPlanner.commandUpdated -= UpdatePlayerUnitSelect;
+
         commandPlanner.commandUpdated += UpdatePlayerUnitSelect;
     }
 
@@ -40,5 +40,11 @@ public class PlayerUnitInfoUI : MonoBehaviour
         {
             slots[i].UpdateUnitSelect(units[i]);
         }
+    }
+
+    private void OnDisable()
+    {
+        if (commandPlanner != null)
+            commandPlanner.commandUpdated -= UpdatePlayerUnitSelect;
     }
 }
