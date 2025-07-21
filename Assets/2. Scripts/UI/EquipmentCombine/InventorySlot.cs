@@ -108,6 +108,9 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 
     public void SetSelectedSlot(bool isSelected)
     {
+        if (selectedSlotImg == null)
+            return;
+
         selectedSlotImg.gameObject.SetActive(isSelected);
     }
 
@@ -115,5 +118,6 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     {
         DataIndex = data.DataIndex;
         Initialize(data.Data as EquipmentItem, isHide: false);
+        SetSelectedSlot(data.IsSelected);
     }
 }

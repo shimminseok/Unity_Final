@@ -11,14 +11,14 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
     protected Action<InventorySlot> OnSlotClicked;
     protected Func<List<InventoryItem>> GetInventorySource;
-    protected Dictionary<EquipmentItem, InventorySlot> ItemToSlotDic { get; private set; } = new();
+    protected Dictionary<EquipmentItem, InventorySlot> itemToSlotMap { get; private set; } = new();
 
     public virtual void Initialize(Func<List<InventoryItem>> inventoryGetter, Action<InventorySlot> onClickHandler)
     {
         GetInventorySource = inventoryGetter;
 
         reuseScrollview.SetData(GetInventorySource());
-        ItemToSlotDic.Clear();
+        itemToSlotMap.Clear();
         var dataList = GetInventorySource();
         for (int i = 0; i < reuseScrollview.ItemList.Count; i++)
         {
@@ -28,12 +28,16 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
                 if (dataList[i] is EquipmentItem item)
                 {
-                    ItemToSlotDic.Add(item, slot);
+                    itemToSlotMap.Add(item, slot);
                 }
             }
         }
     }
 
+    public ScrollData<InventoryItem> GetDataByItem(InventoryItem item)
+    {
+        return reuseScrollview.GetDataFromItem(item);
+    }
 
     public void RefreshAtSlotUI(InventoryItem item)
     {
