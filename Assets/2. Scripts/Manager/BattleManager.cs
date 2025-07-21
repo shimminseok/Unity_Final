@@ -131,12 +131,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         TurnCount++; // 턴 종료되면 턴 수 +1
         OnBattleEnd?.Invoke();
-
-        foreach (Unit unit in EnemyUnits)
-        {
-            var enemyUnit = (EnemyUnitController)unit;
-            enemyUnit.ChoiceAction();
-        }
     }
 
     public List<Unit> GetAllies(Unit unit)
