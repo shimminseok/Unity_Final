@@ -29,15 +29,6 @@ public class SelectEquipUI : UIBase
 
     private InventorySlot selectedItemSlot;
 
-    private void OnEnable()
-    {
-        DeckSelectManager.Instance.OnEquipChanged += HandleEquipChanged;
-    }
-
-    private void OnDisable()
-    {
-        DeckSelectManager.Instance.OnEquipChanged -= HandleEquipChanged;
-    }
 
     private void HandleEquipChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
     {
@@ -58,6 +49,7 @@ public class SelectEquipUI : UIBase
             return;
 
         RefreshEquipUI();
+        DeckSelectManager.Instance.OnEquipChanged += HandleEquipChanged;
         AvatarPreviewManager.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
@@ -82,7 +74,7 @@ public class SelectEquipUI : UIBase
                 AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
 
-
+        DeckSelectManager.Instance.OnEquipChanged -= HandleEquipChanged;
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
