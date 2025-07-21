@@ -121,7 +121,7 @@ public class DialogueController : Singleton<DialogueController>
     }
 
     // 대사 종료 처리
-    private void EndDialogue()
+    public void EndDialogue()
     {
         // 다 읽은 대사는 스킵
         if (currentGroup != null)

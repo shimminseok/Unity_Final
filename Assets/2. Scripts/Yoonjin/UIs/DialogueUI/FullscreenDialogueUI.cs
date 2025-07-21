@@ -34,4 +34,9 @@ public class FullscreenDialogueUI : MonoBehaviour
     {
         DialogueController.Instance.Next();
     }
+
+    public void Skip()
+    {
+        DialogueController.Instance.EndDialogue();
+    }
 }

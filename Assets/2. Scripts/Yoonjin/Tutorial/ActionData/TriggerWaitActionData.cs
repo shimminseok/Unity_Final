@@ -4,4 +4,9 @@ using UnityEngine;
 public class TriggerWaitActionData : TutorialActionData
 {
     public string triggerEventName;
+
+    private void OnEnable()
+    {
+        ActionType = TutorialActionType.TriggerWait;
+    }
 }

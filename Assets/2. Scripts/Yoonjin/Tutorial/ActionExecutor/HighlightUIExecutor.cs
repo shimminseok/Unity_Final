@@ -4,11 +4,16 @@ using UnityEngine.UI;
 public class HighlightUIExecutor : TutorialActionExecutor
 {
     private Button targetButton;
+    private bool requireDoubleClick;
+    private int clickCount = 0;
 
     public override void Enter(TutorialActionData actionData)
     {
         var data = actionData as HighlightUIActionData;
         if (data == null) return;
+
+        requireDoubleClick = data.requireDoubleClick;
+        clickCount = 0;
 
         targetButton = GameObject.Find(data.targetButtonName)?.GetComponent<Button>();
         if (targetButton == null)
@@ -26,6 +31,11 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
     private void OnTargetButtonClicked()
     {
+        clickCount++;
+
+        if (requireDoubleClick && clickCount < 2)
+            return;
+
         // 다음 Step 진행
         manager.CompleteCurrentStep();
     }

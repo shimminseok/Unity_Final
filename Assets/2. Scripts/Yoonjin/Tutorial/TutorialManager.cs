@@ -32,6 +32,7 @@ public class TutorialManager : Singleton<TutorialManager>
         tutorialTable = TableManager.Instance.GetTable<TutorialTable>();
     }
 
+
     private void Start()
     {
         // 튜토리얼 첫 단계 실행
@@ -41,15 +42,32 @@ public class TutorialManager : Singleton<TutorialManager>
     // 특정 ID의 튜토리얼 스텝 실행
     public void GoToStep(int id)
     {
+        Debug.Log($"[튜토리얼] GoToStep 호출됨 (ID: {id})");
+
         if (!tutorialTable.DataDic.TryGetValue(id, out currentStep))
         {
-            Debug.Log("튜토리얼 종료");
+            Debug.LogWarning($"[튜토리얼] ID {id}에 해당하는 Step이 없습니다. 튜토리얼 종료!");
             return;
         }
 
-        var executor = executorMap[currentStep.ActionData.ActionType];
-        executor?.Enter(currentStep.ActionData);
+        if (currentStep.ActionData == null)
+        {
+            Debug.LogError($"[튜토리얼] Step {id}의 ActionData가 null입니다!");
+            return;
+        }
+
+        Debug.Log($"[튜토리얼] Step {id}의 ActionType: {currentStep.ActionData.ActionType}");
+
+        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out var executor))
+        {
+            Debug.LogError($"[튜토리얼] 해당 ActionType({currentStep.ActionData.ActionType})에 대한 실행기가 없습니다!");
+            return;
+        }
+
+        Debug.Log($"[튜토리얼] {currentStep.ActionData.ActionType} 실행기 호출!");
+        executor.Enter(currentStep.ActionData);
     }
+
 
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
