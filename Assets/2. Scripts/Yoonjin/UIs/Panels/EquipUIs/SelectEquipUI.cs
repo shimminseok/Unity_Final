@@ -45,8 +45,6 @@ public class SelectEquipUI : UIBase
         if (unit != CurrentCharacter)
             return;
 
-        RefreshEquipUI();
-
         if (oldItem != null)
             inventoryUI.RefreshAtSlotUI(oldItem);
         if (newItem != null)
@@ -161,5 +159,9 @@ public class SelectEquipUI : UIBase
     {
         itemName.text = "";
         itemDescription.text = "";
+        foreach (StatSlot itemStatSlot in itemStatSlots)
+        {
+            itemStatSlot.gameObject.SetActive(false);
+        }
     }
 }

@@ -112,17 +112,6 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void CreateItems()
     {
-        // itemList.Clear();
-        // int createCount = Mathf.Min(visibleItemCount, dataList.Count);
-        // for (int i = 0; i < createCount; i++)
-        // {
-        //     GameObject    item     = Instantiate(itemPrefab, content);
-        //     RectTransform itemRect = item.GetComponent<RectTransform>();
-        //     itemRect.sizeDelta = prefabSize;
-        //     itemList.Add(itemRect);
-        //     UpdateItemPosition(i, i);
-        // }
-
         int requiredCount = Mathf.Min(visibleItemCount, dataList.Count);
 
         // 현재보다 부족하면 새로 생성
