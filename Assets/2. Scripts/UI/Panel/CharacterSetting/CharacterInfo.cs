@@ -124,10 +124,16 @@ public class CharacterInfo : MonoBehaviour
     private void SetPlayerUnitSkillInfo()
     {
         int index = 0;
-        skillSlots[index++].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill);
-        foreach (ActiveSkillSO activeSkillSo in selectedPlayerUnitData.skillDatas)
+        skillSlots[index++].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill, false);
+        foreach (SkillData skillData in selectedPlayerUnitData.SkillDatas)
         {
-            skillSlots[index++].SetSkillIcon(activeSkillSo);
+            skillSlots[index].SetSkillIcon(skillData, false);
+            index++;
+        }
+
+        for (int i = index; i < skillSlots.Length; i++)
+        {
+            skillSlots[i].ShowEquipMark(false);
         }
     }
 

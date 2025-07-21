@@ -15,15 +15,15 @@ public class PassiveSkillTable : BaseTable<int, PassiveSO>
         Type = GetType();
         foreach (PassiveSO passiveSo in dataList)
         {
-            if (!DataDic.TryAdd(passiveSo.PassiveID, passiveSo))
+            if (!DataDic.TryAdd(passiveSo.ID, passiveSo))
             {
-                Debug.LogWarning($"중복된 Passive ID 감지: {passiveSo.PassiveID} - {passiveSo.name}");
+                Debug.LogWarning($"중복된 Passive ID 감지: {passiveSo.ID} - {passiveSo.name}");
             }
 
-            if (!PassiveSkillByJob.TryGetValue(passiveSo.JobType, out List<PassiveSO> passiveSkills))
+            if (!PassiveSkillByJob.TryGetValue(passiveSo.jobType, out List<PassiveSO> passiveSkills))
             {
                 passiveSkills = new List<PassiveSO>();
-                PassiveSkillByJob[passiveSo.JobType] = passiveSkills;
+                PassiveSkillByJob[passiveSo.jobType] = passiveSkills;
             }
 
             passiveSkills.Add(passiveSo);

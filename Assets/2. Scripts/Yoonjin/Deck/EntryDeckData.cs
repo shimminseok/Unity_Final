@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class EntryDeckData
@@ -9,7 +10,7 @@ public class EntryDeckData
     // 캐릭터 직업, 액티브 스킬 3개, 패시브 스킬
     // 장비 등등 equipItem
     // 패시브SO
-    public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
+    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
 
     public Dictionary<EquipmentType, EquipmentItem> EquippedItems  { get; private set; } = new();
     public int                                      Level          { get; private set; }
@@ -82,6 +83,26 @@ public class EntryDeckData
             item.UnEquipItem();
             EquippedItems.Remove(type);
             InvokeEquipmentChanged();
+        }
+    }
+
+    public void EquipSkill(SkillData skillData)
+    {
+        int index = Array.IndexOf(SkillDatas, null);
+        if (index > -1)
+        {
+            SkillDatas[index] = skillData;
+            InvokeSkillChanged();
+        }
+    }
+
+    public void UnEquipSkill(SkillData skillData)
+    {
+        int index = Array.IndexOf(SkillDatas, skillData);
+        if (index > -1)
+        {
+            SkillDatas[index] = null;
+            InvokeSkillChanged();
         }
     }
 

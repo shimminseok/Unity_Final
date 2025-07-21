@@ -9,7 +9,6 @@ public abstract class BaseInventoryUI : MonoBehaviour
     protected InventoryManager InventoryManager => InventoryManager.Instance;
     protected UIManager        UIManager        => UIManager.Instance;
 
-    protected Action<InventorySlot> OnSlotClicked;
     protected Func<List<InventoryItem>> GetInventorySource;
     protected Dictionary<EquipmentItem, InventorySlot> itemToSlotMap { get; private set; } = new();
 
@@ -25,6 +24,9 @@ public abstract class BaseInventoryUI : MonoBehaviour
             if (reuseScrollview.ItemList[i].TryGetComponent<InventorySlot>(out var slot))
             {
                 slot.SetOnClickCallback(onClickHandler);
+
+                if (dataList.Count > i)
+                    continue;
 
                 if (dataList[i] is EquipmentItem item)
                 {

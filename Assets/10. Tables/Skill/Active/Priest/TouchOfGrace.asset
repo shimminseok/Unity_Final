@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: TouchOfGrace
   m_EditorClassIdentifier: 
   ID: 6001
+  SkillIcon: {fileID: 21300000, guid: 45a7be4e520706c4b83cd0e1b5843bde, type: 3}
   skillName: "\uCE58\uC720\uC758 \uC190\uAE38"
   skillDescription: "\uB2E8\uC77C \uD790"
+  jobType: 5
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   effect:
@@ -27,8 +29,7 @@ MonoBehaviour:
       projectilePoolID: 
       damageEffects: []
       buffEffects:
-      - ID: 0
-        ownerStatType: 0
+      - ownerStatType: 0
         weight: 0.3
         value: 25
         opponentStatType: 1
@@ -48,7 +49,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 5
   activeSkillTier: 1
   reuseMaxCount: 3
   coolTime: 3

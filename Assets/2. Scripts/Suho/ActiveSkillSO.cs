@@ -19,19 +19,14 @@ using UnityEngine.Playables;
  * skillTimeLine : 스킬 연출 효과 타임라인
  */
 [CreateAssetMenu(fileName = "New ActiveSkillData", menuName = "ScriptableObjects/New ActiveSkillData")]
-public class ActiveSkillSO : ScriptableObject
+public class ActiveSkillSO : SkillSo
 {
-    public int ID;
-    public string skillName;
-    public string skillDescription;
     public CombatActionSo skillType;
     public SelectCampType selectCamp;
     public StatBaseEffect effect;
-    public JobType jobType;
     public Tier activeSkillTier;
     public int reuseMaxCount;
     public int coolTime;
-    public Sprite skillIcon;
     public AnimationClip skillAnimation;
     public PlayableAsset skillTimeLine;
 

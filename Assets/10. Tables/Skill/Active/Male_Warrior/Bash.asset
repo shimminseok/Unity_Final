@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Bash
   m_EditorClassIdentifier: 
   ID: 1002
+  SkillIcon: {fileID: 21300000, guid: 9b4077171aff88745b89a07f9b27ef6b, type: 3}
   skillName: "\uBC29\uD328\uCE58\uAE30"
   skillDescription: "\uBC29\uD328\uB85C \uC801\uC744 \uCCD0  \uC801\uC5D0\uAC8C \uAE34
     \uAE30\uC808\uC744 \uAC74\uB2E4."
+  jobType: 0
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -28,8 +30,7 @@ MonoBehaviour:
       projectilePoolID: 
       damageEffects: []
       buffEffects:
-      - ID: 90000
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0
         value: 100
         opponentStatType: 0
@@ -49,7 +50,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 0
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2

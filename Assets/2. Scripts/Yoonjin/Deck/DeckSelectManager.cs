@@ -17,7 +17,9 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
     public event Action<int> OnChangedDeck;
 
-    public event Action<EntryDeckData, EquipmentItem, EquipmentItem> OnEquipChanged;
+    public event Action<EntryDeckData, EquipmentItem, EquipmentItem> OnEquipItemChanged;
+
+    public event Action<EntryDeckData, SkillData, SkillData> OnEquipSkillChanged;
 
     #region getter
 
@@ -96,37 +98,31 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 
 
     // 캐릭터에 액티브 스킬 장착 & 해제
-    public void SelectActiveSkill(ActiveSkillSO activeSkill)
+    public void ProcessEquipSkillSelection(SkillData skillData)
     {
-        if (currentSelectedCharacter == null) return;
+        if (currentSelectedCharacter == null)
+            return;
 
-        var skills = currentSelectedCharacter.skillDatas;
+        var skills = currentSelectedCharacter.SkillDatas;
 
         // 이미 장착된 스킬일 경우 해제
         for (int i = 0; i < skills.Length; i++)
         {
-            if (skills[i] == activeSkill)
+            if (skills[i] == skillData)
             {
-                skills[i] = null;
-                currentSelectedCharacter.InvokeSkillChanged();
+                skills[i].UnEquippedSkill();
+                OnEquipSkillChanged?.Invoke(currentSelectedCharacter, null, skillData);
                 return;
             }
         }
 
-        // 비어 있는 슬롯에 장착
-        for (int i = 0; i < skills.Length; i++)
-        {
-            if (skills[i] == null)
-            {
-                skills[i] = activeSkill;
-                currentSelectedCharacter.InvokeSkillChanged();
-                return;
-            }
-        }
+        //새로운 스킬 장착
+        currentSelectedCharacter.EquipSkill(skillData);
+        OnEquipSkillChanged?.Invoke(currentSelectedCharacter, skillData, skillData);
     }
 
     // 캐릭터에 장비 장착
-    public void ProcessEquipSelection(EquipmentItem item)
+    public void ProcessEquipItemSelection(EquipmentItem item)
     {
         if (currentSelectedCharacter == null)
         {
@@ -140,20 +136,20 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         EquipmentType type = item.EquipmentItemSo.EquipmentType;
 
         // 현재 type 슬롯에 장착된 아이템
-        if (equipped.TryGetValue(type, out var alreadyEquipped))
+        if (equipped.TryGetValue(type, out EquipmentItem alreadyEquipped))
         {
             // 같은 아이템을 다시 클릭한 경우 해제
             currentSelectedCharacter.UnEquipItem(type);
             if (alreadyEquipped == item)
             {
-                OnEquipChanged?.Invoke(currentSelectedCharacter, null, item);
+                OnEquipItemChanged?.Invoke(currentSelectedCharacter, null, item);
                 return;
             }
         }
 
         // 새 장비 장착
         currentSelectedCharacter.EquipItem(item);
-        OnEquipChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
+        OnEquipItemChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
     }
 
     public void ForceEquipItemToCurrentCharacter(EquipmentItem item)
@@ -173,6 +169,24 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         fromUnit.UnEquipItem(type);
         currentSelectedCharacter.EquipItem(item);
 
-        OnEquipChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
+        OnEquipItemChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
+    }
+
+    public void ForceEquipSkillToCurrentCharacter(SkillData skill)
+    {
+        if (currentSelectedCharacter == null || skill == null || skill.EquippedUnit == null)
+            return;
+
+        var skills = currentSelectedCharacter.SkillDatas;
+        var index  = Array.IndexOf(skills, skill);
+        if (index != -1)
+            currentSelectedCharacter.UnEquipSkill(skills[index]);
+
+
+        var fromUnit = skill.EquippedUnit;
+        fromUnit.UnEquipSkill(skill);
+        currentSelectedCharacter.EquipSkill(skill);
+
+        OnEquipSkillChanged?.Invoke(currentSelectedCharacter, skill, index != -1 ? skills[index] : null);
     }
 }

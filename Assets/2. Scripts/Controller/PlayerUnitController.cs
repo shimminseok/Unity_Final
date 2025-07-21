@@ -108,9 +108,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
         }
 
-        foreach (var skillData in deckData.DeckData.skillDatas)
+        foreach (var skillData in deckData.DeckData.SkillDatas)
         {
-            SkillManager.AddActiveSkill(skillData);
+            if (skillData == null)
+                continue;
+            SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
         SkillManager.InitializeSkillManager(this);

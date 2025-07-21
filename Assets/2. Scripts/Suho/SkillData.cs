@@ -18,6 +18,10 @@ public class SkillData
     public int coolDown = 0;
     public int coolTime;
 
+
+    public EntryDeckData EquippedUnit;
+    public bool IsEquipped { get; private set; }
+
     public void RegenerateCoolDown(int value)
     {
         coolDown = Mathf.Max(0, coolDown - value);
@@ -36,5 +40,17 @@ public class SkillData
         }
 
         return true;
+    }
+
+    public void EquippedSkill(EntryDeckData unit)
+    {
+        IsEquipped = true;
+        EquippedUnit = unit;
+    }
+
+    public void UnEquippedSkill()
+    {
+        IsEquipped = false;
+        EquippedUnit = null;
     }
 }

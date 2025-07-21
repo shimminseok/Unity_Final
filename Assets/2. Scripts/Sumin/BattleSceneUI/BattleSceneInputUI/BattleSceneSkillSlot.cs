@@ -57,7 +57,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
         // UI에 반영
         coolDownText.text = $"{coolDown}";
         reuseCountText.text = $"{reuseCount}";
-        skillIconImage.sprite = skillData.skillSo.skillIcon;
+        skillIconImage.sprite = skillData.skillSo.SkillIcon;
         skillName.text = skillData.skillSo.skillName;
 
         skillDetailPopup.Initialize(skillData);

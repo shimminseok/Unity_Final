@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: RoarOfFury
   m_EditorClassIdentifier: 
   ID: 4002
+  SkillIcon: {fileID: 21300000, guid: 2b98b8b95d10fb149acd2ae1837dba1d, type: 3}
   skillName: "\uD3ED\uB82C\uC758 \uD3EC\uD6A8"
   skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
+  jobType: 3
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -31,8 +33,7 @@ MonoBehaviour:
         weight: 0.6
         value: 50
       buffEffects:
-      - ID: 0
-        ownerStatType: 0
+      - ownerStatType: 0
         weight: 0
         value: 0
         opponentStatType: 0
@@ -88,7 +89,6 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
-  jobType: 3
   activeSkillTier: 2
   reuseMaxCount: 2
   coolTime: 4

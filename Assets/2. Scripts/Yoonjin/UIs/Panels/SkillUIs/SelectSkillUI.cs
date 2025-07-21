@@ -4,190 +4,176 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectSkillUI : UIBase
 {
-    [Header("보유 패시브 스킬 선택 영역")]
-    [SerializeField] private Transform passiveSkillParent;
-
-    [Header("보유 액티브 스킬 선택 영역")]
-    [SerializeField] private Transform activeSkillParent;
-
-    [Header("장착 스킬 슬롯")]
-    [SerializeField] private Transform passiveSkillSlot;
-
-    [SerializeField] private Transform[] activeSkillSlots;
-
     [Header("장착한 스킬 이름 / 설명 / 효과")]
-    [SerializeField] private TMP_Text skillName;
+    [SerializeField] private TextMeshProUGUI skillName;
 
-    [SerializeField] private TMP_Text skillDescription;
-    [SerializeField] private TMP_Text skillEffect;
+    [SerializeField] private TextMeshProUGUI skillDescription;
+    [SerializeField] private TextMeshProUGUI skillEffect;
+
+
+    [Header("스킬 슬롯")]
+    [SerializeField] private List<SkillSlot> activeSkillSlots = new();
+
+    [SerializeField] private SkillSlot passiveSkillSlot;
 
     [Header("스킬 버튼 프리팹")]
-    [SerializeField] private SkillButton skillButtonPrefab;
+    [SerializeField] private SkillSlot skillSlotPrefab;
+
+
+    [Header("인벤토리")]
+    [SerializeField] private EquipmentSkillInventory inventoryUI;
+
+
+    private SkillSlot selectedSkillSlot;
+    private DeckSelectManager DeckSelectManager => DeckSelectManager.Instance;
+
+    private AvatarPreviewManager AvatarPreviewManager => AvatarPreviewManager.Instance;
 
     // 현재 선택된 캐릭터
-    private EntryDeckData currentCharacter;
+    public EntryDeckData CurrentCharacter { get; private set; }
 
-
-    private List<SkillButton> selectedSkillButtonPool = new(); // 풀 추가
-    private List<SkillButton> ownedSkillButtonPool = new();
 
     public event Action<EntryDeckData> OnSkillChanged;
+    private Action<InventorySlot> onClickCallback;
 
-    public override void Open()
+
+    private void HandleEquipItemChanged(EntryDeckData unit, SkillData newSkill, SkillData oldSkill)
     {
-        base.Open();
-        UpdateSkillUI();
+        if (unit != CurrentCharacter)
+            return;
 
-        if (currentCharacter != null)
+        if (oldSkill != null)
+            inventoryUI.RefreshAtSlotUI(oldSkill);
+        if (newSkill != null)
+            inventoryUI.RefreshAtSlotUI(newSkill);
+    }
+
+    private void RefreshEquipSkillUI()
+    {
+        if (CurrentCharacter == null)
+            return;
+
+        // ClearEquipInfo();
+        RefreshEquippedSkillSlots();
+
+        List<SkillData> inventoryItems = AccountManager.Instance.GetInventorySkillsByJob(CurrentCharacter.CharacterSo.JobType);
+        inventoryUI.Initialize(
+            () => inventoryItems,
+            (slot) =>
+            {
+                slot.OnClickSlot -= OnClickInventorySlot;
+                slot.OnClickSlot += OnClickInventorySlot;
+            });
+    }
+
+    private void OnClickInventorySlot(SkillData skill)
+    {
+        inventoryUI.SelectItemSlot(skill);
+        SkillSlot selectSlot = inventoryUI.GetSlotByItem(skill);
+        if (selectSlot == null)
+            return;
+
+
+        if (selectedSkillSlot != selectSlot)
         {
-            AvatarPreviewManager.Instance.ShowAvatar(currentCharacter.CharacterSo);
+            SetSkillInfoUI(skill.skillSo);
+            selectedSkillSlot = selectSlot;
+        }
+        else
+        {
+            if (skill.IsEquipped && skill.EquippedUnit != CurrentCharacter)
+            {
+                Action leftAction = () =>
+                {
+                    DeckSelectManager.ForceEquipSkillToCurrentCharacter(skill);
+                    RefreshEquippedSkillSlots();
+                };
+                string equippedUnitName = skill.EquippedUnit.CharacterSo.UnitName;
+                string skillName        = skill.skillSo.skillName;
+                string message          = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
+                PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("", message, leftAction, null, "장착", "취소");
+            }
+            else
+            {
+                DeckSelectManager.ProcessEquipSkillSelection(skill);
+            }
+        }
+
+        RefreshEquippedSkillSlots();
+    }
+
+    private void SetSkillInfoUI(SkillSo equipmentSkill)
+    {
+        skillName.text = equipmentSkill.skillName;
+        skillDescription.text = equipmentSkill.skillDescription;
+
+        // int count = Mathf.Min(equipmentSkill.Stats.Count, itemStatSlots.Length);
+        //
+        // for (int i = 0; i < itemStatSlots.Length; i++)
+        // {
+        //     bool isActive = i < count;
+        //     itemStatSlots[i].gameObject.SetActive(isActive);
+        //
+        //     if (isActive)
+        //     {
+        //         var stat = equipmentSkill.Stats[i];
+        //         itemStatSlots[i].Initialize(stat.StatType, stat.Value);
+        //     }
+        // }
+    }
+
+    private void RefreshEquippedSkillSlots()
+    {
+        for (int i = 0; i < CurrentCharacter.SkillDatas.Length; i++)
+        {
+            var skill = CurrentCharacter.SkillDatas[i];
+            activeSkillSlots[i].SetSkillIcon(skill, false);
+            activeSkillSlots[i].ShowEquipMark(false);
         }
     }
+
 
     public void SetCurrentSelectedUnit(EntryDeckData currentUnit)
     {
         DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
-        currentCharacter = currentUnit;
+        CurrentCharacter = currentUnit;
+    }
+
+    public override void Open()
+    {
+        base.Open();
+
+        if (CurrentCharacter == null)
+            return;
+
+        passiveSkillSlot.SetSkillIcon(CurrentCharacter.CharacterSo.PassiveSkill, false);
+
+        RefreshEquipSkillUI();
+        DeckSelectManager.Instance.OnEquipSkillChanged += HandleEquipItemChanged;
+        AvatarPreviewManager.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
     public override void Close()
     {
         base.Close();
-        OnSkillChanged?.Invoke(currentCharacter);
-        AvatarPreviewManager.Instance.HideAvatar(currentCharacter?.CharacterSo);
-    }
-
-
-    // UI 갱신
-    public void UpdateSkillUI()
-    {
-        currentCharacter = DeckSelectManager.Instance.GetCurrentSelectedCharacter();
-
-        if (currentCharacter == null) return;
-
-        ClearSkillInfo();
-        GenerateOwnedSkillButtons();
-        GenerateSelectedSkillButtons();
-    }
-
-
-    // 보유 중인 스킬 버튼 생성
-    /// <summary>
-    /// !!! 임시조치로 현재 테이블에 있는 모든 스킬 가져옴!!!
-    /// </summary>
-    private void GenerateOwnedSkillButtons()
-    {
-        int poolIndex = 0;
-        var job       = currentCharacter.CharacterSo.JobType;
-
-        // var activeList = AccountManager.Instance.MySkills.Values;
-        var activeList = TableManager.Instance.GetTable<ActiveSkillTable>().GetActiveSkillsByJob(job);
-        foreach (var active in activeList)
+        if (CurrentCharacter != null)
         {
-            var btn = GetOrCreateSkillButton(poolIndex++, activeSkillParent, ownedSkillButtonPool, skillButtonPrefab);
-            btn.Initialize(active, false, OnSkillButtonClicked);
-        }
-
-        DisableRemainingButtons(poolIndex, ownedSkillButtonPool);
-    }
-
-    // 선택 중인 스킬 슬롯 채우기
-    private void GenerateSelectedSkillButtons()
-    {
-        int poolIndex = 0;
-
-        // 패시브
-        if (currentCharacter.CharacterSo.PassiveSkill != null)
-        {
-            var btn = GetOrCreateSkillButton(poolIndex++, passiveSkillSlot, selectedSkillButtonPool, skillButtonPrefab);
-            btn.Initialize(currentCharacter.CharacterSo.PassiveSkill, true, OnSkillButtonClicked);
-        }
-
-        // 액티브
-        for (int i = 0; i < currentCharacter.skillDatas.Length; i++)
-        {
-            var active = currentCharacter.skillDatas[i];
-            if (active == null) continue;
-
-            var btn = GetOrCreateSkillButton(poolIndex++, activeSkillSlots[i], selectedSkillButtonPool, skillButtonPrefab);
-            btn.Initialize(active, true, OnSkillButtonClicked);
-        }
-
-        DisableRemainingButtons(poolIndex, selectedSkillButtonPool);
-    }
-
-    private SkillButton GetOrCreateSkillButton(int index, Transform parent, List<SkillButton> pool, SkillButton prefab)
-    {
-        SkillButton btn;
-
-        if (index < pool.Count)
-        {
-            btn = pool[index];
-        }
-        else
-        {
-            btn = Instantiate(prefab, parent);
-            pool.Add(btn);
-        }
-
-        btn.transform.SetParent(parent, false); // false로 localPosition 유지
-        btn.gameObject.SetActive(true);
-        return btn;
-    }
-
-    private void DisableRemainingButtons(int fromIndex, List<SkillButton> pool)
-    {
-        for (int i = fromIndex; i < pool.Count; i++)
-        {
-            pool[i].gameObject.SetActive(false);
-        }
-    }
-
-    // 액티브 스킬 정보 표시
-    private void ShowSkillInfo(ActiveSkillSO active)
-    {
-        skillName.text = active.skillName;
-        skillDescription.text = active.skillDescription;
-    }
-
-    // 패시브 스킬 정보 표시
-    private void ShowSkillInfo(PassiveSO passive)
-    {
-        skillName.text = passive.PassiveName;
-        skillDescription.text = passive.Description;
-    }
-
-    // 스킬 정보 리셋
-    private void ClearSkillInfo()
-    {
-        skillName.text = "";
-        skillDescription.text = "";
-        skillEffect.text = "";
-    }
-
-    // 클릭 콜백
-    private void OnSkillButtonClicked(SkillButton btn, bool isSelected)
-    {
-        ClearSkillInfo();
-
-        // 장착된 슬롯에서 클릭 시 정보 패널에 설명 표시
-        if (isSelected)
-        {
-            if (btn.IsPassive)
-                ShowSkillInfo(btn.GetPassiveSkill());
+            if (CurrentCharacter.IsCompeted)
+            {
+                int partyIndex = DeckSelectManager.GetSelectedDeck().FindIndex(c => c.CharacterSo.ID == CurrentCharacter.CharacterSo.ID);
+                if (partyIndex != -1)
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+            }
             else
-                ShowSkillInfo(btn.GetActiveSkill());
+                AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
-        // 보유 스킬 클릭 시 장착 / 해제
-        else
-        {
-            DeckSelectManager.Instance.SelectActiveSkill(btn.GetActiveSkill());
-            // UI 갱신
-            UpdateSkillUI();
-        }
+
+        DeckSelectManager.Instance.OnEquipSkillChanged -= HandleEquipItemChanged;
+        OnSkillChanged?.Invoke(CurrentCharacter);
     }
 }

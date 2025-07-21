@@ -30,7 +30,7 @@ public class SelectEquipUI : UIBase
     private InventorySlot selectedItemSlot;
 
 
-    private void HandleEquipChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
+    private void HandleEquipItemChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
     {
         if (unit != CurrentCharacter)
             return;
@@ -49,7 +49,7 @@ public class SelectEquipUI : UIBase
             return;
 
         RefreshEquipUI();
-        DeckSelectManager.Instance.OnEquipChanged += HandleEquipChanged;
+        DeckSelectManager.Instance.OnEquipItemChanged += HandleEquipItemChanged;
         AvatarPreviewManager.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
@@ -74,7 +74,7 @@ public class SelectEquipUI : UIBase
                 AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
 
-        DeckSelectManager.Instance.OnEquipChanged -= HandleEquipChanged;
+        DeckSelectManager.Instance.OnEquipItemChanged -= HandleEquipItemChanged;
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
@@ -143,7 +143,7 @@ public class SelectEquipUI : UIBase
             }
             else
             {
-                DeckSelectManager.ProcessEquipSelection(item);
+                DeckSelectManager.ProcessEquipItemSelection(item);
             }
         }
 

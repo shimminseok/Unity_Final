@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ClearVision
   m_EditorClassIdentifier: 
   ID: 5000
+  SkillIcon: {fileID: 21300000, guid: 35437edfe4671b049af37c4e7dea9247, type: 3}
   skillName: ClearVision
   skillDescription: "\uBCF8\uC778\uC758 \uBA85\uC911\uB960 \uC0C1\uC2B9"
+  jobType: 4
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   effect:
@@ -28,8 +30,7 @@ MonoBehaviour:
       projectilePoolID: Buff
       damageEffects: []
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0.3
         value: 10
         opponentStatType: 10
@@ -49,7 +50,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 4
   activeSkillTier: 1
   reuseMaxCount: 2
   coolTime: 3

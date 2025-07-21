@@ -10,13 +10,15 @@ public class AccountManager : Singleton<AccountManager>
     public int Opal      { get; private set; } = 3000;
     public int BestStage { get; private set; } = 1010109;
 
-    public Dictionary<int, EntryDeckData> MyPlayerUnits = new Dictionary<int, EntryDeckData>();
-    public Dictionary<int, ActiveSkillSO> MySkills = new Dictionary<int, ActiveSkillSO>();
-    public event Action<int> OnGoldChanged;
-    public event Action<int> OnOpalChanged;
+    public Dictionary<int, EntryDeckData> MyPlayerUnits { get; private set; } = new Dictionary<int, EntryDeckData>();
+    public Dictionary<int, SkillData>     MySkills      { get; private set; } = new Dictionary<int, SkillData>();
+    public event Action<int>              OnGoldChanged;
+    public event Action<int>              OnOpalChanged;
 
 
     private List<int> orderedStageIds;
+
+    private Dictionary<JobType, List<int>> JobSkillInventory = new();
 
     protected override void Awake()
     {
@@ -36,6 +38,11 @@ public class AccountManager : Singleton<AccountManager>
         {
             if (itemSo is EquipmentItemSO equipSo)
                 InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+        }
+
+        foreach (ActiveSkillSO activeSkillSo in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
+        {
+            AddSkill(activeSkillSo, out _);
         }
     }
 
@@ -146,20 +153,41 @@ public class AccountManager : Singleton<AccountManager>
 
     public void AddSkill(ActiveSkillSO skill, out bool isDuplicate)
     {
-        if (MySkills.TryAdd(skill.ID, skill))
+        if (MySkills.TryAdd(skill.ID, new SkillData(skill)))
         {
             isDuplicate = false;
+            AddEquipmentItem(skill.jobType, skill.ID);
         }
         else
         {
-            //TODO : 재화 돌려줌 -> 재화 돌려주는걱 가챠 시스템쪽에서 처리함
             isDuplicate = true;
         }
+    }
+
+    private void AddEquipmentItem(JobType jobType, int itemId)
+    {
+        if (!JobSkillInventory.TryGetValue(jobType, out List<int> inventoryList))
+        {
+            inventoryList = new List<int>();
+        }
+
+        inventoryList.Add(itemId);
+        JobSkillInventory[jobType] = inventoryList;
     }
 
 
     public EntryDeckData GetPlayerUnit(int id)
     {
         return MyPlayerUnits.GetValueOrDefault(id);
+    }
+
+
+    public List<SkillData> GetInventorySkillsByJob(JobType jobType)
+    {
+        if (!JobSkillInventory.TryGetValue(jobType, out List<int> idList))
+            return new List<SkillData>();
+
+        var items = idList.Where(id => MySkills.ContainsKey(id)).Select(id => MySkills[id]).ToList();
+        return items;
     }
 }
