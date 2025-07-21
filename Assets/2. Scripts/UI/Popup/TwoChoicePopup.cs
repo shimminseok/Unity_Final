@@ -4,20 +4,24 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TwoChoicePopup : SingletonUI<TwoChoicePopup>
+public class TwoChoicePopup : UIBase
 {
     [SerializeField] private TextMeshProUGUI titleTxt;
     [SerializeField] private TextMeshProUGUI descTxt;
 
+    [SerializeField] private TextMeshProUGUI leftBtnTxt;
+    [SerializeField] private TextMeshProUGUI rightBtnTxt;
 
     public event Action OnLeftClicked;
     public event Action OnRightClicked;
 
 
-    public void SetAndOpenPopupUI(string title, string desc, Action leftAct, Action rightAct = null)
+    public void SetAndOpenPopupUI(string title, string desc, Action leftAct, Action rightAct = null, string leftBtnTxt = "확인", string rightBtnTxt = "닫기")
     {
         titleTxt.text = title;
         descTxt.text = desc;
+        this.leftBtnTxt.text = leftBtnTxt;
+        this.rightBtnTxt.text = rightBtnTxt;
         SetLeftButtonAction(leftAct);
         SetRightButtonAction(rightAct);
         UIManager.Open(this);

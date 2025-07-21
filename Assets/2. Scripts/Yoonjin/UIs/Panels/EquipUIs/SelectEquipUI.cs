@@ -135,7 +135,7 @@ public class SelectEquipUI : UIBase
                 string equippedUnitName = item.EquippedUnit.CharacterSo.UnitName;
                 string itemName         = item.EquipmentItemSo.ItemName;
                 string message          = $"{itemName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
-                TwoChoicePopup.Instance.SetAndOpenPopupUI("", message, leftAction);
+                CanvasPopup.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("", message, leftAction, null, "장착", "취소");
             }
             else
             {

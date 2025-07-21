@@ -28,19 +28,24 @@ public class UIManager : Singleton<UIManager>
             return;
         }
 
-        UIBase[] uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
+        UIBase[]         uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
+        List<GameObject> toDestroy    = new();
         foreach (UIBase uiComponent in uiComponents)
         {
-            if (uiDict.ContainsKey(uiComponent.GetType()))
+            var type = uiComponent.GetType();
+            if (!uiDict.TryAdd(type, uiComponent))
             {
-                Destroy(uiComponent.gameObject);
+                toDestroy.Add(uiComponent.gameObject);
             }
             else
             {
-                uiDict[uiComponent.GetType()] = uiComponent;
                 uiComponent.Close();
             }
         }
+
+
+        foreach (var go in toDestroy)
+            Destroy(go);
     }
 
     public void Open(UIBase ui)
@@ -90,6 +95,11 @@ public class UIBase : MonoBehaviour
     public virtual void Close()
     {
         contents.gameObject.SetActive(false);
+    }
+
+    public void OnClickCloseBtn()
+    {
+        UIManager.Instance.Close(this);
     }
 }
 
