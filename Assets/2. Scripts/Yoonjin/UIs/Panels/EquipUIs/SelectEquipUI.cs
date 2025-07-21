@@ -78,8 +78,8 @@ public class SelectEquipUI : UIBase
                 if (partyIndex != -1)
                     AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
             }
-
-            AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+            else
+                AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
 
 
