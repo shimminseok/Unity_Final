@@ -23,8 +23,16 @@ public class StatSlot : MonoBehaviour
         UpdateStatValue(statValue, equipValue);
     }
 
-    public void UpdateStatValue(float value, float equipValue = 0)
+    public void Initialize(StatType type, float statValue)
     {
-        statValue.text = $"{value + equipValue:N1} (+{equipValue:N1})";
+        statType = type;
+        statName.text = Define.GetStatName(type);
+        UpdateStatValue(statValue);
+    }
+
+    public void UpdateStatValue(float value, float value2 = 0)
+    {
+        string statvalue = value2 == 0 ? $"{value:N1}" : $"{value:N1} (+{value2:N1})";
+        statValue.text = statvalue;
     }
 }

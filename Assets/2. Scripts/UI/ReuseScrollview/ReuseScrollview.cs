@@ -50,6 +50,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     public List<RectTransform> ItemList => itemList;
 
+
     private void Initialize()
     {
         Canvas.ForceUpdateCanvases();
@@ -78,7 +79,6 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
             isInitialized = true;
         }
 
-        Debug.Log(items.Count);
         dataList.Clear();
         dataToIndexMap.Clear();
         for (int i = 0; i < items.Count; i++)
@@ -89,8 +89,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         }
 
         SetContentSize();
-        if (itemList.Count == 0)
-            CreateItems();
+        // if (itemList.Count == 0)
+        CreateItems();
 
         currentStartIndex = -1;
         lastContentPosition = content.anchoredPosition;
@@ -155,8 +155,6 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void UpdateItemPosition(int itemIndex, int dataIndex)
     {
-        // if (dataIndex >= dataList.Count) return;
-
         RectTransform item = itemList[itemIndex];
 
         if (dataIndex >= dataList.Count)
@@ -182,7 +180,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
         item.anchoredPosition = new Vector2(x, y);
 
-        if (item.TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+        if (item.TryGetComponent(out IReuseScrollData<T> scrollData))
         {
             scrollData.UpdateSlot(dataList[dataIndex]);
         }
@@ -190,10 +188,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     public int GetDataIndexFromItem(T slot)
     {
-        if (dataToIndexMap.TryGetValue(slot, out int dataIndex))
-            return dataIndex;
-
-        return -1;
+        return dataToIndexMap.GetValueOrDefault(slot, -1);
     }
 
     public void RefreshAllVisibleSlots()

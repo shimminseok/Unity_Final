@@ -12,9 +12,10 @@ public class SelectEquipUI : UIBase
     [SerializeField] private List<InventorySlot> equippedItemsSlot = new();
 
     [Header("장비 정보 표시")]
-    [SerializeField] private TMP_Text itemName;
+    [SerializeField] private TextMeshProUGUI itemName;
 
-    [SerializeField] private TMP_Text itemDescription;
+    [SerializeField] private TextMeshProUGUI itemDescription;
+    [SerializeField] private StatSlot[] itemStatSlots;
 
     [Header("인벤토리")]
     [SerializeField] private EquipmentUnitInventoryUI inventoryUI;
@@ -27,6 +28,7 @@ public class SelectEquipUI : UIBase
     private InventoryManager     InventoryManager     => InventoryManager.Instance;
     private DeckSelectManager    DeckSelectManager    => DeckSelectManager.Instance;
 
+    private InventorySlot selectedItemSlot;
 
     private void OnEnable()
     {
@@ -84,7 +86,7 @@ public class SelectEquipUI : UIBase
         ClearEquipInfo();
         RefreshEquippedSlots();
 
-        var inventoryItems = InventoryManager.GetInventoryItems(CurrentCharacter.CharacterSo.JobType);
+        List<InventoryItem> inventoryItems = InventoryManager.GetInventoryItems(CurrentCharacter.CharacterSo.JobType);
         inventoryUI.Initialize(
             () => inventoryItems,
             (slot) =>
@@ -117,7 +119,41 @@ public class SelectEquipUI : UIBase
             return;
         }
 
-        DeckSelectManager.SelectEquipment(item);
+        var selectSlot = inventoryUI.GetSlotByItem(item);
+        if (selectSlot == null)
+            return;
+
+
+        if (selectedItemSlot != selectSlot)
+        {
+            //TODO : 선택한 장비의 슬롯에게 SelectedImg 활성화
+            selectedItemSlot?.SetSelectedSlot(false);
+            InitializeStatSlot(item.EquipmentItemSo);
+            selectedItemSlot = selectSlot;
+            selectedItemSlot.SetSelectedSlot(true);
+        }
+        else
+        {
+            //TODO : 이미 선택된 아이템과 같다면 장착
+            DeckSelectManager.SelectEquipment(item);
+        }
+    }
+
+    private void InitializeStatSlot(EquipmentItemSO equipmentItem)
+    {
+        int count = Mathf.Min(equipmentItem.Stats.Count, itemStatSlots.Length);
+
+        for (int i = 0; i < itemStatSlots.Length; i++)
+        {
+            bool isActive = i < count;
+            itemStatSlots[i].gameObject.SetActive(isActive);
+
+            if (isActive)
+            {
+                var stat = equipmentItem.Stats[i];
+                itemStatSlots[i].Initialize(stat.StatType, stat.Value);
+            }
+        }
     }
 
     // 장비 정보 텍스트 삭제
