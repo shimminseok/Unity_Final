@@ -11,19 +11,25 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
     protected Action<InventorySlot> OnSlotClicked;
     protected Func<List<InventoryItem>> GetInventorySource;
-    private List<InventorySlot> inventorySlots = new List<InventorySlot>();
+    protected Dictionary<EquipmentItem, InventorySlot> ItemToSlotDic { get; private set; } = new();
 
     public virtual void Initialize(Func<List<InventoryItem>> inventoryGetter, Action<InventorySlot> onClickHandler)
     {
         GetInventorySource = inventoryGetter;
 
         reuseScrollview.SetData(GetInventorySource());
-
+        ItemToSlotDic.Clear();
+        var dataList = GetInventorySource();
         for (int i = 0; i < reuseScrollview.ItemList.Count; i++)
         {
             if (reuseScrollview.ItemList[i].TryGetComponent<InventorySlot>(out var slot))
             {
                 slot.SetOnClickCallback(onClickHandler);
+
+                if (dataList[i] is EquipmentItem item)
+                {
+                    ItemToSlotDic.Add(item, slot);
+                }
             }
         }
     }

@@ -32,6 +32,11 @@ public class AccountManager : Singleton<AccountManager>
 
     private void Start()
     {
+        foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+        {
+            if (itemSo is EquipmentItemSO equipSo)
+                InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+        }
     }
 
     private void Update()
