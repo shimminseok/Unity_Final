@@ -25,6 +25,8 @@ public class CharacterIntroManager : MonoBehaviour
     // 캐릭터를 추적할 리스트
     private List<GameObject> spawnedCharacters = new();
 
+    private bool isStartButtonShown = false;
+
     private void Start()
     {
         overlay.gameObject.SetActive(true);
@@ -36,6 +38,15 @@ public class CharacterIntroManager : MonoBehaviour
         // 동시에 캐릭터 등장 연출 시작
         StartCoroutine(PlaceCharacters());
 
+    }
+
+    private void Update()
+    {
+        if (!isStartButtonShown && Input.GetMouseButtonDown(0))
+        {
+            isStartButtonShown = true;
+            StartCoroutine(ShowStartButton());
+        }
     }
 
     // 씬에 배치된 캐릭터들을 대열 위치로 이동
@@ -98,6 +109,8 @@ public class CharacterIntroManager : MonoBehaviour
     // UI 스타트 버튼을 서서히 등장시키는 코루틴
     IEnumerator ShowStartButton()
     {
+        isStartButtonShown = true;
+
         yield return new WaitForSeconds(1f); // 걷기 도중 약간 대기
         startButton.SetActive(true); // 버튼 활성화
         startLOGO.SetActive(true);
@@ -111,9 +124,6 @@ public class CharacterIntroManager : MonoBehaviour
 
     public void OnClickStart()
     {
-        LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () =>
-        {
-            DialogueController.Instance.Play("INTRO");
-        });
+        LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
     }
 }
