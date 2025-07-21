@@ -119,28 +119,28 @@ public class SelectEquipUI : UIBase
             return;
         }
 
-        var selectSlot = inventoryUI.GetSlotByItem(item);
+
+        inventoryUI.SelectItemSlot(item);
+        InventorySlot selectSlot = inventoryUI.GetSlotByItem(item);
         if (selectSlot == null)
             return;
 
 
         if (selectedItemSlot != selectSlot)
         {
-            //TODO : 선택한 장비의 슬롯에게 SelectedImg 활성화
-            selectedItemSlot?.SetSelectedSlot(false);
-            InitializeStatSlot(item.EquipmentItemSo);
+            SetItemInfoUI(item.EquipmentItemSo);
             selectedItemSlot = selectSlot;
-            selectedItemSlot.SetSelectedSlot(true);
         }
         else
         {
-            //TODO : 이미 선택된 아이템과 같다면 장착
             DeckSelectManager.SelectEquipment(item);
         }
     }
 
-    private void InitializeStatSlot(EquipmentItemSO equipmentItem)
+    private void SetItemInfoUI(EquipmentItemSO equipmentItem)
     {
+        itemName.text = equipmentItem.ItemName;
+        itemDescription.text = equipmentItem.ItemDescription;
         int count = Mathf.Min(equipmentItem.Stats.Count, itemStatSlots.Length);
 
         for (int i = 0; i < itemStatSlots.Length; i++)
