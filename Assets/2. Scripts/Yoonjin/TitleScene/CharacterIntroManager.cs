@@ -111,9 +111,6 @@ public class CharacterIntroManager : MonoBehaviour
 
     public void OnClickStart()
     {
-        LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () =>
-        {
-            DialogueController.Instance.Play("INTRO");
-        });
+        LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
     }
 }
