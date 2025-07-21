@@ -62,7 +62,7 @@ public class CharacterInfo : MonoBehaviour
         var level          = selectedPlayerUnitData.Level;
         var charBaseStats  = selectedPlayerUnitData.CharacterSo.Stats;
         var statGrowthList = statIncreaseSo.Stats;
-        var equippedItems  = selectedPlayerUnitData.equippedItems;
+        var equippedItems  = selectedPlayerUnitData.EquippedItems;
 
         Dictionary<StatType, float> baseStats    = new();
         Dictionary<StatType, float> levelUpStats = new();
@@ -105,7 +105,7 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitEquipmentInfo()
     {
-        var equipItem = selectedPlayerUnitData.equippedItems;
+        var equipItem = selectedPlayerUnitData.EquippedItems;
         for (int i = 0; i < equippedItemSlot.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))

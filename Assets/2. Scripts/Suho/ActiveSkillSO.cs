@@ -42,6 +42,7 @@ public class ActiveSkillSO : ScriptableObject
         SkillType = Instantiate(skillType);
         if (SkillType is RangeSkillSO rangeSkillSo)
         {
+            // if (effect.skillEffectDatas == null) return;
             bool isHasProjectileSkill = effect.skillEffectDatas.Any(p => p.projectilePrefab != null);
             rangeSkillSo.SetIsProjectile(isHasProjectileSkill);
         }

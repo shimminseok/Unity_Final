@@ -41,7 +41,7 @@ public class CharacterInfoPanel : MonoBehaviour
         equipmentSlots.ForEach(slot => slot.Initialize(null, false));
         if (data == null)
             return;
-        foreach (var equipmentItem in data.equippedItems)
+        foreach (var equipmentItem in data.EquippedItems)
         {
             equipmentSlots[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
             equipmentSlots[(int)equipmentItem.Key].ShowEquipMark(false);

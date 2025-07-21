@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectEquipUI : UIBase
@@ -71,7 +70,19 @@ public class SelectEquipUI : UIBase
     public override void Close()
     {
         base.Close();
-        AvatarPreviewManager.HideAvatar(CurrentCharacter?.CharacterSo);
+        if (CurrentCharacter != null)
+        {
+            if (CurrentCharacter.IsCompeted)
+            {
+                int partyIndex = DeckSelectManager.GetSelectedDeck().FindIndex(c => c.CharacterSo.ID == CurrentCharacter.CharacterSo.ID);
+                if (partyIndex != -1)
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+            }
+
+            AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+        }
+
+
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
@@ -96,28 +107,23 @@ public class SelectEquipUI : UIBase
 
     private void RefreshEquippedSlots()
     {
-        equippedItemsSlot.ForEach(slot => slot.Initialize(null, false));
-
         foreach (EquipmentType type in Enum.GetValues(typeof(EquipmentType)))
         {
-            if (CurrentCharacter.equippedItems.TryGetValue(type, out EquipmentItem item))
+            int slotIndex = (int)type;
+            if (CurrentCharacter.EquippedItems.TryGetValue(type, out EquipmentItem item))
             {
-                int slotIndex = (int)type;
                 equippedItemsSlot[slotIndex].Initialize(item, false);
                 equippedItemsSlot[slotIndex].ShowEquipMark(false);
+            }
+            else
+            {
+                equippedItemsSlot[slotIndex].Initialize(null, false);
             }
         }
     }
 
     private void OnClickInventorySlot(EquipmentItem item)
     {
-        if (item.IsEquipped && item.EquippedUnit != CurrentCharacter)
-        {
-            Debug.Log($"현재 장착된 아이템은 {item.EquippedUnit.CharacterSo.UnitName}이 장착하고 있습니다");
-            return;
-        }
-
-
         inventoryUI.SelectItemSlot(item);
         InventorySlot selectSlot = inventoryUI.GetSlotByItem(item);
         if (selectSlot == null)
@@ -131,8 +137,25 @@ public class SelectEquipUI : UIBase
         }
         else
         {
-            DeckSelectManager.SelectEquipment(item);
+            if (item.IsEquipped && item.EquippedUnit != CurrentCharacter)
+            {
+                Action leftAction = () =>
+                {
+                    DeckSelectManager.ForceEquipItemToCurrentCharacter(item);
+                    RefreshEquippedSlots();
+                };
+                string equippedUnitName = item.EquippedUnit.CharacterSo.UnitName;
+                string itemName         = item.EquipmentItemSo.ItemName;
+                string message          = $"{itemName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
+                PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("", message, leftAction, null, "장착", "취소");
+            }
+            else
+            {
+                DeckSelectManager.ProcessEquipSelection(item);
+            }
         }
+
+        RefreshEquippedSlots();
     }
 
     private void SetItemInfoUI(EquipmentItemSO equipmentItem)

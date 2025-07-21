@@ -11,10 +11,10 @@ public class EntryDeckData
     // 패시브SO
     public ActiveSkillSO[] skillDatas = new ActiveSkillSO[3];
 
-    public Dictionary<EquipmentType, EquipmentItem> equippedItems = new();
-    public int Level          { get; private set; }
-    public int Amount         { get; private set; }
-    public int TranscendLevel { get; private set; }
+    public Dictionary<EquipmentType, EquipmentItem> EquippedItems  { get; private set; } = new();
+    public int                                      Level          { get; private set; }
+    public int                                      Amount         { get; private set; }
+    public int                                      TranscendLevel { get; private set; }
 
 
     private const int BASE_MAX_LEVEL = 10;
@@ -68,6 +68,23 @@ public class EntryDeckData
         Amount += amount;
     }
 
+    public void EquipItem(EquipmentItem item)
+    {
+        item.EquipItem(this);
+        EquippedItems[item.EquipmentItemSo.EquipmentType] = item;
+        InvokeEquipmentChanged();
+    }
+
+    public void UnEquipItem(EquipmentType type)
+    {
+        if (EquippedItems.TryGetValue(type, out EquipmentItem item))
+        {
+            item.UnEquipItem();
+            EquippedItems.Remove(type);
+            InvokeEquipmentChanged();
+        }
+    }
+
     public void InvokeEquipmentChanged()
     {
         OnEquipmmmentChanged?.Invoke();
@@ -76,29 +93,5 @@ public class EntryDeckData
     public void InvokeSkillChanged()
     {
         OnSkillChanged?.Invoke();
-    }
-
-
-    [System.Serializable]
-    public class EquipmentEntry
-    {
-        public EquipmentType type;
-        public EquipmentItem item;
-    }
-
-    /// <summary>
-    /// 딕셔너리 디버깅용
-    /// </summary>
-    [SerializeField]
-    private List<EquipmentEntry> debugEquippedItems = new();
-
-    public void SyncDebugEquipments()
-    {
-        debugEquippedItems.Clear();
-
-        foreach (var kvp in equippedItems)
-        {
-            debugEquippedItems.Add(new EquipmentEntry { type = kvp.Key, item = kvp.Value });
-        }
     }
 }

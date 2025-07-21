@@ -10,7 +10,7 @@ public class StatSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statName;
     [SerializeField] private TextMeshProUGUI statValue;
 
-
+    private float equipmentStatValue;
     public StatType StatType => statType;
 
     private void Start()
@@ -20,7 +20,8 @@ public class StatSlot : MonoBehaviour
 
     public void Initialize(float statValue, float equipValue)
     {
-        UpdateStatValue(statValue, equipValue);
+        equipmentStatValue = equipValue;
+        UpdateStatValue(statValue);
     }
 
     public void Initialize(StatType type, float statValue)
@@ -30,9 +31,12 @@ public class StatSlot : MonoBehaviour
         UpdateStatValue(statValue);
     }
 
-    public void UpdateStatValue(float value, float value2 = 0)
+    public void UpdateStatValue(float value)
     {
-        string statvalue = value2 == 0 ? $"{value:N1}" : $"{value:N1} (+{value2:N1})";
+        Debug.Log($"StatType : {Define.GetStatName(statType)}, baseStat : {value} , equipValue {equipmentStatValue}");
+
+
+        string statvalue = equipmentStatValue == 0 ? $"{value:N1}" : $"{value:N1} (+{equipmentStatValue:N1})";
         statValue.text = statvalue;
     }
 }
