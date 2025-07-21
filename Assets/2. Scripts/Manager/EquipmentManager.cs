@@ -35,6 +35,12 @@ public class EquipmentItem : InventoryItem
         IsEquipped = true;
         EquippedUnit = equipUnit;
     }
+
+    public void UnEquipItem()
+    {
+        IsEquipped = false;
+        EquippedUnit = null;
+    }
 }
 
 public class EquipmentManager
@@ -78,7 +84,7 @@ public class EquipmentManager
         }
 
         item.IsEquipped = true;
-        item.LinkedSlot.ShowEquipMark(true);
+        // item.LinkedSlot.ShowEquipMark(true);
         OnEquipmentChanged?.Invoke(type);
     }
 
