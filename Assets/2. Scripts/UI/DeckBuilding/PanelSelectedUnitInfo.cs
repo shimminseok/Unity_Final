@@ -20,7 +20,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     {
         data.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
         this.selectedUnitData = data;
-        var equipItem = selectedUnitData.equippedItems;
+        var equipItem = selectedUnitData.EquippedItems;
         for (int i = 0; i < unitEquippedItems.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))
@@ -63,7 +63,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
     private void UpdateEquippedItemSlot()
     {
-        var equipItem = selectedUnitData.equippedItems;
+        var equipItem = selectedUnitData.EquippedItems;
         for (int i = 0; i < unitEquippedItems.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))

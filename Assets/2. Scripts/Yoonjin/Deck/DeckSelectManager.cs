@@ -126,7 +126,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     }
 
     // 캐릭터에 장비 장착
-    public void SelectEquipment(EquipmentItem equip)
+    public void ProcessEquipSelection(EquipmentItem item)
     {
         if (currentSelectedCharacter == null)
         {
@@ -134,39 +134,45 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         }
 
         // 장비 타입 받아옴
-        EquipmentType type = equip.EquipmentItemSo.EquipmentType;
 
-        var           equipped = currentSelectedCharacter.equippedItems;
-        EquipmentItem oldItem  = null;
+        Dictionary<EquipmentType, EquipmentItem> equipped = currentSelectedCharacter.EquippedItems;
+
+        EquipmentType type = item.EquipmentItemSo.EquipmentType;
+
         // 현재 type 슬롯에 장착된 아이템
-        if (equipped.TryGetValue(type, out var currentEquipped))
+        if (equipped.TryGetValue(type, out var alreadyEquipped))
         {
             // 같은 아이템을 다시 클릭한 경우 해제
-            if (currentEquipped == equip)
+            currentSelectedCharacter.UnEquipItem(type);
+            if (alreadyEquipped == item)
             {
-                equip.IsEquipped = false;
-                equipped.Remove(type);
-                oldItem = equip;
-                // 디버깅용
-                currentSelectedCharacter.SyncDebugEquipments();
-                currentSelectedCharacter.InvokeEquipmentChanged();
-                OnEquipChanged?.Invoke(currentSelectedCharacter, null, oldItem);
+                OnEquipChanged?.Invoke(currentSelectedCharacter, null, item);
                 return;
             }
-
-            // 다른 장비로 교체하며 기존 장비 해제
-            currentEquipped.IsEquipped = false;
         }
 
         // 새 장비 장착
-        equip.EquipItem(currentSelectedCharacter);
-        equipped[type] = equip;
+        currentSelectedCharacter.EquipItem(item);
+        OnEquipChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
+    }
 
-        // 디버깅용
-        currentSelectedCharacter.SyncDebugEquipments();
-        currentSelectedCharacter.InvokeEquipmentChanged();
-        oldItem = equip;
+    public void ForceEquipItemToCurrentCharacter(EquipmentItem item)
+    {
+        if (currentSelectedCharacter == null || item == null || item.EquippedUnit == null)
+            return;
 
-        OnEquipChanged?.Invoke(currentSelectedCharacter, currentEquipped, oldItem);
+        Dictionary<EquipmentType, EquipmentItem> equipped = currentSelectedCharacter.EquippedItems;
+        var                                      type     = item.EquipmentItemSo.EquipmentType;
+
+        if (equipped.TryGetValue(type, out var alreadyEquipped))
+        {
+            currentSelectedCharacter.UnEquipItem(type);
+        }
+
+        var fromUnit = item.EquippedUnit;
+        fromUnit.UnEquipItem(type);
+        currentSelectedCharacter.EquipItem(item);
+
+        OnEquipChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
     }
 }
