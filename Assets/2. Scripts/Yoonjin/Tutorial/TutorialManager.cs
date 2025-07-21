@@ -58,5 +58,6 @@ public class TutorialManager : Singleton<TutorialManager>
         executor?.Exit();
 
         GoToStep(currentStep.NextID);
+        Debug.Log("튜토리얼 다음 단계로");
     }
 }

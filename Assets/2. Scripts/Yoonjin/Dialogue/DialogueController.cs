@@ -108,6 +108,11 @@ public class DialogueController : Singleton<DialogueController>
             var ui = UIManager.Instance.GetUIComponent<OverlayDialogueUI>();
             ui.Show(line);
         }
+        else if (currentGroup.mode == DialogueMode.Tutorial)
+        {
+            var ui = UIManager.Instance.GetUIComponent<TutorialDialogueUI>();
+            ui.Show(line);
+        }
         else
         {
             var fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
@@ -129,14 +134,19 @@ public class DialogueController : Singleton<DialogueController>
             // 현재 DialogueScene을 언로드 → 원래 씬 복귀
             SceneManager.UnloadSceneAsync("DialogueScene");
         }
-        else
+        else if (currentGroup.mode == DialogueMode.Overlay)
         {
             UIManager.Instance.GetUIComponent<OverlayDialogueUI>()?.Close();
         }
+        else
+        {
+            UIManager.Instance.GetUIComponent<TutorialDialogueUI>()?.Close();
+        }
 
-        currentGroup = null;
+            currentGroup = null;
         currentLineIndex = 0;
         OnCallBackAction?.Invoke();
+        EventBus.Publish("DialogueFinished");
     }
 }
 

@@ -20,5 +20,6 @@ public class DialogueGroupSO : ScriptableObject
 public enum DialogueMode
 {
     Overlay,      // 기존 화면에 간단히 출력
-    Fullscreen   // 전용 대화 연출 UI로 출력
+    Fullscreen,   // 전용 대화 연출 UI로 출력
+    Tutorial      // 튜토리얼 전용 UI
 }
