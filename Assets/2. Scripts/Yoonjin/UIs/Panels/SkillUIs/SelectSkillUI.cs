@@ -13,6 +13,8 @@ public class SelectSkillUI : UIBase
     [SerializeField] private TextMeshProUGUI skillName;
 
     [SerializeField] private TextMeshProUGUI skillDescription;
+    [SerializeField] private TextMeshProUGUI skillCooltimeTxt;
+    [SerializeField] private TextMeshProUGUI skillTotalUseCountTxt;
     [SerializeField] private TextMeshProUGUI skillEffect;
 
 
@@ -111,7 +113,11 @@ public class SelectSkillUI : UIBase
     {
         skillName.text = equipmentSkill.skillName;
         skillDescription.text = equipmentSkill.skillDescription;
-
+        if (equipmentSkill is ActiveSkillSO activeSkill)
+        {
+            skillCooltimeTxt.text = $"{activeSkill.coolTime}";
+            skillTotalUseCountTxt.text = $"{activeSkill.reuseMaxCount}";
+        }
         // int count = Mathf.Min(equipmentSkill.Stats.Count, itemStatSlots.Length);
         //
         // for (int i = 0; i < itemStatSlots.Length; i++)

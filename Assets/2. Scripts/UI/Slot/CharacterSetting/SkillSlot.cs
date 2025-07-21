@@ -16,7 +16,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     [SerializeField] private List<GameObject> skillGradeStars;
     [SerializeField] private Image itemEquipmentImg;
     [SerializeField] private TextMeshProUGUI skillName;
-
+    [SerializeField] private GameObject selectedSlotImg;
     [SerializeField] private GameObject emptySkillImg;
     [SerializeField] private List<Sprite> itemGradeSprites;
 
@@ -107,6 +107,14 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         OnClickSlot?.Invoke(SkillData);
     }
 
+    public void SetSelectedSlot(bool isSelected)
+    {
+        if (selectedSlotImg == null)
+            return;
+
+        selectedSlotImg.gameObject.SetActive(isSelected);
+    }
+
     public void SetOnClickCallback(Action<SkillSlot> callback)
     {
         onClickCallback = callback;
@@ -117,5 +125,6 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     {
         DataIndex = data.DataIndex;
         SetSkillIcon(data.Data, isHide: false);
+        SetSelectedSlot(data.IsSelected);
     }
 }
