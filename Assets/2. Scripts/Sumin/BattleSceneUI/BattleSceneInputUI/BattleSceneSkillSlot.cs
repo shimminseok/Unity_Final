@@ -23,6 +23,10 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [SerializeField] private float flipDuration;
     [SerializeField] private float waitFlippedTime;
 
+    [Header("스킬 팝업")]
+    [SerializeField] private SkillDetailPopupUI skillDetailPopup;
+    [SerializeField] private SkillForDetailButton skillForDetailButton;
+
     // 스킬 데이터들
     private SkillData selectedSkillData;
     private int currentskillIndex;
@@ -55,6 +59,9 @@ public class BattleSceneSkillSlot : MonoBehaviour
         reuseCountText.text = $"{reuseCount}";
         skillIconImage.sprite = skillData.skillSo.skillIcon;
         skillName.text = skillData.skillSo.skillName;
+
+        skillDetailPopup.Initialize(skillData);
+        skillForDetailButton.SetInteractable(true);
 
 
         if (reuseCount <= 0)

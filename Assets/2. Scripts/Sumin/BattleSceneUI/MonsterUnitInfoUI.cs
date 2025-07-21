@@ -16,16 +16,11 @@ public class MonsterUnitInfoUI : MonoBehaviour
     private float originalHeight;
 
     private List<Unit> units;
+    private BattleManager battleManager;
 
-    private void Start()
+    private void OnEnable()
     {
         StartCoroutine(WaitForBattleManagerInit());
-
-        // rect 원본 높이 저장
-        originalHeight = monsterSlotsContainer.rect.height;
-
-        // 처음엔 접어두기
-        monsterSlotsContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
     }
 
     // 호출 순서 문제 때문에 BattleManager 준비되면 참조
@@ -33,7 +28,8 @@ public class MonsterUnitInfoUI : MonoBehaviour
     {
         yield return new WaitUntil(() => BattleManager.Instance != null && BattleManager.Instance.EnemyUnits.Count > 0);
 
-        units = BattleManager.Instance.EnemyUnits;
+        battleManager = BattleManager.Instance;
+        units = battleManager.EnemyUnits;
 
         // 유닛 수 만큼 켜주고 정보 업데이트
         for (int i = 0; i < units.Count; i++)
@@ -43,8 +39,16 @@ public class MonsterUnitInfoUI : MonoBehaviour
         }
 
         // 전투 종료 후 적 타겟 갱신될때마다 업데이트
-        BattleManager.Instance.OnBattleEnd -= UpdateUnits;
-        BattleManager.Instance.OnBattleEnd += UpdateUnits;
+        battleManager.OnBattleEnd += UpdateUnits;
+    }
+
+    private void Start()
+    {
+        // rect 원본 높이 저장
+        originalHeight = monsterSlotsContainer.rect.height;
+
+        // 처음엔 접어두기
+        monsterSlotsContainer.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
     }
 
     private void UpdateUnits()
@@ -69,5 +73,13 @@ public class MonsterUnitInfoUI : MonoBehaviour
 
         monsterSlotsContainer.DOSizeDelta(new Vector2(monsterSlotsContainer.sizeDelta.x, targetHeight), animationDuration).SetEase(Ease.OutCubic);
         isOpen = !isOpen;
+    }
+
+    private void OnDisable()
+    {
+        if (battleManager != null)
+        {
+            battleManager.OnBattleEnd -= UpdateUnits;
+        }
     }
 }

@@ -40,4 +40,19 @@ public class SkillForDetailButton : MonoBehaviour, IPointerDownHandler, IPointer
         yield return new WaitForSeconds(hideDelay);
         skillDetailPopup.gameObject.SetActive(false);
     }
+
+    // 버튼 꺼졌을때 자동으로 꺼지게
+    private void OnDisable()
+    {
+        if (skillDetailPopup != null && skillDetailPopup.activeSelf)
+        {
+            skillDetailPopup.SetActive(false);
+        }
+
+        if (hideCoroutine != null)
+        {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+    }
 }
