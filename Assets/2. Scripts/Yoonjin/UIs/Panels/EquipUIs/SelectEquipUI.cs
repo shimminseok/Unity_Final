@@ -70,7 +70,19 @@ public class SelectEquipUI : UIBase
     public override void Close()
     {
         base.Close();
-        AvatarPreviewManager.HideAvatar(CurrentCharacter?.CharacterSo);
+        if (CurrentCharacter != null)
+        {
+            if (CurrentCharacter.IsCompeted)
+            {
+                int partyIndex = DeckSelectManager.GetSelectedDeck().FindIndex(c => c.CharacterSo.ID == CurrentCharacter.CharacterSo.ID);
+                if (partyIndex != -1)
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+            }
+
+            AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+        }
+
+
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
