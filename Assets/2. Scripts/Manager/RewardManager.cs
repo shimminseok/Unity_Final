@@ -22,11 +22,6 @@ public class RewardManager : Singleton<RewardManager>
         rewardTable = TableManager.Instance.GetTable<RewardTable>();
     }
 
-
-    private void Start()
-    {
-    }
-
     public void GiveReward(string id)
     {
         RewardSo rewardSo = rewardTable.GetDataByID(id);

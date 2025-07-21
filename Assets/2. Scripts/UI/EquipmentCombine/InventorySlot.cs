@@ -16,13 +16,13 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private Image selectedSlotImg;
     [SerializeField] private List<GameObject> itemGradeStars;
 
     [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private List<Sprite> itemGradeSprites;
 
     [SerializeField] private TextMeshProUGUI amountTxt;
-
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
@@ -106,9 +106,18 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         onClickCallback?.Invoke(this);
     }
 
+    public void SetSelectedSlot(bool isSelected)
+    {
+        if (selectedSlotImg == null)
+            return;
+
+        selectedSlotImg.gameObject.SetActive(isSelected);
+    }
+
     public void UpdateSlot(ScrollData<InventoryItem> data)
     {
         DataIndex = data.DataIndex;
         Initialize(data.Data as EquipmentItem, isHide: false);
+        SetSelectedSlot(data.IsSelected);
     }
 }

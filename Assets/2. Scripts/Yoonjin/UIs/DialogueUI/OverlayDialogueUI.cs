@@ -28,4 +28,9 @@ public class OverlayDialogueUI : UIBase
     {
         DialogueController.Instance.Next();
     }
+
+    public void Skip()
+    {
+        DialogueController.Instance.EndDialogue();
+    }
 }

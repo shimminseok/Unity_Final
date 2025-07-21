@@ -48,8 +48,6 @@ public class CharacterInfo : MonoBehaviour
 
     private void InitializeStatSlotDic()
     {
-        statSlotDic.Clear();
-
         foreach (var slot in statSlots)
         {
             if (!statSlotDic.TryAdd(slot.StatType, slot))

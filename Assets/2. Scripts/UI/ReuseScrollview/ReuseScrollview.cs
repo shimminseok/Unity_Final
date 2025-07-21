@@ -12,8 +12,9 @@ public interface IReuseScrollData<T>
 
 public class ScrollData<T>
 {
-    public int DataIndex { get; private set; }
-    public T   Data      { get; private set; }
+    public int  DataIndex  { get; private set; }
+    public T    Data       { get; private set; }
+    public bool IsSelected { get; set; }
 
     public ScrollData(int dataIndex, T data)
     {
@@ -49,6 +50,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     private readonly Dictionary<T, int> dataToIndexMap = new();
 
     public List<RectTransform> ItemList => itemList;
+    public List<ScrollData<T>> DataList => dataList;
 
     private void Initialize()
     {
@@ -78,7 +80,6 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
             isInitialized = true;
         }
 
-        Debug.Log(items.Count);
         dataList.Clear();
         dataToIndexMap.Clear();
         for (int i = 0; i < items.Count; i++)
@@ -89,8 +90,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         }
 
         SetContentSize();
-        if (itemList.Count == 0)
-            CreateItems();
+        // if (itemList.Count == 0)
+        CreateItems();
 
         currentStartIndex = -1;
         lastContentPosition = content.anchoredPosition;
@@ -111,15 +112,28 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void CreateItems()
     {
-        itemList.Clear();
-        int createCount = Mathf.Min(visibleItemCount, dataList.Count);
-        for (int i = 0; i < createCount; i++)
+        int requiredCount = Mathf.Min(visibleItemCount, dataList.Count);
+
+        // 현재보다 부족하면 새로 생성
+        while (itemList.Count < requiredCount)
         {
             GameObject    item     = Instantiate(itemPrefab, content);
             RectTransform itemRect = item.GetComponent<RectTransform>();
             itemRect.sizeDelta = prefabSize;
             itemList.Add(itemRect);
-            UpdateItemPosition(i, i);
+        }
+
+        // 필요 없는 슬롯은 비활성화
+        for (int i = requiredCount; i < itemList.Count; i++)
+        {
+            itemList[i].gameObject.SetActive(false);
+        }
+
+        // 위치 및 데이터 갱신
+        for (int i = 0; i < requiredCount; i++)
+        {
+            UpdateItemPosition(i, currentStartIndex + i);
+            itemList[i].gameObject.SetActive(true);
         }
     }
 
@@ -155,8 +169,6 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     private void UpdateItemPosition(int itemIndex, int dataIndex)
     {
-        // if (dataIndex >= dataList.Count) return;
-
         RectTransform item = itemList[itemIndex];
 
         if (dataIndex >= dataList.Count)
@@ -182,7 +194,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
         item.anchoredPosition = new Vector2(x, y);
 
-        if (item.TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+        if (item.TryGetComponent(out IReuseScrollData<T> scrollData))
         {
             scrollData.UpdateSlot(dataList[dataIndex]);
         }
@@ -190,10 +202,12 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
 
     public int GetDataIndexFromItem(T slot)
     {
-        if (dataToIndexMap.TryGetValue(slot, out int dataIndex))
-            return dataIndex;
+        return dataToIndexMap.GetValueOrDefault(slot, -1);
+    }
 
-        return -1;
+    public ScrollData<T> GetDataFromItem(T slot)
+    {
+        return dataList[GetDataIndexFromItem(slot)];
     }
 
     public void RefreshAllVisibleSlots()

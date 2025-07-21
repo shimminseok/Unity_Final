@@ -50,6 +50,7 @@ public class UICharacterSetting : UIBase
                 continue;
 
             var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
+            slot.name = $"UnitSlot_{entryDeckData.Value.CharacterSo.ID}";
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
             slot.OnClicked += OnClickPlayerUnitSlot;
