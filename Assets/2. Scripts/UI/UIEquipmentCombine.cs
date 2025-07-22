@@ -50,14 +50,14 @@ public class UIEquipmentCombine : UIBase
     {
         if (item.IsEquipped)
         {
-            Debug.Log("장착 중인 장비는 합성 할 수 없습니다.");
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("장착 중인 장비는 합성할 수 없습니다.");
             return;
         }
 
         // 티어 검사
         if (MaterialItems.Any(e => e != null && e.ItemSo.Tier != item.ItemSo.Tier))
         {
-            Debug.Log("같은 티어의 장비만 합성 할 수 있습니다.");
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("같은 티어의 장비만 합성 할 수 있습니다.");
             return;
         }
 

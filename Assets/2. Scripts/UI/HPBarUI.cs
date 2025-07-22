@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -99,7 +100,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     /// <param name="max">맥스 값</param>
     private void UpdateFill(float cur, float max)
     {
-        fillImage.fillAmount = Mathf.Clamp01(cur / max);
+        float targetFill = Mathf.Clamp01(cur / max);
+        fillImage.DOFillAmount(targetFill, 0.3f).SetEase(Ease.OutCubic);
     }
 
     // 감정이 바뀔 때마다 호출

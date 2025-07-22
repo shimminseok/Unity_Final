@@ -111,7 +111,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         foreach (var skillData in deckData.DeckData.SkillDatas)
         {
             if (skillData == null)
+            {
+                SkillManager.AddActiveSkill(null);
                 continue;
+            }
+
             SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
