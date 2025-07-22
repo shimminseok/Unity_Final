@@ -127,6 +127,7 @@ public class StatManager : MonoBehaviour
                 switch (modifierType)
                 {
                     case StatModifierType.Base:
+                        value = Mathf.Round(value);
                         res.Consume(value);
                         break;
                     case StatModifierType.BasePercent:
@@ -147,6 +148,7 @@ public class StatManager : MonoBehaviour
     {
         if (Stats[type] is not CalculatedStat stat)
         {
+            value = Mathf.Round(value);
             if (value >= 0)
             {
                 Recover(type, valueType, value);

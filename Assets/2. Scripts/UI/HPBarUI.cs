@@ -11,11 +11,14 @@ public class HPBarUI : MonoBehaviour, IPoolObject
 
     [SerializeField] private int poolSize;
 
-    [SerializeField] RectTransform barRect;
+    [SerializeField]
+    private RectTransform barRect;
 
-    [SerializeField] Image fillImage;
-
-    [SerializeField] Vector3 offset;
+    [SerializeField] private Image fillImage;
+    [SerializeField] private Image shieldImage;
+    [SerializeField] private Image damagedImage;
+    [SerializeField] private Image separator;
+    [SerializeField] private Vector3 offset;
 
     [SerializeField] private TextMeshProUGUI speedText;
 
@@ -43,9 +46,32 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     private StatManager statManager;
     private CalculatedStat speedStat;
 
+
+    private float curShield;
+
+    public float RectWidth = 100f;
+    [Range(0, 5f)] public float Thickness = 2f;
+    private const string STEP = "_Steps";
+    private const string RATIO = "_HSRatio";
+    private const string WIDTH = "_Width";
+    private const string THICKNESS = "_Thickness";
+
+    private static readonly int floatSteps = Shader.PropertyToID(STEP);
+    private static readonly int floatRatio = Shader.PropertyToID(RATIO);
+    private static readonly int floatWidth = Shader.PropertyToID(WIDTH);
+    private static readonly int floatThickness = Shader.PropertyToID(THICKNESS);
+
     private void Awake()
     {
         mainCamera = Camera.main;
+        CreateMaterial();
+    }
+
+    private void CreateMaterial()
+    {
+        separator.material = new Material(separator.material);
+        separator.material.SetFloat(floatWidth, RectWidth);
+        separator.material.SetFloat(floatThickness, Thickness);
     }
 
     public void Initialize(IDamageable owner)
@@ -54,6 +80,7 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         OnSpawnFromPool();
         statManager = target.Collider.GetComponent<StatManager>();
         statManager.GetStat<ResourceStat>(StatType.CurHp).OnValueChanged += UpdateHealthBarWrapper;
+        statManager.GetStat<ResourceStat>(StatType.Shield).OnValueChanged += UpdateShield;
         speedStat = statManager.GetStat<CalculatedStat>(StatType.Speed);
         speedStat.OnValueChanged += UpdateSpeedText;
         UpdateSpeedText(speedStat.Value);
@@ -73,6 +100,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
             unit.CurrentEmotion.StackChanged += OnEmotionStackChanged;
             UpdateEmotionSlot(unit.CurrentEmotion);
         }
+
+        UpdateShield(statManager.GetValue(StatType.Shield));
     }
 
     public void UpdatePosion()
@@ -80,6 +109,12 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         Vector3 screenPos = mainCamera.WorldToScreenPoint(targetTransform.position + offset);
         barRect.position = screenPos;
         barRect.localScale = Vector3.one; // Hp 바 사이즈 고정
+    }
+
+    public void UpdateShield(float shield)
+    {
+        curShield = shield;
+        UpdateHealthBarWrapper(statManager.GetValue(StatType.CurHp));
     }
 
     public void UpdateHealthBarWrapper(float cur)
@@ -100,8 +135,42 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     /// <param name="max">맥스 값</param>
     private void UpdateFill(float cur, float max)
     {
-        float targetFill = Mathf.Clamp01(cur / max);
-        fillImage.DOFillAmount(targetFill, 0.3f).SetEase(Ease.OutCubic);
+        float total = cur + curShield;
+        float hpFill;
+        float shieldFill;
+
+        // 실드 존재 여부 판단
+        if (curShield > 0)
+        {
+            if (total > max)
+            {
+                shieldFill = 1f;
+                hpFill = cur / total; // 체력 비율은 전체(total)에 대한 비율로 계산
+            }
+            else
+            {
+                shieldFill = total / max;
+                hpFill = cur / max;
+            }
+        }
+        else
+        {
+            shieldFill = 0f;
+            hpFill = Mathf.Clamp01(cur / max);
+        }
+
+        fillImage.fillAmount = hpFill;
+        shieldImage.fillAmount = shieldFill;
+
+        // 데미지 이펙트 애니메이션
+        damagedImage.DOKill();
+        damagedImage.DOFillAmount(hpFill, 0.5f).SetEase(Ease.OutQuad);
+
+        // 셰이더 분리선 설정
+        float hpStepRatio = cur / 100f; // 100으로 나누는 이유가 명확하지 않으면 따로 설명 필요
+        separator.material.SetFloat(floatSteps, hpStepRatio);
+        separator.material.SetFloat(floatRatio, hpFill);
+        separator.material.SetFloat(floatThickness, Thickness);
     }
 
     // 감정이 바뀔 때마다 호출
@@ -158,6 +227,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
         {
             unit.EmotionChanged -= UpdateEmotionSlot;
             unit.CurrentEmotion.StackChanged -= OnEmotionStackChanged;
+            statManager.GetStat<ResourceStat>(StatType.Shield).OnValueChanged -= UpdateShield;
+            statManager.GetStat<ResourceStat>(StatType.CurHp).OnValueChanged -= UpdateHealthBarWrapper;
         }
 
         HealthBarManager.Instance.DespawnHealthBar(this);
