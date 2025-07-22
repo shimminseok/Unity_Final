@@ -48,6 +48,8 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         skillIcon.sprite = activeSkillSo.SkillIcon;
         skillName.text = activeSkillSo.skillName;
 
+        gameObject.name = $"SkillSlot_{skillData.skillSo.ID}";
+
         for (int i = 0; i < skillGradeStars.Count; i++)
         {
             skillGradeStars[i].SetActive(i <= (int)skillData.skillSo.activeSkillTier);
