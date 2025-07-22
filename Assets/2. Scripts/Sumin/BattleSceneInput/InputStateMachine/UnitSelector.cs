@@ -96,6 +96,7 @@ public class UnitSelector
     // 하이라이트 초기화
     public void InitializeHighlight()
     {
+        if (context.SelectedExecuter == null) return;
         Unit executer = context.SelectedExecuter.SelectedUnit;
 
         if (executer is PlayerUnitController playerUnit)

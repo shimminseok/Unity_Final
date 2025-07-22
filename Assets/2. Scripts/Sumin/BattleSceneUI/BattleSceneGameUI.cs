@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +10,7 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private GameObject playingImage;
 
     private BattleManager battleManager;
+    private LoadingScreenController loadingScreenController;
 
     [Header("상단에 있는 턴 UI")]
     [SerializeField] private CanvasGroup TurnTopUI;
@@ -34,16 +34,12 @@ public class BattleSceneGameUI : MonoBehaviour
     {
         battleManager = BattleManager.Instance;
         battleManager.OnBattleEnd += UpdateTurnCount;
+        loadingScreenController = LoadingScreenController.Instance;
+        loadingScreenController.OnLoadingComplete += WaitForLoading;
     }
 
-    private void Start()
+    private void WaitForLoading()
     {
-        StartCoroutine(WaitForLoading());
-    }
-
-    private IEnumerator WaitForLoading()
-    {
-        yield return null; // 로딩 끝나고 나와야될거같은데 어떻게?
         PlayTurnIntroAnimation(false);
     }
 
@@ -79,6 +75,7 @@ public class BattleSceneGameUI : MonoBehaviour
         // 애니 재생완료된 후에 전투 시작
         if (isBattleStart)
         {
+            ToggleActiveStartBtn(false);
             seq.AppendCallback(() => InputManager.Instance.OnClickTurnStartButton());
         }
     }
@@ -111,5 +108,7 @@ public class BattleSceneGameUI : MonoBehaviour
     {
         if (battleManager != null)
             battleManager.OnBattleEnd -= UpdateTurnCount;
+        if (loadingScreenController != null)
+            loadingScreenController.OnLoadingComplete += WaitForLoading;
     }
 }
