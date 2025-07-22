@@ -41,9 +41,9 @@ public class ToastMessageUI : UIBase
         canvasGroup.alpha = 0f;
 
         fadeTween = DOTween.Sequence()
-            .Append(canvasGroup.DOFade(1f, fadeDuration))
+            .Append(canvasGroup.DOFade(1f, fadeDuration)).SetEase(Ease.OutQuad)
             .AppendInterval(showDuration)
-            .Append(canvasGroup.DOFade(0f, fadeDuration))
+            .Append(canvasGroup.DOFade(0f, fadeDuration)).SetEase(Ease.InQuad)
             .OnComplete(() =>
             {
                 UIManager.Close(this);
