@@ -101,15 +101,14 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnSettingButton()
     {
-        uiManager = UIManager.Instance;
-        uiManager.Open(uiManager.GetUIComponent<SettingPopup>());
+        PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
     }
 
     public void OnExitButton()
     {
         string message = "전투를 중단하시겠습니까?";
         Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
-        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "장착", "취소");
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "중단", "취소");
     }
 
     private void UpdateTurnCount()

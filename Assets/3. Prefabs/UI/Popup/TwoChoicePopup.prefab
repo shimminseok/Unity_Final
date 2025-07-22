@@ -619,7 +619,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -150716834, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
+  m_Sprite: {fileID: -607346249, guid: 132358e9bf26b60458b731bf001e31db, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -801,8 +801,8 @@ CanvasGroup:
   m_GameObject: {fileID: 3966989887815873351}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
 --- !u!1 &4850247178170895637
 GameObject:
@@ -1263,6 +1263,9 @@ MonoBehaviour:
   descTxt: {fileID: 4619007570555276659}
   leftBtnTxt: {fileID: 545364405227202821}
   rightBtnTxt: {fileID: 8206810528344970447}
+  BG: {fileID: 2802497353878448285}
+  fadeInDuration: 0.3
+  fadeOutDuration: 0.2
 --- !u!1 &8934748890409845829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,7 +1277,7 @@ GameObject:
   - component: {fileID: 6938660310506672069}
   - component: {fileID: 4610986435823696877}
   - component: {fileID: 256690921142968475}
-  - component: {fileID: 3528806713121925091}
+  - component: {fileID: 2583604976585018551}
   m_Layer: 5
   m_Name: TwoChoicePopup
   m_TagString: Untagged
@@ -1344,7 +1347,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3528806713121925091
+--- !u!114 &2583604976585018551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

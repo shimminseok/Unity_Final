@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class SettingPopup : UIBase
 {
     [SerializeField] private CanvasGroup BG;
+    [SerializeField] private float fadeInDuration;
+    [SerializeField] private float fadeOutDuration;
 
     private void Start()
     {
@@ -17,14 +19,14 @@ public class SettingPopup : UIBase
     {
         base.Open();
         BG.alpha = 0;
-        BG.DOFade(1f, 0.3f).SetEase(Ease.InOutSine);
+        BG.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
     }
 
     public override void Close()
     {
         Sequence seq = DOTween.Sequence();
 
-        seq.Append(BG.DOFade(0f, 0.3f).SetEase(Ease.OutSine));
+        seq.Append(BG.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
         seq.AppendCallback(() => base.Close());
     }
 
