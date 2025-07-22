@@ -97,6 +97,13 @@ public class StatManager : MonoBehaviour
         {
             if (res.CurrentValue < res.MaxValue)
             {
+                switch (statType)
+                {
+                    case StatType.CurHp:
+                        DamageFontManager.Instance.SetDamageNumber(Owner, value, DamageType.Heal);
+                        break;
+                }
+                
                 switch (modifierType)
                 {
                     case StatModifierType.Base:

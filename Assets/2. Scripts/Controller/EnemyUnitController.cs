@@ -138,7 +138,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         bool isHit = Random.value < hitRate;
         if (!isHit)
         {
-            Debug.Log("빗나갔지롱");
+            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
             return;
         }
 
@@ -170,6 +170,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+        DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
 
         if (shield.CurrentValue > 0)
         {
