@@ -11,7 +11,7 @@ public class SkillGachaSlotUI : MonoBehaviour
     // 스킬 슬롯 내용 업데이트
     public void Initialize(ActiveSkillSO skill)
     {
-        skillIamge.sprite = skill.skillIcon;
+        skillIamge.sprite = skill.SkillIcon;
         skillNameText.text = skill.skillName;
         skillTierText.text = $"{skill.activeSkillTier}";
     }

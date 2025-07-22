@@ -5,10 +5,12 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
 {
     [Header("HPBar와 커맨드 슬롯")]
     [SerializeField] private PlayerUnitInfoSlotHpBarUI hpBarUI;
+
     [SerializeField] private GameObject commandSlot;
 
     [Header("유닛, 스킬, 타겟 이미지")]
     [SerializeField] private Image unitIcon;
+
     [SerializeField] private Image combatActionIcon;
     [SerializeField] private Image targetIcon;
 
@@ -17,6 +19,7 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
 
     [Header("스킬 팝업")]
     [SerializeField] private SkillDetailPopupUI skillDetailPopup;
+
     [SerializeField] private SkillForDetailButton skillForDetailButton;
 
     private IActionCommand command;
@@ -34,7 +37,7 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
             command = CommandPlanner.Instance.GetPlannedCommand(playerUnit);
             if (command.SkillData != null)
             {
-                combatActionIcon.sprite = command.SkillData.skillSo.skillIcon;
+                combatActionIcon.sprite = command.SkillData.skillSo.SkillIcon;
                 skillDetailPopup.Initialize(command.SkillData);
                 skillForDetailButton.SetInteractable(true);
             }
@@ -43,6 +46,7 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
                 combatActionIcon.sprite = baseAtkIcon;
                 skillForDetailButton.SetInteractable(false);
             }
+
             targetIcon.sprite = command.Target.UnitSo.UnitIcon;
         }
         else
@@ -55,5 +59,4 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
     {
         hpBarUI.Initialize(owner);
     }
-
 }

@@ -40,6 +40,9 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         }
 
         gameObject.SetActive(true);
+
+        // 이름
+        gameObject.name = $"InventorySlot_{item.InventoryId}";
         ShowEquipMark(item.IsEquipped);
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 

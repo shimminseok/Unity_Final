@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: StunningBlow
   m_EditorClassIdentifier: 
   ID: 1003
+  SkillIcon: {fileID: 21300000, guid: 9b4077171aff88745b89a07f9b27ef6b, type: 3}
   skillName: "\uCDA9\uACA9 \uC77C\uACA9"
   skillDescription: "\uB2E8\uC77C \uC801\uC5D0\uAC8C \uAE30\uC808 \uBD80\uC5EC"
+  jobType: 0
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -31,8 +33,7 @@ MonoBehaviour:
         weight: 0.3
         value: 30
       buffEffects:
-      - ID: 0
-        ownerStatType: 0
+      - ownerStatType: 0
         weight: 0.3
         value: 30
         opponentStatType: 4
@@ -52,7 +53,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 0
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2

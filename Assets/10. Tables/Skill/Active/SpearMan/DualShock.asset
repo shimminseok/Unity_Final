@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: DualShock
   m_EditorClassIdentifier: 
   ID: 3002
+  SkillIcon: {fileID: 21300000, guid: 724861b159250ee4695465aa91b9562b, type: 3}
   skillName: "\uC774\uC911\uCC3D\uACA9"
   skillDescription: "\uCC3D\uC744 \uB178\uB828\uD558\uAC8C \uC0AC\uC6A9\uD558\uC5EC
     \uBA54\uC778 \uD0C0\uAC9F\uACFC \uB79C\uB364\uD55C \uC801 \uD55C \uBA85\uC5D0\uAC8C
     \uC9E7\uC740 \uAE30\uC808\uC744 \uBD80\uC5EC\uD55C\uB2E4."
+  jobType: 2
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -29,8 +31,7 @@ MonoBehaviour:
       projectilePoolID: 
       damageEffects: []
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0
         value: 0
         opponentStatType: 0
@@ -57,8 +58,7 @@ MonoBehaviour:
       projectilePoolID: 
       damageEffects: []
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0
         value: 0
         opponentStatType: 0
@@ -78,7 +78,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 2
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2

@@ -5,6 +5,7 @@ public class MonsterUnitInfoSlotUI : MonoBehaviour
 {
     [Header("유닛, 스킬, 타겟 이미지")]
     [SerializeField] private Image MonsterIcon;
+
     [SerializeField] private Image combatActionIcon;
     [SerializeField] private Image TargetIcon;
 
@@ -13,6 +14,7 @@ public class MonsterUnitInfoSlotUI : MonoBehaviour
 
     [Header("스킬 팝업")]
     [SerializeField] private SkillDetailPopupUI skillDetailPopup;
+
     [SerializeField] private SkillForDetailButton skillForDetailButton;
 
     public void Initialize(Unit monsterUnit)
@@ -20,7 +22,7 @@ public class MonsterUnitInfoSlotUI : MonoBehaviour
         MonsterIcon.sprite = monsterUnit.UnitSo.UnitIcon;
         if (monsterUnit.SkillController.CurrentSkillData != null)
         {
-            combatActionIcon.sprite = monsterUnit.SkillController.CurrentSkillData.skillSo.skillIcon;
+            combatActionIcon.sprite = monsterUnit.SkillController.CurrentSkillData.skillSo.SkillIcon;
             skillDetailPopup.Initialize(monsterUnit.SkillController.CurrentSkillData);
             skillForDetailButton.SetInteractable(true);
         }
@@ -29,8 +31,9 @@ public class MonsterUnitInfoSlotUI : MonoBehaviour
             combatActionIcon.sprite = baseAtkIcon;
             skillForDetailButton.SetInteractable(false);
         }
-        IDamageable target = monsterUnit.Target;
-        Unit targetUnit = target as Unit;
+
+        IDamageable target     = monsterUnit.Target;
+        Unit        targetUnit = target as Unit;
         TargetIcon.sprite = targetUnit.UnitSo.UnitIcon;
     }
 }

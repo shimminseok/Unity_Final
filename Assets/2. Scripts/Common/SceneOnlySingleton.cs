@@ -6,6 +6,7 @@ using UnityEngine;
 public class SceneOnlySingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+    private static bool isShuttingDown;
 
     public static T Instance
     {
@@ -34,6 +35,7 @@ public class SceneOnlySingleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
+        isShuttingDown = true;
         if (instance == this)
             instance = null;
     }

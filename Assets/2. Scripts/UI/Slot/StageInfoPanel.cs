@@ -27,19 +27,14 @@ public class StageInfoPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        DeckSelectManager.Instance.OnChangedDeck += SetCompetedUnitSlot;
     }
 
-    private void OnDisable()
-    {
-        if (DeckSelectManager.Instance != null)
-            DeckSelectManager.Instance.OnChangedDeck -= SetCompetedUnitSlot;
-    }
 
     public void OpenPanel()
     {
         panelRect.DOKill();
         gameObject.SetActive(true);
+        DeckSelectManager.Instance.OnChangedDeck += SetCompetedUnitSlot;
         panelRect.DOScale(onScreenScale, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
         {
             panelRect.localScale = onScreenScale;
@@ -53,6 +48,7 @@ public class StageInfoPanel : MonoBehaviour
         {
             gameObject.SetActive(false);
         });
+        DeckSelectManager.Instance.OnChangedDeck -= SetCompetedUnitSlot;
     }
 
     public void SetCompetedUnitSlot(int index)

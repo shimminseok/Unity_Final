@@ -29,17 +29,8 @@ public class SelectEquipUI : UIBase
 
     private InventorySlot selectedItemSlot;
 
-    private void OnEnable()
-    {
-        DeckSelectManager.Instance.OnEquipChanged += HandleEquipChanged;
-    }
 
-    private void OnDisable()
-    {
-        DeckSelectManager.Instance.OnEquipChanged -= HandleEquipChanged;
-    }
-
-    private void HandleEquipChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
+    private void HandleEquipItemChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
     {
         if (unit != CurrentCharacter)
             return;
@@ -58,6 +49,7 @@ public class SelectEquipUI : UIBase
             return;
 
         RefreshEquipUI();
+        DeckSelectManager.Instance.OnEquipItemChanged += HandleEquipItemChanged;
         AvatarPreviewManager.ShowAvatar(CurrentCharacter.CharacterSo);
     }
 
@@ -78,11 +70,11 @@ public class SelectEquipUI : UIBase
                 if (partyIndex != -1)
                     AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
             }
-
-            AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+            else
+                AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
 
-
+        DeckSelectManager.Instance.OnEquipItemChanged -= HandleEquipItemChanged;
         OnEquipChanged?.Invoke(CurrentCharacter);
     }
 
@@ -151,7 +143,7 @@ public class SelectEquipUI : UIBase
             }
             else
             {
-                DeckSelectManager.ProcessEquipSelection(item);
+                DeckSelectManager.ProcessEquipItemSelection(item);
             }
         }
 

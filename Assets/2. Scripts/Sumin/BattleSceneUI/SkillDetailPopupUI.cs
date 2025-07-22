@@ -11,7 +11,7 @@ public class SkillDetailPopupUI : MonoBehaviour
 
     public void Initialize(SkillData skillData)
     {
-        skillIcon.sprite = skillData.skillSo.skillIcon;
+        skillIcon.sprite = skillData.skillSo.SkillIcon;
         skillName.text = skillData.skillSo.skillName;
         skillTier.text = $"{skillData.skillSo.activeSkillTier}";
         skillDescription.text = skillData.skillSo.skillDescription;

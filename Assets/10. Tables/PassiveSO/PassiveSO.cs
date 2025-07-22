@@ -1,13 +1,8 @@
 ﻿using UnityEngine;
 
 
-public class PassiveSO : ScriptableObject
+public class PassiveSO : SkillSo
 {
-    public JobType JobType;
-    public Sprite PassiveIcon;
-    public int PassiveID;
-    public string PassiveName;
-    public string Description;
     public EmotionType TriggerEmotion;
     public virtual bool CanTrigger(BaseEmotion currentEmotion) => true;
 

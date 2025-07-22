@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: WeaknessAnalysis
   m_EditorClassIdentifier: 
   ID: 7003
+  SkillIcon: {fileID: 21300000, guid: b740dbf1992237949b1312de2f10d6df, type: 3}
   skillName: "\uC57D\uC810 \uBD84\uC11D"
   skillDescription: "\uADFC\uAC70\uB9AC, \uB2E8\uC77C \uB300\uC0C1, \uC801\uC758
     \uBC29\uC5B4\uB825\uC744 \uBD84\uC11D\uD558\uC5EC \uC77C\uC2DC\uC801\uC73C\uB85C
     \uAC10\uC18C\uC2DC\uD0A8\uB2E4."
+  jobType: 1
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -33,8 +35,7 @@ MonoBehaviour:
         weight: 0.3
         value: 30
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0
         value: -10
         opponentStatType: 6
@@ -54,7 +55,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 1
   activeSkillTier: 3
   reuseMaxCount: 3
   coolTime: 2

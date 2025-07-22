@@ -55,9 +55,9 @@ public class CharacterInfoPanel : MonoBehaviour
             return;
         for (int i = 0; i < activeSkillSlotImage.Length; i++)
         {
-            if (data.skillDatas[i] != null)
+            if (data.SkillDatas[i] != null)
             {
-                activeSkillSlotImage[i].sprite = data.skillDatas[i].skillIcon;
+                activeSkillSlotImage[i].sprite = data.SkillDatas[i].skillSo.SkillIcon;
             }
 
             else

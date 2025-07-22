@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ArmorBreaker
   m_EditorClassIdentifier: 
   ID: 4000
+  SkillIcon: {fileID: 21300000, guid: 9d71bdcc4299e9342a2cd657b2129481, type: 3}
   skillName: "\uBC29\uBCBD \uD30C\uC1C4"
   skillDescription: "\uB2E8\uC77C \uC801 \uACF5\uACA9, \uBC29\uC5B4\uB825 \uAC10\uC18C"
+  jobType: 3
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
   effect:
@@ -31,8 +33,7 @@ MonoBehaviour:
         weight: 0.3
         value: 30
       buffEffects:
-      - ID: 0
-        ownerStatType: 4
+      - ownerStatType: 4
         weight: 0.3
         value: -10
         opponentStatType: 6
@@ -52,7 +53,6 @@ MonoBehaviour:
           IsStackable: 0
           VFX: []
       skillVFX: []
-  jobType: 3
   activeSkillTier: 3
   reuseMaxCount: 2
   coolTime: 3
