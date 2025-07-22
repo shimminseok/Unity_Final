@@ -76,7 +76,6 @@ public class InventoryManager : Singleton<InventoryManager>
     public void AddItem(InventoryItem item, int amount = 1)
     {
         AddNonStackableItem(item, amount);
-        nextId++;
     }
 
     public void RemoveItem(int id)
@@ -101,7 +100,7 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         for (int i = 0; i < amount; i++)
         {
-            var clonedItem = item.Clone();
+            InventoryItem clonedItem = item.Clone();
             clonedItem.InventoryId = nextId;
             inventory[nextId] = clonedItem;
 
@@ -121,6 +120,7 @@ public class InventoryManager : Singleton<InventoryManager>
             }
 
             OnInventorySlotUpdate?.Invoke(nextId);
+            nextId++;
         }
     }
 

@@ -12,17 +12,12 @@ public class UICharacterSetting : UIBase
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
 
-    private SelectEquipUI selectEquipUI;
-    private SelectSkillUI selectSkillUI;
+    private SelectEquipUI SelectEquipUI => UIManager.Instance.GetUIComponent<SelectEquipUI>();
+    private SelectSkillUI SelectSkillUI => UIManager.Instance.GetUIComponent<SelectSkillUI>();
 
     private Dictionary<int, UnitSlot> slotDic = new();
 
-
-    private void Start()
-    {
-        selectEquipUI = UIManager.Instance.GetUIComponent<SelectEquipUI>();
-        selectSkillUI = UIManager.Instance.GetUIComponent<SelectSkillUI>();
-    }
+    
 
     public void SetPlayerUnitData(EntryDeckData playerUnitData)
     {
@@ -66,13 +61,13 @@ public class UICharacterSetting : UIBase
 
     public void OpenSetEquipment()
     {
-        selectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-        UIManager.Instance.Open(selectEquipUI);
+        SelectEquipUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
+        UIManager.Instance.Open(SelectEquipUI);
     }
 
     public void OpenSetSkill()
     {
-        selectSkillUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
-        UIManager.Instance.Open(selectSkillUI);
+        SelectSkillUI.SetCurrentSelectedUnit(SelectedPlayerUnitData);
+        UIManager.Instance.Open(SelectSkillUI);
     }
 }
