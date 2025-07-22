@@ -29,7 +29,7 @@ public class UnitSelector
         }
 
         // PC
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             inputPos = Input.mousePosition;
         }
