@@ -52,8 +52,6 @@ public class SaveInventoryItem
 
 public class InventoryManager : Singleton<InventoryManager>
 {
-    [SerializeField] private int inventorySize;
-
     public event Action<int> OnInventorySlotUpdate;
     private GameManager gameManager;
 
