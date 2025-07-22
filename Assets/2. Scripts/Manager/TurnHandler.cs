@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -36,6 +36,17 @@ public class TurnHandler
         {
             // 전체 라운드 종료
             BattleManager.Instance.EndTurn();
+
+            // 튜토리얼에서 TurnChanged 이벤트 발행
+            var tutorial = TutorialManager.Instance;
+
+            if (tutorial != null && tutorial.IsActive &&
+                TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
+                TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
+                triggerData.triggerEventName == "TurnChanged")
+            {
+                EventBus.Publish("TurnChanged");
+            }
         }
     }
 

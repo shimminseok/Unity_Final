@@ -24,6 +24,17 @@ public class SelectTargetState : IInputState
             // Unit Select하면 context의 SelectedTarget에 넘겨줌
             context.SelectedTarget = target;
 
+
+            // 튜토리얼 이벤트 발행
+            var tutorial = TutorialManager.Instance;
+
+            if (tutorial != null && tutorial.IsActive &&
+            TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
+            triggerData.triggerEventName == "TargetSelected")
+            {
+                EventBus.Publish("TargetSelected");
+            }
+
             Unit executerUnit = context.SelectedExecuter.SelectedUnit;
             Unit targetUnit   = context.SelectedTarget.SelectedUnit;
 

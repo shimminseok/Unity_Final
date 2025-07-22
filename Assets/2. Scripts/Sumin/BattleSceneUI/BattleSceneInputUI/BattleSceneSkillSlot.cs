@@ -42,6 +42,11 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void Initialize(SkillData skillData, int index)
     {
         UnLockSkill();
+
+        // 슬롯 번호 기반 이름 부여
+        FrontSkillBtn.gameObject.name = $"FrontSkillBtn_{index}";
+        BackSkillBtn.gameObject.name = $"BackSkillBtn_{index}";
+
         // skill data가 없으면 뒤집고 선택불가
         if (skillData == null)
         {

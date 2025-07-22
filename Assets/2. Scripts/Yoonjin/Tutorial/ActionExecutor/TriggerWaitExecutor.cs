@@ -42,6 +42,7 @@ public class TriggerWaitExecutor : TutorialActionExecutor
         LoadingScreenController.Instance.OnLoadingComplete -= OnTriggered;
         EventBus.Unsubscribe("MonsterKilled", OnTriggered);
         EventBus.Unsubscribe("BattleVictory", OnTriggered);
+        TutorialUIBlocker.Clear();
     }
 
     public override void Exit()

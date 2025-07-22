@@ -52,7 +52,10 @@ public class SelectExecuterState : IInputState
 
 
             // 튜토리얼에서 PlayerSelected 이벤트 발행
-            if (TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
+            var tutorial = TutorialManager.Instance;
+
+            if (tutorial != null && tutorial.IsActive 
+                && TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
                 TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
                 triggerData.triggerEventName == "PlayerSelected")
             {
