@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,24 +25,6 @@ public class DialogueController : Singleton<DialogueController>
     protected override void Awake()
     {
         base.Awake();
-
-        // Overlay UI 캐싱
-        overlayUI = UIManager.Instance.GetUIComponent<OverlayDialogueUI>();
-        if (overlayUI == null)
-        {
-            var prefab = Resources.Load<GameObject>("UI/OverlayDialogueUI");
-            var instance = Instantiate(prefab, transform);
-            overlayUI = instance.GetComponent<OverlayDialogueUI>();
-        }
-
-        // Tutorial UI 캐싱
-        tutorialUI = UIManager.Instance.GetUIComponent<TutorialDialogueUI>();
-        if (tutorialUI == null)
-        {
-            var prefab = Resources.Load<GameObject>("UI/TutorialDialogueUI");
-            var instance = Instantiate(prefab, transform);
-            tutorialUI = instance.GetComponent<TutorialDialogueUI>();
-        }
     }
 
     private void OnEnable()
@@ -126,12 +109,14 @@ public class DialogueController : Singleton<DialogueController>
 
         if (currentGroup.mode == DialogueMode.Overlay)
         {
-            var ui = UIManager.Instance.GetUIComponent<OverlayDialogueUI>();
-            ui.Show(line);
+            var ui = GetOrCreateUI<OverlayDialogueUI>("UI/OverlayDialogueUI");
+            ui.gameObject.SetActive(true); // UI 활성화
+            ui.Show(line);                 // 대사 내용 출력
         }
         else if (currentGroup.mode == DialogueMode.Tutorial)
         {
-            var ui = UIManager.Instance.GetUIComponent<TutorialDialogueUI>();
+            var ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
+            ui.gameObject.SetActive(true);
             ui.Show(line);
         }
         else
@@ -157,17 +142,56 @@ public class DialogueController : Singleton<DialogueController>
         }
         else if (currentGroup.mode == DialogueMode.Overlay)
         {
-            UIManager.Instance.GetUIComponent<OverlayDialogueUI>()?.Close();
+            overlayUI?.gameObject.SetActive(false); // UI 비활성화
         }
         else
         {
-            UIManager.Instance.GetUIComponent<TutorialDialogueUI>()?.Close();
+            tutorialUI?.gameObject.SetActive(false);
         }
 
         currentGroup = null;
         currentLineIndex = 0;
         OnCallBackAction?.Invoke();
         EventBus.Publish("DialogueFinished");
+    }
+
+    // 오버레이나 튜토리얼 프리팹을 찾고, 없으면 생성
+    private T GetOrCreateUI<T>(string resourcePath) where T : UIBase
+    {
+        // 이미 참조된 OverlayDialogueUI가 있으면 그대로 반환
+        if (typeof(T) == typeof(OverlayDialogueUI) && overlayUI != null)
+            return overlayUI as T;
+
+        // 이미 참조된 TutorialDialogueUI가 있으면 그대로 반환
+        if (typeof(T) == typeof(TutorialDialogueUI) && tutorialUI != null)
+            return tutorialUI as T;
+
+        // Resources 폴더에서 UI 프리팹을 불러옴
+        var prefab = Resources.Load<GameObject>(resourcePath);
+
+        // UIRoot라는 이름을 가진 UI 최상단 부모 오브젝트 찾기
+        var uiRoot = GameObject.Find("UIRoot")?.transform;
+
+        // 프리팹과 UIRoot가 모두 존재할 때만 인스턴스를 생성
+        if (prefab != null && uiRoot != null)
+        {
+            // UIRoot의 자식으로 UI 프리팹을 생성
+            var instance = Instantiate(prefab, uiRoot);
+            var ui = instance.GetComponent<T>();
+
+            // 기본적으로 비활성화 상태로 시작
+            ui.gameObject.SetActive(false);
+
+            // 생성한 UI를 참조 저장 (캐싱)
+            if (typeof(T) == typeof(OverlayDialogueUI)) overlayUI = ui as OverlayDialogueUI;
+            if (typeof(T) == typeof(TutorialDialogueUI)) tutorialUI = ui as TutorialDialogueUI;
+
+            return ui;
+        }
+
+        // 생성 실패 시 오류 출력
+        Debug.LogError($"[DialogueController] {typeof(T).Name} 생성 실패");
+        return null;
     }
 }
 
@@ -184,3 +208,4 @@ public static class DialogueResourceLoader
         return Resources.Load<Sprite>($"Backgrounds/{key}");
     }
 }
+
