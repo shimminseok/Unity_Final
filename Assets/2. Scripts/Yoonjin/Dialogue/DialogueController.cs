@@ -9,6 +9,9 @@ public class DialogueController : Singleton<DialogueController>
     private DialogueGroupSO currentGroup;
     private int currentLineIndex = 0;
 
+    private OverlayDialogueUI overlayUI;
+    private TutorialDialogueUI tutorialUI;
+
     // 읽은 그룹 키들을 저장
     private HashSet<string> readGroups = new();
 
@@ -21,6 +24,24 @@ public class DialogueController : Singleton<DialogueController>
     protected override void Awake()
     {
         base.Awake();
+
+        // Overlay UI 캐싱
+        overlayUI = UIManager.Instance.GetUIComponent<OverlayDialogueUI>();
+        if (overlayUI == null)
+        {
+            var prefab = Resources.Load<GameObject>("UI/OverlayDialogueUI");
+            var instance = Instantiate(prefab, transform);
+            overlayUI = instance.GetComponent<OverlayDialogueUI>();
+        }
+
+        // Tutorial UI 캐싱
+        tutorialUI = UIManager.Instance.GetUIComponent<TutorialDialogueUI>();
+        if (tutorialUI == null)
+        {
+            var prefab = Resources.Load<GameObject>("UI/TutorialDialogueUI");
+            var instance = Instantiate(prefab, transform);
+            tutorialUI = instance.GetComponent<TutorialDialogueUI>();
+        }
     }
 
     private void OnEnable()
