@@ -110,7 +110,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         {
             if (skills[i] == skillData)
             {
-                skills[i].UnEquippedSkill();
+                currentSelectedCharacter.UnEquipSkill(skills[i]);
                 OnEquipSkillChanged?.Invoke(currentSelectedCharacter, null, skillData);
                 return;
             }
