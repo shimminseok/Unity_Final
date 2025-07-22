@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
     [SerializeField] private SkillSlot passiveSkillSlot;
     [SerializeField] private SkillSlot[] activeSkillSlots = new SkillSlot[3];
+
+    [SerializeField] private TextMeshProUGUI title;
     private EntryDeckData selectedUnitData;
 
 
@@ -22,6 +25,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
         data.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
         data.OnSkillChanged -= UpdateEquippedSkillSlot;
         this.selectedUnitData = data;
+        title.text = data.CharacterSo.UnitName;
         UpdateEquippedItemSlot();
         UpdateEquippedSkillSlot();
         data.OnEquipmmmentChanged += UpdateEquippedItemSlot;
