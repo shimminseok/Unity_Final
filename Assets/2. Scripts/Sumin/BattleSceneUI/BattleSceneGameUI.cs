@@ -124,6 +124,6 @@ public class BattleSceneGameUI : MonoBehaviour
         if (battleManager != null)
             battleManager.OnBattleEnd -= UpdateTurnCount;
         if (loadingScreenController != null)
-            loadingScreenController.OnLoadingComplete += WaitForLoading;
+            loadingScreenController.OnLoadingComplete -= WaitForLoading;
     }
 }
