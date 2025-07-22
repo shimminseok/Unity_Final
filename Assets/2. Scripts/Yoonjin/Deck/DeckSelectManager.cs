@@ -103,6 +103,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         if (currentSelectedCharacter == null)
             return;
 
+
         var skills = currentSelectedCharacter.SkillDatas;
 
         // 이미 장착된 스킬일 경우 해제
@@ -110,12 +111,14 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         {
             if (skills[i] == skillData)
             {
-                skills[i].UnEquippedSkill();
+                currentSelectedCharacter.UnEquipSkill(skills[i]);
                 OnEquipSkillChanged?.Invoke(currentSelectedCharacter, null, skillData);
                 return;
             }
         }
 
+        if (Array.IndexOf(currentSelectedCharacter.SkillDatas, null) == -1)
+            return;
         //새로운 스킬 장착
         currentSelectedCharacter.EquipSkill(skillData);
         OnEquipSkillChanged?.Invoke(currentSelectedCharacter, skillData, skillData);

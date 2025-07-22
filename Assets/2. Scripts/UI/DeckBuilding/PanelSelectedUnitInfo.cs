@@ -9,7 +9,8 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     [FormerlySerializedAs("inventoryItems")]
     [SerializeField] private InventorySlot[] unitEquippedItems = new InventorySlot[3];
 
-    [SerializeField] private Image[] skillIcons = new Image[3];
+    [SerializeField] private SkillSlot passiveSkillSlot;
+    [SerializeField] private SkillSlot[] activeSkillSlots = new SkillSlot[3];
     private EntryDeckData selectedUnitData;
 
 
@@ -19,28 +20,19 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     public void SetInfoPanel(EntryDeckData data)
     {
         data.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
+        data.OnSkillChanged -= UpdateEquippedSkillSlot;
         this.selectedUnitData = data;
-        var equipItem = selectedUnitData.EquippedItems;
-        for (int i = 0; i < unitEquippedItems.Length; i++)
-        {
-            if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))
-            {
-                unitEquippedItems[i].Initialize(item, false);
-            }
-            else
-            {
-                unitEquippedItems[i].Initialize(null, false);
-            }
-
-            unitEquippedItems[i].ShowEquipMark(false);
-        }
-
+        UpdateEquippedItemSlot();
+        UpdateEquippedSkillSlot();
         data.OnEquipmmmentChanged += UpdateEquippedItemSlot;
+        data.OnSkillChanged += UpdateEquippedSkillSlot;
     }
 
     public void OpenPanel()
     {
         gameObject.SetActive(true);
+        passiveSkillSlot.SetSkillIcon(selectedUnitData.CharacterSo.PassiveSkill, false);
+        passiveSkillSlot.ShowEquipMark(false);
     }
 
     public void ClosePanel()
@@ -76,6 +68,17 @@ public class PanelSelectedUnitInfo : MonoBehaviour
             }
 
             unitEquippedItems[i].ShowEquipMark(false);
+        }
+    }
+
+    private void UpdateEquippedSkillSlot()
+    {
+        SkillData[] equipSkill = selectedUnitData.SkillDatas;
+        for (int i = 0; i < equipSkill.Length; i++)
+        {
+            SkillData skill = equipSkill[i];
+            activeSkillSlots[i].SetSkillIcon(skill, false);
+            activeSkillSlots[i].ShowEquipMark(false);
         }
     }
 }

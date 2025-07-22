@@ -123,16 +123,22 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitSkillInfo()
     {
-        int index = 0;
-        skillSlots[index++].SetSkillIcon(selectedPlayerUnitData.CharacterSo.PassiveSkill, false);
-        foreach (SkillData skillData in selectedPlayerUnitData.SkillDatas)
-        {
-            skillSlots[index].SetSkillIcon(skillData, false);
-            index++;
-        }
+        var passiveSkill = selectedPlayerUnitData.CharacterSo.PassiveSkill;
+        var activeSkills = selectedPlayerUnitData.SkillDatas;
 
-        for (int i = index; i < skillSlots.Length; i++)
+        for (int i = 0; i < skillSlots.Length; i++)
         {
+            // 패시브 스킬은 첫 번째 슬롯에
+            if (i == 0)
+            {
+                skillSlots[i].SetSkillIcon(passiveSkill, false);
+            }
+            // 그 다음은 액티브 스킬
+            else if (i - 1 < activeSkills.Length)
+            {
+                skillSlots[i].SetSkillIcon(activeSkills[i - 1], false);
+            }
+
             skillSlots[i].ShowEquipMark(false);
         }
     }

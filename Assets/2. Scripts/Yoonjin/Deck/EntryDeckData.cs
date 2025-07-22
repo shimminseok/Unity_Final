@@ -91,6 +91,7 @@ public class EntryDeckData
         int index = Array.IndexOf(SkillDatas, null);
         if (index > -1)
         {
+            skillData.EquippedSkill(this);
             SkillDatas[index] = skillData;
             InvokeSkillChanged();
         }
@@ -101,6 +102,7 @@ public class EntryDeckData
         int index = Array.IndexOf(SkillDatas, skillData);
         if (index > -1)
         {
+            skillData.UnEquippedSkill();
             SkillDatas[index] = null;
             InvokeSkillChanged();
         }
