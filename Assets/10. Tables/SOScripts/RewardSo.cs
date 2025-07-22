@@ -9,7 +9,6 @@ public class RewardSo : ScriptableObject
     public string Id;
 
     public List<RewardData> RewardList;
-    //추후 Reward로 캐릭터를 지급해야할지 논의
 }
 
 [Serializable]

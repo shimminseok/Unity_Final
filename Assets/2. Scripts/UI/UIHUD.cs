@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class UIHUD : MonoBehaviour
 {
-    [SerializeField] private UIEquipmentCombine equipmentCombine;
+    private UIManager          UIManager        => UIManager.Instance;
+    private UIEquipmentCombine EquipmentCombine => UIManager.GetUIComponent<UIEquipmentCombine>();
+    private UIDeckBuilding     DeckBuilding     => UIManager.GetUIComponent<UIDeckBuilding>();
 
     void Start()
     {
@@ -17,6 +19,11 @@ public class UIHUD : MonoBehaviour
 
     public void OnClickOpenEquipmentCombineBtn()
     {
-        UIManager.Instance.Open(equipmentCombine);
+        UIManager.Open(EquipmentCombine);
+    }
+
+    public void OnClickOpenEditPartyBtn()
+    {
+        UIManager.Open(DeckBuilding);
     }
 }

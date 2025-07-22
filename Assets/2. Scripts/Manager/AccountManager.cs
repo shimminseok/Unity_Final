@@ -138,16 +138,17 @@ public class AccountManager : Singleton<AccountManager>
         }
     }
 
-    public void AddPlayerUnit(PlayerUnitSO unit)
+    public void AddPlayerUnit(PlayerUnitSO unit, int amount = 1)
     {
         if (!MyPlayerUnits.TryGetValue(unit.ID, out EntryDeckData data))
         {
             data = new EntryDeckData(unit.ID);
+            data.AddAmount(amount - 1);
             MyPlayerUnits[unit.ID] = data;
         }
         else
         {
-            data.AddAmount();
+            data.AddAmount(amount);
         }
     }
 
