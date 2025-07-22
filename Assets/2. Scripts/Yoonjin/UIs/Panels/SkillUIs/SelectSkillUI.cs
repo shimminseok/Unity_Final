@@ -75,6 +75,8 @@ public class SelectSkillUI : UIBase
 
     private void OnClickInventorySlot(SkillData skill)
     {
+
+
         inventoryUI.SelectItemSlot(skill);
         SkillSlot selectSlot = inventoryUI.GetSlotByItem(skill);
         if (selectSlot == null)
@@ -118,19 +120,6 @@ public class SelectSkillUI : UIBase
             skillCooltimeTxt.text = $"{activeSkill.coolTime}";
             skillTotalUseCountTxt.text = $"{activeSkill.reuseMaxCount}";
         }
-        // int count = Mathf.Min(equipmentSkill.Stats.Count, itemStatSlots.Length);
-        //
-        // for (int i = 0; i < itemStatSlots.Length; i++)
-        // {
-        //     bool isActive = i < count;
-        //     itemStatSlots[i].gameObject.SetActive(isActive);
-        //
-        //     if (isActive)
-        //     {
-        //         var stat = equipmentSkill.Stats[i];
-        //         itemStatSlots[i].Initialize(stat.StatType, stat.Value);
-        //     }
-        // }
     }
 
     private void RefreshEquippedSkillSlots()
