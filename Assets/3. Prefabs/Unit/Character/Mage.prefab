@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 2664075759801568435}
   - component: {fileID: 4847796581812622296}
   - component: {fileID: 8905052491383908231}
+  - component: {fileID: 6782787484616004439}
   m_Layer: 6
   m_Name: Mage
   m_TagString: Untagged
@@ -356,7 +357,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060029176277862}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 15
@@ -383,6 +384,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &6782787484616004439
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060029176277862}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.25, y: 0.55, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.55, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1061156421552890
 GameObject:
   m_ObjectHideFlags: 0

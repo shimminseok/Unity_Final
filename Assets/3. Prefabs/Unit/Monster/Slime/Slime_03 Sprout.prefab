@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 8389780515548798005}
   - component: {fileID: 218064300957352673}
   - component: {fileID: 6548039539134910992}
+  - component: {fileID: -1030222781764770050}
   m_Layer: 0
   m_Name: Slime_03 Sprout
   m_TagString: Untagged
@@ -134,9 +135,9 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7099655024501674456}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Speed: 40
   m_Acceleration: 20
   avoidancePriority: 50
@@ -145,7 +146,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 0.65
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -187,6 +188,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &-1030222781764770050
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7099655024501674456}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.3, y: 0.25, z: 0.3}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.3, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7099655024573255015
 GameObject:
   m_ObjectHideFlags: 0

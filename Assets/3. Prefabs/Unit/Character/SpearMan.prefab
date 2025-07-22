@@ -3727,6 +3727,7 @@ GameObject:
   - component: {fileID: -5583537012172356708}
   - component: {fileID: 1749261649730106066}
   - component: {fileID: 3017047219673687988}
+  - component: {fileID: 3678829056931680394}
   m_Layer: 6
   m_Name: SpearMan
   m_TagString: Untagged
@@ -3873,7 +3874,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566368292716416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 15
@@ -3900,6 +3901,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &3678829056931680394
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566368292716416}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.25, y: 0.55, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.55, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1584870791148330
 GameObject:
   m_ObjectHideFlags: 0

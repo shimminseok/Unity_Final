@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 5464592683395448157}
   - component: {fileID: 1443074200118229926}
   - component: {fileID: 8021785141328591506}
+  - component: {fileID: 1919800333544031260}
   m_Layer: 7
   m_Name: Slime_01_Viking
   m_TagString: Untagged
@@ -365,9 +366,9 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6688149642241925542}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Speed: 40
   m_Acceleration: 20
   avoidancePriority: 50
@@ -376,7 +377,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 0.65
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -405,8 +406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &8021785141328591506
 MonoBehaviour:
@@ -420,6 +419,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &1919800333544031260
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688149642241925542}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.3, y: 0.25, z: 0.3}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.3, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7588663013591350367
 GameObject:
   m_ObjectHideFlags: 0

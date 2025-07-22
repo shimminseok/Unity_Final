@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 9214657635298166570}
   - component: {fileID: 4310001412605948383}
   - component: {fileID: 193943807481039893}
+  - component: {fileID: -2724396940683508005}
   m_Layer: 7
   m_Name: Beez_Strawbery
   m_TagString: Untagged
@@ -199,8 +200,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &817480439938105768
 MonoBehaviour:
@@ -260,7 +259,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386519982034378371}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 3.5
@@ -298,6 +297,22 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!208 &-2724396940683508005
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386519982034378371}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.2, y: 0.5, z: 0.2}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.25, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1386519982034378373
 GameObject:
   m_ObjectHideFlags: 0

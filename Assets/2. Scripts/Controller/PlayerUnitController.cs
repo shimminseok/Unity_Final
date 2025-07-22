@@ -253,6 +253,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
+        Agent.enabled = true;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

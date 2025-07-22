@@ -8,6 +8,10 @@
         {
             owner.Agent.avoidancePriority = 1;
             owner.Animator.SetBool(isMove, false);
+
+            owner.Agent.enabled = false;
+            owner.Obstacle.enabled = true;
+            owner.Obstacle.carving = true;
         }
 
         public void OnUpdate(PlayerUnitController owner)

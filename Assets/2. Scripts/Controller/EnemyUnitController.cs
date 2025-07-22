@@ -47,6 +47,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         Agent.speed = 15f;
         Agent.acceleration = 100f;
+        Agent.angularSpeed = 1000f;
     }
 
     // Update is called once per frame
@@ -276,7 +277,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        Debug.Log("Enemy Start Turn");
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
+        Agent.enabled = true;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -284,6 +287,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         if (!IsDead)
             CurrentEmotion.AddStack(this);
+
 
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
