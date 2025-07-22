@@ -12,6 +12,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public bool isPlaying = false;
     public GameObject effectObject;
     private Animator effectAnimator;
+    private IAttackable attacker;
     public VirtualCameraController CurrentCameraController{get;set;}
 
     protected override void Awake()
@@ -23,23 +24,70 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         director.stopped += StopTimeLine;
     }
 
-    public void PlayTimeLine(CinemachineBrain brain,VirtualCameraController vCamController, IAttackable attacker)
+
+    // private void Update()
+    // {
+    //     Debug.Log(effectObject.transform.position);
+    // }
+
+    public void CastVFX()
     {
+        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
+        {
+            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Cast,effectObject);
+        }
+    }
+    
+    public void OnAttackVFX()
+    {
+        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
+        {
+            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Hit,effectObject);
+        }
+    }
+
+
+    public void PlayTimeLine(CinemachineBrain brain,VirtualCameraController vCamController, IAttackable user)
+    {
+        attacker = user;
         director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
         if (director.playableAsset == null) return;
         isPlaying = true;
         CurrentCameraController = vCamController;
         CurrentCameraController.Camera.m_Priority = 11;
         var timelineAsset = director.playableAsset as TimelineAsset;
+        Unit attackerUnit = attacker as Unit;
+        var pos = attackerUnit.transform.position;
+        var rot = attackerUnit.transform.rotation;
+        CurrentCameraController.Unfocus();
+        CameraManager.Instance.followNextIEffectProvider = false;
+        CurrentCameraController.transform.position = pos;
+        CurrentCameraController.transform.rotation = rot;
+        effectObject.transform.position = pos;
+        effectObject.transform.rotation = rot;
         foreach (var track in timelineAsset.GetOutputTracks())
         {
-            if (track is CinemachineTrack)
+            
+            if (track is CinemachineTrack cinemachineTrack)
             {
-                director.SetGenericBinding(track, CurrentCameraController.Camera);
+                var clips = cinemachineTrack.GetClips();
+                foreach (var clip in clips)
+                {
+                    var shot = clip.asset as CinemachineShot;
+                    if (shot != null)
+                    {
+                         director.SetReferenceValue(shot.VirtualCamera.exposedName, CurrentCameraController.Camera);
+                    }
+                }
+
+                // 뇌 (CinemachineBrain) 바인딩은 여전히 필요
                 var output = timelineAsset.outputs.FirstOrDefault(
                     o => o.outputTargetType == typeof(CinemachineBrain)
                 );
-                director.SetGenericBinding(output.sourceObject, brain);
+                if (output.sourceObject != null)
+                {
+                    director.SetGenericBinding(output.sourceObject, brain);
+                }
             }
             
             if (track is SignalTrack)
@@ -47,24 +95,52 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 director.SetGenericBinding(track, receiver);
             }
 
-            if (track is AnimationTrack)
+            if (track is ControlTrack controlTrack)
             {
-
-                if (track.name == "AttackerTrack")
+                var clips = controlTrack.GetClips();
+                foreach (var clip in clips)
                 {
-                    Unit attackerUnit = attacker as Unit;
-                    director.SetGenericBinding(track, attackerUnit?.Animator);
-                }
-                else if (track.name == "EffectTrack")
-                {
-                    director.SetGenericBinding(track, effectAnimator);
-                }
-                else if (track.name == "CameraAnimationTrack")
-                {
-                    director.SetGenericBinding(track, CurrentCameraController.CameraAnimator);
+                   
                 }
             }
+
+            if (track is AnimationTrack animationTrack)
+            {
+                // if (animationTrack.trackOffset == TrackOffset.ApplyTransformOffsets)
+                // {
+                //     foreach (var clip in animationTrack.GetClips())
+                //     {
+                //         var animPlayableAsset = clip.asset as AnimationPlayableAsset;
+                //         if (animPlayableAsset != null)
+                //         {
+                //             animPlayableAsset.position = pos;
+                //             animPlayableAsset.rotation = rot;
+                //         }
+                //     }
+                // }
+
+                if (animationTrack.name == "AttackerTrack")
+                {
+
+                    director.SetGenericBinding(animationTrack, attackerUnit?.Animator);
+
+                }
+                else if (animationTrack.name == "EffectTrack")
+                {
+                    director.SetGenericBinding(animationTrack, effectAnimator);
+                }
+                else if (animationTrack.name == "CameraAnimationTrack")
+                {
+                    director.SetGenericBinding(animationTrack, CurrentCameraController.CameraAnimator);
+                }
+                
+
+
+            }
         }
+
+        director.time = 0f;
+        director.Evaluate();
         director.Play();
     }
 

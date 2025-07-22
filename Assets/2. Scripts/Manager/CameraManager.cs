@@ -7,10 +7,18 @@ public class CameraManager : SceneOnlySingleton<CameraManager>
     [SerializeField]public VirtualCameraController mainCameraController;
     [SerializeField]public VirtualCameraController skillCameraController;
 
+    public bool followNextIEffectProvider = true;
     public void ChangeFollowTarget(IEffectProvider target)
     {
-        skillCameraController.Target = target.Collider.transform;
-        skillCameraController.FocusOnUnit();
+        if (followNextIEffectProvider)
+        {
+            skillCameraController.Target = target.Collider.transform;
+            skillCameraController.FocusOnUnit();
+        }
+        else
+        {
+            followNextIEffectProvider = true;
+        }
     }
     
 }

@@ -32,7 +32,25 @@ MonoBehaviour:
         weight: 1
         value: 500
       buffEffects: []
-      skillVFX: []
+      skillVFX:
+      - VFXPrefab: {fileID: 7820392752591751018, guid: c476b0e8f80f2364b91265bcf7c6ae94,
+          type: 3}
+        VFXPoolID: CastMeteorVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0, y: 0, z: 0}
+        reference: 0
+        isParent: 0
+        type: 0
+      - VFXPrefab: {fileID: 3623454151077303734, guid: fcb398c6a89e62048a360fac020c7eeb,
+          type: 3}
+        VFXPoolID: MeteorVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0, y: 0, z: 0}
+        reference: 0
+        isParent: 0
+        type: 3
   jobType: 6
   activeSkillTier: 3
   reuseMaxCount: 2

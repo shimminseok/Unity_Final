@@ -29,7 +29,7 @@ public class VirtualCameraController : MonoBehaviour
    {
        Camera.LookAt = null;
        // Camera.Follow = null;
-       Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
+       // Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
    }
 
    public void ZoomInCamera()
