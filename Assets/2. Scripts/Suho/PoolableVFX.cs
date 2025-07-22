@@ -53,11 +53,21 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         }
 
     }
+    
+    public void AdjustTransform(GameObject effect)
+    {
+        this.transform.position = effect.transform.position;
+        this.transform.rotation = effect.transform.rotation;
+        transform.parent = effect.transform;
+    }
+    
+    
+    
     public void SetData(VFXData data, IEffectProvider effectProvider)
     {
         VFXData = data;
         VFXTarget = effectProvider;
-    }
+    }    
     
     public void SetData(VFXData data,IEffectProvider effectProvider, Action trigger)
     {
@@ -69,7 +79,13 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
             trigger += OnSpawnFromPool;
         }
     }
-    
+
+    public void OnSpawnFromPool(GameObject effect)
+    {
+        AdjustTransform(effect);
+        // Debug.Log(pos.position + " "+ pos.rotation.eulerAngles);
+        StartCoroutine(PlayVFX());
+    }
 
     public void OnSpawnFromPool()
     {

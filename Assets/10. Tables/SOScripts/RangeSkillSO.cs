@@ -1,3 +1,4 @@
+using PixPlays.ElementalVFX;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -17,12 +18,6 @@ public class RangeSkillSO : RangeActionSo
         // {
         //     TimeLineManager.Instance.director.Play(timeline);
         // }
-        
-        foreach (var data in currentSkill.skillSo.effect.skillEffectDatas)
-        {
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
-        }
         
         foreach (var effect in currentSkill.Effect.skillEffectDatas)
         {
@@ -50,6 +45,7 @@ public class RangeSkillSO : RangeActionSo
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
     }
+
 
 
     private void ResetProjectile()

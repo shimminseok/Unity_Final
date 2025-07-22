@@ -34,4 +34,20 @@ public class VFXController : MonoBehaviour
         return returnVFX;
     }
     
+    
+    public static List<PoolableVFX> VFXListPlayOnTransform(List<VFXData> vfxList, VFXType vfxType, GameObject effect)
+    {
+        List<PoolableVFX> returnVFX = new List<PoolableVFX>();
+        foreach (var vfxData in vfxList)
+        {
+            if (vfxData.type == vfxType)
+            {
+                PoolableVFX vfx = InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
+                returnVFX.Add(vfx);
+                vfx.OnSpawnFromPool(effect);
+            }
+        }
+        return returnVFX;
+    }
+    
 }

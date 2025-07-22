@@ -29,6 +29,7 @@ public class ActiveSkillSO : SkillSo
     public int coolTime;
     public AnimationClip skillAnimation;
     public PlayableAsset skillTimeLine;
+    public bool isSkillScene = false;
 
     public CombatActionSo SkillType { get; private set; }
 
