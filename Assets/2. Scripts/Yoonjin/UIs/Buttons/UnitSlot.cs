@@ -40,6 +40,8 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         nameText.text = characterSo.UnitName;
         unitLevel.text = $"Lv.{data.Level}";
 
+        gameObject.name = $"UnitSlot_{characterSo.ID}";
+
         SetCompetedMarker(data.IsCompeted);
         for (int i = 0; i < unitTierStar.Count; i++)
         {

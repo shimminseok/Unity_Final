@@ -124,7 +124,7 @@ public class DialogueController : Singleton<DialogueController>
     public void EndDialogue()
     {
         // 다 읽은 대사는 스킵
-        if (currentGroup != null)
+        if (currentGroup != null && currentGroup.mode != DialogueMode.Tutorial)
         {
             readGroups.Add(currentGroup.groupKey);
         }
@@ -143,7 +143,7 @@ public class DialogueController : Singleton<DialogueController>
             UIManager.Instance.GetUIComponent<TutorialDialogueUI>()?.Close();
         }
 
-            currentGroup = null;
+        currentGroup = null;
         currentLineIndex = 0;
         OnCallBackAction?.Invoke();
         EventBus.Publish("DialogueFinished");
