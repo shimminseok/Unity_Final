@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +13,17 @@ public class TwoChoicePopup : UIBase
     [SerializeField] private TextMeshProUGUI leftBtnTxt;
     [SerializeField] private TextMeshProUGUI rightBtnTxt;
 
+    [SerializeField] private CanvasGroup BG;
+    [SerializeField] private float fadeInDuration;
+    [SerializeField] private float fadeOutDuration;
+
     public event Action OnLeftClicked;
     public event Action OnRightClicked;
 
+    private void Start()
+    {
+        BG.gameObject.SetActive(false);
+    }
 
     public void SetAndOpenPopupUI(string title, string desc, Action leftAct, Action rightAct = null, string leftBtnTxt = "확인", string rightBtnTxt = "닫기")
     {
@@ -39,9 +48,20 @@ public class TwoChoicePopup : UIBase
         UIManager.Close(this);
     }
 
-    public override void Close()
+    public override void Open() // 팝업 열 때 페이드인 추가
     {
-        base.Close();
+        base.Open();
+        BG.alpha = 0;
+        BG.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
+    }
+
+    public override void Close() // 팝업 닫을 때 페이드아웃 추가
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(BG.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
+        seq.AppendCallback(() => base.Close());
+
         OnLeftClicked = null;
         OnRightClicked = null;
     }

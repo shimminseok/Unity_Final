@@ -1,7 +1,8 @@
 using DG.Tweening;
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,9 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private Button startBtn;
     [SerializeField] private GameObject playingImage;
 
+    private UIManager uiManager;
     private BattleManager battleManager;
+    private LoadingScreenController loadingScreenController;
 
     [Header("상단에 있는 턴 UI")]
     [SerializeField] private CanvasGroup TurnTopUI;
@@ -34,16 +37,12 @@ public class BattleSceneGameUI : MonoBehaviour
     {
         battleManager = BattleManager.Instance;
         battleManager.OnBattleEnd += UpdateTurnCount;
+        loadingScreenController = LoadingScreenController.Instance;
+        loadingScreenController.OnLoadingComplete += WaitForLoading;
     }
 
-    private void Start()
+    private void WaitForLoading()
     {
-        StartCoroutine(WaitForLoading());
-    }
-
-    private IEnumerator WaitForLoading()
-    {
-        yield return null; // 로딩 끝나고 나와야될거같은데 어떻게?
         PlayTurnIntroAnimation(false);
     }
 
@@ -79,6 +78,7 @@ public class BattleSceneGameUI : MonoBehaviour
         // 애니 재생완료된 후에 전투 시작
         if (isBattleStart)
         {
+            ToggleActiveStartBtn(false);
             seq.AppendCallback(() => InputManager.Instance.OnClickTurnStartButton());
         }
     }
@@ -99,6 +99,18 @@ public class BattleSceneGameUI : MonoBehaviour
         PlayTurnIntroAnimation(true);
     }
 
+    public void OnSettingButton()
+    {
+        PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
+    }
+
+    public void OnExitButton()
+    {
+        string message = "전투를 중단하시겠습니까?";
+        Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "중단", "취소");
+    }
+
     private void UpdateTurnCount()
     {
         string turn = $"Turn {battleManager.TurnCount}";
@@ -111,5 +123,7 @@ public class BattleSceneGameUI : MonoBehaviour
     {
         if (battleManager != null)
             battleManager.OnBattleEnd -= UpdateTurnCount;
+        if (loadingScreenController != null)
+            loadingScreenController.OnLoadingComplete += WaitForLoading;
     }
 }

@@ -6,15 +6,13 @@ using DG.Tweening;
 
 public class LoadingScreenController : Singleton<LoadingScreenController>
 {
+    public event Action OnLoadingComplete;  // 로딩 완료 시점을 알리는 이벤트 
     private Image overlayImage;          // 검은 화면 처리용 이미지
     private Slider progressSlider;       // 로딩  슬라이더
 
     [SerializeField] private float minLoadTime = 1.5f;          // 최소 로딩 시간
     [SerializeField] private float extraDelayAfterReady = 0.4f; // 로딩 완료 후 추가 여유 시간
     private float currentProgress = 0f;
-    private Tween sliderTween;          
-
-    private float realProgress = 0f;
 
     protected override void Awake()
     {
@@ -89,6 +87,9 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
 
         // 6. 이벤트 해제
         LoadSceneManager.Instance.OnLoadingProgressChanged -= OnProgressChanged;
+
+        // !!로딩 완료!!
+        OnLoadingComplete?.Invoke();
 
         // 7. 검정 화면 덮기 (페이드 아웃)
         yield return overlayImage.DOFade(1f, 0.25f).WaitForCompletion();

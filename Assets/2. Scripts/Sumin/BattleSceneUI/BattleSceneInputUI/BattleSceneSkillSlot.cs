@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [SerializeField] private Image skillIconImage;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private TextMeshProUGUI reuseCountText;
+    [SerializeField] private Image skillTierFrameImage;
 
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
@@ -26,6 +28,8 @@ public class BattleSceneSkillSlot : MonoBehaviour
     [Header("스킬 팝업")]
     [SerializeField] private SkillDetailPopupUI skillDetailPopup;
     [SerializeField] private SkillForDetailButton skillForDetailButton;
+
+    [SerializeField] private List<Sprite> skillTierSprites;
 
     // 스킬 데이터들
     private SkillData selectedSkillData;
@@ -59,6 +63,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
         reuseCountText.text = $"{reuseCount}";
         skillIconImage.sprite = skillData.skillSo.SkillIcon;
         skillName.text = skillData.skillSo.skillName;
+        skillTierFrameImage.sprite = skillTierSprites[(int)skillData.skillSo.activeSkillTier];
 
         skillDetailPopup.Initialize(skillData);
         skillForDetailButton.SetInteractable(true);

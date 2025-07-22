@@ -80,9 +80,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
     {
         yield return new WaitUntil(() => BattleManager.Instance != null && BattleManager.Instance.PartyUnits.Count > 0);
 
-        inputStateMachine.ChangeState<SelectExecuterState>();
-        gameUI.ToggleActiveStartBtn(true);
-        context.DisableStartButtonUI?.Invoke();
+        Initialize();
     }
 
     void Update()
@@ -115,8 +113,6 @@ public class InputManager : SceneOnlySingleton<InputManager>
     public void OnClickTurnStartButton()
     {
         CommandPlanner.Instance.ExecutePlannedActions();
-        // start 버튼 비활성화
-        gameUI.ToggleActiveStartBtn(false);
 
         // 배틀매니저 턴 시작
         BattleManager.Instance.StartTurn();
