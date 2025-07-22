@@ -50,6 +50,16 @@ public class SelectExecuterState : IInputState
             context.DisableStartButtonUI?.Invoke();
             context.OpenSkillUI?.Invoke(context.SelectedExecuter.SelectedUnit);
 
+
+            // 튜토리얼에서 PlayerSelected 이벤트 발행
+            if (TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
+                TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
+                triggerData.triggerEventName == "PlayerSelected")
+            {
+                EventBus.Publish("PlayerSelected");
+            }
+
+
             // 스킬 선택 상태로 넘어감
             inputStateMachine.ChangeState<SelectSkillState>();
         }

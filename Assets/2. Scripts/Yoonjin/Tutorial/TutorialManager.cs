@@ -12,14 +12,6 @@ public class TutorialManager : Singleton<TutorialManager>
     private TutorialStepSO currentStep;
     public TutorialStepSO CurrentStep => currentStep;
 
-    public bool IsActive => currentStep != null;
-    public int ResumeStepID { get; private set; } = -1;
-
-    public void SetResumeStep(int id)
-    {
-        ResumeStepID = id;
-    }
-
     protected override void Awake()
     {
         base.Awake();

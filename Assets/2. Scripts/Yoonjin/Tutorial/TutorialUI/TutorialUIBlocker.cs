@@ -29,6 +29,23 @@ public static class TutorialUIBlocker
         }
     }
 
+    // 전체 UI 인터랙션 차단
+    public static void BlockAll()
+    {
+        previouslyEnabled.Clear();
+
+        var allSelectables = GameObject.FindObjectsOfType<Selectable>();
+
+        foreach (var sel in allSelectables)
+        {
+            if (sel != null && sel.interactable)
+            {
+                sel.interactable = false;
+                previouslyEnabled.Add(sel);
+            }
+        }
+    }
+
     // 차단된 UI 상호작용을 모두 복원
     public static void Clear()
     {
