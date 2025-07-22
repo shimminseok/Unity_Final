@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TriggerWaitExecutor : TutorialActionExecutor
 {
+    private string activeEventKey;
+
     public override void Enter(TutorialActionData actionData)
     {
         var waitData = actionData as TriggerWaitActionData;
@@ -14,19 +16,24 @@ public class TriggerWaitExecutor : TutorialActionExecutor
         if (waitData.blockAllUI)
             TutorialUIBlocker.BlockAll();
 
+        activeEventKey = null;
+
         switch (waitData.triggerType)
         {
             case TriggerType.SceneLoaded:
                 LoadingScreenController.Instance.OnLoadingComplete += OnTriggered;
                 break;
             case TriggerType.MonsterKilled:
-                EventBus.Subscribe("MonsterKilled", OnTriggered);
+                activeEventKey = "MonsterKilled";
+                EventBus.Subscribe(activeEventKey, OnTriggered);
                 break;
             case TriggerType.BattleVictory:
-                EventBus.Subscribe("BattleVictory", OnTriggered);
+                activeEventKey = "BattleVictory";
+                EventBus.Subscribe(activeEventKey, OnTriggered);
                 break;
             case TriggerType.CustomEvent:
-                EventBus.Subscribe(waitData.triggerEventName, OnTriggered);
+                activeEventKey = waitData.triggerEventName;
+                EventBus.Subscribe(activeEventKey, OnTriggered);
                 break;
         }
     }
@@ -40,8 +47,12 @@ public class TriggerWaitExecutor : TutorialActionExecutor
     private void Cleanup()
     {
         LoadingScreenController.Instance.OnLoadingComplete -= OnTriggered;
-        EventBus.Unsubscribe("MonsterKilled", OnTriggered);
-        EventBus.Unsubscribe("BattleVictory", OnTriggered);
+
+        if (!string.IsNullOrEmpty(activeEventKey))
+            EventBus.Unsubscribe(activeEventKey, OnTriggered);
+
+        activeEventKey = null;
+
         TutorialUIBlocker.Clear();
     }
 
