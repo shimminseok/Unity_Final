@@ -30,15 +30,15 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     //     Debug.Log(effectObject.transform.position);
     // }
 
-    public void CastVFX()
+    public void StartVFXOnEffectObject()
     {
         foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
         {
-            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Cast,effectObject);
+            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Start,effectObject);
         }
     }
     
-    public void OnAttackVFX()
+    public void OnAttackVFXOnEffectObject()
     {
         foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
         {
@@ -46,16 +46,30 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         }
     }
 
-
-    public void PlayTimeLine(CinemachineBrain brain,VirtualCameraController vCamController, IAttackable user)
+    public void OnAttackVFX()
     {
-        attacker = user;
-        director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
-        if (director.playableAsset == null) return;
-        isPlaying = true;
-        CurrentCameraController = vCamController;
-        CurrentCameraController.Camera.m_Priority = 11;
-        var timelineAsset = director.playableAsset as TimelineAsset;
+        var type = attacker.SkillController.CurrentSkillData.skillSo.skillType;
+        type.PlayVFX(attacker, attacker.Target);
+        
+    }
+    
+    public void AffectSkillInTimeline()
+    {
+        attacker.SkillController.UseSkill();
+    }
+
+    public void ShakeCurrentCamera()
+    {
+        CurrentCameraController.ShakeCamera();
+    }
+
+    public void StopShakeCurrentCamera()
+    {
+        CurrentCameraController.StopShakeCamera();
+    }
+
+    public void InitializeTimeline()
+    {
         Unit attackerUnit = attacker as Unit;
         var pos = attackerUnit.transform.position;
         var rot = attackerUnit.transform.rotation;
@@ -65,18 +79,41 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         CurrentCameraController.transform.rotation = rot;
         effectObject.transform.position = pos;
         effectObject.transform.rotation = rot;
+    }
+
+    public void PlayTimeLine(CinemachineBrain brain,VirtualCameraController vCamController, IAttackable user)
+    {
+        attacker = user;
+        director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
+        if (director.playableAsset == null) return;
+        isPlaying = true;
+        CurrentCameraController = vCamController;
+        CurrentCameraController.ChangeCamera();
+        Unit attackerUnit = attacker as Unit;
+        var timelineAsset = director.playableAsset as TimelineAsset;
+        if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
+        {
+            InitializeTimeline();
+        }
         foreach (var track in timelineAsset.GetOutputTracks())
         {
-            
             if (track is CinemachineTrack cinemachineTrack)
             {
                 var clips = cinemachineTrack.GetClips();
                 foreach (var clip in clips)
                 {
                     var shot = clip.asset as CinemachineShot;
-                    if (shot != null)
+                    if (shot == null)
                     {
-                         director.SetReferenceValue(shot.VirtualCamera.exposedName, CurrentCameraController.Camera);
+                         continue;
+                    }
+                    if (shot.DisplayName == "SkillCamera")
+                    {
+                        director.SetReferenceValue(shot.VirtualCamera.exposedName, CameraManager.Instance.skillCameraController.vCam);
+                    }
+                    else if (shot.DisplayName == "MainCamera")
+                    {
+                        director.SetReferenceValue(shot.VirtualCamera.exposedName, CameraManager.Instance.mainCameraController.vCam);
                     }
                 }
 
@@ -94,16 +131,8 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
             {
                 director.SetGenericBinding(track, receiver);
             }
-
-            if (track is ControlTrack controlTrack)
-            {
-                var clips = controlTrack.GetClips();
-                foreach (var clip in clips)
-                {
-                   
-                }
-            }
-
+            
+            
             if (track is AnimationTrack animationTrack)
             {
                 // if (animationTrack.trackOffset == TrackOffset.ApplyTransformOffsets)
@@ -148,8 +177,11 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     {
         director.Stop();
         isPlaying = false;
-        if(CurrentCameraController != null)
-        CurrentCameraController.Camera.m_Priority = 9;
+        if (CurrentCameraController != null)
+        {
+            CurrentCameraController.ThrowCamera();
+            CurrentCameraController.DefaultCamera();
+        }
         CurrentCameraController = null;
         director.playableAsset = null;
         

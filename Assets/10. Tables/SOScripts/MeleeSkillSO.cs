@@ -6,11 +6,6 @@ public class MeleeSkillSO : CombatActionSo
 {
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
-        {
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Target, target as IEffectProvider,true);
-            VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
-        }
 
         foreach (var effect in attacker.SkillController.CurrentSkillData.Effect.skillEffectDatas)
         {

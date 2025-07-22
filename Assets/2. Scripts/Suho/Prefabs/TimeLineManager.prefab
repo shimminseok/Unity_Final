@@ -51,7 +51,6 @@ MonoBehaviour:
   receiver: {fileID: 0}
   isPlaying: 0
   effectObject: {fileID: 6695992398619205089}
-  effectPos: {fileID: 0}
 --- !u!320 &7740142682322738332
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -94,7 +93,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 1e3c3b81dc774aa448e9ac781c4a63ab, type: 2}
     - {fileID: 11400000, guid: be848f96676e772458d69c18fe8caca4, type: 2}
     - {fileID: 11400000, guid: 4a76d41ab94a5594c8b21e141d3ed2d1, type: 2}
-    - {fileID: 11400000, guid: 0d87d11017da35a4987d3600c32d9158, type: 2}
+    - {fileID: 11400000, guid: d4f37d698de4f694baed647638822eae, type: 2}
     - {fileID: 11400000, guid: 15f23858539250c41a75362fbb4f7298, type: 2}
     - {fileID: 0}
     m_Events:
@@ -156,9 +155,9 @@ MonoBehaviour:
           m_CallState: 2
     - m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 3901184590082892472}
           m_TargetAssemblyTypeName: VirtualCameraController, Assembly-CSharp
-          m_MethodName: ShakeCamera
+          m_MethodName: 
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -200,7 +199,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 9133284260610328424}
           m_TargetAssemblyTypeName: TimeLineManager, Assembly-CSharp
-          m_MethodName: CastVFX
+          m_MethodName: StartVFXOnEffectObject
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -214,7 +213,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 9133284260610328424}
           m_TargetAssemblyTypeName: TimeLineManager, Assembly-CSharp
-          m_MethodName: OnAttackVFX
+          m_MethodName: OnAttackVFXOnEffectObject
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

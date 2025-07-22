@@ -196,10 +196,11 @@ public enum VFXSpawnReference
 
 public enum VFXType
 {
-    Cast,
+    Cast, // 스킬애니메이션이 나올때
     Dot, // 스킬로 인한 DotDamage가 발생할 때마다
     Buff, // 스킬로 인한 Buff, Debuff가 유지되는 동안 반복
     Hit, // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
+    Start, //스킬이 시작하자마자 
     
 }
 

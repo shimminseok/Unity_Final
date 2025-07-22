@@ -303,7 +303,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
-    FieldOfView: 20
+    FieldOfView: 17
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e9a84404e3adc44b0a711385fc527b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
+  vCam: {fileID: 0}
 --- !u!1 &858459588
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +432,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 20
+  field of view: 17
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -759,7 +759,6 @@ MonoBehaviour:
   receiver: {fileID: 0}
   isPlaying: 0
   effectObject: {fileID: 652546627}
-  effectPos: {fileID: 0}
 --- !u!114 &1705399493
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,9 @@ public class CameraAdjustData
     public readonly float ZoomOutFOVModifier = 10f;
     public readonly float CameraShakeAmplitude  = 10f;
     public readonly float CameraShakeFrequency  = 10f;
+    public readonly int MainPriority = 11;
+    public readonly int SubPriority = 9;
+    
     
     
     public CameraAdjustData(CinemachineVirtualCamera virtualCamera)

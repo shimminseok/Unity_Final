@@ -20,5 +20,19 @@ public class CameraManager : SceneOnlySingleton<CameraManager>
             followNextIEffectProvider = true;
         }
     }
+
+    public void ChangeMainCamera()
+    {
+        mainCameraController.ChangeCamera();
+        skillCameraController.ThrowCamera();
+        TimeLineManager.Instance.CurrentCameraController = mainCameraController;
+    }
+    
+    public void ChangeSkillCamera()
+    {
+        skillCameraController.ChangeCamera();
+        mainCameraController.ThrowCamera();     
+        TimeLineManager.Instance.CurrentCameraController = skillCameraController;
+    }
     
 }

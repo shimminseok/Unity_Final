@@ -34,6 +34,7 @@ public class ActiveSkillSO : ScriptableObject
     public Sprite skillIcon;
     public AnimationClip skillAnimation;
     public PlayableAsset skillTimeLine;
+    public bool isSkillScene = false;
 
     public CombatActionSo SkillType { get; private set; }
 
