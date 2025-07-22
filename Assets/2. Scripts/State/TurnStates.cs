@@ -217,6 +217,7 @@ public class EndTurnState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
+        Debug.Log("EndTurn State");
         unit.StartCoroutine(DelayEndTurn(unit));
     }
 
