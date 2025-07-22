@@ -12,6 +12,8 @@ public class TutorialManager : Singleton<TutorialManager>
     private TutorialStepSO currentStep;
     public TutorialStepSO CurrentStep => currentStep;
 
+    public bool IsActive;
+
     protected override void Awake()
     {
         base.Awake();
@@ -35,6 +37,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Start()
     {
+        IsActive = true;
         // 튜토리얼 첫 단계 실행
         GoToStep(0);
     }
@@ -46,6 +49,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         if (!tutorialTable.DataDic.TryGetValue(id, out currentStep))
         {
+            IsActive = false;
             Debug.LogWarning($"[튜토리얼] ID {id}에 해당하는 Step이 없습니다. 튜토리얼 종료!");
             return;
         }

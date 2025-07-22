@@ -5,25 +5,59 @@ using UnityEngine;
 
 public class TriggerWaitExecutor : TutorialActionExecutor
 {
-    private string eventName;
+    private string activeEventKey;
 
     public override void Enter(TutorialActionData actionData)
     {
-        var data = actionData as TriggerWaitActionData;
-        if (data == null) return;
+        var waitData = actionData as TriggerWaitActionData;
+        if (waitData == null) return;
 
-        eventName = data.triggerEventName;
-        EventBus.Subscribe(eventName, OnTrigger);
+        // UI 인터랙션 차단
+        if (waitData.blockAllUI)
+            TutorialUIBlocker.BlockAll();
+
+        activeEventKey = null;
+
+        switch (waitData.triggerType)
+        {
+            case TriggerType.SceneLoaded:
+                LoadingScreenController.Instance.OnLoadingComplete += OnTriggered;
+                break;
+            case TriggerType.MonsterKilled:
+                activeEventKey = "MonsterKilled";
+                EventBus.Subscribe(activeEventKey, OnTriggered);
+                break;
+            case TriggerType.BattleVictory:
+                activeEventKey = "BattleVictory";
+                EventBus.Subscribe(activeEventKey, OnTriggered);
+                break;
+            case TriggerType.CustomEvent:
+                activeEventKey = waitData.triggerEventName;
+                EventBus.Subscribe(activeEventKey, OnTriggered);
+                break;
+        }
     }
 
-    private void OnTrigger()
+    private void OnTriggered()
     {
-        EventBus.Unsubscribe(eventName, OnTrigger);
+        Cleanup();
         manager.CompleteCurrentStep();
+    }
+
+    private void Cleanup()
+    {
+        LoadingScreenController.Instance.OnLoadingComplete -= OnTriggered;
+
+        if (!string.IsNullOrEmpty(activeEventKey))
+            EventBus.Unsubscribe(activeEventKey, OnTriggered);
+
+        activeEventKey = null;
+
+        TutorialUIBlocker.Clear();
     }
 
     public override void Exit()
     {
-        EventBus.Unsubscribe(eventName, OnTrigger);
+        Cleanup();
     }
 }
