@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,7 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private Button startBtn;
     [SerializeField] private GameObject playingImage;
 
+    private UIManager uiManager;
     private BattleManager battleManager;
     private LoadingScreenController loadingScreenController;
 
@@ -94,6 +97,19 @@ public class BattleSceneGameUI : MonoBehaviour
     public void OnStartButton()
     {
         PlayTurnIntroAnimation(true);
+    }
+
+    public void OnSettingButton()
+    {
+        uiManager = UIManager.Instance;
+        uiManager.Open(uiManager.GetUIComponent<SettingPopup>());
+    }
+
+    public void OnExitButton()
+    {
+        string message = "전투를 중단하시겠습니까?";
+        Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "장착", "취소");
     }
 
     private void UpdateTurnCount()
