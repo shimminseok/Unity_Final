@@ -11,7 +11,8 @@ public enum DamageType
     Critical,
     Heal,
     Miss,
-    Immune
+    Immune,
+    Shield
 }
 
 public class DamageRequest
@@ -37,6 +38,7 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
     [SerializeField] private DamageNumber healDamageNumber;
     [SerializeField] private DamageNumber missDamageNumber;
     [SerializeField] private DamageNumber immuneDamageNumber;
+    [SerializeField] private DamageNumber shieldDamageNumber;
     [SerializeField] private Camera mainCamera;
 
     private Dictionary<DamageType, DamageNumber> damageNumberMap = new();
@@ -54,7 +56,8 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
             { DamageType.Critical, criticalDamageNumber },
             { DamageType.Heal, healDamageNumber },
             { DamageType.Miss, missDamageNumber },
-            { DamageType.Immune, immuneDamageNumber }
+            { DamageType.Immune, immuneDamageNumber },
+            { DamageType.Shield, shieldDamageNumber }
         };
     }
 

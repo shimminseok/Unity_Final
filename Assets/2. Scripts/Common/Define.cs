@@ -4,8 +4,11 @@ using UnityEngine;
 public static class Define
 {
     public const int MaxCharacterCount = 4;
+    public const float DefenseReductionBase = 100f;
 
 
+    
+    
     public static readonly int MoveAnimationHash = Animator.StringToHash("IsMove");
     public static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
     public static readonly int SkillAnimationHash = Animator.StringToHash("Skill");
@@ -68,4 +71,6 @@ public static class Define
         else
             return 0.5f; // 기본값
     }
+
+
 }

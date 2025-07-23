@@ -172,25 +172,34 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
 
         float finalDam = amount;
+
+        //방어력 적용
+        float damageReduction = 0;
         if (modifierType == StatModifierType.Base)
         {
-            //방어력 계산.
+            float defense = StatManager.GetValue(StatType.Defense);
+            damageReduction = defense / (defense + Define.DefenseReductionBase);
         }
 
+        finalDam *= 1f - damageReduction;
+        
+        
         var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
-        DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
 
         if (shield.CurrentValue > 0)
         {
             float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
             StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
+            DamageFontManager.Instance.SetDamageNumber(this, shieldUsed, DamageType.Shield);
             finalDam -= shieldUsed;
         }
 
         if (finalDam > 0)
+        {
+            DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
-        Debug.Log($"공격 받음 {finalDam} 남은 HP : {curHp.Value}");
+        }
         if (curHp.Value <= 0)
         {
             Dead();
