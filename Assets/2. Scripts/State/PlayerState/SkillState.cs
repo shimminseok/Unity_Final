@@ -8,9 +8,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Agent.isStopped = true;
-            owner.Agent.velocity = Vector3.zero;
-            owner.Agent.ResetPath();
+            owner.OnToggleNavmeshAgent(false);
             owner.Animator.SetTrigger(Define.SkillAnimationHash);
         }
 
@@ -25,6 +23,8 @@ namespace PlayerState
         public void OnExit(PlayerUnitController owner)
         {
             owner.Animator.ResetTrigger(skill);
+            owner.OnToggleNavmeshAgent(true);
+
         }
     }
 }

@@ -121,6 +121,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         else if (PartyUnits.TrueForAll(x => x.IsDead))
         {
             OnStageFail();
+            return;
         }
 
         TurnHandler.RefillTurnQueue();
@@ -172,6 +173,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void OnStageFail()
     {
+        LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
     }
 
     protected override void OnDestroy()

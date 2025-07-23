@@ -25,6 +25,7 @@ public class PlayerSkillController : BaseSkillController
 
     public override void SelectSkillSubTargets(IDamageable target)
     {
+        SkillSubTargets.Clear();
         if (CurrentSkillData != null)
         {
             TargetSelect targetSelect = new TargetSelect(SkillManager.Owner.Target, SkillManager.Owner);
@@ -73,6 +74,5 @@ public class PlayerSkillController : BaseSkillController
 
         CurrentSkillData = null;
         this.SkillManager.Owner.SetTarget(null);
-        SkillSubTargets.Clear();
     }
 }
