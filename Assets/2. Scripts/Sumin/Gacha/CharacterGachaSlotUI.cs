@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,12 +7,15 @@ public class CharacterGachaSlotUI : MonoBehaviour
 {
     [SerializeField] private Image characterImage;
     [SerializeField] private TextMeshProUGUI characterNameText;
-    [SerializeField] private TextMeshProUGUI characterTierText; // 나중에 프레임으로 변경
+    [SerializeField] private List<GameObject> unitTierStar;
 
     public void Initialize(PlayerUnitSO character)
     {
         characterImage.sprite = character.UnitIcon;
         characterNameText.text = character.UnitName;
-        characterTierText.text = $"{character.Tier}";
+        for (int i = 0; i < unitTierStar.Count; i++)
+        {
+            unitTierStar[i].SetActive(i <= (int)character.Tier);
+        }
     }
 }
