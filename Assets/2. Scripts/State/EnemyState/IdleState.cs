@@ -7,9 +7,7 @@
             owner.Agent.avoidancePriority = 1;
             owner.Animator.SetBool(Define.MoveAnimationHash, false);
 
-            owner.Agent.enabled = false;
-            owner.Obstacle.enabled = true;
-            owner.Obstacle.carving = true;
+            owner.OnToggleNavmeshAgent(false);
         }
 
         public void OnUpdate(EnemyUnitController owner)

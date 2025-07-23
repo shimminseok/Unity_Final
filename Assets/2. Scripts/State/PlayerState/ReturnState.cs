@@ -12,7 +12,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
-            owner.Agent.enabled = true;
+            owner.OnToggleNavmeshAgent(true);
             owner.Agent.avoidancePriority = 10;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.StartPostion);
@@ -48,6 +48,7 @@ namespace PlayerState
             owner.Agent.isStopped = true;
             owner.Agent.velocity = Vector3.zero;
             owner.Agent.ResetPath();
+            owner.OnToggleNavmeshAgent(false);
         }
     }
 }

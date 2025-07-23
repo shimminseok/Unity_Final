@@ -29,7 +29,7 @@ public class MeleeCombatAction : ICombatAction
 
     private IEnumerator WaitForAnimationDone(Unit attacker)
     {
-        yield return new WaitUntil(() => attacker.IsAnimationDone || !attacker.IsTimeLinePlaying);
+        yield return new WaitUntil(() => attacker.IsAnimationDone);
         OnActionComplete?.Invoke();
     }
 }

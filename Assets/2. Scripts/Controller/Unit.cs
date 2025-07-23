@@ -247,4 +247,20 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         IsCounterAttack = false;
         CounterTarget = null;
     }
+
+    public void OnToggleNavmeshAgent(bool isOn)
+    {
+        if (isOn)
+        {
+            Obstacle.carving = false;
+            Obstacle.enabled = false;
+            Agent.enabled = true;
+        }
+        else
+        {
+            Agent.enabled = false;
+            Obstacle.enabled = true;
+            Obstacle.carving = true;
+        }
+    }
 }
