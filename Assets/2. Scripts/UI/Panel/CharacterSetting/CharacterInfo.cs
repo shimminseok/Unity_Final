@@ -19,6 +19,7 @@ public class CharacterInfo : MonoBehaviour
     [Header("UnitLevelUpPanel")]
     [SerializeField] private UnitLevelUpPanel unitLevelUpPanel;
 
+
     private UICharacterSetting uiCharacterSetting;
     private Vector2 onScreenPos;
     private Vector2 offScreenPos;
@@ -171,7 +172,6 @@ public class CharacterInfo : MonoBehaviour
 
         RefreshUI();
         SetPlayerUnitSkillInfo();
-
         panelRect.DOKill();
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
