@@ -12,6 +12,7 @@ namespace EnemyState
 
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.OnToggleNavmeshAgent(true);
             owner.setRemainDistance = 1.5f;
             owner.Agent.avoidancePriority = 80;
             owner.Animator.SetBool(isMove, true);

@@ -6,6 +6,7 @@ namespace PlayerState
     {
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.OnToggleNavmeshAgent(false);
             owner.Animator.SetBool(Define.ReadyActionAnimationHash, true);
         }
 
