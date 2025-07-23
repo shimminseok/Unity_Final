@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DialogueAction", menuName = "ScriptableObjects/Tutorial/Actions/DialogueAction", order = 0)]
+[CreateAssetMenu(fileName = "DialogueAction", menuName = "ScriptableObjects/Tutorial/Actions/Dialogue", order = 0)]
 public class DialogueActionData : TutorialActionData
 {
     [TextArea] public string dialogGroupKey;
