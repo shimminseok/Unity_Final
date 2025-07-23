@@ -33,9 +33,8 @@ public class CharacterInfo : MonoBehaviour
 
     private void Awake()
     {
-        Vector2 currentPos = panelRect.anchoredPosition;
-        onScreenPos = new Vector2(currentPos.x, currentPos.y);
-        offScreenPos = new Vector2(Screen.width, currentPos.y);
+        onScreenPos = panelRect.anchoredPosition;
+        offScreenPos = new Vector2(Screen.width, panelRect.anchoredPosition.y);
 
         panelRect.anchoredPosition = offScreenPos;
 
