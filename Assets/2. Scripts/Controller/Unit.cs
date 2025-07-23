@@ -13,7 +13,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     protected BattleManager BattleManager => BattleManager.Instance;
 
-    public BaseEmotion                CurrentEmotion { get; protected set; }
+    public BaseEmotion                CurrentEmotion { get; private set; }
     public BaseEmotion[]              Emotions       { get; private set; }
     public event Action<BaseEmotion>  EmotionChanged; // 감정이 바뀌었을 때 알리는 이벤트
     public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
@@ -22,7 +22,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public TurnStateType              CurrentTurnState           { get; private set; }
     public StatManager                StatManager                { get; protected set; }
     public StatusEffectManager        StatusEffectManager        { get; protected set; }
-    public StatBase                   AttackStat                 { get; protected set; }
     public SkillManager               SkillManager               { get; protected set; }
     public Animator                   Animator                   { get; protected set; }
     public BaseSkillController        SkillController            { get; protected set; }
@@ -43,7 +42,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    { get; set; }
-    public virtual bool IsTimeLineDone     { get; set; }
+    public virtual bool IsTimeLinePlaying   { get; set; }
 
     public Unit SelectedUnit => this;
 

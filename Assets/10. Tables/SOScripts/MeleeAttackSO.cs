@@ -11,6 +11,12 @@ public class MeleeAttackSo : CombatActionSo
         float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
 
+        bool isCritical = Random.value < attacker.StatManager.GetValue(StatType.CriticalRate);
+        if (isCritical)
+        {
+            float critBouns = attacker.StatManager.GetValue(StatType.CriticalDam);
+            finalValue *= 2.0f + critBouns;
+        }
         if (attacker is PlayerUnitController player)
         {
             //여전사 패시브 (상성 관계없이 1.3배)
@@ -22,12 +28,10 @@ public class MeleeAttackSo : CombatActionSo
             }
 
             if (player.PassiveSo is IPassiveAttackTrigger repeatPassive) //더블어택
-                repeatPassive.OnAttack();
+                repeatPassive.OnAttack(finalValue);
         }
 
-        IDamageable attackerDamagable = attacker as IDamageable;
-        if (attackerDamagable == null) return;
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
         target.TakeDamage(finalValue * multiplier);
     }
 }

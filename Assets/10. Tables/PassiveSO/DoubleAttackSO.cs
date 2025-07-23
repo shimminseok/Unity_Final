@@ -11,18 +11,17 @@ public class DoubleAttack : PassiveSO, IPassiveAttackTrigger
         return currentEmotion.EmotionType == TriggerEmotion && currentEmotion.Stack >= RequiredStack;
     }
 
-    public void OnAttack()
+    public void OnAttack(float value)
     {
         if (!CanTrigger(Owner.CurrentEmotion))
             return;
 
-        float baseDamage = Owner.StatManager.GetValue(StatType.AttackPow);
 
+        IDamageable finalTarget = Owner.IsCounterAttack ? Owner.CounterTarget : Owner.Target;
 
-        float mutiplier   = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, Owner.Target.CurrentEmotion.EmotionType);
-        float finalDamage = baseDamage * mutiplier;
+        float mutiplier   = EmotionAffinityManager.GetAffinityMultiplier(Owner.CurrentEmotion.EmotionType, finalTarget.CurrentEmotion.EmotionType);
+        float finalDamage = value * mutiplier;
 
-        // Owner.Attack();
-        Owner.Target.TakeDamage(finalDamage);
+        finalTarget.TakeDamage(finalDamage);
     }
 }

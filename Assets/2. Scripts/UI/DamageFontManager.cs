@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DamageNumbersPro;
+using UnityEditor;
 
 
 public enum DamageType
@@ -10,9 +11,25 @@ public enum DamageType
     Critical,
     Heal,
     Miss,
-    Immune
+    Immune,
+    Shield
 }
 
+public class DamageRequest
+{
+    public Vector2 AnchoredPos;
+    public DamageType Type;
+    public float Value;
+    public string Text;
+
+    public DamageRequest(Vector2 anchoredPos, DamageType type, float value = 0f, string text = null)
+    {
+        AnchoredPos = anchoredPos;
+        Type = type;
+        Value = value;
+        Text = text;
+    }
+}
 public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
 {
     [SerializeField] private RectTransform rectTransform;
@@ -21,10 +38,15 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
     [SerializeField] private DamageNumber healDamageNumber;
     [SerializeField] private DamageNumber missDamageNumber;
     [SerializeField] private DamageNumber immuneDamageNumber;
+    [SerializeField] private DamageNumber shieldDamageNumber;
     [SerializeField] private Camera mainCamera;
 
     private Dictionary<DamageType, DamageNumber> damageNumberMap = new();
 
+
+    private Queue<DamageRequest> damageQueue = new();
+    private Coroutine damageFontCoroutine;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -34,13 +56,9 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
             { DamageType.Critical, criticalDamageNumber },
             { DamageType.Heal, healDamageNumber },
             { DamageType.Miss, missDamageNumber },
-            { DamageType.Immune, immuneDamageNumber }
+            { DamageType.Immune, immuneDamageNumber },
+            { DamageType.Shield, shieldDamageNumber }
         };
-    }
-
-    private void Start()
-    {
-        // mainCamera = Camera.main;
     }
 
     public void SetDamageNumber(IDamageable target, float damage, DamageType damageType)
@@ -54,23 +72,42 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
             null,
             out Vector2 anchoredPos
         );
-        if (!damageNumberMap.TryGetValue(damageType, out DamageNumber damageNumber))
+        string text = damageType switch
         {
-            Debug.LogWarning($"DamageNumber for type {damageType} is not defined.");
-            return;
+            DamageType.Miss   => "MISS",
+            DamageType.Immune => "IMMUNE",
+            _                 => string.Empty
+        };
+
+        damageQueue.Enqueue(new DamageRequest(anchoredPos, damageType, damage, text));
+
+        if (damageFontCoroutine == null)
+        {
+            damageFontCoroutine = StartCoroutine(PlayerDamageFont());
+        }
+    }
+
+    private IEnumerator PlayerDamageFont()
+    {
+        while (damageQueue.Count > 0)
+        {
+            DamageRequest request = damageQueue.Dequeue();
+
+            if (damageNumberMap.TryGetValue(request.Type, out DamageNumber damageNumber))
+            {
+                if (!string.IsNullOrEmpty(request.Text))
+                {
+                    damageNumber.SpawnGUI(rectTransform, request.AnchoredPos, request.Text);
+                }
+                else
+                {
+                    damageNumber.SpawnGUI(rectTransform, request.AnchoredPos, request.Value);
+                }
+            }
+
+            yield return new WaitForSeconds(0.2f); // 텀 조절
         }
 
-        if (damageType == DamageType.Miss)
-        {
-            damageNumber.SpawnGUI(rectTransform, anchoredPos, "MISS");
-        }
-        else if (damageType == DamageType.Immune)
-        {
-            damageNumber.SpawnGUI(rectTransform, anchoredPos, "IMMUNE");
-        }
-        else
-        {
-            damageNumber.SpawnGUI(rectTransform, anchoredPos, damage);
-        }
+        damageFontCoroutine = null;
     }
 }

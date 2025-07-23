@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /*
  * RangeSkill을 사용할 경우에 투사체에 추가되는 컴포넌트
@@ -152,10 +153,17 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
     private void HandleAttackTrigger()
     {
         //감정별 대미지
-        IDamageable attackerDamagable = attacker as IDamageable;
-        if (attackerDamagable == null) return;
-        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attackerDamagable.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
-        Target.TakeDamage(attacker.StatManager.GetValue(StatType.AttackPow) * multiplier);
+        float finalValue = attacker.StatManager.GetValue(StatType.AttackPow);
+        bool  isCritical = Random.value < attacker.StatManager.GetValue(StatType.CriticalRate);
+        if (isCritical)
+        {
+            float critBouns = attacker.StatManager.GetValue(StatType.CriticalDam);
+            finalValue *= 2.0f + critBouns;
+        }
+
+
+        float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
+        Target.TakeDamage(finalValue * multiplier);
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 

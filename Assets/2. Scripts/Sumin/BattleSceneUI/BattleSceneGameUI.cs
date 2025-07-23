@@ -1,8 +1,6 @@
 using DG.Tweening;
 using System;
-using System.Collections;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
