@@ -49,8 +49,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         if (!tutorialTable.DataDic.TryGetValue(id, out currentStep))
         {
-            IsActive = false;
-            Debug.LogWarning($"[튜토리얼] ID {id}에 해당하는 Step이 없습니다. 튜토리얼 종료!");
+            EndTutorial();
             return;
         }
 
@@ -81,5 +80,15 @@ public class TutorialManager : Singleton<TutorialManager>
 
         GoToStep(currentStep.NextID);
         Debug.Log("튜토리얼 다음 단계로");
+    }
+
+    // 튜토리얼 종료
+    public void EndTutorial()
+    {
+        IsActive = false;
+
+        // RewardManager.Instance.GiveReward 같은 걸로 추후 보상 지급 예정
+
+        Debug.LogWarning("튜토리얼 종료!");
     }
 }
