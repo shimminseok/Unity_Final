@@ -42,7 +42,7 @@ public class RangeCombatAction : ICombatAction
 
     private IEnumerator WaitForAnimationDone(Unit attacker)
     {
-        yield return new WaitUntil(() => attacker.IsAnimationDone);
+        yield return new WaitUntil(() => attacker.IsAnimationDone|| !attacker.IsTimeLinePlaying);
         OnActionComplete?.Invoke();
     }
 }
