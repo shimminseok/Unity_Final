@@ -33,8 +33,9 @@ public class CharacterInfo : MonoBehaviour
 
     private void Awake()
     {
-        onScreenPos = panelRect.anchoredPosition;
-        offScreenPos = new Vector2(Screen.width, panelRect.anchoredPosition.y);
+        Vector2 currentPos = panelRect.anchoredPosition;
+        onScreenPos = new Vector2(currentPos.x, currentPos.y);
+        offScreenPos = new Vector2(Screen.width, currentPos.y);
 
         panelRect.anchoredPosition = offScreenPos;
 
@@ -175,6 +176,7 @@ public class CharacterInfo : MonoBehaviour
 
         RefreshUI();
         SetPlayerUnitSkillInfo();
+
         panelRect.DOKill();
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
