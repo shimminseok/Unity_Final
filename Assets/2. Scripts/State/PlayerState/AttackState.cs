@@ -7,8 +7,7 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
 
     public void OnEnter(PlayerUnitController owner)
     {
-        owner.Agent.enabled = true;
-        
+        owner.OnToggleNavmeshAgent(true);
         owner.Agent.updateRotation = false;
         owner.transform.LookAt(owner.IsCounterAttack ? owner.CounterTarget.Collider.transform : owner.Target.Collider.transform);
         owner.Agent.isStopped = true;
@@ -30,7 +29,7 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
         owner.Animator.ResetTrigger(attack);
         owner.Agent.isStopped = false;
         owner.Agent.updateRotation = true;
-        owner.Agent.enabled = false;
+        owner.OnToggleNavmeshAgent(false);
 
     }
 }

@@ -8,6 +8,7 @@ public class RangeCombatAction : ICombatAction
     private readonly IDamageable target;
 
     public event Action OnActionComplete;
+    
 
     public RangeCombatAction(RangeActionSo so, IDamageable target)
     {
@@ -41,7 +42,7 @@ public class RangeCombatAction : ICombatAction
 
     private IEnumerator WaitForAnimationDone(Unit attacker)
     {
-        yield return new WaitUntil(() => attacker.IsAnimationDone || !attacker.IsTimeLinePlaying);
+        yield return new WaitUntil(() => attacker.IsAnimationDone);
         OnActionComplete?.Invoke();
     }
 }
