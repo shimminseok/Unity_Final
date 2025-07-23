@@ -3,7 +3,7 @@
 /// </summary>
 public interface IPassiveAttackTrigger
 {
-    void OnAttack();
+    void OnAttack(float value);
 }
 
 /// <summary>
