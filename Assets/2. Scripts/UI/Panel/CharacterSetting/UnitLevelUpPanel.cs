@@ -9,13 +9,17 @@ public class UnitLevelUpPanel : MonoBehaviour
 {
     [SerializeField] private PlayerUnitIncreaseSo increaseSo;
 
-    [SerializeField] private RectTransform panelRect;
+    [SerializeField] private CanvasGroup panelRect;
     [SerializeField] private TextMeshProUGUI currentLevelTxt;
     [SerializeField] private TextMeshProUGUI maxLevelTxt;
 
     [SerializeField] private Image requiredDupeCountFill;
     [SerializeField] private TextMeshProUGUI requiredDupeCountTxt;
     [SerializeField] private List<IncreaseStatSlot> increaseStatSlots;
+
+    [SerializeField] private float fadeInDuration;
+    [SerializeField] private float fadeOutDuration;
+
     private Vector2 onScreenScale;
     private Vector2 offScreenPos;
 
@@ -27,9 +31,6 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     private void Awake()
     {
-        onScreenScale = panelRect.localScale;
-        panelRect.localScale = Vector3.zero;
-
         gameObject.SetActive(false);
 
         InitializeIncreaseStatSlotDic();
@@ -89,10 +90,8 @@ public class UnitLevelUpPanel : MonoBehaviour
 
         currentPlayerUnitData = unitData;
         gameObject.SetActive(true);
-        panelRect.DOScale(onScreenScale, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
-        {
-            panelRect.localScale = onScreenScale;
-        });
+        panelRect.alpha = 0;
+        panelRect.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
 
         currentPlayerUnitData.OnLevelUp += UpdateLevelText;
         currentPlayerUnitData.OnTranscendChanged += UpdateDupeCount;
@@ -103,7 +102,7 @@ public class UnitLevelUpPanel : MonoBehaviour
     public void ClosePanel()
     {
         DOTween.KillAll();
-        panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
+        panelRect.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine).OnComplete(() =>
         {
             if (currentPlayerUnitData != null)
             {

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +10,10 @@ public class SkillGachaUI : UIBase
     [SerializeField] private Button oneDrawBtn;
     [SerializeField] private Button tenDrawBtn;
 
-    [Header("뽑기 확인 창")]
-    [SerializeField] private GachaConfirmPopupUI confirmPanel;
-
     [Header("뽑기 결과 창")]
     [SerializeField] private SkillGachaResultUI resultPanel;
 
     private UIManager uiManager;
-    private GachaCantDrawPopupUI cantDrawPopupUI;
     private SkillGachaResultUI resultUI;
 
     private int drawCount;
@@ -30,14 +27,7 @@ public class SkillGachaUI : UIBase
         tenDrawBtn.onClick.AddListener(() => OnDrawCountBtn(10));
 
         uiManager = UIManager.Instance;
-        cantDrawPopupUI = uiManager.GetUIComponent<GachaCantDrawPopupUI>();
         resultUI = uiManager.GetUIComponent<SkillGachaResultUI>();
-    }
-
-    private void OnDisable()
-    {
-        confirmPanel.OnConfirm -= HandleConfirm;
-        confirmPanel.OnConfirm -= HandleCancel;
     }
 
     // n회 뽑기 버튼
@@ -45,25 +35,15 @@ public class SkillGachaUI : UIBase
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            uiManager.Open(cantDrawPopupUI);
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("Opal이 부족합니다!");
             return;
         }
 
         drawCount = count;
 
-        confirmPanel.OnConfirm += HandleConfirm;
-        confirmPanel.OnConfirm += HandleCancel;
-        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
-    }
-
-    private void HandleConfirm()
-    {
-        DrawAndDisplayResult(drawCount);
-    }
-
-    private void HandleCancel()
-    {
-        Debug.Log("취소됨");
+        string message = $"{count}회 스킬 소환을 진행하시겠습니까?\n 소모 Opal : {gachaSystem.DrawCost * count}";
+        Action leftAction = () => DrawAndDisplayResult(drawCount);
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("스킬 소환", message, leftAction, null, "소환", "취소");
     }
 
     // 스킬 뽑고 결과 보여주기
@@ -71,7 +51,7 @@ public class SkillGachaUI : UIBase
     {
         GachaResult<ActiveSkillSO>[] skills = gachaSystem.DrawSkills(count);
 
-        uiManager.Open(resultUI);
+        uiManager.Open(resultPanel);
         resultPanel.ShowSkills(skills);
     }
 }

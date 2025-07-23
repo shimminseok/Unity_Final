@@ -13,7 +13,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     [SerializeField] private SkillSlot passiveSkillSlot;
     [SerializeField] private SkillSlot[] activeSkillSlots = new SkillSlot[3];
 
-    [SerializeField] private TextMeshProUGUI title;
+    [SerializeField] private UnitSlot unitSlot;
     private EntryDeckData selectedUnitData;
 
 
@@ -25,7 +25,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
         data.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
         data.OnSkillChanged -= UpdateEquippedSkillSlot;
         this.selectedUnitData = data;
-        title.text = data.CharacterSo.UnitName;
+        unitSlot.Initialize(data);
         UpdateEquippedItemSlot();
         UpdateEquippedSkillSlot();
         data.OnEquipmmmentChanged += UpdateEquippedItemSlot;

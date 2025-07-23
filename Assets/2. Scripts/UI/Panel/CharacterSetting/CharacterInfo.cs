@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class CharacterInfo : MonoBehaviour
 {
     [SerializeField] private PlayerUnitIncreaseSo statIncreaseSo;
@@ -17,7 +18,6 @@ public class CharacterInfo : MonoBehaviour
 
     [Header("UnitLevelUpPanel")]
     [SerializeField] private UnitLevelUpPanel unitLevelUpPanel;
-
 
     private UICharacterSetting uiCharacterSetting;
     private Vector2 onScreenPos;
@@ -171,6 +171,7 @@ public class CharacterInfo : MonoBehaviour
 
         RefreshUI();
         SetPlayerUnitSkillInfo();
+
         panelRect.DOKill();
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }

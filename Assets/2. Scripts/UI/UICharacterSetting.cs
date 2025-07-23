@@ -1,6 +1,7 @@
-using System.Collections;
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UICharacterSetting : UIBase
 {
@@ -8,6 +9,11 @@ public class UICharacterSetting : UIBase
     [SerializeField] private CharacterInfo characterInfoPanel;
     [SerializeField] private UnitSlot playerUnitSlot;
 
+
+    [Header("유닛 스탠딩 이미지")]
+    [SerializeField] private CanvasGroup standingPanel;
+    [SerializeField] private Image standingImage;
+    [SerializeField] private float fadeInDuration;
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
@@ -31,6 +37,11 @@ public class UICharacterSetting : UIBase
         if (SelectedPlayerUnitData == null)
             return;
         SetPlayerUnitData(SelectedPlayerUnitData);
+        standingImage.sprite = SelectedPlayerUnitData.CharacterSo.UnitStanding;
+
+        standingPanel.gameObject.SetActive(true);
+        standingPanel.alpha = 0;
+        standingPanel.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
     }
 
     public override void Open()
@@ -56,6 +67,7 @@ public class UICharacterSetting : UIBase
     {
         base.Close();
         characterInfoPanel.ClosePanel();
+        standingPanel.gameObject.SetActive(false);
     }
 
 
