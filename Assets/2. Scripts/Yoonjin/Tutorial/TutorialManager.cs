@@ -24,6 +24,7 @@ public class TutorialManager : Singleton<TutorialManager>
             { TutorialActionType.Dialogue, new DialogueActionExecutor() },
             { TutorialActionType.HighlightUI, new HighlightUIExecutor() },
             { TutorialActionType.TriggerWait, new TriggerWaitExecutor() },
+            { TutorialActionType.Reward, new RewardActionExecutor() },
         };
 
         // 실행기에 튜토리얼 매니저 주입
