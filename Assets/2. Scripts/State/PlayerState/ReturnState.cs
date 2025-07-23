@@ -12,6 +12,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.Agent.enabled = true;
             owner.Agent.avoidancePriority = 10;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.StartPostion);
