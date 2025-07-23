@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ public class SelectEquipUI : UIBase
     [SerializeField] private List<InventorySlot> equippedItemsSlot = new();
 
     [Header("장비 정보 표시")]
+    [SerializeField] private RectTransform panelRect;
     [SerializeField] private TextMeshProUGUI itemName;
 
     [SerializeField] private TextMeshProUGUI itemDescription;
@@ -32,6 +34,17 @@ public class SelectEquipUI : UIBase
 
     private InventorySlot selectedItemSlot;
 
+    private Vector2 onScreenPos;
+    private Vector2 offScreenPos;
+
+    private void Awake()
+    {
+        CloseInfo();
+        onScreenPos = panelRect.anchoredPosition;
+        offScreenPos = new Vector2(Screen.width, panelRect.anchoredPosition.y);
+
+        panelRect.anchoredPosition = offScreenPos;
+    }
 
     private void HandleEquipItemChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
     {
@@ -80,6 +93,7 @@ public class SelectEquipUI : UIBase
 
         DeckSelectManager.Instance.OnEquipItemChanged -= HandleEquipItemChanged;
         OnEquipChanged?.Invoke(CurrentCharacter);
+        CloseInfo();
     }
 
     // UI 갱신
@@ -120,6 +134,7 @@ public class SelectEquipUI : UIBase
 
     private void OnClickInventorySlot(EquipmentItem item)
     {
+        OpenInfo();
         inventoryUI.SelectItemSlot(item);
         InventorySlot selectSlot = inventoryUI.GetSlotByItem(item);
         if (selectSlot == null)
@@ -182,5 +197,17 @@ public class SelectEquipUI : UIBase
         {
             itemStatSlot.gameObject.SetActive(false);
         }
+    }
+
+    private void OpenInfo()
+    {
+        panelRect.DOKill();
+        panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
+    }
+
+    private void CloseInfo()
+    {
+        panelRect.DOKill();
+        panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 }

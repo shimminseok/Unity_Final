@@ -32,6 +32,10 @@ public class TopBar : MonoBehaviour
         UIManager.Instance.CloseLastOpenedUI();
     }
 
+    public void OnSettingButtonClick()
+    {
+        PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
+    }
 
     public void UpdateGoldText(int gold)
     {
