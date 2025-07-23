@@ -179,7 +179,6 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         isPlaying = false;
         if (CurrentCameraController != null)
         {
-            CurrentCameraController.ThrowCamera();
             CurrentCameraController.DefaultCamera();
         }
         CurrentCameraController = null;

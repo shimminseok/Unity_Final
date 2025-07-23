@@ -33,7 +33,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
     }
 
-    public override bool IsTimeLineDone
+    public override bool IsTimeLinePlaying
     {
         get
         {
