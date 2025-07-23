@@ -27,6 +27,14 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return info.IsTag("Action") && info.normalizedTime >= 0.9f;
         }
     }
+    
+    public override bool IsTimeLinePlaying
+    {
+        get
+        {
+            return TimeLineManager.Instance.isPlaying;
+        }
+    }
 
     private float remainDistance;
     public Vector3 StartPostion { get; private set; }

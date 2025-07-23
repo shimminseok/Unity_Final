@@ -85,8 +85,8 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     {
         attacker = user;
         director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
-        if (director.playableAsset == null) return;
         isPlaying = true;
+        if (director.playableAsset == null) return;
         CurrentCameraController = vCamController;
         CurrentCameraController.ChangeCamera();
         Unit attackerUnit = attacker as Unit;
