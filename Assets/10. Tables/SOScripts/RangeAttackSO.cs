@@ -6,7 +6,7 @@ public class RangeAttackSO : RangeActionSo
 {
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
     public override CombatActionSo     ActionSo     => this;
-
+    public override bool               IsProjectile => !string.IsNullOrEmpty(projectilePoolID);
     public override void Execute(IAttackable attacker, IDamageable target)
     {
         if (target != null)

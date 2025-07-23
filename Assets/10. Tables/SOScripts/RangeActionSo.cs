@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Playables;
 
 public class RangeActionSo : CombatActionSo
@@ -8,7 +9,7 @@ public class RangeActionSo : CombatActionSo
 
     public PoolableProjectile ProjectileComponent { get; protected set; }
 
-    public bool IsProjectile { get; private set; }
+    public virtual bool IsProjectile { get; protected set; }
 
     public override AttackDistanceType DistanceType => AttackDistanceType.Range;
 
@@ -16,6 +17,9 @@ public class RangeActionSo : CombatActionSo
     {
     }
 
+    public void CloneSkillType()
+    {
+    }
     public void SetIsProjectile(bool isProjectile)
     {
         IsProjectile = isProjectile;
