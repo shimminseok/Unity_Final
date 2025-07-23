@@ -30,6 +30,9 @@ public class SelectSkillUI : UIBase
     [Header("인벤토리")]
     [SerializeField] private EquipmentSkillInventory inventoryUI;
 
+    [Header("캐릭터 이름")]
+    [SerializeField] private TextMeshProUGUI chaName;
+
 
     private SkillSlot selectedSkillSlot;
     private DeckSelectManager DeckSelectManager => DeckSelectManager.Instance;
@@ -137,6 +140,7 @@ public class SelectSkillUI : UIBase
     {
         DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
         CurrentCharacter = currentUnit;
+        chaName.text = currentUnit.CharacterSo.UnitName;
     }
 
     public override void Open()

@@ -19,6 +19,9 @@ public class SelectEquipUI : UIBase
     [Header("인벤토리")]
     [SerializeField] private EquipmentUnitInventoryUI inventoryUI;
 
+    [Header("캐릭터 이름")]
+    [SerializeField] private TextMeshProUGUI chaName;
+
     public EntryDeckData CurrentCharacter { get; private set; }
 
     public event Action<EntryDeckData> OnEquipChanged;
@@ -57,6 +60,7 @@ public class SelectEquipUI : UIBase
     {
         DeckSelectManager.SetCurrentSelectedCharacter(currentUnit);
         CurrentCharacter = currentUnit;
+        chaName.text = currentUnit.CharacterSo.UnitName;
     }
 
     public override void Close()
