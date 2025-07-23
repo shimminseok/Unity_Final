@@ -138,7 +138,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (finalTarget == null || finalTarget.IsDead)
             return;
-
+        
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
@@ -149,10 +149,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         bool isHit = Random.value < hitRate;
         if (!isHit)
         {
-            Debug.Log("빗나갔지롱");
+            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
             return;
         }
-
+        
         PlayerUnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }
@@ -194,6 +194,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
 
+        DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
+        
         if (shield.CurrentValue > 0)
         {
             float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
@@ -251,6 +253,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
+        Agent.enabled = true;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

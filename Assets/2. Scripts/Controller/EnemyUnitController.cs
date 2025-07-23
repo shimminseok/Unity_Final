@@ -47,6 +47,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         Agent.speed = 15f;
         Agent.acceleration = 100f;
+        Agent.angularSpeed = 1000f;
     }
 
     // Update is called once per frame
@@ -138,7 +139,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         bool isHit = Random.value < hitRate;
         if (!isHit)
         {
-            Debug.Log("빗나갔지롱");
+            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
             return;
         }
 
@@ -170,6 +171,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+        DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
 
         if (shield.CurrentValue > 0)
         {
@@ -275,7 +277,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        Debug.Log("Enemy Start Turn");
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
+        Agent.enabled = true;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -283,6 +287,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         if (!IsDead)
             CurrentEmotion.AddStack(this);
+
 
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();

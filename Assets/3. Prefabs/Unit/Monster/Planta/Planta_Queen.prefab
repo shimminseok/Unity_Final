@@ -580,6 +580,7 @@ GameObject:
   - component: {fileID: 3392775085379670363}
   - component: {fileID: -6623970971503768823}
   - component: {fileID: 4266243210369217731}
+  - component: {fileID: 2248924171583157384}
   m_Layer: 7
   m_Name: Planta_Queen
   m_TagString: Untagged
@@ -674,8 +675,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &8276734032284388207
 MonoBehaviour:
@@ -720,7 +719,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3929847272200089850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.4
   m_Speed: 40
@@ -750,6 +749,22 @@ MonoBehaviour:
   unitIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
+--- !u!208 &2248924171583157384
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3929847272200089850}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.4, y: 0.5, z: 0.4}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.52, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3929847272200089852
 GameObject:
   m_ObjectHideFlags: 0

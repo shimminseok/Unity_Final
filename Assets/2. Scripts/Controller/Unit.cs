@@ -29,6 +29,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public AnimatorOverrideController AnimatorOverrideController { get; protected set; }
     public Collider                   Collider                   { get; protected set; }
     public NavMeshAgent               Agent                      { get; protected set; }
+    public NavMeshObstacle            Obstacle                   { get; protected set; }
     public UnitSO                     UnitSo                     { get; protected set; }
     public AnimationEventListener     AnimationEventListener     { get; protected set; }
     public Unit                       CounterTarget              { get; private set; }

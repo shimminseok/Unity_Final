@@ -2525,6 +2525,7 @@ GameObject:
   - component: {fileID: -3967711964234224515}
   - component: {fileID: -6156759580500302914}
   - component: {fileID: 8666264093531671794}
+  - component: {fileID: -7086004940720617646}
   m_Layer: 6
   m_Name: Archer
   m_TagString: Untagged
@@ -2564,7 +2565,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 4fa3646181582444c9c9fdede92d9d87, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2620,8 +2621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c9cc013ecfb974e83ed90ad249292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
   skillAttackAnim: {fileID: 0}
 --- !u!114 &-3100819424120585792
@@ -2674,7 +2673,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374048655880376}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.25
   m_Speed: 15
@@ -2701,6 +2700,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577f468ee5ccff840aa2f4a514f4de91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &-7086004940720617646
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374048655880376}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.25, y: 0.55, z: 0.25}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.55, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1378542575408906
 GameObject:
   m_ObjectHideFlags: 0

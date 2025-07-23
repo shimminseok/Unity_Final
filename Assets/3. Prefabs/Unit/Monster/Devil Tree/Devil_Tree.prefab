@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 6462380069176662403}
   - component: {fileID: 4469452588427543204}
   - component: {fileID: 326865846271009436}
+  - component: {fileID: 8723200476961583015}
   m_Layer: 7
   m_Name: Devil_Tree
   m_TagString: Untagged
@@ -144,8 +145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &-4560929562086979611
 MonoBehaviour:
@@ -190,7 +189,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3724572471564977762}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -220,6 +219,22 @@ MonoBehaviour:
   unitIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
+--- !u!208 &8723200476961583015
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3724572471564977762}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &3724572471564977764
 GameObject:
   m_ObjectHideFlags: 0

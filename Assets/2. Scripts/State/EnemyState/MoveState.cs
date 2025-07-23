@@ -13,7 +13,7 @@ namespace EnemyState
         public void OnEnter(EnemyUnitController owner)
         {
             owner.setRemainDistance = 1.5f;
-            owner.Agent.avoidancePriority = 10;
+            owner.Agent.avoidancePriority = 80;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
             target = owner.Target;

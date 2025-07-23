@@ -16,5 +16,5 @@ public class RewardData
 {
     public RewardType RewardType;
     public int Amount;
-    public string ItemId;
+    public int ItemId;
 }

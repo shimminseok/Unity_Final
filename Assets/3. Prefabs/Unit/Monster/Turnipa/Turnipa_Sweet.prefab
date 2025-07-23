@@ -511,6 +511,7 @@ GameObject:
   - component: {fileID: 3498433525218514130}
   - component: {fileID: -1740106916624640617}
   - component: {fileID: -6438736810249218589}
+  - component: {fileID: 1739966032064520045}
   m_Layer: 7
   m_Name: Turnipa_Sweet
   m_TagString: Untagged
@@ -605,8 +606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &-356074334717677046
 MonoBehaviour:
@@ -651,7 +650,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319869897745625822}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -681,6 +680,22 @@ MonoBehaviour:
   unitIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
+--- !u!208 &1739966032064520045
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319869897745625822}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &4195487092584528733
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -56,6 +56,11 @@ public class AccountManager : Singleton<AccountManager>
                     InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            RewardManager.Instance.GiveReward("1010101_Clear_Reward");
+        }
     }
 
 
@@ -157,7 +162,7 @@ public class AccountManager : Singleton<AccountManager>
         if (MySkills.TryAdd(skill.ID, new SkillData(skill)))
         {
             isDuplicate = false;
-            AddEquipmentItem(skill.jobType, skill.ID);
+            AddSkillByJob(skill.jobType, skill.ID);
         }
         else
         {
@@ -165,7 +170,7 @@ public class AccountManager : Singleton<AccountManager>
         }
     }
 
-    private void AddEquipmentItem(JobType jobType, int itemId)
+    private void AddSkillByJob(JobType jobType, int itemId)
     {
         if (!JobSkillInventory.TryGetValue(jobType, out List<int> inventoryList))
         {

@@ -4,59 +4,80 @@ using UnityEngine;
 
 public class VirtualCameraController : MonoBehaviour
 {
-   [SerializeField]public CinemachineVirtualCamera Camera;
+   [SerializeField]public CinemachineVirtualCamera vCam;
    private CameraAdjustData cameraAdjustData;
    private CinemachineBasicMultiChannelPerlin perlin;
+   public Animator CameraAnimator{get;set;}
    public Transform Target { get; set; }
    
 
    private void Awake()
    {
-       Camera = GetComponent<CinemachineVirtualCamera>();
-       cameraAdjustData = new CameraAdjustData(Camera);
-       perlin = Camera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+       vCam = GetComponent<CinemachineVirtualCamera>();
+       cameraAdjustData = new CameraAdjustData(vCam);
+       perlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+       CameraAnimator = GetComponent<Animator>();
    }
 
    public void FocusOnUnit()
    {
-       Camera.LookAt = Target;
+       vCam.LookAt = Target;
        // Camera.Follow = Target;
    }
 
    public void Unfocus()
    {
-       Camera.LookAt = null;
+       vCam.LookAt = null;
        // Camera.Follow = null;
-       Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
+       // Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
    }
 
    public void ZoomInCamera()
    {
-       Camera.m_Lens.FieldOfView -= cameraAdjustData.ZoomInFOVModifier;
+       vCam.m_Lens.FieldOfView -= cameraAdjustData.ZoomInFOVModifier;
    }
 
    public void ZoomOutCamera()
    {
-       Camera.m_Lens.FieldOfView += cameraAdjustData.ZoomOutFOVModifier;
+       vCam.m_Lens.FieldOfView += cameraAdjustData.ZoomOutFOVModifier;
    }
 
    public void DefaultCamera()
    {
-       Camera.m_Lens.FieldOfView = cameraAdjustData.DefaultFOV;
-       Camera.transform.position = cameraAdjustData.DefaultTransform.position;
-       Camera.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
+       vCam.m_Lens.FieldOfView = cameraAdjustData.DefaultFOV;
+       vCam.transform.position = cameraAdjustData.DefaultTransform.position;
+       vCam.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
    }
 
    public void ShakeCamera()
    {
+       if (perlin == null)
+       {
+           perlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+       }
        perlin.m_AmplitudeGain = cameraAdjustData.CameraShakeAmplitude;
        perlin.m_FrequencyGain = cameraAdjustData.CameraShakeFrequency;
+
    }
 
    public void StopShakeCamera()
    {
+       if (perlin == null)
+       {
+           perlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+       }
        perlin.m_AmplitudeGain = 0f;
        perlin.m_FrequencyGain = 0f;
+   }
+
+   public void ChangeCamera()
+   {
+       vCam.m_Priority = cameraAdjustData.MainPriority;
+   }
+
+   public void ThrowCamera()
+   {
+       vCam.m_Priority = cameraAdjustData.SubPriority;
    }
    
    

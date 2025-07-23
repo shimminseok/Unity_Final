@@ -67,7 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7145b8c2ee8be9047a43245e8b122936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  colider: {fileID: 0}
 --- !u!54 &5505844889407603300
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -142,8 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolId: Buff
   poolSize: 5
-  projectileSpeed: 2
-  Target: {fileID: 0}
+  projectileSpeed: 0.1
   isShooting: 0
-  mode: 2
+  mode: 5
   trigger: {fileID: 0}

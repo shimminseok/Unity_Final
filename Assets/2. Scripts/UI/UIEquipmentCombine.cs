@@ -92,8 +92,10 @@ public class UIEquipmentCombine : UIBase
         }
 
         inventoryManager.AddItem(resultItem);
-
-        MaterialItems.Clear();
+        for (int i = 0; i < MaterialItems.Count; i++)
+        {
+            MaterialItems[i] = null;
+        }
 
         resultItemSlot.Initialize(resultItem, true);
 

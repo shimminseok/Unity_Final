@@ -46,6 +46,7 @@ namespace EnemyState
             owner.Agent.isStopped = true;
             owner.Agent.velocity = Vector3.zero;
             owner.Agent.ResetPath();
+            
         }
     }
 }

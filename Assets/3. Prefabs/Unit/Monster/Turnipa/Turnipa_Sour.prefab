@@ -114,6 +114,7 @@ GameObject:
   - component: {fileID: 8706344329719388696}
   - component: {fileID: 3382822765039275581}
   - component: {fileID: -4991724497688389918}
+  - component: {fileID: -360506895542585559}
   m_Layer: 7
   m_Name: Turnipa_Sour
   m_TagString: Untagged
@@ -208,8 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127674bbafbaf8247851fd159163963b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTarget: {fileID: 0}
-  targets: []
   generateCost: 1
 --- !u!114 &1190266848514786865
 MonoBehaviour:
@@ -254,7 +253,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7214988284638652460}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
@@ -284,6 +283,22 @@ MonoBehaviour:
   unitIndicator: {fileID: 0}
   id: 0
   setRemainDistance: 0
+--- !u!208 &-360506895542585559
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7214988284638652460}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7214988284638652462
 GameObject:
   m_ObjectHideFlags: 0
