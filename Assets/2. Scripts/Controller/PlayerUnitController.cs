@@ -138,7 +138,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         if (finalTarget == null || finalTarget.IsDead)
             return;
-
+        
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
@@ -152,7 +152,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
             return;
         }
-
+        
         PlayerUnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }

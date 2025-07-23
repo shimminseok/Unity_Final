@@ -116,6 +116,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         if (EnemyUnits.TrueForAll(x => x.IsDead))
         {
             OnStageClear();
+            return;
         }
         else if (PartyUnits.TrueForAll(x => x.IsDead))
         {

@@ -8,13 +8,49 @@ public class RewardManager : Singleton<RewardManager>
     private RewardTable rewardTable;
 
 
-    private readonly Dictionary<RewardType, Action<int>> rewardHandlers = new()
+    private readonly Dictionary<RewardType, Action<RewardData>> rewardHandlers = new()
     {
-        { RewardType.Gold, amount => AccountManager.Instance.AddGold(amount) },
-        { RewardType.Opal, amount => AccountManager.Instance.AddOpal(amount) },
-        { RewardType.Item, amount => InventoryManager.Instance.AddItem(null, amount) },
-        { RewardType.Skill, amount => AccountManager.Instance.AddSkill(null, out _) },
-        { RewardType.Unit, amount => AccountManager.Instance.AddPlayerUnit(null, amount) }
+        { RewardType.Gold, reward => AccountManager.Instance.AddGold(reward.Amount) },
+        { RewardType.Opal, reward => AccountManager.Instance.AddOpal(reward.Amount) },
+        {
+            RewardType.Item, reward =>
+            {
+                ItemSO item = TableManager.Instance.GetTable<ItemTable>().GetDataByID(reward.ItemId);
+                if (item == null)
+                {
+                    return;
+                }
+
+                if (item is EquipmentItemSO equipmentItem)
+                {
+                    InventoryManager.Instance.AddItem(new EquipmentItem(equipmentItem), reward.Amount);
+                }
+            }
+        },
+        {
+            RewardType.Skill, reward =>
+            {
+                ActiveSkillSO skill = TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(reward.ItemId);
+                if (skill == null)
+                {
+                    return;
+                }
+
+                AccountManager.Instance.AddSkill(skill, out bool isDuplicate);
+            }
+        },
+        {
+            RewardType.Unit, reward =>
+            {
+                PlayerUnitSO unit = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(reward.ItemId);
+                if (unit == null)
+                {
+                    return;
+                }
+
+                AccountManager.Instance.AddPlayerUnit(unit, reward.Amount);
+            }
+        }
     };
 
     protected override void Awake()
@@ -33,9 +69,9 @@ public class RewardManager : Singleton<RewardManager>
 
         foreach (RewardData reward in rewardSo.RewardList)
         {
-            if (rewardHandlers.TryGetValue(reward.RewardType, out Action<int> handler))
+            if (rewardHandlers.TryGetValue(reward.RewardType, out Action<RewardData> handler))
             {
-                handler.Invoke(reward.Amount);
+                handler.Invoke(reward);
             }
         }
     }
