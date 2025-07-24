@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class AccountManager : Singleton<AccountManager>
 {
-    public int Gold      { get; private set; } = 0;
-    public int Opal      { get; private set; } = 3000;
-    public int BestStage { get; private set; } = 1010109;
+    public int Gold               { get; private set; } = 0;
+    public int Opal               { get; private set; } = 3000;
+    public int BestStage          { get; private set; } = 1010109;
+    public int LastClearedStageId { get; private set; } = 1010101;
 
     public Dictionary<int, EntryDeckData> MyPlayerUnits { get; private set; } = new Dictionary<int, EntryDeckData>();
     public Dictionary<int, SkillData>     MySkills      { get; private set; } = new Dictionary<int, SkillData>();
@@ -17,7 +18,6 @@ public class AccountManager : Singleton<AccountManager>
 
 
     private List<int> orderedStageIds;
-
     private Dictionary<JobType, List<int>> JobSkillInventory = new();
 
     protected override void Awake()
@@ -117,6 +117,10 @@ public class AccountManager : Singleton<AccountManager>
         }
     }
 
+    public void UpdateLastChallengedStageId(int stageId)
+    {
+        LastClearedStageId = stageId;
+    }
     public void SetBestStage(int stage)
     {
         BestStage = stage;

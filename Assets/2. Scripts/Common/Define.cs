@@ -73,4 +73,6 @@ public static class Define
     }
 
 
+    public static Dictionary<int, string> ChapterNameDictionary = new() { { 1, "1챕터임" }, { 2, "2챕터임" }, { 3, "3챕터임" }, { 4, "4챕터임" } };
+
 }

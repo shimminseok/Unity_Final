@@ -37,4 +37,9 @@ public class StageSlot : MonoBehaviour
             stageSelectUI.SetStageInfo(stageSo);
         }
     }
+
+    public void OnClickStageLockBtn()
+    {
+        PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("입장 조건이 맞지 않아 입장이 불가능합니다.");
+    }
 }
