@@ -91,6 +91,8 @@ public class SelectEquipUI : UIBase
                 AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
         }
 
+
+        selectedItemSlot = null;
         DeckSelectManager.Instance.OnEquipItemChanged -= HandleEquipItemChanged;
         OnEquipChanged?.Invoke(CurrentCharacter);
         CloseInfo();

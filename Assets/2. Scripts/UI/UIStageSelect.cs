@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
-
+using DG.Tweening;
 public class UIStageSelect : UIBase
 {
     [SerializeField] private RectTransform mapContent;
@@ -14,7 +12,7 @@ public class UIStageSelect : UIBase
     private Vector2 dragStartPos;
     private Vector2 contentStartPos;
 
-
+    [SerializeField] private List<RectTransform> cloudList;
     public void SetStageInfo(StageSO stage)
     {
         PlayerDeckContainer.Instance.SetStage(stage);
@@ -49,15 +47,39 @@ public class UIStageSelect : UIBase
         foreach (StageSO dataDicValue in TableManager.Instance.GetTable<StageTable>().DataDic.Values)
         {
             if (stageSlots.Count <= index)
-                return;
+                break;
 
             stageSlots[index++].Initialize(dataDicValue);
         }
-    }
 
+        foreach (RectTransform rectTransform in cloudList)
+        {
+            StartCloudLoop(rectTransform);
+        }
+    }
     public override void Close()
     {
         base.Close();
         stageInfoPanel.ClosePanel();
+    }
+
+    private void StartCloudLoop(RectTransform rect)
+    {
+        rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
+        MoveCloud(rect);
+    }
+
+    private void MoveCloud(RectTransform rect)
+    {
+        float moveSpeed = Random.Range(10f, 30f);
+        float delayTime = Random.Range(0f, 4f);
+        rect.DOKill();
+        rect.DOAnchorPos(new Vector2(-(Screen.width + rect.sizeDelta.x), rect.anchoredPosition.y), moveSpeed)
+            .SetEase(Ease.Linear)
+            .SetDelay(delayTime).OnComplete(() =>
+            {
+                rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
+                MoveCloud(rect); // 재귀 호출로 반복
+            });
     }
 }
