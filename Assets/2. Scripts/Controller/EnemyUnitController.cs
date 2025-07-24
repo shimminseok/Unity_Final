@@ -212,6 +212,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
+        
         Agent.enabled = false;
         dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         // gameObject.SetActive(false);
@@ -293,10 +294,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
         }
-
-        Obstacle.carving = false;
-        Obstacle.enabled = false;
-        Agent.enabled = true;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

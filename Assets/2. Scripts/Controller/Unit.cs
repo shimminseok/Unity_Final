@@ -244,6 +244,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void EndCountAttack()
     {
+        if (this is PlayerUnitController)
+        {
+            ChangeUnitState(PlayerUnitState.Idle);
+        }
+        else if (this is EnemyUnitController)
+        {
+            ChangeUnitState(EnemyUnitState.Idle);
+        }
         IsCounterAttack = false;
         CounterTarget = null;
     }

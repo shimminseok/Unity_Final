@@ -162,7 +162,7 @@ public class StatManager : MonoBehaviour
             }
             else
             {
-                Consume(type, valueType, value);
+                Consume(type, valueType, -value);
             }
 
             return;

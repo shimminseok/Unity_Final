@@ -11,6 +11,7 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
+            owner.OnToggleNavmeshAgent(true);
             owner.Agent.avoidancePriority = 10;
             owner.Agent.isStopped = false;
             owner.Animator.SetBool(isMove, true);

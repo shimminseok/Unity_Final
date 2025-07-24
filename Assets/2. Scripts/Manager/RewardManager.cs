@@ -82,7 +82,7 @@ public class RewardManager : Singleton<RewardManager>
         if (rewardSo == null)
             return;
 
-        UIManager.Instance.GetUIComponent<UIReward>().AddReward(rewardSo);
+        PopupManager.Instance.GetUIComponent<UIReward>().AddReward(rewardSo);
         GiveReward(id);
     }
 
@@ -92,6 +92,6 @@ public class RewardManager : Singleton<RewardManager>
     /// <param name="onComplete"></param>
     public void GiveRewardAndOpenUI(Action onComplete = null)
     {
-        UIManager.Instance.GetUIComponent<UIReward>().OpenRewardUI(onComplete);
+        PopupManager.Instance.GetUIComponent<UIReward>().OpenRewardUI(onComplete);
     }
 }

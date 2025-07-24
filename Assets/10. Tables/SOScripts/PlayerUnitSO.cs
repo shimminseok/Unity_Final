@@ -8,5 +8,7 @@ public class PlayerUnitSO : UnitSO
     public JobType JobType;
     public Tier Tier;
 
+    public Sprite UnitStanding;
+
     //TODO : 스킬 리스트 
 }

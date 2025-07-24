@@ -7,9 +7,7 @@ namespace EnemyState
         private readonly int skill = Define.SkillAnimationHash;
         public void OnEnter(EnemyUnitController owner)
         {
-            owner.Agent.isStopped = true;
-            owner.Agent.velocity = Vector3.zero;
-            owner.Agent.ResetPath();
+            owner.OnToggleNavmeshAgent(false);
             owner.Animator.SetTrigger(Define.SkillAnimationHash);
 
         }
@@ -22,9 +20,9 @@ namespace EnemyState
         {
         }
 
-        public void OnExit(EnemyUnitController entity)
+        public void OnExit(EnemyUnitController owner)
         {
-            entity.Animator.ResetTrigger(skill);
+            owner.Animator.ResetTrigger(skill);
         }
     }
 }

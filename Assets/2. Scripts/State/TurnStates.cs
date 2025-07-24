@@ -150,7 +150,6 @@ public class ActState : ITurnState
         };
 
 
-        Debug.Log("Enter ActState");
         action = CombatActionFactory.Create(unit);
         action.OnActionComplete += handler;
         action.Execute(unit);

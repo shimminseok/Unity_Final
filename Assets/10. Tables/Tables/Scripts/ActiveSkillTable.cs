@@ -16,7 +16,7 @@ public class ActiveSkillTable : BaseTable<int, ActiveSkillSO>
         {
             if (!DataDic.TryAdd(skillData.ID, skillData))
             {
-                Debug.LogWarning($"중복된 Passive ID 감지: {skillData.ID} - {skillData.name}");
+                Debug.LogWarning($"중복된 ID 감지: {skillData.ID} - {skillData.name}");
             }
 
             if (!ActiveSkillByJob.TryGetValue(skillData.jobType, out List<ActiveSkillSO> activeSkillData))

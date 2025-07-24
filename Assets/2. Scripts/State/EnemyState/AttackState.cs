@@ -8,12 +8,8 @@ namespace EnemyState
 
         public void OnEnter(EnemyUnitController owner)
         {
-            owner.OnToggleNavmeshAgent(true);
-            owner.Agent.updateRotation = false;
+            owner.OnToggleNavmeshAgent(false);
             owner.transform.LookAt(owner.IsCounterAttack ? owner.CounterTarget.Collider.transform : owner.Target.Collider.transform);
-            owner.Agent.isStopped = true;
-            owner.Agent.velocity = Vector3.zero;
-            owner.Agent.ResetPath();
             owner.Animator.SetTrigger(attack);
         }
 
@@ -28,9 +24,7 @@ namespace EnemyState
         public void OnExit(EnemyUnitController owner)
         {
             owner.Animator.ResetTrigger(attack);
-            owner.Agent.isStopped = false;
-            owner.Agent.updateRotation = true;
-            owner.OnToggleNavmeshAgent(false);
+            owner.OnToggleNavmeshAgent(true);
         }
     }
 }

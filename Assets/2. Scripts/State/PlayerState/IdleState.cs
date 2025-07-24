@@ -1,4 +1,7 @@
-﻿namespace PlayerState
+﻿using System.Buffers;
+using UnityEngine;
+
+namespace PlayerState
 {
     public class IdleState : IState<PlayerUnitController, PlayerUnitState>
     {
@@ -10,6 +13,7 @@
             owner.Animator.SetBool(isMove, false);
 
             owner.OnToggleNavmeshAgent(false);
+            owner.transform.localRotation = Quaternion.identity;
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -20,7 +24,7 @@
         {
         }
 
-        public void OnExit(PlayerUnitController entity)
+        public void OnExit(PlayerUnitController owner)
         {
         }
     }

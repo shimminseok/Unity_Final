@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ using UnityEngine.UI;
 public class SelectSkillUI : UIBase
 {
     [Header("장착한 스킬 이름 / 설명 / 효과")]
+    [SerializeField] private RectTransform panelRect;
+
     [SerializeField] private TextMeshProUGUI skillName;
 
     [SerializeField] private TextMeshProUGUI skillDescription;
@@ -30,6 +33,9 @@ public class SelectSkillUI : UIBase
     [Header("인벤토리")]
     [SerializeField] private EquipmentSkillInventory inventoryUI;
 
+    [Header("캐릭터 이름")]
+    [SerializeField] private TextMeshProUGUI chaName;
+
 
     private SkillSlot selectedSkillSlot;
     private DeckSelectManager DeckSelectManager => DeckSelectManager.Instance;
@@ -43,6 +49,17 @@ public class SelectSkillUI : UIBase
     public event Action<EntryDeckData> OnSkillChanged;
     private Action<InventorySlot> onClickCallback;
 
+    private Vector2 onScreenPos;
+    private Vector2 offScreenPos;
+
+    private void Awake()
+    {
+        CloseInfo();
+        onScreenPos = panelRect.anchoredPosition;
+        offScreenPos = new Vector2(Screen.width, panelRect.anchoredPosition.y);
+
+        panelRect.anchoredPosition = offScreenPos;
+    }
 
     private void HandleEquipItemChanged(EntryDeckData unit, SkillData newSkill, SkillData oldSkill)
     {
@@ -75,7 +92,7 @@ public class SelectSkillUI : UIBase
 
     private void OnClickInventorySlot(SkillData skill)
     {
-
+        OpenInfo();
 
         inventoryUI.SelectItemSlot(skill);
         SkillSlot selectSlot = inventoryUI.GetSlotByItem(skill);
@@ -98,8 +115,8 @@ public class SelectSkillUI : UIBase
                     RefreshEquippedSkillSlots();
                 };
                 string equippedUnitName = skill.EquippedUnit.CharacterSo.UnitName;
-                string skillName        = skill.skillSo.skillName;
-                string message          = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
+                string skillName = skill.skillSo.skillName;
+                string message = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
                 PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("스킬 장착", message, leftAction, null, "장착", "취소");
             }
             else
@@ -137,6 +154,7 @@ public class SelectSkillUI : UIBase
     {
         DeckSelectManager.Instance.SetCurrentSelectedCharacter(currentUnit);
         CurrentCharacter = currentUnit;
+        chaName.text = currentUnit.CharacterSo.UnitName;
     }
 
     public override void Open()
@@ -170,5 +188,18 @@ public class SelectSkillUI : UIBase
 
         DeckSelectManager.Instance.OnEquipSkillChanged -= HandleEquipItemChanged;
         OnSkillChanged?.Invoke(CurrentCharacter);
+        CloseInfo();
+    }
+
+    private void OpenInfo()
+    {
+        panelRect.DOKill();
+        panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
+    }
+
+    private void CloseInfo()
+    {
+        panelRect.DOKill();
+        panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 }

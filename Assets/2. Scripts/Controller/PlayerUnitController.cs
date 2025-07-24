@@ -221,6 +221,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
 
         IsDead = true;
+        ChangeUnitState(PlayerUnitState.Die);
 
 
         //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
@@ -233,6 +234,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             unit.OnAllyDead();
         }
+
     }
 
     public override void StartTurn()
@@ -255,10 +257,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             turnStartTrigger.OnTurnStart(this);
         }
-
-        Obstacle.carving = false;
-        Obstacle.enabled = false;
-        Agent.enabled = true;
+        
         ChangeTurnState(TurnStateType.StartTurn);
     }
 

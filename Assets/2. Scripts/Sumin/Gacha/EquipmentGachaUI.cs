@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,6 @@ public class EquipmentGachaUI : UIBase
     [SerializeField] private Button oneDrawBtn;
 
     [SerializeField] private Button tenDrawBtn;
-
-    [Header("뽑기 확인 창")]
-    [SerializeField] private GachaConfirmPopupUI confirmPanel;
 
     [Header("뽑기 결과 창")]
     [SerializeField] private EquipmentGachaResultUI resultPanel;
@@ -31,41 +29,24 @@ public class EquipmentGachaUI : UIBase
         uiManager = UIManager.Instance;
     }
 
-    private void OnDisable()
-    {
-        confirmPanel.OnConfirm -= HandleConfirm;
-        confirmPanel.OnConfirm -= HandleCancel;
-    }
-
     public void OnDrawCountBtn(int count)
     {
         if (!gachaSystem.CheckCanDraw(count))
         {
-            uiManager.Open(uiManager.GetUIComponent<GachaCantDrawPopupUI>());
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("Opal이 부족합니다!");
             return;
         }
 
         drawCount = count;
 
-        confirmPanel.OnConfirm += HandleConfirm;
-        confirmPanel.OnConfirm += HandleCancel;
-        confirmPanel.ShowPopup(gachaSystem.DrawCost * count);
-    }
-
-    private void HandleConfirm()
-    {
-        DrawAndDisplayResult(drawCount);
-    }
-
-    private void HandleCancel()
-    {
-        Debug.Log("취소됨");
+        string message = $"{count}회 장비 소환을 진행하시겠습니까?\n 소모 Opal : {gachaSystem.DrawCost * count}";
+        Action leftAction = () => DrawAndDisplayResult(drawCount);
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("장비 소환", message, leftAction, null, "소환", "취소");
     }
 
     private void DrawAndDisplayResult(int count)
     {
         EquipmentItemSO[] equipments = gachaSystem.DrawEquipments(count);
-
 
         uiManager.Open(uiManager.GetUIComponent<EquipmentGachaResultUI>());
         resultPanel.ShowEquipments(equipments);
