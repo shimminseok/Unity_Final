@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UnitLevelUpPanel : MonoBehaviour
 {
     [SerializeField] private PlayerUnitIncreaseSo increaseSo;
-
+    [SerializeField] private GameObject contents;
     [SerializeField] private CanvasGroup panelRect;
     [SerializeField] private TextMeshProUGUI currentLevelTxt;
     [SerializeField] private TextMeshProUGUI maxLevelTxt;
@@ -31,7 +31,7 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(false);
+        contents.SetActive(false);
 
         InitializeIncreaseStatSlotDic();
     }
@@ -89,7 +89,8 @@ public class UnitLevelUpPanel : MonoBehaviour
         }
 
         currentPlayerUnitData = unitData;
-        gameObject.SetActive(true);
+        contents.SetActive(true);
+        
         panelRect.alpha = 0;
         panelRect.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
 
@@ -110,7 +111,7 @@ public class UnitLevelUpPanel : MonoBehaviour
                 currentPlayerUnitData.OnTranscendChanged -= UpdateDupeCount;
             }
 
-            gameObject.SetActive(false);
+            contents.SetActive(false);
             currentPlayerUnitData = null;
         });
     }
