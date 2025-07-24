@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5563648775258339898}
   - component: {fileID: 3540002909940611732}
   - component: {fileID: 2602386054703694047}
+  - component: {fileID: 2087152312560366925}
   m_Layer: 0
   m_Name: CharInfoPanel
   m_TagString: Untagged
@@ -100,6 +101,7 @@ MonoBehaviour:
   - {fileID: 333872240817764241}
   - {fileID: 4780708995745560463}
   unitSlot: {fileID: 6926542650382476944}
+  BG: {fileID: 2087152312560366925}
 --- !u!114 &2602386054703694047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +131,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!225 &2087152312560366925
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394343878902880913}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &550668561706860484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1313,6 +1327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents: {fileID: 8272533350029100493}
   ownedCharacterParent: {fileID: 3846850974005129142}
+  ownedCharacterRect: {fileID: 5494640013215190671}
   competedUnitSlots:
   - {fileID: 2947248886615316553}
   - {fileID: 2922876227143469488}

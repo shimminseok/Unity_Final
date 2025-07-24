@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class UIDeckBuilding : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
+    [SerializeField] private RectTransform ownedCharacterRect;
 
     [SerializeField] private List<CompeteUnitSlot> competedUnitSlots;
 
@@ -20,10 +22,15 @@ public class UIDeckBuilding : UIBase
 
     // 보유 캐릭터 & 선택 캐릭터 SO들을 담는 리스트
     private Dictionary<int, UnitSlot> characterSlotDic = new();
-
+    private Vector2 originalPos;
 
     private UnitSlot selectedUnitSlot;
     private AvatarPreviewManager avatarPreviewManager => AvatarPreviewManager.Instance;
+
+    private void Awake()
+    {
+        originalPos = ownedCharacterRect.anchoredPosition;
+    }
 
     // 현재 보유 중인 캐릭터 목록 버튼 생성
     private void GenerateHasUnitSlots()
@@ -106,6 +113,9 @@ public class UIDeckBuilding : UIBase
         base.Open();
         GenerateHasUnitSlots();
         ShowCompetedUnit(DeckSelectManager.Instance.GetSelectedDeck());
+
+        ownedCharacterRect.DOKill();
+        ownedCharacterRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.down * 500f).SetEase(Ease.OutBack);
     }
 
     public override void Close()
