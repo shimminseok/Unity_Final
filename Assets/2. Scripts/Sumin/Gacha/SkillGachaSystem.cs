@@ -14,6 +14,7 @@ public class SkillGachaSystem : MonoBehaviour
     private void Awake()
     {
         gachaManager = new GachaManager<ActiveSkillSO>(new RandoomSkillGachaStrategy());
+        drawCost = Define.GachaDrawCosts[GachaType.Skill];
     }
 
     // 몬스터 스킬 제외
@@ -36,8 +37,6 @@ public class SkillGachaSystem : MonoBehaviour
     {
         List<ActiveSkillSO> skillData = GetSkillDatas();
         GachaResult<ActiveSkillSO>[] results = new GachaResult<ActiveSkillSO>[count];
-
-        AccountManager.Instance.UseOpal(drawCost * count); // 오팔 사용
 
         for (int i=0; i<count; i++)
         {
@@ -66,13 +65,4 @@ public class SkillGachaSystem : MonoBehaviour
         return results;
     }
 
-    // 오팔 사용 가능 여부 체크.
-    // false 되면 UI쪽에서 다른 창 띄우면서 못뽑게 할 것.
-    public bool CheckCanDraw(int drawCount)
-    {
-        drawCost = Define.GachaDrawCosts[GachaType.Skill];
-        bool canUse = AccountManager.Instance.CanUseOpal(drawCost * drawCount);
-
-        return canUse;
-    }
 }

@@ -1,4 +1,6 @@
 using DG.Tweening;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +9,8 @@ public class GachaUI : UIBase
     [Header("뽑기 버튼들")]
     [SerializeField] private GachaDrawButton drawButtonOne;
     [SerializeField] private GachaDrawButton drawButtonTen;
+    [SerializeField] private TextMeshProUGUI drawOneCost;
+    [SerializeField] private TextMeshProUGUI drawTenCost;
 
     [Header("캐릭터 가챠")]
     [SerializeField] private Button characterGachaButton;
@@ -61,6 +65,12 @@ public class GachaUI : UIBase
         base.Open();
         ShowGachaMenu();
         // 처음 열었을땐 영웅 소환
+        StartCoroutine(DeferredInit());
+    }
+
+    private IEnumerator DeferredInit()
+    {
+        yield return null; // 한 프레임 대기
         OnCharacterGachaSelected();
         ToggleActiveButtons(characterGachaButton);
     }
@@ -116,6 +126,8 @@ public class GachaUI : UIBase
         InitializeGachaTypeUI();
         bannerUI.ShowBanner();
         ToggleActiveButtons(activeButton);
+        drawOneCost.text = $"x {handler.GetTotalCost(1)}";
+        drawTenCost.text = $"x {handler.GetTotalCost(10)}";
     }
 
     // 가챠 종류별 버튼 누를때마다 초기화

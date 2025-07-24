@@ -36,12 +36,12 @@ public class GachaDrawButton : MonoBehaviour
     {
         if (!gachaHandler.CanDraw(drawCount))
         {
-            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("Opal이 부족합니다!");
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("공명석이 부족합니다!");
             return;
         }
 
         string gachaTypeName = gachaHandler.GetGachaTypeName();
-        string message = $"{drawCount}회 {gachaTypeName}을 진행하시겠습니까?\n 소모 Opal : {gachaHandler.GetDrawCost() * drawCount}";
+        string message = $"{drawCount}회 {gachaTypeName}을 진행하시겠습니까?\n 소모 공명석 : {gachaHandler.GetTotalCost(drawCount)}";
         Action leftAction = () => gachaHandler.DrawAndDisplayResult(drawCount);
 
         PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI
