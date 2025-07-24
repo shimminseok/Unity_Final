@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ public class UIEquipmentCombine : UIBase
 {
     [Header("Inventory")]
     [SerializeField] private EquipmentCombineInventoryUI inventoryUI;
-
+    [SerializeField] private RectTransform inventoryRect;
 
     [SerializeField] private List<InventorySlot> materialItemSlotList;
     [SerializeField] private InventorySlot resultItemSlot;
@@ -16,13 +17,17 @@ public class UIEquipmentCombine : UIBase
     private InventoryManager inventoryManager;
 
     private List<EquipmentItem> MaterialItems = new() { null, null, null };
-
+    private Vector2 originalPos;
 
     private EquipmentItem resultItem;
 
-
     private bool IsItemInCombine(EquipmentItem item) => MaterialItems.Any(i => i == item);
     private bool CanAddItemToCombine()               => MaterialItems.Any(i => i == null);
+
+    private void Awake()
+    {
+        originalPos = inventoryRect.anchoredPosition;
+    }
 
     private void Start()
     {
@@ -123,5 +128,8 @@ public class UIEquipmentCombine : UIBase
                 slot.OnClickSlot -= ToggleCombineItem;
                 slot.OnClickSlot += ToggleCombineItem;
             });
+
+        inventoryRect.DOKill();
+        inventoryRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.down * 300f).SetEase(Ease.OutBack);
     }
 }

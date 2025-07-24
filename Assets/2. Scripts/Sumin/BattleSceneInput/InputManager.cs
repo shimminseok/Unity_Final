@@ -112,12 +112,16 @@ public class InputManager : SceneOnlySingleton<InputManager>
     // Start 버튼
     public void OnClickTurnStartButton()
     {
+        OnPlayMode();
         CommandPlanner.Instance.ExecutePlannedActions();
 
         // 배틀매니저 턴 시작
         BattleManager.Instance.StartTurn();
+    }
 
-        // 인풋 불가 상태로 진입
+    // 인풋 불가 상태로 진입
+    public void OnPlayMode()
+    {
         inputStateMachine.ChangeState<InputDisabledState>();
     }
 
