@@ -153,6 +153,17 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void OnStageClear()
     {
+        // 튜토리얼에서 BattleVictory 이벤트 발행
+        var tutorial = TutorialManager.Instance;
+
+        if (tutorial != null && tutorial.IsActive &&
+            TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
+            TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
+            triggerData.triggerEventName == "BattleVictory")
+        {
+            EventBus.Publish("BattleVictory");
+        }
+
         PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.AddReward(rewardKey);

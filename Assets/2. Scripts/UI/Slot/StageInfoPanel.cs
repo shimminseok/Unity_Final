@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class StageInfoPanel : MonoBehaviour
 {
+    
     [SerializeField] private RectTransform panelRect;
     [SerializeField] private TextMeshProUGUI stageName;
     [SerializeField] private List<StagePanelMonsterSlot> spawnMonsters;
@@ -22,7 +23,7 @@ public class StageInfoPanel : MonoBehaviour
     {
         onScreenScale = Vector3.one;
         panelRect.localScale = Vector3.zero;
-        gameObject.SetActive(false);
+        panelRect.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -33,7 +34,7 @@ public class StageInfoPanel : MonoBehaviour
     public void OpenPanel()
     {
         panelRect.DOKill();
-        gameObject.SetActive(true);
+        panelRect.gameObject.SetActive(true);
         DeckSelectManager.Instance.OnChangedDeck += SetCompetedUnitSlot;
         panelRect.DOScale(onScreenScale, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
         {
@@ -44,9 +45,9 @@ public class StageInfoPanel : MonoBehaviour
     public void ClosePanel()
     {
         panelRect.DOKill();
-        panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutBack).OnComplete(() =>
+        panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
         {
-            gameObject.SetActive(false);
+            panelRect.gameObject.SetActive(false);
         });
         DeckSelectManager.Instance.OnChangedDeck -= SetCompetedUnitSlot;
     }

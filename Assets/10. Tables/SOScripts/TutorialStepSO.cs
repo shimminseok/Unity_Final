@@ -4,7 +4,8 @@ public enum TutorialActionType
 {
     Dialogue,
     HighlightUI,
-    TriggerWait
+    TriggerWait,
+    Reward
 }
 
 [CreateAssetMenu(fileName = "TutorialStep", menuName = "ScriptableObjects/Tutorial/TutorialStep", order = 0)]
