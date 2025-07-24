@@ -2,11 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class UIStageSelect : UIBase
 {
+    [SerializeField] private List<Sprite> stageBgSprites;
+    [SerializeField] private Image stageBgImg;
+    
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private RectTransform viewPort;
     [SerializeField] private StageInfoPanel stageInfoPanel;
@@ -168,6 +173,7 @@ public class UIStageSelect : UIBase
         {
             currentChpaterIndex = nextIndex;
             SlideToNextText(chapterName);
+            stageBgImg.sprite = stageBgSprites[currentChpaterIndex - 1];
             SetStageSlot();
         }
     }
@@ -179,6 +185,7 @@ public class UIStageSelect : UIBase
         {
             currentChpaterIndex = prevIndex;
             SlideToPrevText(chapterName);
+            stageBgImg.sprite = stageBgSprites[currentChpaterIndex - 1];
             SetStageSlot();
         }
     }
