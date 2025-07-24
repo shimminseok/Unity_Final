@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,12 +29,22 @@ public class GachaUI : UIBase
     [SerializeField] private EquipmentGachaBannerUI equipmentGachaBannerUI;
     private EquipmentGachaHandler equipmentHandler;
 
+    [Header("좌측 메뉴")]
+    [SerializeField] private GameObject gachaMenu;
+    [SerializeField] private float fadeInDuration;
+    private RectTransform gachaMenuRect;
+    private CanvasGroup gachaMenuCanvasGroup;
+    private Vector2 originalPos;
+    private bool initialized = false;
 
     private void Start()
     {
         characterHandler = new CharacterGachaHandler(characterGachaSystem, characterGachaResultUI);
         skillHandler = new SkillGachaHandler(skillGachaSystem, skillGachaResultUI);
         equipmentHandler = new EquipmentGachaHandler(equipmentGachaSystem, equipmentGachaResultUI);
+
+        gachaMenuRect = gachaMenu.GetComponent<RectTransform>();
+        gachaMenuCanvasGroup = gachaMenu.GetComponent<CanvasGroup>();
 
         characterGachaButton.onClick.RemoveAllListeners();
         characterGachaButton.onClick.AddListener(() => OnCharacterGachaSelected());
@@ -48,9 +59,30 @@ public class GachaUI : UIBase
     public override void Open()
     {
         base.Open();
+        ShowGachaMenu();
         // 처음 열었을땐 영웅 소환
         OnCharacterGachaSelected();
         ToggleActiveButtons(characterGachaButton);
+    }
+
+    private void ShowGachaMenu()
+    {
+        // 초기 위치 저장
+        if (!initialized)
+        {
+            originalPos = gachaMenuRect.anchoredPosition;
+            initialized = true;
+        }
+
+        gachaMenuRect.DOKill();
+        gachaMenuCanvasGroup.DOKill();
+
+        this.gameObject.SetActive(true);
+        gachaMenuCanvasGroup.alpha = 0f;
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Append(gachaMenuRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.left * 200f).SetEase(Ease.OutBack));
+        sequence.Join(gachaMenuCanvasGroup.DOFade(1f, fadeInDuration));
     }
 
     // 버튼 토글

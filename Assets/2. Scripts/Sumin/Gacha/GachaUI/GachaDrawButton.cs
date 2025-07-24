@@ -5,15 +5,22 @@ using UnityEngine.UI;
 
 public class GachaDrawButton : MonoBehaviour
 {
-    [SerializeField] private Button drawButton;
-    [SerializeField] private RectTransform rectTransform;
-    [SerializeField] private CanvasGroup canvasGroup;
+    private Button drawButton;
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
     [SerializeField] private float fadeInDuration;
 
     private IGachaHandler gachaHandler;
     private int drawCount;
     private Vector2 originalPos;
     private bool initialized = false;
+
+    private void Awake()
+    {
+        drawButton = this.GetComponent<Button>();
+        rectTransform = this.GetComponent<RectTransform>();
+        canvasGroup = this.GetComponent<CanvasGroup>();
+    }
 
     public void Initialize(IGachaHandler handler, int count)
     {
