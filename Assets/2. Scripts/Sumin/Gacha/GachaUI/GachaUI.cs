@@ -65,12 +65,6 @@ public class GachaUI : UIBase
         base.Open();
         ShowGachaMenu();
         // 처음 열었을땐 영웅 소환
-        StartCoroutine(DeferredInit());
-    }
-
-    private IEnumerator DeferredInit()
-    {
-        yield return null; // 한 프레임 대기
         OnCharacterGachaSelected();
         ToggleActiveButtons(characterGachaButton);
     }
