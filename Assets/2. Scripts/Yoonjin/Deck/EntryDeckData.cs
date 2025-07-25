@@ -41,24 +41,49 @@ public class EntryDeckData
     public void LevelUp(out bool result)
     {
         result = Level < MaxLevel;
-        AccountManager.Instance.UseGold(Define.RequierUnitLevelUpGold, out result);
-        if (result)
+        if (!result)
         {
-            Level++;
-            OnLevelUp?.Invoke();
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("이미 최대 레벨입니다.");
+            return;
         }
+
+        AccountManager.Instance.UseGold(Define.RequierUnitLevelUpGold, out result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("골드가 부족합니다.");
+            return;
+        }
+
+        Level++;
+        OnLevelUp?.Invoke();
     }
 
     public void Transcend(out bool result)
     {
-        result = TranscendLevel < MAX_TRANSCEND_LEVEL && Amount >= Define.DupeCountByTranscend[TranscendLevel];
-        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
-        if (result)
+        result = TranscendLevel < MAX_TRANSCEND_LEVEL;
+        if (!result)
         {
-            Amount -= Define.DupeCountByTranscend[TranscendLevel];
-            TranscendLevel++;
-            OnTranscendChanged?.Invoke();
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("더이상 초월을 할 수 없습니다.");
+            return;
         }
+
+        result = Amount >= Define.DupeCountByTranscend[TranscendLevel];
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
+            return;
+        }
+
+        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
+            return;
+        }
+
+        Amount -= Define.DupeCountByTranscend[TranscendLevel];
+        TranscendLevel++;
+        OnTranscendChanged?.Invoke();
     }
 
     public void Compete(bool isCompeted)
