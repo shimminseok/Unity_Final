@@ -35,9 +35,7 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
             return null;
         EquipmentItemSO combineItemSo = combineItemList[Random.Range(0, combineItemList.Count)];
 
-        EquipmentItem combineItem = new EquipmentItem(combineItemSo);
 
-
-        return combineItem;
+        return new EquipmentItem(combineItemSo);
     }
 }
