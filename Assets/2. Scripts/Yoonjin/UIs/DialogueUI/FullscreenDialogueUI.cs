@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class FullscreenDialogueUI : MonoBehaviour
 {
@@ -34,8 +35,8 @@ public class FullscreenDialogueUI : MonoBehaviour
         bool isRightSpeaking = line.portraitRight == line.portraitKey;
 
         // 밝기 조절
-        leftPortraitGroup.alpha = isLeftSpeaking ? 1f : 0.5f;
-        rightPortraitGroup.alpha = isRightSpeaking ? 1f : 0.5f;
+        leftPortraitGroup.DOFade(isLeftSpeaking ? 1f : 0.5f, 0.25f);
+        rightPortraitGroup.DOFade(isRightSpeaking ? 1f : 0.5f, 0.25f);
 
         // 배경 설정
         var background = DialogueResourceLoader.LoadBackground(line.backgroundKey);
