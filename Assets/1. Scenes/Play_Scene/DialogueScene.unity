@@ -347,6 +347,94 @@ Transform:
   - {fileID: 8631198081465213317}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1489903656
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1489903660}
+  - component: {fileID: 1489903658}
+  - component: {fileID: 1489903659}
+  - component: {fileID: 1489903657}
+  m_Layer: 0
+  m_Name: RightPortraitImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!225 &1489903657
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489903656}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!222 &1489903658
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489903656}
+  m_CullTransparentMesh: 1
+--- !u!114 &1489903659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489903656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!224 &1489903660
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1489903656}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8631198081465213317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -860, y: -35}
+  m_SizeDelta: {x: 608, y: 800}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1933738951
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,8 +1074,9 @@ GameObject:
   - component: {fileID: 7962219464282158046}
   - component: {fileID: 2138669841359220970}
   - component: {fileID: 8470364585801089359}
+  - component: {fileID: 8470364585801089360}
   m_Layer: 0
-  m_Name: PortraitImage
+  m_Name: LeftPortraitImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1113,7 +1202,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 302, y: -35}
+  m_AnchoredPosition: {x: 300, y: -35}
   m_SizeDelta: {x: 608, y: 800}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &8470364585801089359
@@ -1146,6 +1235,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &8470364585801089360
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258659434947765740}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &8631198081465213317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1160,6 +1261,7 @@ RectTransform:
   m_Children:
   - {fileID: 9143591231967727864}
   - {fileID: 7962219464282158046}
+  - {fileID: 1489903660}
   - {fileID: 7281775617542749845}
   - {fileID: 7479276572366150317}
   - {fileID: 708396251}
@@ -1184,8 +1286,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 8868766114014252759}
   dialogueText: {fileID: 9209850812844945169}
-  portraitImage: {fileID: 8470364585801089359}
+  leftPortraitImage: {fileID: 8470364585801089359}
+  rightPortraitImage: {fileID: 1489903659}
   backgroundImage: {fileID: 4285702524498999215}
+  leftPortraitGroup: {fileID: 8470364585801089360}
+  rightPortraitGroup: {fileID: 1489903657}
 --- !u!1 &8705498621502061365
 GameObject:
   m_ObjectHideFlags: 0
