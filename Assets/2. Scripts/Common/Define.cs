@@ -76,6 +76,8 @@ public static class Define
 
     public static Dictionary<int, string> ChapterNameDictionary = new() { { 1, "1챕터임" }, { 2, "2챕터임" }, { 3, "3챕터임" }, { 4, "4챕터임" } };
 
-    public static int RequierCombineItemGold = 3000;
+    public static readonly int RequierCombineItemGold = 3000;
+    public static readonly int RequierUnitLevelUpGold = 1000;
+    public static readonly int RequierUnitTranscendGold = 10000;
 
 }

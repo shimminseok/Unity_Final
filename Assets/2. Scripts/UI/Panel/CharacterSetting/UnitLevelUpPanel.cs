@@ -121,8 +121,9 @@ public class UnitLevelUpPanel : MonoBehaviour
         currentPlayerUnitData.Transcend(out bool result);
         if (!result)
         {
-            //초월 실패
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("");
         }
+        
     }
 
     public void OnClickLevelUp()
@@ -130,7 +131,7 @@ public class UnitLevelUpPanel : MonoBehaviour
         currentPlayerUnitData.LevelUp(out bool result);
         if (!result)
         {
-            //레벨업 실패
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("");
         }
     }
 }
