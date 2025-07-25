@@ -97,6 +97,11 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (OnHeld == null)
+        {
+            return;
+        }
+
         if (holdCoroutine == null)
         {
             holdCoroutine = StartCoroutine(HoldCheckCoroutine());

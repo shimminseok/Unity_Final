@@ -173,9 +173,6 @@ public class InventoryManager : Singleton<InventoryManager>
             nextId = equipmentItem.InventoryId;
         }
 
-        foreach (int id in inventory.Keys)
-        {
-            OnInventorySlotUpdate?.Invoke(id);
-        }
+        OnInventorySlotUpdate += (id) => SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
     }
 }

@@ -120,12 +120,17 @@ public class AccountManager : Singleton<AccountManager>
         {
             BestStage = stage.ID;
             RewardManager.Instance.AddReward(stage.FirstClearReward.Id);
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.BestStage);
         }
     }
 
     public void UpdateLastChallengedStageId(int stageId)
     {
-        LastClearedStageId = stageId;
+        if (LastClearedStageId != stageId)
+        {
+            LastClearedStageId = stageId;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.CurrentStage);
+        }
     }
 
     public void SetBestStage(int stage)
@@ -166,6 +171,8 @@ public class AccountManager : Singleton<AccountManager>
         {
             data.AddAmount(amount);
         }
+
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
     }
 
     public void AddSkill(ActiveSkillSO skill, out bool isDuplicate)
@@ -179,6 +186,8 @@ public class AccountManager : Singleton<AccountManager>
         {
             isDuplicate = true;
         }
+
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventorySkill);
     }
 
     private void AddSkillByJob(JobType jobType, int itemId)

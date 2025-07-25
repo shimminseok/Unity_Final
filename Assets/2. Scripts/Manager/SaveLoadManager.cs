@@ -174,7 +174,7 @@ public class SaveOpalData : SaveData
 [Serializable]
 public class SaveBestStageData : SaveData
 {
-    public int BestStage { get; set; } = 1010101;
+    public int BestStage { get; set; } = 1010100;
 
     public override void OnBeforeSave()
     {

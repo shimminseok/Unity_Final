@@ -126,7 +126,7 @@ public class EntryDeckData
         for (int i = 0; i < data.SkillDataIds.Length && i < SkillDatas.Length; i++)
         {
             int skillId = data.SkillDataIds[i];
-            if (skillId < 0)
+            if (skillId <= 0)
             {
                 continue;
             }
@@ -158,6 +158,7 @@ public class EntryDeckData
 
         Level++;
         OnLevelUp?.Invoke();
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
     }
 
     public void SetTranscendLevel(int transcendLevel)
@@ -174,7 +175,7 @@ public class EntryDeckData
             return;
         }
 
-        result = Amount >= Define.DupeCountByTranscend[TranscendLevel];
+        SubAmount(Define.DupeCountByTranscend[TranscendLevel], out result);
         if (!result)
         {
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
@@ -188,9 +189,10 @@ public class EntryDeckData
             return;
         }
 
-        Amount -= Define.DupeCountByTranscend[TranscendLevel];
+
         TranscendLevel++;
         OnTranscendChanged?.Invoke();
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
     }
 
     public void Compete(int index, bool isCompeted)
@@ -206,6 +208,15 @@ public class EntryDeckData
     public void AddAmount(int amount = 1)
     {
         Amount += amount;
+    }
+
+    public void SubAmount(int amount, out bool result)
+    {
+        result = Amount >= amount;
+        if (result)
+        {
+            Amount -= amount;
+        }
     }
 
     public void EquipItem(EquipmentItem item)
