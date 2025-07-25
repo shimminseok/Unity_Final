@@ -15,7 +15,7 @@ public static class Define
     public static readonly int DeadAnimationHash = Animator.StringToHash("Dead");
     public static readonly int VictoryAnimationHash = Animator.StringToHash("Victory");
     public static readonly int ReadyActionAnimationHash = Animator.StringToHash("ReadyAction");
-
+    public static readonly int HitAnimationHash = Animator.StringToHash("Hit");
 
     public static readonly string IdleClipName = "Idle";
     public static readonly string MoveClipName = "Move";
@@ -24,6 +24,7 @@ public static class Define
     public static readonly string DeadClipName = "Die";
     public static readonly string VictoryClipName = "Victory";
     public static readonly string ReadyActionClipName = "ReadyAction";
+    public static readonly string HitClipName = "Hit";
 
 
     public static readonly Dictionary<int, int> DupeCountByTranscend = new Dictionary<int, int>()
@@ -59,7 +60,7 @@ public static class Define
     public static float GetCompensationAmount(Tier tier) { return tier switch { Tier.A => 0.1f, Tier.S => 0.2f, Tier.SR => 0.3f, Tier.SSR => 0.4f, _ => 0 }; }
 
     // 가챠 비용
-    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Character, 150 }, { GachaType.Equipment, 150 } };
+    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Character, 200 }, { GachaType.Equipment, 150 } };
 
 
     public static float GetTargetColliderRadius(IDamageable target)
@@ -72,5 +73,11 @@ public static class Define
             return 0.5f; // 기본값
     }
 
+
+    public static Dictionary<int, string> ChapterNameDictionary = new() { { 1, "1챕터임" }, { 2, "2챕터임" }, { 3, "3챕터임" }, { 4, "4챕터임" } };
+
+    public static readonly int RequierCombineItemGold = 3000;
+    public static readonly int RequierUnitLevelUpGold = 1000;
+    public static readonly int RequierUnitTranscendGold = 10000;
 
 }

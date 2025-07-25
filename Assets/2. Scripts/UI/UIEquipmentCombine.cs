@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class UIEquipmentCombine : UIBase
@@ -8,21 +10,35 @@ public class UIEquipmentCombine : UIBase
     [Header("Inventory")]
     [SerializeField] private EquipmentCombineInventoryUI inventoryUI;
 
+    [SerializeField] private RectTransform inventoryRect;
 
     [SerializeField] private List<InventorySlot> materialItemSlotList;
     [SerializeField] private InventorySlot resultItemSlot;
 
+    [SerializeField] private TextMeshProUGUI requireCombineGoldTxt;
     private CombineManager combineManager;
     private InventoryManager inventoryManager;
 
     private List<EquipmentItem> MaterialItems = new() { null, null, null };
-
+    private Vector2 originalPos;
 
     private EquipmentItem resultItem;
+    private int RequierCombineItemGold => Define.RequierCombineItemGold;
 
+    private bool IsItemInCombine(EquipmentItem item)
+    {
+        return MaterialItems.Any(i => i == item);
+    }
 
-    private bool IsItemInCombine(EquipmentItem item) => MaterialItems.Any(i => i == item);
-    private bool CanAddItemToCombine()               => MaterialItems.Any(i => i == null);
+    private bool CanAddItemToCombine()
+    {
+        return MaterialItems.Any(i => i == null);
+    }
+
+    private void Awake()
+    {
+        originalPos = inventoryRect.anchoredPosition;
+    }
 
     private void Start()
     {
@@ -41,13 +57,19 @@ public class UIEquipmentCombine : UIBase
     public void ToggleCombineItem(EquipmentItem item)
     {
         if (IsItemInCombine(item))
+        {
             RemoveCombineItem(item);
+        }
         else if (CanAddItemToCombine())
+        {
             AddCombineItem(item);
+        }
     }
 
     private void AddCombineItem(EquipmentItem item)
     {
+        resultItemSlot.Initialize(null, false);
+
         if (item.IsEquipped)
         {
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("장착 중인 장비는 합성할 수 없습니다.");
@@ -63,7 +85,9 @@ public class UIEquipmentCombine : UIBase
 
         int emptyIndex = MaterialItems.FindIndex(i => i == null);
         if (emptyIndex == -1)
+        {
             return;
+        }
 
         MaterialItems[emptyIndex] = item;
         materialItemSlotList[emptyIndex].Initialize(item, false);
@@ -73,7 +97,9 @@ public class UIEquipmentCombine : UIBase
     {
         int index = MaterialItems.FindIndex(i => i == item);
         if (index == -1)
+        {
             return;
+        }
 
         MaterialItems[index] = null;
         materialItemSlotList[index].Initialize(null, false);
@@ -83,7 +109,9 @@ public class UIEquipmentCombine : UIBase
     {
         resultItem = combineManager.TryCombine(MaterialItems);
         if (resultItem == null)
+        {
             return;
+        }
 
         for (int i = 0; i < MaterialItems.Count; i++)
         {
@@ -101,11 +129,14 @@ public class UIEquipmentCombine : UIBase
 
 
         inventoryUI.Initialize(
-            () => inventoryManager.GetInventoryItems(), (slot) =>
+            () => inventoryManager.GetInventoryItems(),
+            (slot) =>
             {
                 slot.OnClickSlot -= ToggleCombineItem;
                 slot.OnClickSlot += ToggleCombineItem;
             });
+
+        resultItem = null;
     }
 
 
@@ -118,10 +149,16 @@ public class UIEquipmentCombine : UIBase
     {
         base.Open();
         inventoryUI.Initialize(
-            () => inventoryManager.GetInventoryItems(), (slot) =>
+            () => inventoryManager.GetInventoryItems(),
+            (slot) =>
             {
                 slot.OnClickSlot -= ToggleCombineItem;
                 slot.OnClickSlot += ToggleCombineItem;
             });
+
+        inventoryRect.DOKill();
+        inventoryRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.down * 300f)).SetEase(Ease.OutBack);
+
+        requireCombineGoldTxt.text = AccountManager.Instance.Gold >= RequierCombineItemGold ? $"<color=#ffffffff>{RequierCombineItemGold:N0}G</color>" : $"<color=#ff0000ff>{RequierCombineItemGold:N0}G</color>";
     }
 }

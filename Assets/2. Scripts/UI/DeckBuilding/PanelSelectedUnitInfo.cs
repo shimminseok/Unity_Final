@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,8 +15,10 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     [SerializeField] private SkillSlot[] activeSkillSlots = new SkillSlot[3];
 
     [SerializeField] private UnitSlot unitSlot;
-    private EntryDeckData selectedUnitData;
 
+    [SerializeField] private CanvasGroup BG;
+
+    private EntryDeckData selectedUnitData;
 
     private SelectEquipUI SelectEquipUI => UIManager.Instance.GetUIComponent<SelectEquipUI>();
     private SelectSkillUI SelectSkillUI => UIManager.Instance.GetUIComponent<SelectSkillUI>();
@@ -37,11 +40,16 @@ public class PanelSelectedUnitInfo : MonoBehaviour
         gameObject.SetActive(true);
         passiveSkillSlot.SetSkillIcon(selectedUnitData.CharacterSo.PassiveSkill, false);
         passiveSkillSlot.ShowEquipMark(false);
+        BG.alpha = 0;
+        BG.DOFade(1f, 0.3f).SetEase(Ease.InOutSine);
     }
 
     public void ClosePanel()
     {
-        gameObject.SetActive(false);
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(BG.DOFade(0f, 0.3f).SetEase(Ease.OutSine));
+        seq.AppendCallback(() => gameObject.SetActive(false));
     }
 
 

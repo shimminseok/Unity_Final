@@ -19,6 +19,8 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     [SerializeField] private float fadeInDuration;
     [SerializeField] private float fadeOutDuration;
+    [SerializeField] private TextMeshProUGUI requireLevelUpGoldTxt;
+    [SerializeField] private TextMeshProUGUI requireTranscendGoldTxt;
 
     private Vector2 onScreenScale;
     private Vector2 offScreenPos;
@@ -26,8 +28,11 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     private EntryDeckData currentPlayerUnitData;
 
-    private Dictionary<StatType, IncreaseStatSlot> increaseStatSlotDic = new();
+    private readonly Dictionary<StatType, IncreaseStatSlot> increaseStatSlotDic = new();
 
+
+    private readonly int requireLevelUpGold = Define.RequierUnitLevelUpGold;
+    private readonly int requireTranscendGoldGold = Define.RequierUnitTranscendGold;
 
     private void Awake()
     {
@@ -40,10 +45,12 @@ public class UnitLevelUpPanel : MonoBehaviour
     {
         increaseStatSlotDic.Clear();
 
-        foreach (var slot in increaseStatSlots)
+        foreach (IncreaseStatSlot slot in increaseStatSlots)
         {
             if (!increaseStatSlotDic.TryAdd(slot.StatType, slot))
+            {
                 Debug.LogWarning($"Duplicate increase slot for StatType: {slot.StatType}");
+            }
         }
     }
 
@@ -55,6 +62,8 @@ public class UnitLevelUpPanel : MonoBehaviour
         requiredDupeCountTxt.text = $"{currentDupeCount} / {requiredDupeCount}";
 
         maxLevelTxt.text = $"{currentPlayerUnitData.MaxLevel}";
+
+        requireTranscendGoldTxt.text = AccountManager.Instance.Gold >= requireTranscendGoldGold ? $"<color=#ffffffff>{requireTranscendGoldGold:N0}G</color>" : $"<color=#ff0000ff>{requireTranscendGoldGold:N0}G</color>";
     }
 
     private void UpdateLevelText()
@@ -68,16 +77,20 @@ public class UnitLevelUpPanel : MonoBehaviour
             StatType statType = increaseStat.StatType;
 
             if (!increaseStatSlotDic.TryGetValue(statType, out IncreaseStatSlot slot))
+            {
                 continue;
+            }
 
-            var   baseStat  = unitSo.GetStat(statType);
-            float baseValue = baseStat != null ? baseStat.Value : 0;
+            StatData baseStat  = unitSo.GetStat(statType);
+            float    baseValue = baseStat != null ? baseStat.Value : 0;
 
-            float curValue  = baseValue + increaseStat.Value * (level - 1);
-            float nextValue = baseValue + increaseStat.Value * level;
+            float curValue  = baseValue + (increaseStat.Value * (level - 1));
+            float nextValue = baseValue + (increaseStat.Value * level);
 
             slot.SetStatSlot(curValue, nextValue);
         }
+
+        requireLevelUpGoldTxt.text = AccountManager.Instance.Gold >= requireLevelUpGold ? $"<color=#ffffffff>{requireLevelUpGold:N0}G</color>" : $"<color=#ff0000ff>{requireLevelUpGold:N0}G</color>";
     }
 
     public void OpenPanel(EntryDeckData unitData)
@@ -90,7 +103,7 @@ public class UnitLevelUpPanel : MonoBehaviour
 
         currentPlayerUnitData = unitData;
         contents.SetActive(true);
-        
+
         panelRect.alpha = 0;
         panelRect.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
 
@@ -119,18 +132,10 @@ public class UnitLevelUpPanel : MonoBehaviour
     public void OnClickTranscend()
     {
         currentPlayerUnitData.Transcend(out bool result);
-        if (!result)
-        {
-            //초월 실패
-        }
     }
 
     public void OnClickLevelUp()
     {
         currentPlayerUnitData.LevelUp(out bool result);
-        if (!result)
-        {
-            //레벨업 실패
-        }
     }
 }
