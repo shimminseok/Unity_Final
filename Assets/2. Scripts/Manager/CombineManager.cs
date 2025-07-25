@@ -15,8 +15,9 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
 
     public EquipmentItem TryCombine(List<EquipmentItem> items)
     {
-        if (items.Count != 3 || items.Count == 0)
+        if (items.Any(x => x != null))
         {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("아이템 3개를 선택해야 합성이 가능합니다.");
             return null;
         }
 
