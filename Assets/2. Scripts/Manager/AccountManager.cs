@@ -226,7 +226,7 @@ public class AccountManager : Singleton<AccountManager>
         foreach (SaveEntryDeckData saveData in loadedUnits)
         {
             EntryDeckData data = saveData.ToRuntime();
-            MyPlayerUnits.Add(data.CharacterSo.ID, data);
+            MyPlayerUnits[data.CharacterSo.ID] = data;
             if (data.CompeteSlotInfo.IsInDeck)
             {
                 DeckSelectManager.Instance.SetUnitInDeck(data, data.CompeteSlotInfo.SlotIndex);
@@ -240,7 +240,7 @@ public class AccountManager : Singleton<AccountManager>
         foreach (SaveSkillData saveData in loadedSkills)
         {
             SkillData data = saveData.ToRuntime();
-            MySkills.Add(data.skillSo.ID, data);
+            MySkills[data.skillSo.ID] = data;
             AddSkillByJob(data.skillSo.jobType, data.skillSo.ID);
         }
     }

@@ -221,7 +221,7 @@ public class SaveInventoryItemData : SaveData
 [Serializable]
 public class SaveUnitInventoryData : SaveData
 {
-    public List<SaveEntryDeckData> UnitInventory { get; set; } = new();
+    public List<SaveEntryDeckData> UnitInventory { get; set; } = new() { new SaveEntryDeckData(1) };
 
     public override void OnBeforeSave()
     {
