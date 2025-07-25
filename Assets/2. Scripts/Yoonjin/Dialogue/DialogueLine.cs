@@ -15,9 +15,15 @@ public class DialogueLine
     [TextArea]
     public string dialogue;
 
-    [Tooltip("초상화 리소스 키 (Resources/Portraits 폴더 내부)")]
+    [Tooltip("초상화 리소스 키 (Overlay 모드 전용)")]
     public string portraitKey;
 
-    [Tooltip("배경 리소스 키 (Resources/Backgrounds 폴더 내부)")]
+    [Tooltip("배경 리소스 키")]
     public string backgroundKey;
+
+    [Tooltip("좌측 초상화 리소스 키 (Fullscreen 모드 전용)")]
+    public string portraitLeft;
+
+    [Tooltip("우측 초상화 리소스 키 (Fullscreen 모드 전용)")]
+    public string portraitRight;
 }

@@ -53,8 +53,11 @@ public static class CsvToJsonConverter
                 characterName = cols[1].Trim(),
                 dialogue = cols[2].Trim().Replace("\\n", "\n"),
                 portraitKey = cols[3].Trim(),
-                backgroundKey = cols[4].Trim()
+                backgroundKey = cols[4].Trim(),
+                portraitLeft = cols.Length > 5 ? cols[5].Trim() : "",
+                portraitRight = cols.Length > 6 ? cols[6].Trim() : ""
             };
+
 
             // 새 그룹이면 초기화
             if (!grouped.ContainsKey(groupKey))
