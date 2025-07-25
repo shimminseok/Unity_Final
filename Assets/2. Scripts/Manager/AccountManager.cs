@@ -7,12 +7,12 @@ using UnityEngine;
 public class AccountManager : Singleton<AccountManager>
 {
     public int Gold               { get; private set; } = 0;
-    public int Opal               { get; private set; } = 3000;
-    public int BestStage          { get; private set; } = 1010109;
-    public int LastClearedStageId { get; private set; } = 1010101;
+    public int Opal               { get; private set; } = 0;
+    public int BestStage          { get; private set; } = 0;
+    public int LastClearedStageId { get; private set; } = 0;
 
-    public Dictionary<int, EntryDeckData> MyPlayerUnits { get; private set; } = new Dictionary<int, EntryDeckData>();
-    public Dictionary<int, SkillData>     MySkills      { get; private set; } = new Dictionary<int, SkillData>();
+    public Dictionary<int, EntryDeckData> MyPlayerUnits { get; private set; } = new();
+    public Dictionary<int, SkillData>     MySkills      { get; private set; } = new();
     public event Action<int>              OnGoldChanged;
     public event Action<int>              OnOpalChanged;
 
@@ -24,52 +24,47 @@ public class AccountManager : Singleton<AccountManager>
     {
         Application.targetFrameRate = 60;
         base.Awake();
-        foreach (PlayerUnitSO playerUnitSo in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
-        {
-            AddPlayerUnit(playerUnitSo);
-        }
 
         orderedStageIds = TableManager.Instance.GetTable<StageTable>().DataDic.Keys.OrderBy(id => id).ToList();
     }
 
     private void Start()
     {
-        foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
-        {
-            if (itemSo is EquipmentItemSO equipSo)
-                InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
-        }
-
-        foreach (ActiveSkillSO activeSkillSo in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
-        {
-            AddSkill(activeSkillSo, out _);
-        }
     }
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.F1))
         {
             foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
             {
                 if (itemSo is EquipmentItemSO equipSo)
+                {
                     InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+                }
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            RewardManager.Instance.GiveReward("1010101_Clear_Reward");
-        }
+#endif
     }
 
+    /// <summary>
+    /// Gold를 로드해주는 메서드
+    /// </summary>
+    /// <param name="amount"></param>
+    public void SetGold(int amount)
+    {
+        Gold = amount;
+        OnGoldChanged?.Invoke(Gold);
+        OnGoldChanged += Gold => SaveLoadManager.Instance.SaveModuleData(SaveModule.Gold);
+    }
 
     public void AddGold(int amount)
     {
         Gold += amount;
-
         OnGoldChanged?.Invoke(Gold);
     }
+
 
     public void UseGold(int amount, out bool result)
     {
@@ -82,6 +77,17 @@ public class AccountManager : Singleton<AccountManager>
         Gold -= amount;
         result = true;
         OnGoldChanged?.Invoke(Gold);
+    }
+
+    /// <summary>
+    /// Opal을 로드해주는 메서드
+    /// </summary>
+    /// <param name="amount"></param>
+    public void SetOpal(int amount)
+    {
+        Opal = amount;
+        OnOpalChanged?.Invoke(Opal);
+        OnOpalChanged += Opal => SaveLoadManager.Instance.SaveModuleData(SaveModule.Opal);
     }
 
     public void AddOpal(int amount)
@@ -121,6 +127,7 @@ public class AccountManager : Singleton<AccountManager>
     {
         LastClearedStageId = stageId;
     }
+
     public void SetBestStage(int stage)
     {
         BestStage = stage;
@@ -143,7 +150,7 @@ public class AccountManager : Singleton<AccountManager>
         {
             // 다음 챕터의 첫 스테이지로 (챕터+1, 스테이지 0101)
             int nextChapterId = chapterId + 1;
-            return nextChapterId * 10000 + 101;
+            return (nextChapterId * 10000) + 101;
         }
     }
 
@@ -191,13 +198,50 @@ public class AccountManager : Singleton<AccountManager>
         return MyPlayerUnits.GetValueOrDefault(id);
     }
 
+    public List<EntryDeckData> GetPlayerUnits()
+    {
+        return MyPlayerUnits.Values.ToList();
+    }
 
     public List<SkillData> GetInventorySkillsByJob(JobType jobType)
     {
         if (!JobSkillInventory.TryGetValue(jobType, out List<int> idList))
+        {
             return new List<SkillData>();
+        }
 
-        var items = idList.Where(id => MySkills.ContainsKey(id)).Select(id => MySkills[id]).ToList();
+        List<SkillData> items = idList.Where(id => MySkills.ContainsKey(id)).Select(id => MySkills[id]).ToList();
         return items;
+    }
+
+    public List<SkillData> GetInventorySkills()
+    {
+        return MySkills.Values.ToList();
+    }
+
+    public void ApplyLoadedUnits(List<SaveEntryDeckData> loadedUnits)
+    {
+        MyPlayerUnits.Clear();
+
+        foreach (SaveEntryDeckData saveData in loadedUnits)
+        {
+            EntryDeckData data = saveData.ToRuntime();
+            MyPlayerUnits.Add(data.CharacterSo.ID, data);
+            if (data.CompeteSlotInfo.IsInDeck)
+            {
+                DeckSelectManager.Instance.SetUnitInDeck(data, data.CompeteSlotInfo.SlotIndex);
+            }
+        }
+    }
+
+    public void ApplyLoadedSkills(List<SaveSkillData> loadedSkills)
+    {
+        MySkills.Clear();
+        foreach (SaveSkillData saveData in loadedSkills)
+        {
+            SkillData data = saveData.ToRuntime();
+            MySkills.Add(data.skillSo.ID, data);
+            AddSkillByJob(data.skillSo.jobType, data.skillSo.ID);
+        }
     }
 }

@@ -8,7 +8,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
 {
     // 선택된 캐릭터와 스킬 목록
     [SerializeField]
-    private List<EntryDeckData> selectedDeck = new List<EntryDeckData>();
+    private List<EntryDeckData> selectedDeck = new();
 
     // 최근에 덱에 넣은 캐릭터
     private EntryDeckData currentSelectedCharacter;
@@ -38,10 +38,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     protected override void Awake()
     {
         base.Awake();
-    }
-
-    private void Start()
-    {
         selectedDeck = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
         if (selectedDeck.Count == 0)
         {
@@ -73,11 +69,21 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         // 새로운 캐릭터 데이터 추가
         index = selectedDeck.IndexOf(null);
         if (index == -1)
+        {
             return;
+        }
 
         selectedDeck[index] = entryDeck;
-        entryDeck.Compete(true);
+        entryDeck.Compete(index, true);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         currentSelectedCharacter = entryDeck;
+
+        OnChangedDeck?.Invoke(index);
+    }
+
+    public void SetUnitInDeck(EntryDeckData entryDeck, int index)
+    {
+        selectedDeck[index] = entryDeck;
         OnChangedDeck?.Invoke(index);
     }
 
@@ -89,9 +95,15 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     {
         int index = selectedDeck.IndexOf(entryDeck);
         if (index == -1)
+        {
             return;
+        }
+
         selectedDeck[index] = null;
-        entryDeck.Compete(false);
+
+
+        entryDeck.Compete(-1, false);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         currentSelectedCharacter = null;
         OnChangedDeck?.Invoke(index);
     }
@@ -101,10 +113,12 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ProcessEquipSkillSelection(SkillData skillData)
     {
         if (currentSelectedCharacter == null)
+        {
             return;
+        }
 
 
-        var skills = currentSelectedCharacter.SkillDatas;
+        SkillData[] skills = currentSelectedCharacter.SkillDatas;
 
         // 이미 장착된 스킬일 경우 해제
         for (int i = 0; i < skills.Length; i++)
@@ -112,15 +126,20 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             if (skills[i] == skillData)
             {
                 currentSelectedCharacter.UnEquipSkill(skills[i]);
+                SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
                 OnEquipSkillChanged?.Invoke(currentSelectedCharacter, null, skillData);
                 return;
             }
         }
 
         if (Array.IndexOf(currentSelectedCharacter.SkillDatas, null) == -1)
+        {
             return;
+        }
+
         //새로운 스킬 장착
         currentSelectedCharacter.EquipSkill(skillData);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         OnEquipSkillChanged?.Invoke(currentSelectedCharacter, skillData, skillData);
     }
 
@@ -146,29 +165,33 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
             if (alreadyEquipped == item)
             {
                 OnEquipItemChanged?.Invoke(currentSelectedCharacter, null, item);
+                SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
                 return;
             }
         }
 
         // 새 장비 장착
         currentSelectedCharacter.EquipItem(item);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         OnEquipItemChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
     }
 
     public void ForceEquipItemToCurrentCharacter(EquipmentItem item)
     {
         if (currentSelectedCharacter == null || item == null || item.EquippedUnit == null)
+        {
             return;
+        }
 
         Dictionary<EquipmentType, EquipmentItem> equipped = currentSelectedCharacter.EquippedItems;
-        var                                      type     = item.EquipmentItemSo.EquipmentType;
+        EquipmentType                            type     = item.EquipmentItemSo.EquipmentType;
 
-        if (equipped.TryGetValue(type, out var alreadyEquipped))
+        if (equipped.TryGetValue(type, out EquipmentItem alreadyEquipped))
         {
             currentSelectedCharacter.UnEquipItem(type);
         }
 
-        var fromUnit = item.EquippedUnit;
+        EntryDeckData fromUnit = item.EquippedUnit;
         fromUnit.UnEquipItem(type);
         currentSelectedCharacter.EquipItem(item);
 
@@ -178,15 +201,19 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
     public void ForceEquipSkillToCurrentCharacter(SkillData skill)
     {
         if (currentSelectedCharacter == null || skill == null || skill.EquippedUnit == null)
+        {
             return;
+        }
 
-        var skills = currentSelectedCharacter.SkillDatas;
-        var index  = Array.IndexOf(skills, skill);
+        SkillData[] skills = currentSelectedCharacter.SkillDatas;
+        int         index  = Array.IndexOf(skills, skill);
         if (index != -1)
+        {
             currentSelectedCharacter.UnEquipSkill(skills[index]);
+        }
 
 
-        var fromUnit = skill.EquippedUnit;
+        EntryDeckData fromUnit = skill.EquippedUnit;
         fromUnit.UnEquipSkill(skill);
         currentSelectedCharacter.EquipSkill(skill);
 

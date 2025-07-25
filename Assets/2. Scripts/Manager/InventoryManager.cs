@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class InventoryItem
 {
@@ -14,37 +15,27 @@ public class InventoryItem
         Quantity = quantity;
     }
 
-    public event Action OnItemChanged;
-
-    public virtual InventoryItem Clone() => new InventoryItem(ItemSo, Quantity);
-
-    public void ChangeQuantity(int amount)
+    public virtual InventoryItem Clone()
     {
-        Quantity += amount;
-        ItemChanged();
-    }
-
-    public void ItemChanged()
-    {
-        OnItemChanged?.Invoke();
+        return new InventoryItem(ItemSo, Quantity);
     }
 }
 
 [Serializable]
 public class SaveInventoryItem
 {
+    public int InventoryId;
     public int Id;
     public int Quantity;
 
     public SaveInventoryItem(InventoryItem item)
     {
+        InventoryId = item.InventoryId;
         Id = item.ItemSo.ID;
         Quantity = item.Quantity;
     }
 
-    public SaveInventoryItem()
-    {
-    }
+    public SaveInventoryItem() { }
 }
 
 public class InventoryManager : Singleton<InventoryManager>
@@ -62,7 +53,9 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         base.Awake();
         if (isDuplicated)
+        {
             return;
+        }
 
         gameManager = GameManager.Instance;
     }
@@ -76,9 +69,11 @@ public class InventoryManager : Singleton<InventoryManager>
     public void RemoveItem(int id)
     {
         if (!inventory.Remove(id))
+        {
             return;
+        }
 
-        foreach (var jobList in JobInventory.Values)
+        foreach (List<int> jobList in JobInventory.Values)
         {
             jobList.Remove(id);
         }
@@ -133,14 +128,54 @@ public class InventoryManager : Singleton<InventoryManager>
     public List<InventoryItem> GetInventoryItems(JobType jobType)
     {
         if (!JobInventory.TryGetValue(jobType, out List<int> idList))
+        {
             return new List<InventoryItem>();
+        }
 
-        var items = idList.Where(id => inventory.ContainsKey(id)).Select(id => inventory[id]).ToList();
+        List<InventoryItem> items = idList.Where(id => inventory.ContainsKey(id)).Select(id => inventory[id]).ToList();
         return items;
     }
 
     public List<InventoryItem> GetInventoryItems()
     {
         return inventory.Values.OrderBy(item => item.InventoryId).ToList();
+    }
+
+    public void ApplyLoadedInventory(List<SaveInventoryItem> loadedItems)
+    {
+        inventory.Clear();
+        JobInventory.Clear();
+
+        foreach (SaveInventoryItem savedItem in loadedItems)
+        {
+            ItemSO itemSo = TableManager.Instance.GetTable<ItemTable>().GetDataByID(savedItem.Id);
+            if (itemSo == null)
+            {
+                Debug.LogWarning($"아이템 ID {savedItem.Id}를 찾을 수 없습니다.");
+                continue;
+            }
+
+            EquipmentItem equipmentItem = new(itemSo as EquipmentItemSO);
+            equipmentItem.InventoryId = savedItem.InventoryId;
+            inventory[savedItem.InventoryId] = equipmentItem;
+            if (equipmentItem.EquipmentItemSo.IsEquipableByAllJobs)
+            {
+                foreach (JobType job in Enum.GetValues(typeof(JobType)))
+                {
+                    AddEquipmentItem(job, equipmentItem.InventoryId);
+                }
+            }
+            else
+            {
+                AddEquipmentItem(equipmentItem.EquipmentItemSo.JobType, equipmentItem.InventoryId);
+            }
+
+            nextId = equipmentItem.InventoryId;
+        }
+
+        foreach (int id in inventory.Keys)
+        {
+            OnInventorySlotUpdate?.Invoke(id);
+        }
     }
 }

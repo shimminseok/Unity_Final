@@ -14,7 +14,9 @@ public class UIManager : Singleton<UIManager>
     {
         base.Awake();
         if (!isDuplicated)
+        {
             InitializeUIRoot();
+        }
     }
 
     public void InitializeUIRoot()
@@ -32,7 +34,7 @@ public class UIManager : Singleton<UIManager>
         List<GameObject> toDestroy    = new();
         foreach (UIBase uiComponent in uiComponents)
         {
-            var type = uiComponent.GetType();
+            Type type = uiComponent.GetType();
             if (!uiDict.TryAdd(type, uiComponent))
             {
                 toDestroy.Add(uiComponent.gameObject);
@@ -44,14 +46,18 @@ public class UIManager : Singleton<UIManager>
         }
 
 
-        foreach (var go in toDestroy)
+        foreach (GameObject go in toDestroy)
+        {
             Destroy(go);
+        }
     }
 
     public void Open(UIBase ui)
     {
         if (!openedUIList.Contains(ui))
+        {
             openedUIList.Add(ui);
+        }
 
         ui?.Open();
     }
@@ -68,7 +74,18 @@ public class UIManager : Singleton<UIManager>
     public void CloseLastOpenedUI()
     {
         if (openedUIList.Count == 0)
+        {
+            TwoChoicePopup popup = PopupManager.Instance.GetUIComponent<TwoChoicePopup>();
+            popup.SetAndOpenPopupUI("종료하기",
+                "게임을 종료하시겠습니까?",
+                () =>
+                {
+                    SaveLoadManager.Instance.HandleApplicationQuit();
+                },
+                null,
+                "종료하기");
             return;
+        }
 
         UIBase ui = openedUIList.Last();
         Close(ui);
@@ -76,7 +93,7 @@ public class UIManager : Singleton<UIManager>
 
     public T GetUIComponent<T>() where T : UIBase
     {
-        return uiDict.TryGetValue(typeof(T), out var ui) ? ui as T : null;
+        return uiDict.TryGetValue(typeof(T), out UIBase ui) ? ui as T : null;
     }
 }
 
@@ -113,14 +130,16 @@ public class SingletonUI<T> : UIBase where T : UIBase
         get
         {
             if (isShuttingDown)
+            {
                 return null;
+            }
 
             if (instance == null)
             {
                 instance = FindObjectOfType<T>();
                 if (instance == null)
                 {
-                    GameObject go = new GameObject($"[{typeof(T).Name}]");
+                    GameObject go = new($"[{typeof(T).Name}]");
                     instance = go.AddComponent<T>();
                     DontDestroyOnLoad(go);
                     instance.gameObject.SetActive(false);
@@ -153,6 +172,8 @@ public class SingletonUI<T> : UIBase where T : UIBase
     protected virtual void OnDestroy()
     {
         if (instance == this)
+        {
             instance = null;
+        }
     }
 }

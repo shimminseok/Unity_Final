@@ -1,5 +1,26 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public class SaveSkillData
+{
+    public int Id;
+    public bool IsEquipped;
+
+    public SaveSkillData(SkillData skillData)
+    {
+        Id = skillData.skillSo.ID;
+        IsEquipped = skillData.IsEquipped;
+    }
+
+    public SaveSkillData() { }
+
+    public SkillData ToRuntime()
+    {
+        return new SkillData(this);
+    }
+}
 
 public class SkillData
 {
@@ -10,6 +31,16 @@ public class SkillData
         reuseCount = skillSo.reuseMaxCount;
         coolDown = 0;
         coolTime = skillSo.coolTime;
+    }
+
+    public SkillData(SaveSkillData saveData)
+    {
+        skillSo = TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(saveData.Id);
+        Effect = skillSo.effect;
+        reuseCount = saveData.IsEquipped ? skillSo.reuseMaxCount : 0;
+        coolDown = 0;
+        coolTime = skillSo.coolTime;
+        IsEquipped = saveData.IsEquipped;
     }
 
     public ActiveSkillSO skillSo;

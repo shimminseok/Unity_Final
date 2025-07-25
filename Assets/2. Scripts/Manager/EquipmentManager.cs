@@ -7,7 +7,6 @@ public class EquipmentItem : InventoryItem
     public bool IsEquipped;
     public int EnhanceLevel;
     public EntryDeckData EquippedUnit;
-    public InventorySlot LinkedSlot;
 
     public EquipmentItemSO EquipmentItemSo => ItemSo as EquipmentItemSO;
 

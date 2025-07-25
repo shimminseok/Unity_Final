@@ -10,6 +10,7 @@ public class UIDeckBuilding : UIBase
 {
     [Header("보유한 전체 캐릭터 영역")]
     [SerializeField] private Transform ownedCharacterParent;
+
     [SerializeField] private RectTransform ownedCharacterRect;
 
     [SerializeField] private List<CompeteUnitSlot> competedUnitSlots;
@@ -35,12 +36,14 @@ public class UIDeckBuilding : UIBase
     // 현재 보유 중인 캐릭터 목록 버튼 생성
     private void GenerateHasUnitSlots()
     {
-        var units = AccountManager.Instance.MyPlayerUnits;
+        Dictionary<int, EntryDeckData> units = AccountManager.Instance.MyPlayerUnits;
 
         foreach (KeyValuePair<int, EntryDeckData> entryDeckData in units)
         {
             if (characterSlotDic.ContainsKey(entryDeckData.Key))
+            {
                 continue;
+            }
 
             UnitSlot slot = Instantiate(unitSlotPrefab, ownedCharacterParent);
             slot.Initialize(entryDeckData.Value);
@@ -70,11 +73,14 @@ public class UIDeckBuilding : UIBase
     // 보유 캐릭터 버튼 클릭 처리
     private void OnClickedHasUnitSlot(EntryDeckData data)
     {
-        if (!data.IsCompeted)
+        if (!data.CompeteSlotInfo.IsInDeck)
         {
             DeckSelectManager.Instance.AddUnitInDeck(data, out int index);
             if (index == -1)
+            {
                 return;
+            }
+
             competedUnitSlots[index].SetCompeteUnitData(data);
             avatarPreviewManager.ShowAvatar(index, data.CharacterSo.JobType);
         }
@@ -115,14 +121,14 @@ public class UIDeckBuilding : UIBase
         ShowCompetedUnit(DeckSelectManager.Instance.GetSelectedDeck());
 
         ownedCharacterRect.DOKill();
-        ownedCharacterRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.down * 500f).SetEase(Ease.OutBack);
+        ownedCharacterRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.down * 500f)).SetEase(Ease.OutBack);
     }
 
     public override void Close()
     {
         base.Close();
 
-        foreach (var slot in characterSlotDic.Values)
+        foreach (UnitSlot slot in characterSlotDic.Values)
         {
             slot.Deselect();
         }
