@@ -15,7 +15,7 @@ public static class Define
     public static readonly int DeadAnimationHash = Animator.StringToHash("Dead");
     public static readonly int VictoryAnimationHash = Animator.StringToHash("Victory");
     public static readonly int ReadyActionAnimationHash = Animator.StringToHash("ReadyAction");
-
+    public static readonly int HitAnimationHash = Animator.StringToHash("Hit");
 
     public static readonly string IdleClipName = "Idle";
     public static readonly string MoveClipName = "Move";
@@ -24,6 +24,7 @@ public static class Define
     public static readonly string DeadClipName = "Die";
     public static readonly string VictoryClipName = "Victory";
     public static readonly string ReadyActionClipName = "ReadyAction";
+    public static readonly string HitClipName = "Hit";
 
 
     public static readonly Dictionary<int, int> DupeCountByTranscend = new Dictionary<int, int>()
@@ -74,5 +75,9 @@ public static class Define
 
 
     public static Dictionary<int, string> ChapterNameDictionary = new() { { 1, "1챕터임" }, { 2, "2챕터임" }, { 3, "3챕터임" }, { 4, "4챕터임" } };
+
+    public static readonly int RequierCombineItemGold = 3000;
+    public static readonly int RequierUnitLevelUpGold = 1000;
+    public static readonly int RequierUnitTranscendGold = 10000;
 
 }

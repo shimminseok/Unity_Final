@@ -10,12 +10,13 @@ public class EntryDeckData
     // 캐릭터 직업, 액티브 스킬 3개, 패시브 스킬
     // 장비 등등 equipItem
     // 패시브SO
-    public SkillData[] SkillDatas { get; private set; } = new SkillData[3];
-
+    public SkillData[]                              SkillDatas     { get; private set; } = new SkillData[3];
     public Dictionary<EquipmentType, EquipmentItem> EquippedItems  { get; private set; } = new();
     public int                                      Level          { get; private set; }
     public int                                      Amount         { get; private set; }
     public int                                      TranscendLevel { get; private set; }
+    public bool                                     IsCompeted     { get; private set; }
+    public PlayerUnitSO                             CharacterSo    { get; private set; }
 
 
     private const int BASE_MAX_LEVEL = 10;
@@ -23,8 +24,6 @@ public class EntryDeckData
     public int MaxLevel => BASE_MAX_LEVEL + (TranscendLevel * BASE_MAX_LEVEL);
 
 
-    public bool         IsCompeted  { get; private set; }
-    public PlayerUnitSO CharacterSo { get; private set; }
     public event Action OnEquipmmmentChanged;
     public event Action OnSkillChanged;
     public event Action OnTranscendChanged;
@@ -42,21 +41,49 @@ public class EntryDeckData
     public void LevelUp(out bool result)
     {
         result = Level < MaxLevel;
-        if (result)
+        if (!result)
         {
-            Level++;
-            OnLevelUp?.Invoke();
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("이미 최대 레벨입니다.");
+            return;
         }
+
+        AccountManager.Instance.UseGold(Define.RequierUnitLevelUpGold, out result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("골드가 부족합니다.");
+            return;
+        }
+
+        Level++;
+        OnLevelUp?.Invoke();
     }
 
     public void Transcend(out bool result)
     {
-        result = TranscendLevel < MAX_TRANSCEND_LEVEL && Amount >= Define.DupeCountByTranscend[TranscendLevel];
-        if (result)
+        result = TranscendLevel < MAX_TRANSCEND_LEVEL;
+        if (!result)
         {
-            TranscendLevel++;
-            OnTranscendChanged?.Invoke();
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("더이상 초월을 할 수 없습니다.");
+            return;
         }
+
+        result = Amount >= Define.DupeCountByTranscend[TranscendLevel];
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
+            return;
+        }
+
+        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
+            return;
+        }
+
+        Amount -= Define.DupeCountByTranscend[TranscendLevel];
+        TranscendLevel++;
+        OnTranscendChanged?.Invoke();
     }
 
     public void Compete(bool isCompeted)
