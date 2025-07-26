@@ -171,7 +171,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void OnStageFail()
     {
-        LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        OneChoicePopup popup = PopupManager.Instance.GetUIComponent<OneChoicePopup>();
+        popup.ToggleActiveExitBtn(false);
+        popup.SetAndOpenPopupUI("전투 패배",
+            "전투에 패배했습니다.",
+            () =>
+            {
+                LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+            },
+            "나가기");
+        return;
     }
 
     protected override void OnDestroy()
