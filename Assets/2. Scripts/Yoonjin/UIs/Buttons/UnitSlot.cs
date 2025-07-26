@@ -43,7 +43,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         gameObject.name = $"UnitSlot_{characterSo.ID}";
 
-        SetCompetedMarker(data.IsCompeted);
+        SetCompetedMarker(data.CompeteSlotInfo.IsInDeck);
         for (int i = 0; i < unitTierStar.Count; i++)
         {
             unitTierStar[i].SetActive(i <= (int)characterSo.Tier);
@@ -84,7 +84,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             OnClicked?.Invoke(selectedUnit);
         }
 
-        SetCompetedMarker(selectedUnit.IsCompeted);
+        SetCompetedMarker(selectedUnit.CompeteSlotInfo.IsInDeck);
         SetSelectedMarker(isSelected);
     }
 
@@ -97,6 +97,11 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (OnHeld == null)
+        {
+            return;
+        }
+
         if (holdCoroutine == null)
         {
             holdCoroutine = StartCoroutine(HoldCheckCoroutine());
