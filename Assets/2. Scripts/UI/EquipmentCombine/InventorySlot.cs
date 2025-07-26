@@ -23,6 +23,9 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private List<Sprite> itemGradeSprites;
 
     [SerializeField] private TextMeshProUGUI amountTxt;
+
+    [SerializeField] private Sprite opalSprite;
+    [SerializeField] private Sprite goldSprite;
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
@@ -65,8 +68,17 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         {
             gameObject.SetActive(true);
             amountTxt.gameObject.SetActive(true);
+            itemIcon.gameObject.SetActive(true);
             if (rewardData.RewardType != RewardType.Item)
             {
+                if (rewardData.RewardType == RewardType.Opal)
+                {
+                    itemIcon.sprite = opalSprite;
+                }
+                else if (rewardData.RewardType == RewardType.Gold)
+                {
+                    itemIcon.sprite = goldSprite;
+                }
                 amountTxt.text = $"x{rewardData.Amount}";
             }
         }

@@ -23,6 +23,7 @@ public class StagePanelHeroSlot : MonoBehaviour
             return;
         }
 
+        this.gameObject.SetActive(true);
         heroIcon.gameObject.SetActive(true);
         playerUnitSo = data;
         heroIcon.sprite = data.UnitIcon;
@@ -39,6 +40,7 @@ public class StagePanelHeroSlot : MonoBehaviour
     {
         heroIcon.sprite = null;
         heroIcon.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
 
         heroTierFrame.sprite = emptyFrameSprite;
         for (int i = 0; i < heroTierStars.Count; i++)
