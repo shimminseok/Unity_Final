@@ -955,6 +955,7 @@ GameObject:
   - component: {fileID: 2979027122405142705}
   - component: {fileID: 492829387306189438}
   - component: {fileID: 6992578416664241773}
+  - component: {fileID: 3450561227705366538}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -1021,6 +1022,35 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3450561227705366538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946586660490837079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 782046708606765782}
+          m_TargetAssemblyTypeName: UIHUD, Assembly-CSharp
+          m_MethodName: OnClickGoldBtn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &8244938065672051107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,6 +1062,7 @@ GameObject:
   - component: {fileID: 6878196754839886085}
   - component: {fileID: 3892408677882183155}
   - component: {fileID: 2937900034351550831}
+  - component: {fileID: 1738351702030336270}
   m_Layer: 0
   m_Name: Opal
   m_TagString: Untagged
@@ -1098,6 +1129,35 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1738351702030336270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8244938065672051107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 782046708606765782}
+          m_TargetAssemblyTypeName: UIHUD, Assembly-CSharp
+          m_MethodName: OnClickOpalBtn
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &8321326501894258070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,6 +1450,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49515b5ab6c25314987f29066b8735f7, type: 3}
+--- !u!114 &782046708606765782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 437692122463967706, guid: 49515b5ab6c25314987f29066b8735f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 921159829726597900}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07dc17b513b0fab479866342bd77e979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4771600930211423349 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5688253311478298489, guid: 49515b5ab6c25314987f29066b8735f7,
@@ -3318,6 +3390,11 @@ PrefabInstance:
     - target: {fileID: 7521362358105380549, guid: 0beb1b752c112dd4d90b501196e58b7c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7661950221395407570, guid: 0beb1b752c112dd4d90b501196e58b7c,
+        type: 3}
+      propertyPath: m_ChildAlignment
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8801457786409534914, guid: 0beb1b752c112dd4d90b501196e58b7c,
