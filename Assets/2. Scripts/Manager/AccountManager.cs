@@ -45,6 +45,14 @@ public class AccountManager : Singleton<AccountManager>
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            foreach (ActiveSkillSO skill in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
+            {
+                AddSkill(skill, out _);
+            }
+        }
 #endif
     }
 
