@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class OneChoicePopup : UIBase
 {
@@ -15,6 +17,8 @@ public class OneChoicePopup : UIBase
     [SerializeField] private float fadeInDuration;
     [SerializeField] private float fadeOutDuration;
 
+    [SerializeField] private Button exitButton;
+    [SerializeField] private EventTrigger backgroundTrigger;
 
     public event Action OnCenterClicked;
 
@@ -37,6 +41,12 @@ public class OneChoicePopup : UIBase
     {
         OnCenterClicked?.Invoke();
         UIManager.Close(this);
+    }
+
+    public void ToggleActiveExitBtn(bool isActive) // 전투씬에서는 패배 팝업 닫기버튼 없어야 함
+    {
+        exitButton.gameObject.SetActive(isActive);
+        backgroundTrigger.enabled = isActive;
     }
 
     public override void Open() // 팝업 열 때 페이드인 추가
