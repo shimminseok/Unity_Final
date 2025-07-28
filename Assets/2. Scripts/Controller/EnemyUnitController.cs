@@ -23,18 +23,12 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         get
         {
-            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
             return info.IsTag("Action") && info.normalizedTime >= 0.9f;
         }
     }
-    
-    public override bool IsTimeLinePlaying
-    {
-        get
-        {
-            return TimeLineManager.Instance.isPlaying;
-        }
-    }
+
+    public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
     private float remainDistance;
     public Vector3 StartPostion { get; private set; }
@@ -62,7 +56,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     protected override void Update()
     {
         if (IsDead)
+        {
             return;
+        }
 
         base.Update();
     }
@@ -83,11 +79,15 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         if (MonsterSo == null)
+        {
             return;
+        }
 
         //Test
         if (PlayerDeckContainer.Instance.SelectedStage == null)
+        {
             StatManager.Initialize(MonsterSo);
+        }
         else
         {
             StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
@@ -99,7 +99,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
         ChangeClip(Define.DeadClipName, MonsterSo.DeadAniClip);
-        foreach (var skillData in MonsterSo.SkillDatas)
+        foreach (EnemySkillData skillData in MonsterSo.SkillDatas)
         {
             SkillManager.AddActiveSkill(skillData.skillSO);
         }
@@ -123,7 +123,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             EnemyUnitState.Move   => new MoveState(),
             EnemyUnitState.Return => new EnemyState.ReturnState(),
             EnemyUnitState.Attack => new EnemyState.AttackState(),
-            EnemyUnitState.Skill  => new EnemyState.SkillState(),
+            EnemyUnitState.Skill  => new SkillState(),
             EnemyUnitState.Stun   => new StunState(),
             EnemyUnitState.Die    => new EnemyState.DeadState(),
 
@@ -139,10 +139,14 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+        {
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
+        }
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+        {
             emotionOnHit.OnCalculateHitChance(this, ref hitRate);
+        }
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -169,7 +173,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
     {
         if (IsDead)
+        {
             return;
+        }
 
         float finalDam = amount;
 
@@ -182,10 +188,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         }
 
         finalDam *= 1f - damageReduction;
-        
-        
-        var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
-        var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+
+
+        ResourceStat curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
+        ResourceStat shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
 
         if (shield.CurrentValue > 0)
         {
@@ -200,6 +206,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         }
+
         if (curHp.Value <= 0)
         {
             Dead();
@@ -212,7 +219,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
-        
+
         Agent.enabled = false;
         dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         // gameObject.SetActive(false);
@@ -220,15 +227,21 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public bool ShouldUseSkill()
     {
-        if (SkillController.CheckAllSkills() && Random.value < MonsterSo.skillActionProbability) return true;
-        else return false;
+        if (SkillController.CheckAllSkills() && Random.value < MonsterSo.skillActionProbability)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void InitTargetSelector()
     {
         mainTargetSelector = new WeightedSelector<Unit>();
-        var playerUnits = BattleManager.Instance.PartyUnits;
-        foreach (var playerUnit in playerUnits)
+        List<Unit> playerUnits = BattleManager.Instance.PartyUnits;
+        foreach (Unit playerUnit in playerUnits)
         {
             mainTargetSelector.Add(
                 playerUnit,
@@ -242,7 +255,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     {
         if (campType == SelectCampType.Enemy)
         {
-            var allies = BattleManager.Instance.GetAllies(this);
+            List<Unit> allies = BattleManager.Instance.GetAllies(this);
             SetTarget(allies[Random.Range(0, allies.Count)]);
         }
         else if (campType == SelectCampType.Player)
@@ -267,7 +280,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public void ChoiceAction()
     {
         if (IsDead)
+        {
             return;
+        }
 
         if (ShouldUseSkill())
         {
@@ -289,18 +304,21 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned)
+        if (IsDead || IsStunned || Target == null || Target.IsDead)
         {
             BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
             return;
         }
+
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
     public override void EndTurn()
     {
         if (!IsDead)
+        {
             CurrentEmotion.AddStack(this);
+        }
 
 
         ChangeAction(ActionType.None);

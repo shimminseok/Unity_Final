@@ -107,7 +107,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             OnStageClear();
             return;
         }
-        else if (PartyUnits.TrueForAll(x => x.IsDead))
+
+        if (PartyUnits.TrueForAll(x => x.IsDead))
         {
             OnStageFail();
             return;

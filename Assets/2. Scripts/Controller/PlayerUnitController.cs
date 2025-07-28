@@ -20,6 +20,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     [SerializeField] private AnimationClip moveClip;
     [SerializeField] private AnimationClip victoryClip;
     [SerializeField] private AnimationClip readyActionClip;
+    [SerializeField] private AnimationClip deadClip;
     public EquipmentManager EquipmentManager { get; private set; }
     public Vector3          StartPostion     { get; private set; }
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
@@ -131,6 +132,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeClip(Define.MoveClipName, moveClip);
         ChangeClip(Define.VictoryClipName, victoryClip);
         ChangeClip(Define.ReadyActionClipName, readyActionClip);
+        ChangeClip(Define.DeadClipName, deadClip);
     }
 
 
