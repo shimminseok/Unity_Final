@@ -24,7 +24,7 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController owner)
         {
-            owner.Animator.ResetTrigger(attack);
+            owner.transform.localRotation = Quaternion.identity;
         }
     }
 }

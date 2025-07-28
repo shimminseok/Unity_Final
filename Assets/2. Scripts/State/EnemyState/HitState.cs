@@ -27,7 +27,6 @@ namespace EnemyState
                 return;
             }
 
-            Debug.Log("Update Enemey Hit");
             hasHandler = true;
             if (canCounter)
             {

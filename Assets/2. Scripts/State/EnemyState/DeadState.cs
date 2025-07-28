@@ -8,7 +8,6 @@ namespace EnemyState
         {
             owner.Animator.SetTrigger(Define.DeadAnimationHash);
             owner.OnToggleNavmeshAgent(false);
-            owner.LastAttacker?.InvokeHitFinished();
         }
 
         public void OnUpdate(EnemyUnitController owner)
@@ -21,6 +20,7 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController entity)
         {
+            entity.LastAttacker?.InvokeHitFinished();
         }
     }
 }

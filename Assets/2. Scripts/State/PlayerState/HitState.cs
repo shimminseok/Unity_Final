@@ -26,7 +26,6 @@ namespace PlayerState
                 return;
             }
 
-            Debug.Log("Update Player Hit");
             hasHandler = true;
             if (canCounter)
             {
@@ -44,7 +43,6 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController owner)
         {
-            Debug.Log("Exit Hit State");
             if (canCounter)
             {
                 owner.OnMeleeAttackFinished -= onAttackFinishedHandler;

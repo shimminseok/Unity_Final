@@ -319,6 +319,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         OnHitFinished?.Invoke();
 
         OnHitFinished = null;
+        if (IsDead)
+        {
+            LastAttacker.InvokeHitFinished();
+        }
 
         Debug.Log("Invoke Hit Finished");
     }

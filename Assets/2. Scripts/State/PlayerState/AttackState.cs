@@ -24,5 +24,6 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
     public void OnExit(PlayerUnitController owner)
     {
         // owner.OnToggleNavmeshAgent(true);
+        owner.transform.localRotation = Quaternion.identity;
     }
 }

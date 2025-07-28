@@ -118,7 +118,6 @@ public class ActState : ITurnState
 
     public void OnEnter(Unit unit)
     {
-        Debug.Log($"{unit.name}ActState Enter");
         target = unit.Target as Unit;
         if (target != null)
         {
@@ -156,11 +155,6 @@ public class ActState : ITurnState
 
             unit.OnSkillFinished += onReactionEndHandler;
         }
-
-
-        // action = CombatActionFactory.Create(unit);
-        // action.OnActionComplete += handler;
-        // action.Execute(unit);
     }
 
     public void OnUpdate(Unit unit)
@@ -169,8 +163,6 @@ public class ActState : ITurnState
 
     public void OnExit(Unit unit)
     {
-        Debug.Log("ActState Exit");
-
         unit.OnHitFinished -= onReactionEndHandler;
 
         action = null;
