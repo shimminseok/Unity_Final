@@ -45,8 +45,8 @@ public class VirtualCameraController : MonoBehaviour
    public void DefaultCamera()
    {
        vCam.m_Lens.FieldOfView = cameraAdjustData.DefaultFOV;
-       vCam.transform.position = cameraAdjustData.DefaultTransform.position;
-       vCam.transform.rotation = cameraAdjustData.DefaultTransform.rotation;
+       vCam.transform.position = cameraAdjustData.DefaultPosition;
+       vCam.transform.rotation = Quaternion.Euler(cameraAdjustData.DefaultRotation);
    }
 
    public void ShakeCamera()
