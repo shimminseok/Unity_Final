@@ -12,16 +12,29 @@ public enum ActionType
     SKill
 }
 
-[RequireComponent(typeof(PlayerSkillController))]
-public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
+[RequireComponent(typeof(PlayerSkillController))] public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    [SerializeField] private int id;
-    [SerializeField] private AnimationClip idleClip;
-    [SerializeField] private AnimationClip moveClip;
-    [SerializeField] private AnimationClip victoryClip;
-    [SerializeField] private AnimationClip readyActionClip;
-    [SerializeField] private AnimationClip deadClip;
-    [SerializeField] private AnimationClip hitClip;
+    [SerializeField]
+    private int id;
+
+    [SerializeField]
+    private AnimationClip idleClip;
+
+    [SerializeField]
+    private AnimationClip moveClip;
+
+    [SerializeField]
+    private AnimationClip victoryClip;
+
+    [SerializeField]
+    private AnimationClip readyActionClip;
+
+    [SerializeField]
+    private AnimationClip deadClip;
+
+    [SerializeField]
+    private AnimationClip hitClip;
+
     public EquipmentManager EquipmentManager { get; private set; }
     public Vector3          StartPostion     { get; private set; }
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
@@ -167,6 +180,16 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!isHit)
         {
             DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
+            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                OnRangeAttackFinished += InvokeHitFinished;
+                InvokeRangeAttackFinished();
+            }
+
             return;
         }
 
@@ -248,7 +271,18 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         IsDead = true;
-        InvokeHitFinished();
+        if (LastAttacker != null)
+        {
+            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+            }
+        }
+
         ChangeUnitState(PlayerUnitState.Die);
 
 
