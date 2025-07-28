@@ -281,13 +281,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             OnRangeAttackFinished += EndCountAttack;
         }
-
-        Debug.Log("Start Counter");
     }
 
-    public void EndCountAttack()
+    private void EndCountAttack()
     {
-        Debug.Log("End Counter");
         IsCounterAttack = false;
         CounterTarget = null;
     }
@@ -319,13 +316,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
 
-        OnHitFinished = null;
         if (IsDead)
         {
             LastAttacker?.InvokeHitFinished();
         }
 
-        Debug.Log("Invoke Hit Finished");
+        OnHitFinished = null;
     }
 
     public void InvokeAttackFinished()

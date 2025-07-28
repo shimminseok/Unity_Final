@@ -10,8 +10,6 @@ namespace EnemyState
         private bool hasHandler;
         private Action onAttackFinishedHandler;
 
-        private Coroutine counterCoroutine;
-
         public void OnEnter(EnemyUnitController owner)
         {
             owner.IsAnimationDone = false;
@@ -34,7 +32,7 @@ namespace EnemyState
             }
             else
             {
-                owner.LastAttacker.InvokeHitFinished();
+                owner.LastAttacker?.InvokeHitFinished();
             }
         }
 
