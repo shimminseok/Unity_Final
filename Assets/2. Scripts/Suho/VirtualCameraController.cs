@@ -14,7 +14,7 @@ public class VirtualCameraController : MonoBehaviour
    private void Awake()
    {
        vCam = GetComponent<CinemachineVirtualCamera>();
-       cameraAdjustData = new CameraAdjustData(vCam);
+       cameraAdjustData = new CameraAdjustData(this);
        perlin = vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
        CameraAnimator = GetComponent<Animator>();
    }

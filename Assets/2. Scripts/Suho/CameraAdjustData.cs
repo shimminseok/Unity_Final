@@ -14,10 +14,10 @@ public class CameraAdjustData
     
     
     
-    public CameraAdjustData(CinemachineVirtualCamera virtualCamera)
+    public CameraAdjustData(VirtualCameraController vCamController)
     {
-        DefaultFOV = virtualCamera.m_Lens.FieldOfView;
-        DefaultTransform = virtualCamera.transform;
+        DefaultFOV = vCamController.vCam.m_Lens.FieldOfView;
+        DefaultTransform = vCamController.transform;
         
     }
     

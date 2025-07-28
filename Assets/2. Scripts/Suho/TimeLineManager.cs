@@ -180,10 +180,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     {
         director.Stop();
         isPlaying = false;
-        if (CurrentCameraController != null)
-        {
-            CurrentCameraController.DefaultCamera();
-        }
+        CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
         
