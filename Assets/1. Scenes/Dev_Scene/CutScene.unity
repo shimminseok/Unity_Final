@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 17
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 1.8
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -343,7 +343,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 1.8
   far clip plane: 1000
   field of view: 17
   orthographic: 0
@@ -569,7 +569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &1082757968
+--- !u!1001 &1348638227
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -577,60 +577,76 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1374048655880376, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 1566368292716416, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_Name
-      value: Archer
+      value: SpearMan
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4437988059002368, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4476821008798862, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59c91cd6a7869ce419521a4757084be9, type: 3}
---- !u!95 &1082757969 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 6db557ecf2aec3641b11af56772b1870, type: 3}
+--- !u!95 &1348638228 stripped
 Animator:
-  m_CorrespondingSourceObject: {fileID: 95685165992172870, guid: 59c91cd6a7869ce419521a4757084be9,
+  m_CorrespondingSourceObject: {fileID: 95462824699125624, guid: 6db557ecf2aec3641b11af56772b1870,
     type: 3}
-  m_PrefabInstance: {fileID: 1082757968}
+  m_PrefabInstance: {fileID: 1348638227}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1705399489
 GameObject:
@@ -660,7 +676,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1705399489}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 2bde45b19cc8c2a48842e013e71ee343, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -717,7 +733,7 @@ PlayableDirector:
   - key: {fileID: -7048568530126512747, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
     value: {fileID: 0}
   - key: {fileID: 6729081091626528363, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1348638228}
   - key: {fileID: -6112601530188972911, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
     value: {fileID: 718757876}
   - key: {fileID: 4953823917375287304, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
@@ -727,7 +743,7 @@ PlayableDirector:
   - key: {fileID: -7048568530126512747, guid: 2bde45b19cc8c2a48842e013e71ee343, type: 2}
     value: {fileID: 858459592}
   - key: {fileID: 6729081091626528363, guid: 2bde45b19cc8c2a48842e013e71ee343, type: 2}
-    value: {fileID: 1082757969}
+    value: {fileID: 0}
   - key: {fileID: -6112601530188972911, guid: 2bde45b19cc8c2a48842e013e71ee343, type: 2}
     value: {fileID: 718757876}
   - key: {fileID: 4953823917375287304, guid: 2bde45b19cc8c2a48842e013e71ee343, type: 2}
@@ -925,4 +941,4 @@ SceneRoots:
   - {fileID: 1705399491}
   - {fileID: 652546628}
   - {fileID: 718757875}
-  - {fileID: 1082757968}
+  - {fileID: 1348638227}
