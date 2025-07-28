@@ -8,7 +8,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 {
     private const float ResistancePerStack = 0.08f;
 
-    [SerializeField] protected BattleSceneUnitIndicator unitIndicator;
+    [SerializeField]
+    protected BattleSceneUnitIndicator unitIndicator;
 
 
     protected BattleManager BattleManager => BattleManager.Instance;
@@ -321,7 +322,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         OnHitFinished = null;
         if (IsDead)
         {
-            LastAttacker.InvokeHitFinished();
+            LastAttacker?.InvokeHitFinished();
         }
 
         Debug.Log("Invoke Hit Finished");
