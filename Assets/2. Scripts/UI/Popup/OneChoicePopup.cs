@@ -62,6 +62,7 @@ public class OneChoicePopup : UIBase
 
         seq.Append(BG.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
         seq.AppendCallback(() => base.Close());
+        seq.AppendCallback(() => UIManager.Instance.Close(PopupManager.Instance.GetUIComponent<UIDefeat>()));
 
         OnCenterClicked = null;
     }
