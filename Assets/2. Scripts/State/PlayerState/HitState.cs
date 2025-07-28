@@ -21,7 +21,7 @@ namespace PlayerState
 
             if (owner.CanCounterAttack(owner.LastAttacker))
             {
-                owner.StartCountAttack(owner.LastAttacker);
+                owner.ExecuteCoroutine(owner.StartCountAttack(owner.LastAttacker));
             }
             else
             {

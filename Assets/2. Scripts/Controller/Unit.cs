@@ -43,7 +43,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    { get; set; }
-    public virtual bool IsTimeLinePlaying   { get; set; }
+    public virtual bool IsTimeLinePlaying  { get; set; }
 
     public event Action  OnHitFinished;
     public          Unit SelectedUnit => this;
@@ -107,12 +107,17 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void ChangeEmotion(EmotionType newType)
     {
-        if (newType == EmotionType.None) return;
+        if (newType == EmotionType.None)
+        {
+            return;
+        }
 
         if (CurrentEmotion.EmotionType != newType)
         {
             if (Random.value < CurrentEmotion.Stack * ResistancePerStack)
+            {
                 return;
+            }
 
             // 이전 감정 스택 이벤트 제거
             CurrentEmotion.StackChanged -= OnEmotionStackChanged;
@@ -161,7 +166,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ToggleSelectableIndicator(bool toggle)
     {
         if (unitIndicator == null)
+        {
             Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+        }
 
         unitIndicator.ToggleSelectableIndicator(toggle);
     }
@@ -170,7 +177,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ToggleSelectedIndicator(bool toggle)
     {
         if (unitIndicator == null)
+        {
             Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+        }
 
         unitIndicator.ToggleSelectedIndicator(toggle);
     }
@@ -179,7 +188,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void PlaySelectEffect()
     {
         if (unitIndicator == null)
+        {
             Debug.LogError("유닛에 unitIndicator을 추가해주세요.");
+        }
 
         unitIndicator.PlaySelectEffect();
     }
@@ -188,7 +199,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         CurrentAction = action;
         if (action == ActionType.Attack)
+        {
             CurrentAttackAction = UnitSo.AttackType;
+        }
         else if (action == ActionType.SKill)
         {
             CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
@@ -218,32 +231,50 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public bool CanCounterAttack(Unit attacker)
     {
         if (IsDead)
+        {
             return false;
+        }
+
         if (StatManager.GetValue(StatType.Counter) < Random.value)
         {
             return false;
         }
 
         if (!attacker.IsCompletedAttack)
+        {
             return false;
+        }
+
         if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
+        {
             return false;
+        }
 
         if (attacker.CurrentAction == ActionType.SKill)
+        {
             return false;
+        }
 
         return true;
     }
 
 
-    public void StartCountAttack(Unit attacker)
+    public IEnumerator StartCountAttack(Unit attacker)
     {
         CounterTarget = attacker;
         IsCounterAttack = true;
         if (this is PlayerUnitController)
+        {
             ChangeUnitState(PlayerUnitState.Attack);
+        }
         else if (this is EnemyUnitController)
+        {
             ChangeUnitState(EnemyUnitState.Attack);
+        }
+
+        yield return new WaitUntil(() => IsAnimationDone);
+
+        EndCountAttack();
     }
 
     public void EndCountAttack()
@@ -256,8 +287,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             ChangeUnitState(EnemyUnitState.Idle);
         }
+
         IsCounterAttack = false;
         CounterTarget = null;
+        InvokeHitFinished();
     }
 
     public void OnToggleNavmeshAgent(bool isOn)

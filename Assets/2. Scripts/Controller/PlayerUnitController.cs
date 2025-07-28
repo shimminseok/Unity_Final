@@ -58,6 +58,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             PlayerUnitState.Skill       => new SkillState(),
             PlayerUnitState.Victory     => new VictoryState(),
             PlayerUnitState.ReadyAction => new ReadyAction(),
+            PlayerUnitState.Hit         => new HitState(),
             _                           => null
         };
     }

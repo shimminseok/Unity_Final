@@ -92,21 +92,17 @@ public class MoveToTargetState : ITurnState
         waitOneFrame = false;
 
         if (unit is PlayerUnitController)
+        {
             unit.ChangeUnitState(PlayerUnitState.Move);
+        }
         else if (unit is EnemyUnitController)
+        {
             unit.ChangeUnitState(EnemyUnitState.Move);
+        }
     }
 
     public void OnUpdate(Unit unit)
     {
-        if (!waitOneFrame)
-        {
-            waitOneFrame = true;
-            return;
-        }
-
-        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-        //     unit.ChangeTurnState(TurnStateType.Act);
     }
 
     public void OnExit(Unit unit)
@@ -119,29 +115,53 @@ public class ActState : ITurnState
     private ICombatAction action;
     private Action handler;
 
+    private Unit target;
+    private Action targetActionHandler;
+
     public void OnEnter(Unit unit)
     {
         if (unit.CurrentAction == ActionType.Attack)
         {
             if (unit is PlayerUnitController)
+            {
                 unit.ChangeUnitState(PlayerUnitState.Attack);
+            }
             else if (unit is EnemyUnitController)
+            {
                 unit.ChangeUnitState(EnemyUnitState.Attack);
+            }
         }
         else if (unit.CurrentAction == ActionType.SKill)
         {
             if (unit is PlayerUnitController)
+            {
                 unit.ChangeUnitState(PlayerUnitState.Skill);
+            }
             else if (unit is EnemyUnitController)
+            {
                 unit.ChangeUnitState(EnemyUnitState.Skill);
+            }
         }
 
         handler = () =>
         {
-            Unit target = unit.Target as Unit;
-            if (target != null && target.CanCounterAttack(unit))
+            target = unit.Target as Unit;
+            if (target != null)
             {
-                unit.ExecuteCoroutine(StartCounterAttack(unit, target));
+                target.SetLastAttacker(unit);
+                targetActionHandler += () => ProceedToNextState(unit);
+                target.OnHitFinished += targetActionHandler;
+
+                if (target is PlayerUnitController playerUnit)
+                {
+                    playerUnit.ChangeUnitState(PlayerUnitState.Hit);
+                }
+                else if (target is EnemyUnitController enemyUnit)
+                {
+                    enemyUnit.ChangeUnitState(EnemyUnitState.Hit);
+                }
+
+                // unit.ExecuteCoroutine(StartCounterAttack(unit, target));
             }
             else
             {
@@ -162,15 +182,11 @@ public class ActState : ITurnState
     public void OnExit(Unit unit)
     {
         action.OnActionComplete -= handler;
-    }
-
-    private IEnumerator StartCounterAttack(Unit attacker, Unit target)
-    {
-        target.StartCountAttack(attacker);
-
-        yield return new WaitUntil(() => target.IsAnimationDone);
-        target.EndCountAttack();
-        ProceedToNextState(attacker);
+        target.OnHitFinished -= targetActionHandler;
+        target = null;
+        targetActionHandler = null;
+        handler = null;
+        action = null;
     }
 
     private void ProceedToNextState(Unit unit)
@@ -184,9 +200,13 @@ public class ActState : ITurnState
         Debug.Log("ProceedToNextState");
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+        {
             unit.ChangeTurnState(TurnStateType.Return);
+        }
         else
+        {
             unit.ChangeTurnState(TurnStateType.EndTurn);
+        }
     }
 }
 
@@ -196,9 +216,13 @@ public class ReturnState : ITurnState
     {
         //되돌아가는 함수
         if (unit is PlayerUnitController)
+        {
             unit.ChangeUnitState(PlayerUnitState.Return);
+        }
         else if (unit is EnemyUnitController)
+        {
             unit.ChangeUnitState(EnemyUnitState.Return);
+        }
     }
 
     public void OnUpdate(Unit unit)
