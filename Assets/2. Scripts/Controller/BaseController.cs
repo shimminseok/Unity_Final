@@ -69,5 +69,4 @@ public abstract class BaseController<TController, TState> : Unit where TControll
 
 
     protected abstract IState<TController, TState> GetState(TState state);
-    
 }

@@ -1,31 +1,40 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace PlayerState
 {
     public class HitState : IState<PlayerUnitController, PlayerUnitState>
     {
         private readonly int isHit = Define.HitAnimationHash;
+        private bool canCounter;
+        private bool hasHandler;
+        private Action onAttackFinishedHandler;
 
         public void OnEnter(PlayerUnitController owner)
         {
             Debug.Log("Enter Hit State");
+            owner.IsAnimationDone = false;
             owner.Animator.SetTrigger(isHit);
+            canCounter = owner.CanCounterAttack(owner.LastAttacker);
+            hasHandler = false;
         }
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            if (!owner.IsAnimationDone && owner.LastAttacker == null)
+            if (hasHandler || !owner.IsAnimationDone)
             {
                 return;
             }
 
-            if (owner.CanCounterAttack(owner.LastAttacker))
+            Debug.Log("Update Player Hit");
+            hasHandler = true;
+            if (canCounter)
             {
-                owner.ExecuteCoroutine(owner.StartCountAttack(owner.LastAttacker));
+                owner.StartCountAttack(owner.LastAttacker);
             }
             else
             {
-                owner.InvokeHitFinished();
+                owner.LastAttacker.InvokeHitFinished();
             }
         }
 
@@ -35,7 +44,12 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController owner)
         {
-            owner.SetLastAttacker(null);
+            Debug.Log("Exit Hit State");
+            if (canCounter)
+            {
+                owner.OnMeleeAttackFinished -= onAttackFinishedHandler;
+                onAttackFinishedHandler = null;
+            }
         }
     }
 }

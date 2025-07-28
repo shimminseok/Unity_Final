@@ -4,6 +4,7 @@
     {
         owner.Animator.SetTrigger(Define.DeadAnimationHash);
         owner.OnToggleNavmeshAgent(false);
+        owner.LastAttacker?.InvokeHitFinished();
     }
 
     public void OnUpdate(PlayerUnitController owner)

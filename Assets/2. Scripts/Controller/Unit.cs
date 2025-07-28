@@ -35,7 +35,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public Unit                       LastAttacker               { get; private set; }
 
     public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
-    public IAttackAction CurrentAttackAction { get; private set; }
+    public IAttackAction CurrentAttackAction { get; protected set; }
     public bool          IsDead              { get; protected set; }
     public bool          IsCompletedAttack   { get; protected set; }
     public bool          IsStunned           { get; private set; }
@@ -46,6 +46,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public virtual bool IsTimeLinePlaying  { get; set; }
 
     public event Action  OnHitFinished;
+    public event Action  OnMeleeAttackFinished;
+    public event Action  OnRangeAttackFinished;
+    public event Action  OnSkillFinished;
     public          Unit SelectedUnit => this;
     public abstract void StartTurn();
     public abstract void EndTurn();
@@ -235,15 +238,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return false;
         }
 
-        if (StatManager.GetValue(StatType.Counter) < Random.value)
+        if (Random.value > StatManager.GetValue(StatType.Counter))
         {
             return false;
         }
 
-        if (!attacker.IsCompletedAttack)
-        {
-            return false;
-        }
 
         if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
         {
@@ -259,10 +258,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     }
 
 
-    public IEnumerator StartCountAttack(Unit attacker)
+    public void StartCountAttack(Unit attacker)
     {
         CounterTarget = attacker;
         IsCounterAttack = true;
+        attacker.SetLastAttacker(this);
         if (this is PlayerUnitController)
         {
             ChangeUnitState(PlayerUnitState.Attack);
@@ -272,25 +272,23 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             ChangeUnitState(EnemyUnitState.Attack);
         }
 
-        yield return new WaitUntil(() => IsAnimationDone);
+        if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+        {
+            OnMeleeAttackFinished += EndCountAttack;
+        }
+        else
+        {
+            OnRangeAttackFinished += EndCountAttack;
+        }
 
-        EndCountAttack();
+        Debug.Log("Start Counter");
     }
 
     public void EndCountAttack()
     {
-        if (this is PlayerUnitController)
-        {
-            ChangeUnitState(PlayerUnitState.Idle);
-        }
-        else if (this is EnemyUnitController)
-        {
-            ChangeUnitState(EnemyUnitState.Idle);
-        }
-
+        Debug.Log("End Counter");
         IsCounterAttack = false;
         CounterTarget = null;
-        InvokeHitFinished();
     }
 
     public void OnToggleNavmeshAgent(bool isOn)
@@ -311,12 +309,39 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void SetLastAttacker(Unit attacker)
     {
-        Debug.Log("Set Target");
+        Debug.Log($"{attacker.name}");
         LastAttacker = attacker;
     }
 
     public void InvokeHitFinished()
     {
+        IsAnimationDone = true;
         OnHitFinished?.Invoke();
+
+        OnHitFinished = null;
+
+        Debug.Log("Invoke Hit Finished");
+    }
+
+    public void InvokeAttackFinished()
+    {
+        IsAnimationDone = true;
+        OnMeleeAttackFinished?.Invoke();
+        OnMeleeAttackFinished = null;
+    }
+
+    public void InvokeRangeAttackFinished()
+    {
+        IsAnimationDone = true;
+        OnRangeAttackFinished?.Invoke();
+        OnRangeAttackFinished = null;
+    }
+
+    public void InvokeSkillFinished()
+    {
+        IsAnimationDone = true;
+        OnSkillFinished?.Invoke();
+
+        OnSkillFinished = null;
     }
 }

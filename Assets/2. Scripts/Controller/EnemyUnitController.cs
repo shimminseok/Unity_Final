@@ -19,15 +19,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
     public float setRemainDistance;
 
-    public override bool IsAnimationDone
-    {
-        get
-        {
-            AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
-        }
-    }
-
     public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
     private float remainDistance;
@@ -99,6 +90,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeClip(Define.MoveClipName, MonsterSo.MoveAniClip);
         ChangeClip(Define.AttackClipName, MonsterSo.AttackAniClip);
         ChangeClip(Define.DeadClipName, MonsterSo.DeadAniClip);
+        ChangeClip(Define.HitClipName, MonsterSo.HitAniClip);
         foreach (EnemySkillData skillData in MonsterSo.SkillDatas)
         {
             SkillManager.AddActiveSkill(skillData.skillSO);
@@ -113,6 +105,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         InitTargetSelector();
         ChangeEmotion(MonsterSo.StartEmotion);
+        CurrentAttackAction = UnitSo.AttackType;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -126,6 +119,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             EnemyUnitState.Skill  => new SkillState(),
             EnemyUnitState.Stun   => new StunState(),
             EnemyUnitState.Die    => new EnemyState.DeadState(),
+            EnemyUnitState.Hit    => new HitState(),
 
             _ => null
         };
@@ -210,7 +204,10 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (curHp.Value <= 0)
         {
             Dead();
+            return;
         }
+
+        ChangeUnitState(EnemyUnitState.Hit);
     }
 
     public override void Dead()
@@ -220,7 +217,11 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
 
+        InvokeHitFinished();
+
         Agent.enabled = false;
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
         dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
         // gameObject.SetActive(false);
     }
@@ -324,5 +325,9 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
         ChangeUnitState(PlayerUnitState.Idle);
+    }
+
+    public void OnAnimationCompleteEvent()
+    {
     }
 }
