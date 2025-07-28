@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +8,6 @@ public static class Define
     public const float DefenseReductionBase = 100f;
 
 
-    
-    
     public static readonly int MoveAnimationHash = Animator.StringToHash("IsMove");
     public static readonly int AttackAnimationHash = Animator.StringToHash("Attack");
     public static readonly int SkillAnimationHash = Animator.StringToHash("Skill");
@@ -27,7 +26,7 @@ public static class Define
     public static readonly string HitClipName = "Hit";
 
 
-    public static readonly Dictionary<int, int> DupeCountByTranscend = new Dictionary<int, int>()
+    public static readonly Dictionary<int, int> DupeCountByTranscend = new()
     {
         { 0, 10 },
         { 1, 20 },
@@ -48,19 +47,39 @@ public static class Define
             StatType.CriticalRate => "치명타 확률",
             StatType.CriticalDam  => "치명타 대미지",
             StatType.HitRate      => "명중률",
-
-            _ => string.Empty
+            _                     => string.Empty
         };
     }
 
     // 티어 별 가챠 확률
-    public static readonly Dictionary<Tier, float> TierRates = new() { { Tier.A, 90f }, { Tier.S, 9f }, { Tier.SR, 0.98f }, { Tier.SSR, 0.02f } };
+    public static readonly Dictionary<Tier, float> TierRates = new()
+    {
+        { Tier.A, 90f },
+        { Tier.S, 9f },
+        { Tier.SR, 0.98f },
+        { Tier.SSR, 0.02f }
+    };
 
     // 티어 별 중복 보상 값 계수
-    public static float GetCompensationAmount(Tier tier) { return tier switch { Tier.A => 0.1f, Tier.S => 0.2f, Tier.SR => 0.3f, Tier.SSR => 0.4f, _ => 0 }; }
+    public static float GetCompensationAmount(Tier tier)
+    {
+        return tier switch
+        {
+            Tier.A   => 0.1f,
+            Tier.S   => 0.2f,
+            Tier.SR  => 0.3f,
+            Tier.SSR => 0.4f,
+            _        => 0
+        };
+    }
 
     // 가챠 비용
-    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new() { { GachaType.Skill, 150 }, { GachaType.Character, 200 }, { GachaType.Equipment, 150 } };
+    public static readonly Dictionary<GachaType, int> GachaDrawCosts = new()
+    {
+        { GachaType.Skill, 150 },
+        { GachaType.Character, 200 },
+        { GachaType.Equipment, 150 }
+    };
 
 
     public static float GetTargetColliderRadius(IDamageable target)
@@ -68,16 +87,34 @@ public static class Define
         Collider col = target?.Collider;
 
         if (col is CapsuleCollider capsule)
+        {
             return capsule.radius;
+        }
         else
+        {
             return 0.5f; // 기본값
+        }
     }
 
 
-    public static Dictionary<int, string> ChapterNameDictionary = new() { { 1, "1챕터임" }, { 2, "2챕터임" }, { 3, "3챕터임" }, { 4, "4챕터임" } };
+    public static Dictionary<int, string> ChapterNameDictionary =
+        new()
+        {
+            { 1, "1챕터임" },
+            { 2, "2챕터임" },
+            { 3, "3챕터임" },
+            { 4, "4챕터임" }
+        };
 
     public static readonly int RequierCombineItemGold = 3000;
     public static readonly int RequierUnitLevelUpGold = 1000;
     public static readonly int RequierUnitTranscendGold = 10000;
 
+
+    public static Dictionary<string, Action> FirstGivenItem = new()
+    {
+        { "Unit", () => AccountManager.Instance.AddPlayerUnit(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(1)) },
+        { "Item", () => InventoryManager.Instance.AddItem(new EquipmentItem(11101)) },
+        { "Skill", () => AccountManager.Instance.AddSkill(TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(1002), out _) }
+    };
 }
