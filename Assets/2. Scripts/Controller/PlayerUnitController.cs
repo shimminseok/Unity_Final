@@ -1,6 +1,7 @@
 using UnityEngine;
 using PlayerState;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     [SerializeField] private AnimationClip moveClip;
     [SerializeField] private AnimationClip victoryClip;
     [SerializeField] private AnimationClip readyActionClip;
+    [SerializeField] private AnimationClip deadClip;
     public EquipmentManager EquipmentManager { get; private set; }
     public Vector3          StartPostion     { get; private set; }
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
@@ -28,18 +30,12 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         get
         {
-            var info = Animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
             return info.IsTag("Action") && info.normalizedTime >= 0.9f;
         }
     }
 
-    public override bool IsTimeLinePlaying
-    {
-        get
-        {
-            return TimeLineManager.Instance.isPlaying;
-        }
-    }
+    public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
     public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
 
@@ -97,18 +93,22 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         if (PlayerUnitSo == null)
+        {
             return;
+        }
 
         PassiveSo = PlayerUnitSo.PassiveSkill;
         PassiveSo.Initialize(this);
         if (PlayerDeckContainer.Instance.SelectedStage == null)
+        {
             StatManager.Initialize(PlayerUnitSo);
+        }
         else
         {
             StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
         }
 
-        foreach (var skillData in deckData.DeckData.SkillDatas)
+        foreach (SkillData skillData in deckData.DeckData.SkillDatas)
         {
             if (skillData == null)
             {
@@ -119,6 +119,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
+        foreach (EquipmentItem deckDataEquippedItem in deckData.DeckData.EquippedItems.Values)
+        {
+            EquipmentManager.EquipItem(deckDataEquippedItem);
+        }
+
         SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
@@ -127,6 +132,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeClip(Define.MoveClipName, moveClip);
         ChangeClip(Define.VictoryClipName, victoryClip);
         ChangeClip(Define.ReadyActionClipName, readyActionClip);
+        ChangeClip(Define.DeadClipName, deadClip);
     }
 
 
@@ -137,14 +143,20 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
 
         if (finalTarget == null || finalTarget.IsDead)
+        {
             return;
-        
+        }
+
         float hitRate = StatManager.GetValue(StatType.HitRate);
         if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+        {
             emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
+        }
 
         else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+        {
             emotionOnHit.OnCalculateHitChance(this, ref hitRate);
+        }
 
         bool isHit = Random.value < hitRate;
         if (!isHit)
@@ -152,7 +164,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
             return;
         }
-        
+
         PlayerUnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }
@@ -171,13 +183,17 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
     {
         if (IsDead)
+        {
             return;
+        }
 
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
             if (isIgnore)
+            {
                 return;
+            }
         }
 
         float finalDam = amount;
@@ -193,9 +209,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         finalDam *= 1f - damageReduction;
-        var curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
-        var shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
-        
+        ResourceStat curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
+        ResourceStat shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+
         if (shield.CurrentValue > 0)
         {
             float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
@@ -209,6 +225,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         }
+
         if (curHp.Value <= 0)
         {
             Dead();
@@ -218,23 +235,24 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void Dead()
     {
         if (IsDead)
+        {
             return;
+        }
 
         IsDead = true;
         ChangeUnitState(PlayerUnitState.Die);
 
 
         //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
-        var allyDeathPassives = BattleManager.Instance.GetAllies(this)
+        List<IPassiveAllyDeathTrigger> allyDeathPassives = BattleManager.Instance.GetAllies(this)
             .Select(u => (u as PlayerUnitController)?.PassiveSo)
             .OfType<IPassiveAllyDeathTrigger>()
             .ToList();
 
-        foreach (var unit in allyDeathPassives)
+        foreach (IPassiveAllyDeathTrigger unit in allyDeathPassives)
         {
             unit.OnAllyDead();
         }
-
     }
 
     public override void StartTurn()
@@ -257,7 +275,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             turnStartTrigger.OnTurnStart(this);
         }
-        
+
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -271,7 +289,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         if (!IsDead)
+        {
             CurrentEmotion.AddStack(this);
+        }
 
         Target = null;
         ChangeAction(ActionType.None);

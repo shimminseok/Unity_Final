@@ -13,6 +13,7 @@ public class SelectEquipUI : UIBase
 
     [Header("장비 정보 표시")]
     [SerializeField] private RectTransform panelRect;
+
     [SerializeField] private TextMeshProUGUI itemName;
 
     [SerializeField] private TextMeshProUGUI itemDescription;
@@ -49,12 +50,19 @@ public class SelectEquipUI : UIBase
     private void HandleEquipItemChanged(EntryDeckData unit, EquipmentItem newItem, EquipmentItem oldItem)
     {
         if (unit != CurrentCharacter)
+        {
             return;
+        }
 
         if (oldItem != null)
+        {
             inventoryUI.RefreshAtSlotUI(oldItem);
+        }
+
         if (newItem != null)
+        {
             inventoryUI.RefreshAtSlotUI(newItem);
+        }
     }
 
     public override void Open()
@@ -62,7 +70,9 @@ public class SelectEquipUI : UIBase
         base.Open();
 
         if (CurrentCharacter == null)
+        {
             return;
+        }
 
         RefreshEquipUI();
         DeckSelectManager.Instance.OnEquipItemChanged += HandleEquipItemChanged;
@@ -81,14 +91,18 @@ public class SelectEquipUI : UIBase
         base.Close();
         if (CurrentCharacter != null)
         {
-            if (CurrentCharacter.IsCompeted)
+            if (CurrentCharacter.CompeteSlotInfo.IsInDeck)
             {
-                int partyIndex = DeckSelectManager.GetSelectedDeck().FindIndex(c => c.CharacterSo.ID == CurrentCharacter.CharacterSo.ID);
+                int partyIndex = CurrentCharacter.CompeteSlotInfo.SlotIndex;
                 if (partyIndex != -1)
-                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+                {
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo);
+                }
             }
             else
+            {
                 AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+            }
         }
 
 
@@ -102,7 +116,9 @@ public class SelectEquipUI : UIBase
     private void RefreshEquipUI()
     {
         if (CurrentCharacter == null)
+        {
             return;
+        }
 
         ClearEquipInfo();
         RefreshEquippedSlots();
@@ -140,7 +156,9 @@ public class SelectEquipUI : UIBase
         inventoryUI.SelectItemSlot(item);
         InventorySlot selectSlot = inventoryUI.GetSlotByItem(item);
         if (selectSlot == null)
+        {
             return;
+        }
 
 
         if (selectedItemSlot != selectSlot)
@@ -184,7 +202,7 @@ public class SelectEquipUI : UIBase
 
             if (isActive)
             {
-                var stat = equipmentItem.Stats[i];
+                StatData stat = equipmentItem.Stats[i];
                 itemStatSlots[i].Initialize(stat.StatType, stat.Value);
             }
         }

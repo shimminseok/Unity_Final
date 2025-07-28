@@ -13,6 +13,7 @@ public class CharacterGachaSystem : MonoBehaviour
     private void Awake()
     {
         gachaManager = new GachaManager<PlayerUnitSO>(new RandomCharacterGachaStrategy());
+        drawCost = Define.GachaDrawCosts[GachaType.Character]; // UI 및 핸들러에서 항상 올바른 비용을 표시할 수 있도록 미리 초기화
     }
 
     private List<PlayerUnitSO> GetCharacterDatas()
@@ -32,8 +33,6 @@ public class CharacterGachaSystem : MonoBehaviour
         List<PlayerUnitSO> characterData = GetCharacterDatas();
         PlayerUnitSO[] results = new PlayerUnitSO[count];
 
-        AccountManager.Instance.UseOpal(drawCost * count);
-
         for (int i=0; i<count; i++)
         {
             PlayerUnitSO character = gachaManager.Draw(characterData, Define.TierRates);
@@ -51,12 +50,5 @@ public class CharacterGachaSystem : MonoBehaviour
         }
 
         return results;
-    }
-    public bool CheckCanDraw(int drawCount)
-    {
-        drawCost = Define.GachaDrawCosts[GachaType.Character];
-        bool canUse = AccountManager.Instance.CanUseOpal(drawCost * drawCount);
-
-        return canUse;
     }
 }

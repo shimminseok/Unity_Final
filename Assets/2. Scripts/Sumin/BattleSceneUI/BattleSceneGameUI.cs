@@ -9,8 +9,8 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private Button startBtn;
     [SerializeField] private GameObject playingImage;
 
-    private UIManager uiManager;
     private BattleManager battleManager;
+    private InputManager inputManager;
     private LoadingScreenController loadingScreenController;
 
     [Header("상단에 있는 턴 UI")]
@@ -26,10 +26,13 @@ public class BattleSceneGameUI : MonoBehaviour
 
     [SerializeField] private float slideDuration;
     [SerializeField] private float scaleDuration;
-    [SerializeField] private Vector2 slideOffset; // 아래에서 위로갈 때 위치
     [SerializeField] private float fadeInDuration;
     [SerializeField] private float fadeOutDuration;
     [SerializeField] private float turnAniDuration;
+
+    private Vector2 originalPos;
+    private bool initialized = false;
+    private Sequence turnAniSequence;
 
     private void OnEnable()
     {
@@ -37,6 +40,7 @@ public class BattleSceneGameUI : MonoBehaviour
         battleManager.OnBattleEnd += UpdateTurnCount;
         loadingScreenController = LoadingScreenController.Instance;
         loadingScreenController.OnLoadingComplete += WaitForLoading;
+        inputManager = InputManager.Instance;
     }
 
     private void WaitForLoading()
@@ -47,37 +51,57 @@ public class BattleSceneGameUI : MonoBehaviour
     // 턴 UI 애니메이션
     public void PlayTurnIntroAnimation(bool isBattleStart)
     {
+        // 이전 시퀀스 정리
+        if (turnAniSequence != null && turnAniSequence.IsActive())
+        {
+            turnAniSequence.Kill(true); // 즉시 종료 (true면 콜백도 실행됨)
+        }
+
+        // 초기 위치 저장
+        if (!initialized)
+        {
+            originalPos = titleTextRect.anchoredPosition;
+            initialized = true;
+        }
+
         turnDescriptionText.text = isBattleStart ? "전투 시작" : "전략 선택";
-        
+
+        titleTextRect.DOKill();
+        TurnAniUI.DOKill();
+
         // 초기 설정
         TurnTopUI.gameObject.SetActive(false);
         TurnAniUI.gameObject.SetActive(true);
         TurnTopUI.alpha = 0f;
         TurnAniUI.alpha = 0f;
 
-        Sequence seq = DOTween.Sequence();
+        // 새로운 시퀀스 생성 및 저장
+        turnAniSequence = DOTween.Sequence();
 
-        seq.Append(TurnAniUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
+        turnAniSequence.Append(TurnAniUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
 
-        seq.Join(titleTextRect.DOAnchorPosY(titleTextRect.anchoredPosition.y - slideOffset.y, slideDuration).SetEase(Ease.OutCubic));
+        turnAniSequence.Join(titleTextRect.DOAnchorPosY(originalPos.y, slideDuration).From(originalPos + Vector2.down * 200f).SetEase(Ease.OutCubic));
 
         backgroundRect.localScale = Vector3.one * 2.3f;
-        seq.Join(backgroundRect.DOScale(2f, scaleDuration).SetEase(Ease.OutBack).SetDelay(0.1f));
+        turnAniSequence.Join(backgroundRect.DOScale(2f, scaleDuration).SetEase(Ease.OutBack).SetDelay(0.1f));
 
-        seq.AppendInterval(turnAniDuration);
+        turnAniSequence.AppendInterval(turnAniDuration);
 
-        seq.AppendCallback(() => TurnTopUI.gameObject.SetActive(true));
+        turnAniSequence.AppendCallback(() => TurnTopUI.gameObject.SetActive(true));
 
-        seq.Append(TurnAniUI.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
-        seq.Join(TurnTopUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
+        turnAniSequence.Append(TurnAniUI.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
+        turnAniSequence.Join(TurnTopUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
 
-        seq.AppendCallback (() => TurnAniUI.gameObject.SetActive(false));
+        turnAniSequence.AppendCallback (() => TurnAniUI.gameObject.SetActive(false));
+
+        
 
         // 애니 재생완료된 후에 전투 시작
         if (isBattleStart)
         {
+            inputManager.OnPlayMode();
             ToggleActiveStartBtn(false);
-            seq.AppendCallback(() => InputManager.Instance.OnClickTurnStartButton());
+            turnAniSequence.AppendCallback(() => InputManager.Instance.OnClickTurnStartButton());
         }
     }
 

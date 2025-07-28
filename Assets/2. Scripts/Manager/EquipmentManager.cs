@@ -7,9 +7,8 @@ public class EquipmentItem : InventoryItem
     public bool IsEquipped;
     public int EnhanceLevel;
     public EntryDeckData EquippedUnit;
-    public InventorySlot LinkedSlot;
 
-    public EquipmentItemSO EquipmentItemSo => base.ItemSo as EquipmentItemSO;
+    public EquipmentItemSO EquipmentItemSo => ItemSo as EquipmentItemSO;
 
     public EquipmentItem(EquipmentItemSO itemSo) : base(itemSo, 1)
     {
@@ -17,17 +16,15 @@ public class EquipmentItem : InventoryItem
         EnhanceLevel = 0;
     }
 
-    public override InventoryItem Clone() => new EquipmentItem(EquipmentItemSo);
-
-    public void Enhancement()
+    public EquipmentItem(int id) : base(id)
     {
-        EnhanceLevel++;
-        ItemChanged();
+        IsEquipped = false;
+        EnhanceLevel = 0;
     }
 
-    public string GetEnhanceLevelString()
+    public override InventoryItem Clone()
     {
-        return EnhanceLevel > 0 ? $"+{EnhanceLevel}" : string.Empty;
+        return new EquipmentItem(EquipmentItemSo);
     }
 
     public void EquipItem(EntryDeckData equipUnit)
@@ -66,16 +63,6 @@ public class EquipmentManager
         }
 
         EquipmentType type = item.EquipmentItemSo.EquipmentType;
-        // if (item.IsEquipped)
-        // {
-        //     UnequipItem(type);
-        //     return;
-        // }
-
-        if (EquipmentItems.ContainsKey(type))
-        {
-            UnequipItem(type);
-        }
 
         EquipmentItems[type] = item;
         foreach (StatData stat in item.EquipmentItemSo.Stats)
@@ -84,14 +71,15 @@ public class EquipmentManager
         }
 
         item.IsEquipped = true;
-        // item.LinkedSlot.ShowEquipMark(true);
         OnEquipmentChanged?.Invoke(type);
     }
 
     public void UnequipItem(EquipmentType equipmentType)
     {
-        if (!EquipmentItems.TryGetValue(equipmentType, out var item) || item == null)
+        if (!EquipmentItems.TryGetValue(equipmentType, out EquipmentItem item) || item == null)
+        {
             return;
+        }
 
         foreach (StatData stat in item.EquipmentItemSo.Stats)
         {

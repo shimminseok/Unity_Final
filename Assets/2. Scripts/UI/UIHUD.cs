@@ -26,4 +26,19 @@ public class UIHUD : MonoBehaviour
     {
         UIManager.Open(DeckBuilding);
     }
+
+
+    public void OnClickGoldBtn()
+    {
+#if UNITY_EDITOR
+        AccountManager.Instance.AddGold(10000);
+#endif
+    }
+
+    public void OnClickOpalBtn()
+    {
+#if UNITY_EDITOR
+        AccountManager.Instance.AddOpal(10000);
+#endif
+    }
 }

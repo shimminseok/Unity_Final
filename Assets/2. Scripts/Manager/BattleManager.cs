@@ -14,7 +14,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     public TurnHandler TurnHandler { get; private set; }
 
     private StageSO currentStage;
-    private List<Unit> allUnits = new List<Unit>();
+    private List<Unit> allUnits = new();
     public event Action OnBattleEnd;
 
     private UIReward uiReward;
@@ -38,28 +38,14 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
     }
 
-    public void SetAlliesUnit(List<PlayerUnitSO> units)
-    {
-        int index = 0;
-        foreach (PlayerUnitSO playerUnitSo in units)
-        {
-            GameObject go = Instantiate(playerUnitSo.UnitPrefab, Vector3.zero, Quaternion.identity);
-            go.transform.SetParent(PartyUnitsTrans[index].transform);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            Unit unit = go.GetComponent<Unit>();
-            unit.Initialize(new UnitSpawnData { UnitSo = playerUnitSo });
-            PartyUnits.Add(unit);
-            index++;
-        }
-    }
-
-    public void SetAlliesUnit(PlayerDeck playerDeck)
+    private void SetAlliesUnit(PlayerDeck playerDeck)
     {
         for (int i = 0; i < playerDeck.DeckDatas.Count; i++)
         {
             if (playerDeck.DeckDatas[i] == null)
+            {
                 continue;
+            }
 
             EntryDeckData deckData = playerDeck.DeckDatas[i];
             GameObject    go       = Instantiate(deckData.CharacterSo.UnitPrefab, PartyUnitsTrans[i], false);
@@ -106,7 +92,10 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         foreach (Unit unit in allUnits)
         {
             if (unit.IsDead)
+            {
                 continue;
+            }
+
             unit.StatusEffectManager?.OnTurnPassed();
         }
 
@@ -118,7 +107,8 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             OnStageClear();
             return;
         }
-        else if (PartyUnits.TrueForAll(x => x.IsDead))
+
+        if (PartyUnits.TrueForAll(x => x.IsDead))
         {
             OnStageFail();
             return;
@@ -129,32 +119,41 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         {
             enemy.ChoiceAction();
         }
+
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
-        TurnCount++; // 턴 종료되면 턴 수 +1
+        TurnCount++;                        // 턴 종료되면 턴 수 +1
         OnBattleEnd?.Invoke();
     }
 
     public List<Unit> GetAllies(Unit unit)
     {
         if (PartyUnits.Contains(unit))
+        {
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        }
         else
+        {
             return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        }
     }
 
     public List<Unit> GetEnemies(Unit unit)
     {
         if (PartyUnits.Contains(unit))
+        {
             return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        }
         else
+        {
             return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        }
     }
 
     private void OnStageClear()
     {
         // 튜토리얼에서 BattleVictory 이벤트 발행
-        var tutorial = TutorialManager.Instance;
+        TutorialManager tutorial = TutorialManager.Instance;
 
         if (tutorial != null && tutorial.IsActive &&
             TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
@@ -173,7 +172,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private void OnStageFail()
     {
-        LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        OneChoicePopup popup = PopupManager.Instance.GetUIComponent<OneChoicePopup>();
+        popup.ToggleActiveExitBtn(false);
+        popup.SetAndOpenPopupUI("전투 패배",
+            "전투에 패배했습니다.",
+            () =>
+            {
+                LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+            },
+            "나가기");
+        return;
     }
 
     protected override void OnDestroy()

@@ -32,6 +32,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public UnitSO                     UnitSo                     { get; protected set; }
     public AnimationEventListener     AnimationEventListener     { get; protected set; }
     public Unit                       CounterTarget              { get; private set; }
+    public Unit                       LastAttacker               { get; private set; }
 
     public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
     public IAttackAction CurrentAttackAction { get; private set; }
@@ -44,8 +45,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public virtual bool IsAnimationDone    { get; set; }
     public virtual bool IsTimeLinePlaying   { get; set; }
 
-    public Unit SelectedUnit => this;
-
+    public event Action  OnHitFinished;
+    public          Unit SelectedUnit => this;
     public abstract void StartTurn();
     public abstract void EndTurn();
     public abstract void UseSkill();
@@ -218,13 +219,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         if (IsDead)
             return false;
-        if (!attacker.IsCompletedAttack)
-            return false;
-
         if (StatManager.GetValue(StatType.Counter) < Random.value)
+        {
+            return false;
+        }
+
+        if (!attacker.IsCompletedAttack)
             return false;
         if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
             return false;
+
         if (attacker.CurrentAction == ActionType.SKill)
             return false;
 
@@ -270,5 +274,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             Obstacle.enabled = true;
             Obstacle.carving = true;
         }
+    }
+
+    public void SetLastAttacker(Unit attacker)
+    {
+        Debug.Log("Set Target");
+        LastAttacker = attacker;
+    }
+
+    public void InvokeHitFinished()
+    {
+        OnHitFinished?.Invoke();
     }
 }

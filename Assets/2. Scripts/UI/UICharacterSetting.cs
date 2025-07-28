@@ -9,6 +9,7 @@ public class UICharacterSetting : UIBase
     [SerializeField] private CharacterInfo characterInfoPanel;
     [SerializeField] private UnitSlot playerUnitSlot;
 
+    [SerializeField] private RectTransform characterListRect;
 
     [Header("유닛 스탠딩 이미지")]
     [SerializeField] private CanvasGroup standingPanel;
@@ -17,13 +18,17 @@ public class UICharacterSetting : UIBase
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
+    private Vector2 originalPos;
 
     private SelectEquipUI SelectEquipUI => UIManager.Instance.GetUIComponent<SelectEquipUI>();
     private SelectSkillUI SelectSkillUI => UIManager.Instance.GetUIComponent<SelectSkillUI>();
 
     private Dictionary<int, UnitSlot> slotDic = new();
 
-    
+    private void Awake()
+    {
+        originalPos = characterListRect.anchoredPosition;
+    }
 
     public void SetPlayerUnitData(EntryDeckData playerUnitData)
     {
@@ -61,6 +66,9 @@ public class UICharacterSetting : UIBase
             slotDic.Add(entryDeckData.Key, slot);
             slot.OnClicked += OnClickPlayerUnitSlot;
         }
+
+        characterListRect.DOKill();
+        characterListRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.left * 500f).SetEase(Ease.OutBack);
     }
 
     public override void Close()

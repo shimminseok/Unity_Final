@@ -64,18 +64,27 @@ public class SelectSkillUI : UIBase
     private void HandleEquipItemChanged(EntryDeckData unit, SkillData newSkill, SkillData oldSkill)
     {
         if (unit != CurrentCharacter)
+        {
             return;
+        }
 
         if (oldSkill != null)
+        {
             inventoryUI.RefreshAtSlotUI(oldSkill);
+        }
+
         if (newSkill != null)
+        {
             inventoryUI.RefreshAtSlotUI(newSkill);
+        }
     }
 
     private void RefreshEquipSkillUI()
     {
         if (CurrentCharacter == null)
+        {
             return;
+        }
 
         // ClearEquipInfo();
         RefreshEquippedSkillSlots();
@@ -97,7 +106,9 @@ public class SelectSkillUI : UIBase
         inventoryUI.SelectItemSlot(skill);
         SkillSlot selectSlot = inventoryUI.GetSlotByItem(skill);
         if (selectSlot == null)
+        {
             return;
+        }
 
 
         if (selectedSkillSlot != selectSlot)
@@ -115,8 +126,8 @@ public class SelectSkillUI : UIBase
                     RefreshEquippedSkillSlots();
                 };
                 string equippedUnitName = skill.EquippedUnit.CharacterSo.UnitName;
-                string skillName = skill.skillSo.skillName;
-                string message = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
+                string skillName        = skill.skillSo.skillName;
+                string message          = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
                 PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("스킬 장착", message, leftAction, null, "장착", "취소");
             }
             else
@@ -143,7 +154,7 @@ public class SelectSkillUI : UIBase
     {
         for (int i = 0; i < CurrentCharacter.SkillDatas.Length; i++)
         {
-            var skill = CurrentCharacter.SkillDatas[i];
+            SkillData skill = CurrentCharacter.SkillDatas[i];
             activeSkillSlots[i].SetSkillIcon(skill, false);
             activeSkillSlots[i].ShowEquipMark(false);
         }
@@ -162,7 +173,9 @@ public class SelectSkillUI : UIBase
         base.Open();
 
         if (CurrentCharacter == null)
+        {
             return;
+        }
 
         passiveSkillSlot.SetSkillIcon(CurrentCharacter.CharacterSo.PassiveSkill, false);
 
@@ -176,14 +189,18 @@ public class SelectSkillUI : UIBase
         base.Close();
         if (CurrentCharacter != null)
         {
-            if (CurrentCharacter.IsCompeted)
+            if (CurrentCharacter.CompeteSlotInfo.IsInDeck)
             {
-                int partyIndex = DeckSelectManager.GetSelectedDeck().FindIndex(c => c.CharacterSo.ID == CurrentCharacter.CharacterSo.ID);
+                int partyIndex = CurrentCharacter.CompeteSlotInfo.SlotIndex;
                 if (partyIndex != -1)
-                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+                {
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo);
+                }
             }
             else
+            {
                 AvatarPreviewManager.HideAvatar(CurrentCharacter.CharacterSo);
+            }
         }
 
         DeckSelectManager.Instance.OnEquipSkillChanged -= HandleEquipItemChanged;

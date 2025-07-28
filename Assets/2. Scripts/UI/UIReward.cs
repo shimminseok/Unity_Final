@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class UIReward : UIBase
 {
-    [SerializeField] private List<RewardSlot> rewardSlotList;
+    [SerializeField] private List<InventorySlot> inventorySlotList;
 
     private Action afterAction;
     private int index = 0;
 
     public void OpenRewardUI(Action action)
     {
-        for (int i = index; i < rewardSlotList.Count; i++)
+        for (int i = index; i < inventorySlotList.Count; i++)
         {
-            rewardSlotList[i].gameObject.SetActive(false);
+            inventorySlotList[i].gameObject.SetActive(false);
         }
 
         afterAction = action;
@@ -26,11 +26,11 @@ public class UIReward : UIBase
     {
         foreach (RewardData rewardData in rewardSo.RewardList)
         {
-            if (index >= rewardSlotList.Count)
+            if (index >= inventorySlotList.Count)
                 break;
 
-            rewardSlotList[index].SetRewardItem(rewardData);
-            rewardSlotList[index].gameObject.SetActive(true);
+            inventorySlotList[index].Initialize(rewardData);
+            inventorySlotList[index].gameObject.SetActive(true);
             index++;
         }
     }

@@ -14,7 +14,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private GameObject competedMarker;
     [SerializeField] private Image iconImage; // 캐릭터 이미지
     [SerializeField] private GameObject selectedNotiImg;
-
+    [SerializeField] private Image holdCheckImage;
     private bool isSelected;
     private EntryDeckData selectedUnit;
 
@@ -30,6 +30,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isHolding = false;
     private float holdTime = 0.5f;
 
+
     public void Initialize(EntryDeckData data)
     {
         selectedUnit = data;
@@ -42,7 +43,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         gameObject.name = $"UnitSlot_{characterSo.ID}";
 
-        SetCompetedMarker(data.IsCompeted);
+        SetCompetedMarker(data.CompeteSlotInfo.IsInDeck);
         for (int i = 0; i < unitTierStar.Count; i++)
         {
             unitTierStar[i].SetActive(i <= (int)characterSo.Tier);
@@ -83,7 +84,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             OnClicked?.Invoke(selectedUnit);
         }
 
-        SetCompetedMarker(selectedUnit.IsCompeted);
+        SetCompetedMarker(selectedUnit.CompeteSlotInfo.IsInDeck);
         SetSelectedMarker(isSelected);
     }
 
@@ -96,6 +97,11 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (OnHeld == null)
+        {
+            return;
+        }
+
         if (holdCoroutine == null)
         {
             holdCoroutine = StartCoroutine(HoldCheckCoroutine());
@@ -111,15 +117,31 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
 
         isHolding = false;
+        holdCheckImage?.gameObject.SetActive(false);
     }
 
     private IEnumerator HoldCheckCoroutine()
     {
+        if (holdCheckImage == null)
+        {
+            yield break;
+        }
+
         isHolding = true;
-        yield return new WaitForSeconds(holdTime);
+        holdCheckImage.gameObject.SetActive(true);
+        holdCheckImage.fillAmount = 0f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < holdTime)
+        {
+            elapsedTime += Time.deltaTime;
+            holdCheckImage.fillAmount = Mathf.Clamp01(elapsedTime / holdTime);
+            yield return null;
+        }
 
         if (isHolding)
         {
+            holdCheckImage.gameObject.SetActive(false);
             HandleHold();
         }
     }

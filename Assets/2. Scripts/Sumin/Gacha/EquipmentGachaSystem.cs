@@ -17,6 +17,7 @@ public class EquipmentGachaSystem : MonoBehaviour
     private void Awake()
     {
         gachaManager = new GachaManager<EquipmentItemSO>(new RandoomEquipmentGachaStrategy());
+        drawCost = Define.GachaDrawCosts[GachaType.Equipment];
     }
 
     private List<EquipmentItemSO> GetEquipmentDatas()
@@ -36,8 +37,6 @@ public class EquipmentGachaSystem : MonoBehaviour
         List<EquipmentItemSO> equipmentData = GetEquipmentDatas();
         EquipmentItemSO[]     results       = new EquipmentItemSO[count];
 
-        AccountManager.Instance.UseOpal(drawCost * count);
-
         for (int i = 0; i < count; i++)
         {
             EquipmentItemSO equipment = gachaManager.Draw(equipmentData, Define.TierRates);
@@ -55,13 +54,5 @@ public class EquipmentGachaSystem : MonoBehaviour
         }
 
         return results;
-    }
-
-    public bool CheckCanDraw(int drawCount)
-    {
-        drawCost = Define.GachaDrawCosts[GachaType.Equipment];
-        bool canUse = AccountManager.Instance.CanUseOpal(drawCost * drawCount);
-
-        return canUse;
     }
 }

@@ -15,11 +15,18 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
 
     public EquipmentItem TryCombine(List<EquipmentItem> items)
     {
-        if (items.Count != 3 || items.Count == 0)
+        if (!items.TrueForAll(x => x != null))
         {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("아이템 3개를 선택해야 합성이 가능합니다.");
             return null;
         }
 
+        AccountManager.Instance.UseGold(Define.RequierCombineItemGold, out bool result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("골드가 부족합니다.");
+            return null;
+        }
 
         EquipmentType combineResultType = items[Random.Range(0, items.Count)].EquipmentItemSo.EquipmentType;
         Tier          nextTier          = items[0].EquipmentItemSo.Tier;
@@ -34,9 +41,7 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
             return null;
         EquipmentItemSO combineItemSo = combineItemList[Random.Range(0, combineItemList.Count)];
 
-        EquipmentItem combineItem = new EquipmentItem(combineItemSo);
 
-
-        return combineItem;
+        return new EquipmentItem(combineItemSo);
     }
 }
