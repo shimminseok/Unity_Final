@@ -61,6 +61,9 @@ public class StageInfoPanel : MonoBehaviour
     {
         stageSo = stage;
         currentDeck = selectedDeck;
+
+        stageName.text = $"스테이지 {stage.ID/1000000}-{stage.ID % 100}";
+
         for (int i = 0; i < spawnMonsters.Count; i++)
         {
             if (stageSo.Monsters.Count > i)
