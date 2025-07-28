@@ -14,6 +14,12 @@ public class SaveSkillData
         IsEquipped = skillData.IsEquipped;
     }
 
+    public SaveSkillData(int id)
+    {
+        Id = id;
+        IsEquipped = false;
+    }
+
     public SaveSkillData() { }
 
     public SkillData ToRuntime()

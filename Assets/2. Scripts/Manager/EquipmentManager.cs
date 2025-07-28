@@ -16,6 +16,12 @@ public class EquipmentItem : InventoryItem
         EnhanceLevel = 0;
     }
 
+    public EquipmentItem(int id) : base(id)
+    {
+        IsEquipped = false;
+        EnhanceLevel = 0;
+    }
+
     public override InventoryItem Clone()
     {
         return new EquipmentItem(EquipmentItemSo);

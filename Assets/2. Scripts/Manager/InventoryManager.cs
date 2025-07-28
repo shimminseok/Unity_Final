@@ -15,6 +15,11 @@ public class InventoryItem
         Quantity = quantity;
     }
 
+    public InventoryItem(int id)
+    {
+        ItemSo = TableManager.Instance.GetTable<ItemTable>().GetDataByID(id);
+    }
+
     public virtual InventoryItem Clone()
     {
         return new InventoryItem(ItemSo, Quantity);
@@ -33,6 +38,11 @@ public class SaveInventoryItem
         InventoryId = item.InventoryId;
         Id = item.ItemSo.ID;
         Quantity = item.Quantity;
+    }
+
+    public SaveInventoryItem(int id)
+    {
+        InventoryId = id;
     }
 
     public SaveInventoryItem() { }

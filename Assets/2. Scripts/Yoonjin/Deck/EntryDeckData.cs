@@ -35,6 +35,7 @@ public class SaveEntryDeckData
     public SaveEntryDeckData(int id)
     {
         CharacterId = id;
+        Level = 1;
     }
 
     public EntryDeckData ToRuntime()

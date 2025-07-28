@@ -54,6 +54,10 @@ public class AccountManager : Singleton<AccountManager>
             }
         }
 #endif
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            SaveLoadManager.Instance.DeleteAll();
+        }
     }
 
     /// <summary>

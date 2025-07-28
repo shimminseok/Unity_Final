@@ -210,7 +210,7 @@ public class SaveTutorialData : SaveData
 [Serializable]
 public class SaveInventoryItemData : SaveData
 {
-    public List<SaveInventoryItem> InventoryItems { get; set; } = new();
+    public List<SaveInventoryItem> InventoryItems { get; set; } = new() { new SaveInventoryItem(new EquipmentItem(11101)) };
 
     public override void OnBeforeSave()
     {
@@ -232,7 +232,7 @@ public class SaveUnitInventoryData : SaveData
 [Serializable]
 public class SaveInventorySkill : SaveData
 {
-    public List<SaveSkillData> SkillInventory { get; set; } = new();
+    public List<SaveSkillData> SkillInventory { get; set; } = new() { new SaveSkillData(1002) };
 
     public override void OnBeforeSave()
     {
