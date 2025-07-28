@@ -52,7 +52,13 @@ public static class Define
     }
 
     // 티어 별 가챠 확률
-    public static readonly Dictionary<Tier, float> TierRates = new() { { Tier.A, 90f }, { Tier.S, 8.5f }, { Tier.SR, 1.0f }, { Tier.SSR, 0.5f } };
+    public static readonly Dictionary<Tier, float> TierRates = new()
+    {
+        { Tier.A, 90f },
+        { Tier.S, 8.5f },
+        { Tier.SR, 1.0f },
+        { Tier.SSR, 0.5f }
+    };
 
     // 티어 별 중복 보상 값 계수
     public static float GetCompensationAmount(Tier tier)
@@ -81,9 +87,13 @@ public static class Define
         Collider col = target?.Collider;
 
         if (col is CapsuleCollider capsule)
+        {
             return capsule.radius;
+        }
         else
+        {
             return 0.5f; // 기본값
+        }
     }
 
 
