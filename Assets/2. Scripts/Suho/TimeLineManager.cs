@@ -71,8 +71,11 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public void InitializeTimeline()
     {
         Unit attackerUnit = attacker as Unit;
-        var pos = attackerUnit.transform.position;
-        var rot = attackerUnit.transform.rotation;
+        Transform unitTransform = attackerUnit.transform;
+        unitTransform.LookAt(attackerUnit.Target.Collider.bounds.center);
+        unitTransform.eulerAngles = new Vector3(0,unitTransform.eulerAngles.y,0);
+        var pos = unitTransform.position;
+        var rot = unitTransform.rotation;
         CurrentCameraController.Unfocus();
         CameraManager.Instance.followNextIEffectProvider = false;
         CurrentCameraController.transform.position = pos;

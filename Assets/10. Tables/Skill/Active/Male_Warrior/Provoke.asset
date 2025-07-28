@@ -19,20 +19,59 @@ MonoBehaviour:
     \uB9CC\uB4E0\uB2E4."
   jobType: 0
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
-  selectCamp: 1
+  selectCamp: 0
   effect:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 0
-      selectTarget: 0
+      selectTarget: 3
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
       damageEffects: []
-      buffEffects: []
-      skillVFX: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 7
+        opponentStatType: 12
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 12
+            ModifierType: 1
+            Value: 7
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 7823327091382468809, guid: 74161d1db59e6644da47b81b70fb590c,
+              type: 3}
+            VFXPoolID: RedAuraVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+            reference: 1
+            isParent: 1
+            type: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 7823327091382468809, guid: 74161d1db59e6644da47b81b70fb590c,
+          type: 3}
+        VFXPoolID: RedAuraVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+        reference: 1
+        isParent: 1
+        type: 2
   activeSkillTier: 0
   reuseMaxCount: 5
   coolTime: 3
-  skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
-  skillTimeLine: {fileID: 0}
+  skillAnimation: {fileID: -203655887218126122, guid: f5ed31cd2c193914bb1b6e9b8644e80a,
+    type: 3}
+  skillTimeLine: {fileID: 11400000, guid: 0ebe51cb3334fa04999813c8770215ec, type: 2}
+  isSkillScene: 0

@@ -6,8 +6,10 @@ public class VFXController : MonoBehaviour
 {
     public static PoolableVFX InstantiateVFX(string poolID, GameObject prefab)
     {
+        
         GameObject go = ObjectPoolManager.Instance.GetObject(poolID);
-        if (go == null) go = Instantiate(prefab);
+        if (go == null || prefab != null) go = Instantiate(prefab);
+        else return null;
         PoolableVFX vfx = go.GetComponent<PoolableVFX>();
         vfx.particle.Stop();
         return vfx;
@@ -23,6 +25,7 @@ public class VFXController : MonoBehaviour
             if (vfxData.type == vfxType)
             {
                 PoolableVFX vfx = InstantiateVFX(vfxData.VFXPoolID, vfxData.VFXPrefab);
+                if(vfx == null) continue;
                 vfx.SetData(vfxData,effectProvider);
                 returnVFX.Add(vfx);
                 if (isAwakePlay)
