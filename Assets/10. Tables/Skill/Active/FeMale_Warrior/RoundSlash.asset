@@ -45,15 +45,51 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 5
           Stat:
             StatType: 0
             ModifierType: 0
-            Value: 0
-          Duration: 0
+            Value: 40
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
+          VFX:
+          - VFXPrefab: {fileID: 3081362037621676516, guid: ded48de5e83eb7b45992c11651b88eb9,
+              type: 3}
+            VFXPoolID: RoundSlashStartVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+          - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
+              type: 3}
+            VFXPoolID: RoundSlashVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 0
+          - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
+              type: 3}
+            VFXPoolID: SpearOfChaosHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
+              type: 3}
+            VFXPoolID: SpearOfChaosHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 1
       skillVFX:
       - VFXPrefab: {fileID: 3081362037621676516, guid: ded48de5e83eb7b45992c11651b88eb9,
           type: 3}
@@ -67,10 +103,10 @@ MonoBehaviour:
       - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
           type: 3}
         VFXPoolID: RoundSlashVFX
-        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalPosition: {x: 0, y: 0.5, z: 1}
         LocalRotation: {x: 0, y: 0, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
-        reference: 1
+        reference: 0
         isParent: 0
         type: 0
       - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
