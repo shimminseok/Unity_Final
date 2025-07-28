@@ -51,7 +51,7 @@ public class AudioManager : Singleton<AudioManager>
 
     [SerializeField] private List<AudioClip> sfxList = new();
     [SerializeField] private AudioSource sfxAudioSource;
-
+    
     private void Start()
     {
         bgmAudioSource.volume = 1f;

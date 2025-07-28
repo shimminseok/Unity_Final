@@ -50,8 +50,6 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
     public Collider Collider { get; set; }
 
- 
-
 
     private void Awake()
     {
@@ -98,7 +96,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
                 transform.position = direction + offset;
                 break;
             case ProjectileInterpolationMode.Fall:
-                transform.position = direction + Vector3.up * 10;
+                transform.position = direction + (Vector3.up * 10);
                 mode = ProjectileInterpolationMode.MoveTowards;
                 break;
         }
@@ -111,8 +109,8 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         effectData = effect;
         startPosition = startPos;
         direction = dir;
-        this.gameObject.transform.position = startPosition;
-        this.gameObject.transform.LookAt(target.Collider.transform);
+        gameObject.transform.position = startPosition;
+        gameObject.transform.LookAt(target.Collider.transform);
         Target = target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleTrigger;
@@ -125,8 +123,8 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         this.attacker = attacker;
         startPosition = startPos;
         direction = dir;
-        this.gameObject.transform.position = startPosition;
-        this.gameObject.transform.LookAt(dir);
+        gameObject.transform.position = startPosition;
+        gameObject.transform.LookAt(dir);
         Target = target;
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleAttackTrigger;
@@ -164,6 +162,12 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
         float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
         Target.TakeDamage(finalValue * multiplier);
+
+        if (attacker is Unit unit)
+        {
+            unit.InvokeRangeAttackFinished();
+        }
+
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 

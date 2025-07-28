@@ -8,6 +8,7 @@ public class StageSlot : MonoBehaviour
     [SerializeField] private GameObject lockImg;
     [SerializeField] private TextMeshProUGUI stageNumberTxt;
     private StageSO stageSo;
+    private bool isLocked;
 
     private UIStageSelect stageSelectUI;
 
@@ -20,11 +21,17 @@ public class StageSlot : MonoBehaviour
 
         stageNumberTxt.text = $"{chapterId}-{stageNum}";
         int nextStageID = AccountManager.Instance.GetNextStageId(AccountManager.Instance.BestStage);
-        lockImg.SetActive(nextStageID < stageSo.ID);
+        isLocked = nextStageID < stageSo.ID;
+        lockImg.SetActive(isLocked);
     }
 
     public void OnClickStageSlot()
     {
+        if (isLocked)
+        {
+            return;
+        }
+
         if (stageSo.HasBeforeDialogue)
         {
             DialogueController.Instance.Play(stageSo.beforeDialogueKey, () =>
@@ -32,6 +39,7 @@ public class StageSlot : MonoBehaviour
                 stageSelectUI.SetStageInfo(stageSo);
             });
         }
+
         else
         {
             stageSelectUI.SetStageInfo(stageSo);

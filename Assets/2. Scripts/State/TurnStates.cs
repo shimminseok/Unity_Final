@@ -47,6 +47,7 @@ public class StartTurnState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
+        Debug.Log($"{unit.name} StartTurn State");
         switch (unit.CurrentAction)
         {
             case ActionType.Attack:
@@ -85,28 +86,21 @@ public class StartTurnState : ITurnState
 
 public class MoveToTargetState : ITurnState
 {
-    private bool waitOneFrame = false;
-
     public void OnEnter(Unit unit)
     {
-        waitOneFrame = false;
-
+        Debug.Log($"{unit.name} MoveToTarget State");
         if (unit is PlayerUnitController)
+        {
             unit.ChangeUnitState(PlayerUnitState.Move);
+        }
         else if (unit is EnemyUnitController)
+        {
             unit.ChangeUnitState(EnemyUnitState.Move);
+        }
     }
 
     public void OnUpdate(Unit unit)
     {
-        if (!waitOneFrame)
-        {
-            waitOneFrame = true;
-            return;
-        }
-
-        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-        //     unit.ChangeTurnState(TurnStateType.Act);
     }
 
     public void OnExit(Unit unit)
@@ -119,40 +113,48 @@ public class ActState : ITurnState
     private ICombatAction action;
     private Action handler;
 
+    private Unit target;
+    private Action onReactionEndHandler;
+
     public void OnEnter(Unit unit)
     {
+        target = unit.Target as Unit;
+        if (target != null)
+        {
+            target.SetLastAttacker(unit);
+        }
+
+
+        onReactionEndHandler = () =>
+        {
+            ProceedToNextState(unit);
+        };
+        unit.OnHitFinished += onReactionEndHandler;
+
         if (unit.CurrentAction == ActionType.Attack)
         {
             if (unit is PlayerUnitController)
+            {
                 unit.ChangeUnitState(PlayerUnitState.Attack);
+            }
             else if (unit is EnemyUnitController)
+            {
                 unit.ChangeUnitState(EnemyUnitState.Attack);
+            }
         }
         else if (unit.CurrentAction == ActionType.SKill)
         {
             if (unit is PlayerUnitController)
+            {
                 unit.ChangeUnitState(PlayerUnitState.Skill);
+            }
             else if (unit is EnemyUnitController)
+            {
                 unit.ChangeUnitState(EnemyUnitState.Skill);
+            }
+
+            unit.OnSkillFinished += onReactionEndHandler;
         }
-
-        handler = () =>
-        {
-            Unit target = unit.Target as Unit;
-            if (target != null && target.CanCounterAttack(unit))
-            {
-                unit.ExecuteCoroutine(StartCounterAttack(unit, target));
-            }
-            else
-            {
-                ProceedToNextState(unit);
-            }
-        };
-
-
-        action = CombatActionFactory.Create(unit);
-        action.OnActionComplete += handler;
-        action.Execute(unit);
     }
 
     public void OnUpdate(Unit unit)
@@ -161,16 +163,12 @@ public class ActState : ITurnState
 
     public void OnExit(Unit unit)
     {
-        action.OnActionComplete -= handler;
-    }
+        unit.OnHitFinished -= onReactionEndHandler;
 
-    private IEnumerator StartCounterAttack(Unit attacker, Unit target)
-    {
-        target.StartCountAttack(attacker);
-
-        yield return new WaitUntil(() => target.IsAnimationDone);
-        target.EndCountAttack();
-        ProceedToNextState(attacker);
+        action = null;
+        handler = null;
+        target = null;
+        onReactionEndHandler = null;
     }
 
     private void ProceedToNextState(Unit unit)
@@ -184,9 +182,13 @@ public class ActState : ITurnState
         Debug.Log("ProceedToNextState");
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+        {
             unit.ChangeTurnState(TurnStateType.Return);
+        }
         else
+        {
             unit.ChangeTurnState(TurnStateType.EndTurn);
+        }
     }
 }
 
@@ -196,15 +198,17 @@ public class ReturnState : ITurnState
     {
         //되돌아가는 함수
         if (unit is PlayerUnitController)
+        {
             unit.ChangeUnitState(PlayerUnitState.Return);
+        }
         else if (unit is EnemyUnitController)
+        {
             unit.ChangeUnitState(EnemyUnitState.Return);
+        }
     }
 
     public void OnUpdate(Unit unit)
     {
-        // if ((unit as IUnitFsmControllable)?.IsAtTargetPosition ?? false)
-        //     unit.ChangeTurnState(TurnStateType.EndTurn);
     }
 
     public void OnExit(Unit unit)

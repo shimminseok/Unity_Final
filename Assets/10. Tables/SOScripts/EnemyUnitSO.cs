@@ -8,8 +8,9 @@ public class EnemyUnitSO : UnitSO
     public AnimationClip MoveAniClip;
     public AnimationClip IdleAniClip;
     public AnimationClip DeadAniClip;
+    public AnimationClip HitAniClip;
     public float skillActionProbability;
-    public List<EnemySkillData> SkillDatas = new List<EnemySkillData>();
+    public List<EnemySkillData> SkillDatas = new();
 }
 
 [System.Serializable]

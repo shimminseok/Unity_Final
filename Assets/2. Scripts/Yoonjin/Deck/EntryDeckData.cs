@@ -111,7 +111,7 @@ public class EntryDeckData
         // 장비 복원 (장비는 ID로 하면 안댐)
         foreach (EquippedItemSaveData equipSave in data.EquipItemItems)
         {
-            if (equipSave.InventoryId < 0 || !InventoryManager.Instance.Inventory.TryGetValue(equipSave.InventoryId, out InventoryItem item))
+            if (equipSave.InventoryId <= 0 || !InventoryManager.Instance.Inventory.TryGetValue(equipSave.InventoryId, out InventoryItem item))
             {
                 continue;
             }

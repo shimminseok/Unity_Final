@@ -43,9 +43,6 @@ public enum PlayerUnitState
     Hit,
     Skill,
     Die,
-    Stun,
-
-    EndTurn,
     Victory,
     ReadyAction
 }
@@ -76,7 +73,7 @@ public enum StatusEffectType
     TurnBasedModifierBuff,
     Trigger,
     TurnBasedPeriodicDamageDebuff,
-    TurnBasedStunDebuff,
+    TurnBasedStunDebuff
 }
 
 public enum EmotionType
@@ -90,7 +87,7 @@ public enum EmotionType
 
 public enum TriggerEventType
 {
-    OnAttacked, //피격 당했을때
+    OnAttacked //피격 당했을때
 }
 
 public enum ItemType
@@ -117,7 +114,7 @@ public enum SelectTargetType
     All,
     OnSelf,
     RandomOneExceptMainTarget,
-    Sector,
+    Sector
 }
 
 /* 선택 가능한 진영
@@ -160,13 +157,13 @@ public enum Tier
     A,
     S,
     SR,
-    SSR,
+    SSR
 }
 
 public enum AttackDistanceType
 {
     Melee,
-    Range,
+    Range
 }
 
 public enum ProjectileInterpolationMode
@@ -197,11 +194,10 @@ public enum VFXSpawnReference
 public enum VFXType
 {
     Cast, // 스킬애니메이션이 나올때
-    Dot, // 스킬로 인한 DotDamage가 발생할 때마다
+    Dot,  // 스킬로 인한 DotDamage가 발생할 때마다
     Buff, // 스킬로 인한 Buff, Debuff가 유지되는 동안 반복
-    Hit, // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
-    Start, //스킬이 시작하자마자 
-    
+    Hit,  // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
+    Start //스킬이 시작하자마자 
 }
 
 

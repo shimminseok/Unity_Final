@@ -4,11 +4,23 @@ public class AnimationDone : StateMachineBehaviour
 {
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        var unit = animator.GetComponent<Unit>();
-
-        if (unit != null)
+        Unit unit = animator.GetComponent<Unit>();
+        if (stateInfo.IsTag("Attack"))
         {
-            unit.IsAnimationDone = true;
+            if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                unit.InvokeAttackFinished();
+            }
+        }
+
+        else if (stateInfo.IsTag("Hit"))
+        {
+            unit.InvokeHitFinished();
+        }
+
+        else if (stateInfo.IsTag("Skill"))
+        {
+            unit.InvokeSkillFinished();
         }
     }
 }

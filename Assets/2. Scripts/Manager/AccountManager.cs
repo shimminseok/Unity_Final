@@ -44,13 +44,15 @@ public class AccountManager : Singleton<AccountManager>
                     InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
                 }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
             foreach (ActiveSkillSO skill in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
             {
                 AddSkill(skill, out _);
+            }
+
+            foreach (PlayerUnitSO unit in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
+            {
+                AddPlayerUnit(unit);
             }
         }
 #endif
@@ -247,10 +249,12 @@ public class AccountManager : Singleton<AccountManager>
         foreach (SaveEntryDeckData saveData in loadedUnits)
         {
             EntryDeckData data = saveData.ToRuntime();
-            MyPlayerUnits[data.CharacterSo.ID] = data;
-            if (data.CompeteSlotInfo.IsInDeck)
+            if (MyPlayerUnits.TryAdd(data.CharacterSo.ID, data))
             {
-                DeckSelectManager.Instance.SetUnitInDeck(data, data.CompeteSlotInfo.SlotIndex);
+                if (data.CompeteSlotInfo.IsInDeck)
+                {
+                    DeckSelectManager.Instance.SetUnitInDeck(data, data.CompeteSlotInfo.SlotIndex);
+                }
             }
         }
     }
@@ -261,8 +265,10 @@ public class AccountManager : Singleton<AccountManager>
         foreach (SaveSkillData saveData in loadedSkills)
         {
             SkillData data = saveData.ToRuntime();
-            MySkills[data.skillSo.ID] = data;
-            AddSkillByJob(data.skillSo.jobType, data.skillSo.ID);
+            if (MySkills.TryAdd(data.skillSo.ID, data))
+            {
+                AddSkillByJob(data.skillSo.jobType, data.skillSo.ID);
+            }
         }
     }
 }

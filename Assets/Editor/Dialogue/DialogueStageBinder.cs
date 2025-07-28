@@ -88,10 +88,12 @@ public class DialogueStageBinder : MonoBehaviour
         type = split[3].ToUpperInvariant();
         if (type != "BEFORE" && type != "AFTER") return false;
 
-        // ID 규칙: 1 + chapter(2자리) + 01 + index(2자리)
-        stageID = int.Parse($"1{chapter:00}01{index:00}");
+        // 규칙 반영: 4010108 ← chapter=4, index=8
+        stageID = int.Parse($"{chapter}0101{index:00}");
 
         return true;
     }
+
+
 
 }
