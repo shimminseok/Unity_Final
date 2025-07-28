@@ -11,7 +11,8 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 
     [SerializeField] private Transform avatarPoolTransform;
     [SerializeField] private List<Transform> deckSlotTransforms = new();
-    [SerializeField] private List<GameObject> unitAvatars = new();
+
+    private readonly Dictionary<int, GameObject> unitAvatarDict = new();
 
 
     protected override void Awake()
@@ -30,40 +31,55 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     public void ShowAvatar(PlayerUnitSO characterSo)
     {
         avatarCam.gameObject.SetActive(true);
-        unitAvatars[(int)characterSo.JobType].SetActive(true);
-        unitAvatars[(int)characterSo.JobType].transform.SetParent(avatarCamTransform);
-        unitAvatars[(int)characterSo.JobType].transform.localPosition = Vector3.zero;
-        unitAvatars[(int)characterSo.JobType].transform.localRotation = Quaternion.identity;
+        if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
+        {
+            GameObject go = Resources.Load<GameObject>($"Character/{characterSo.UnitPrefab.name}");
+            avatar = Instantiate(go, avatarPoolTransform);
+            unitAvatarDict.Add(characterSo.ID, avatar);
+        }
+
+        avatar.SetActive(true);
+        avatar.transform.SetParent(avatarCamTransform);
+        avatar.transform.localPosition = Vector3.zero;
+        avatar.transform.localRotation = Quaternion.identity;
     }
 
     // 모든 아바타 카메라 비활성화
     public void HideAvatar(PlayerUnitSO characterSo)
     {
         avatarCam.gameObject.SetActive(false);
-        if (characterSo != null)
-            HideAvatar(characterSo.JobType);
+        if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
+        {
+            GameObject go = Resources.Load<GameObject>($"Character/{characterSo.UnitPrefab.name}");
+            avatar = Instantiate(go, avatarPoolTransform);
+            unitAvatarDict.Add(characterSo.ID, avatar);
+        }
+
+        avatar.SetActive(false);
+        avatar.transform.SetParent(avatarPoolTransform);
+        avatar.transform.localPosition = Vector3.zero;
+        avatar.transform.localRotation = Quaternion.identity;
     }
 
 
-    public void ShowAvatar(int index, JobType jobType)
+    public void ShowAvatar(int index, PlayerUnitSO characterSo)
     {
-        unitAvatars[(int)jobType].SetActive(true);
-        unitAvatars[(int)jobType].transform.SetParent(deckSlotTransforms[index]);
-        unitAvatars[(int)jobType].transform.localPosition = Vector3.zero;
-        unitAvatars[(int)jobType].transform.localRotation = Quaternion.identity;
-    }
+        if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
+        {
+            GameObject go = Resources.Load<GameObject>($"Character/{characterSo.UnitPrefab.name}");
+            avatar = Instantiate(go, avatarPoolTransform);
+            unitAvatarDict.Add(characterSo.ID, avatar);
+        }
 
-    public void HideAvatar(JobType jobType)
-    {
-        unitAvatars[(int)jobType].transform.SetParent(avatarPoolTransform);
-        unitAvatars[(int)jobType].SetActive(false);
-        unitAvatars[(int)jobType].transform.localPosition = Vector3.zero;
-        unitAvatars[(int)jobType].transform.localRotation = Quaternion.identity;
+        avatar.SetActive(true);
+        avatar.transform.SetParent(deckSlotTransforms[index]);
+        avatar.transform.localPosition = Vector3.zero;
+        avatar.transform.localRotation = Quaternion.identity;
     }
 
     public void HideAllBuilindUIAvatars()
     {
-        foreach (var avatar in unitAvatars)
+        foreach (GameObject avatar in unitAvatarDict.Values)
         {
             avatar.SetActive(false);
         }
