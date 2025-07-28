@@ -297,7 +297,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
-        TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
+        // TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }
