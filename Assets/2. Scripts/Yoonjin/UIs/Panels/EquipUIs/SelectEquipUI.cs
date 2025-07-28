@@ -96,7 +96,7 @@ public class SelectEquipUI : UIBase
                 int partyIndex = CurrentCharacter.CompeteSlotInfo.SlotIndex;
                 if (partyIndex != -1)
                 {
-                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo.JobType);
+                    AvatarPreviewManager.ShowAvatar(partyIndex, CurrentCharacter.CharacterSo);
                 }
             }
             else

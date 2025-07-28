@@ -66,7 +66,7 @@ public class UIDeckBuilding : UIBase
             }
 
             competedUnitSlots[index].SetCompeteUnitData(entry);
-            avatarPreviewManager.ShowAvatar(index++, entry.CharacterSo.JobType);
+            avatarPreviewManager.ShowAvatar(index++, entry.CharacterSo);
         }
     }
 
@@ -82,7 +82,7 @@ public class UIDeckBuilding : UIBase
             }
 
             competedUnitSlots[index].SetCompeteUnitData(data);
-            avatarPreviewManager.ShowAvatar(index, data.CharacterSo.JobType);
+            avatarPreviewManager.ShowAvatar(index, data.CharacterSo);
         }
         else
         {
@@ -100,7 +100,7 @@ public class UIDeckBuilding : UIBase
     {
         characterSlotDic[data.CharacterSo.ID].SetCompetedMarker(false);
         DeckSelectManager.Instance.RemoveUnitInDeck(data);
-        avatarPreviewManager.HideAvatar(data.CharacterSo.JobType);
+        avatarPreviewManager.HideAvatar(data.CharacterSo);
     }
 
     public void SetSelectedUnitSlot(UnitSlot slot)
