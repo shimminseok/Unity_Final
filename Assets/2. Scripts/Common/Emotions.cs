@@ -141,8 +141,11 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
         {
             //타겟을 아군으로 바꿔줌
             List<Unit> allies = BattleManager.Instance.GetAllies(attacker);
-            target = allies[Random.Range(0, allies.Count)];
-            Debug.Log("아군 공격함!");
+            if (allies.Count > 0)
+            {
+                target = allies[Random.Range(0, allies.Count)];
+                Debug.Log("아군 공격함!");
+            }
         }
     }
 
