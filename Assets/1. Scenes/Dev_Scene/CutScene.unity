@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 17
     OrthographicSize: 5
-    NearClipPlane: 1.5
+    NearClipPlane: 2
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -242,8 +242,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 718757873}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000016568955, y: 0.99928135, z: -0.037905354, w: -0.00000004367998}
-  m_LocalPosition: {x: -2.842171e-14, y: 1.5766121, z: 7.161067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -343,7 +343,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 1.5
+  near clip plane: 2
   far clip plane: 1000
   field of view: 17
   orthographic: 0
@@ -371,8 +371,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858459588}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000016568955, y: 0.99928135, z: -0.037905354, w: -0.00000004367998}
-  m_LocalPosition: {x: -2.842171e-14, y: 1.5766121, z: 7.161067}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -621,6 +621,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95572686818633884, guid: b463728d5cc82344d896a4d7828b5548,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4fa3646181582444c9c9fdede92d9d87, type: 2}
+    - target: {fileID: 95572686818633884, guid: b463728d5cc82344d896a4d7828b5548,
+        type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'Shoulder_R'\n\tTransform 'Shoulder_L'\n\tTransform
+        'Shoulder_R'\n\tTransform 'Shoulder_L'\n\tTransform 'Shoulder_R'\n\tTransform
+        'Shoulder_L'"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -660,7 +674,7 @@ PlayableDirector:
   m_GameObject: {fileID: 1705399489}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 547eb465b4b99de44925fcc76d2ee9b8, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -717,7 +731,7 @@ PlayableDirector:
   - key: {fileID: -7048568530126512747, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
     value: {fileID: 0}
   - key: {fileID: 6729081091626528363, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1389485388}
   - key: {fileID: -6112601530188972911, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
     value: {fileID: 718757876}
   - key: {fileID: 4953823917375287304, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
@@ -737,7 +751,7 @@ PlayableDirector:
   - key: {fileID: -7048568530126512747, guid: 7d22d274c74022641a907ee6659e1ec2, type: 2}
     value: {fileID: 0}
   - key: {fileID: 6729081091626528363, guid: 7d22d274c74022641a907ee6659e1ec2, type: 2}
-    value: {fileID: 0}
+    value: {fileID: 1389485388}
   - key: {fileID: -6112601530188972911, guid: 7d22d274c74022641a907ee6659e1ec2, type: 2}
     value: {fileID: 718757876}
   - key: {fileID: 4953823917375287304, guid: 7d22d274c74022641a907ee6659e1ec2, type: 2}
@@ -763,6 +777,7 @@ PlayableDirector:
     - 49d080a3555a11946924c9e9961149c6: {fileID: 652546627}
     - 8f35fc09700eff5408c662d922632ebc: {fileID: 652546627}
     - adc67eb650c455442917714c4c1cec5a: {fileID: 718757874}
+    - ed22deaf846fd9741a918007ed91021b: {fileID: 652546627}
     - 1e663236c4684ed4e889e14e2f395624: {fileID: 718757874}
     - 8b7925db530cc79429e99d6d7fa74e1e: {fileID: 652546627}
     - cdf229b554fc75c469b191d9215b256f: {fileID: 652546627}
