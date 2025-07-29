@@ -182,6 +182,8 @@ using Random = UnityEngine.Random;
             return;
         }
 
+        Debug.Log("Enemy Take Damage Font");
+
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
@@ -358,15 +360,9 @@ using Random = UnityEngine.Random;
 
     public override void EndTurn()
     {
-        if (!IsDead)
-        {
-            CurrentEmotion.AddStack(this);
-        }
-
-
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        ChangeUnitState(PlayerUnitState.Idle);
+        ChangeUnitState(EnemyUnitState.Idle);
     }
 
     public void OnAnimationCompleteEvent()

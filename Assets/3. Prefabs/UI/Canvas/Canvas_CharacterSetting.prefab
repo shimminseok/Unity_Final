@@ -1605,7 +1605,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1739591164333884997}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: CharacterInfo, Assembly-CSharp
         m_MethodName: OpenUnitLevelUpPanel
         m_Mode: 1
@@ -1914,7 +1914,6 @@ GameObject:
   - component: {fileID: 5774356081873184306}
   - component: {fileID: 2137418769838932519}
   - component: {fileID: 7134066289776087156}
-  - component: {fileID: 1739591164333884997}
   m_Layer: 0
   m_Name: CharacterInfo
   m_TagString: Untagged
@@ -1984,41 +1983,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1739591164333884997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497099836925223549}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6cdc9b516e30e874e9621181de85bfab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  statIncreaseSo: {fileID: 11400000, guid: f947402864edc58459b1648978fd1d09, type: 2}
-  panelRect: {fileID: 2645505714755189348}
-  unitName: {fileID: 2983943686731106161}
-  unitLevel: {fileID: 5687833619194997760}
-  statSlots:
-  - {fileID: 8121732616222016418}
-  - {fileID: 2843801299496876473}
-  - {fileID: 8684010344220899164}
-  - {fileID: 7579344838891394443}
-  - {fileID: 2531716875517357776}
-  - {fileID: 6059432947864744739}
-  - {fileID: 2532418227965716592}
-  - {fileID: 1221007140284640105}
-  equippedItemSlot:
-  - {fileID: 1048026276685643977}
-  - {fileID: 913055184121714072}
-  - {fileID: 4953879462544113348}
-  skillSlots:
-  - {fileID: 5725286697676207942}
-  - {fileID: 5617544081037433191}
-  - {fileID: 2260184114336019319}
-  - {fileID: 3072586458743368047}
-  unitLevelUpPanel: {fileID: 997698651883584541}
 --- !u!1 &3904520873276147335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,7 +2277,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &5813600633649329784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2345,7 +2309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents: {fileID: 1159595660361484851}
   playerUnitSlotRoot: {fileID: 8801457786409534914}
-  characterInfoPanel: {fileID: 1739591164333884997}
+  characterInfoPanel: {fileID: 1285353554604890577}
   playerUnitSlot: {fileID: 640342470593220936, guid: 089bd4c7c13935b498d9927bc594acfa,
     type: 3}
   characterListRect: {fileID: 4529911798712848820}
@@ -4538,6 +4502,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2645505714755189348}
+  - component: {fileID: 1285353554604890577}
   m_Layer: 0
   m_Name: CharacterInfoPanel
   m_TagString: Untagged
@@ -4565,6 +4530,41 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 630, y: 0}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &1285353554604890577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7281858935506997836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cdc9b516e30e874e9621181de85bfab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statIncreaseSo: {fileID: 11400000, guid: f947402864edc58459b1648978fd1d09, type: 2}
+  panelRect: {fileID: 5774356081873184306}
+  unitName: {fileID: 2983943686731106161}
+  unitLevel: {fileID: 5687833619194997760}
+  statSlots:
+  - {fileID: 8121732616222016418}
+  - {fileID: 2843801299496876473}
+  - {fileID: 8684010344220899164}
+  - {fileID: 7579344838891394443}
+  - {fileID: 2531716875517357776}
+  - {fileID: 6059432947864744739}
+  - {fileID: 2532418227965716592}
+  - {fileID: 1221007140284640105}
+  equippedItemSlot:
+  - {fileID: 1048026276685643977}
+  - {fileID: 913055184121714072}
+  - {fileID: 4953879462544113348}
+  skillSlots:
+  - {fileID: 5725286697676207942}
+  - {fileID: 5617544081037433191}
+  - {fileID: 2260184114336019319}
+  - {fileID: 3072586458743368047}
+  unitLevelUpPanel: {fileID: 997698651883584541}
 --- !u!1 &7484736108773349182
 GameObject:
   m_ObjectHideFlags: 0
