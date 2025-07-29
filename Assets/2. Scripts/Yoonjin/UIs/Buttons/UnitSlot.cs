@@ -15,6 +15,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private Image iconImage; // 캐릭터 이미지
     [SerializeField] private GameObject selectedNotiImg;
     [SerializeField] private Image holdCheckImage;
+
     private bool isSelected;
     private EntryDeckData selectedUnit;
 
@@ -30,6 +31,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isHolding = false;
     private float holdTime = 0.5f;
 
+    private bool isDoubleClickSlot = true;
 
     public void Initialize(EntryDeckData data)
     {
@@ -52,18 +54,29 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void SetCompetedMarker(bool isCompeted)
     {
-        competedMarker.SetActive(isCompeted);
+        if (isCompeted != competedMarker.activeSelf)
+        {
+            competedMarker.SetActive(isCompeted);
+        }
     }
 
-    public void SetSelectedMarker(bool isSelected)
+    public void SetSelectedMarker(bool isSelect)
     {
-        selectedNotiImg.SetActive(isSelected);
+        if (isSelect != selectedNotiImg.activeSelf)
+        {
+            selectedNotiImg.SetActive(isSelect);
+        }
     }
 
     public void Deselect()
     {
         isSelected = false;
         SetSelectedMarker(false);
+    }
+
+    public void SetDoubleClicked(bool isDoubleClicked = true)
+    {
+        isDoubleClickSlot = isDoubleClicked;
     }
 
     public void HandleClick()
@@ -74,13 +87,22 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             return;
         }
 
-        if (!isSelected)
+        if (isDoubleClickSlot)
         {
-            isSelected = true;
-            uiDeckBuilding.SetSelectedUnitSlot(this);
+            if (!isSelected)
+            {
+                isSelected = true;
+                uiDeckBuilding.SetSelectedUnitSlot(this);
+            }
+            else
+            {
+                OnClicked?.Invoke(selectedUnit);
+            }
         }
         else
         {
+            isSelected = true;
+            uiDeckBuilding.SetSelectedUnitSlot(this);
             OnClicked?.Invoke(selectedUnit);
         }
 
@@ -128,12 +150,17 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
 
         isHolding = true;
-        holdCheckImage.gameObject.SetActive(true);
+
         holdCheckImage.fillAmount = 0f;
         float elapsedTime = 0f;
 
         while (elapsedTime < holdTime)
         {
+            if (elapsedTime > 0.1f && !holdCheckImage.gameObject.activeSelf)
+            {
+                holdCheckImage.gameObject.SetActive(true);
+            }
+
             elapsedTime += Time.deltaTime;
             holdCheckImage.fillAmount = Mathf.Clamp01(elapsedTime / holdTime);
             yield return null;
