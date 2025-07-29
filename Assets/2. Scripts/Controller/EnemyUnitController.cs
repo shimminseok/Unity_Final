@@ -358,15 +358,9 @@ using Random = UnityEngine.Random;
 
     public override void EndTurn()
     {
-        if (!IsDead)
-        {
-            CurrentEmotion.AddStack(this);
-        }
-
-
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        ChangeUnitState(PlayerUnitState.Idle);
+        ChangeUnitState(EnemyUnitState.Idle);
     }
 
     public void OnAnimationCompleteEvent()

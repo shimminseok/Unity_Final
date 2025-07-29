@@ -96,6 +96,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
                 continue;
             }
 
+            unit.CurrentEmotion.AddStack(unit);
             unit.StatusEffectManager?.OnTurnPassed();
         }
 
