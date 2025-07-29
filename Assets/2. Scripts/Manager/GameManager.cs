@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     private InventoryManager InventoryManager => InventoryManager.Instance;
     private SaveLoadManager  SaveLoadManager  => SaveLoadManager.Instance;
     private TableManager     TableManager     => TableManager.Instance;
+    private TutorialManager  TutorialManager  => TutorialManager.Instance;
 
     private void Start()
     {
@@ -70,6 +71,11 @@ public class GameManager : Singleton<GameManager>
                 SaveLoadManager.SaveModuleData(SaveModule.FirstInit);
             }
         }
+
+        // if (SaveLoadManager.SaveDataMap[SaveModule.Tutorial] is SaveTutorialData tutorialData)
+        // {
+        //     TutorialManager.SetTutorialIndex(tutorialData.Tutorial);
+        // }
         // 등등...
     }
 }

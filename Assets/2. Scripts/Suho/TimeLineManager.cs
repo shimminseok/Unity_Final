@@ -89,6 +89,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         attacker = user;
         director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
         isPlaying = true;
+        isTimeLine = true;
         if (director.playableAsset == null)
         {
             isTimeLine = false;
@@ -102,7 +103,6 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
         {
             InitializeTimeline();
-            isTimeLine = true;
         }
 
         foreach (TrackAsset track in timelineAsset.GetOutputTracks())
@@ -176,7 +176,6 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         director.time = 0f;
         director.Evaluate();
         director.Play();
-        isTimeLine = false;
     }
 
     public void StopTimeLine(PlayableDirector pd)
@@ -186,5 +185,9 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
+        if (attacker is Unit unit)
+        {
+            unit.InvokeSkillFinished();
+        }
     }
 }

@@ -315,13 +315,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
+        OnHitFinished = null;
+
 
         if (IsDead)
         {
             LastAttacker?.InvokeHitFinished();
         }
-
-        OnHitFinished = null;
     }
 
     public void InvokeAttackFinished()

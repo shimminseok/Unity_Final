@@ -70,7 +70,6 @@ public class PlayerUnitInfoSlotHpBarUI : MonoBehaviour
         }
 
         UpdateShield(statManager.GetValue(StatType.Shield));
-        separator.material = new Material(separator.material);
         CreateMaterial();
     }
 

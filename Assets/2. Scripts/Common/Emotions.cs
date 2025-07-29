@@ -25,6 +25,11 @@ public abstract class BaseEmotion
 
     public void AddStack(Unit unit, int amount = 1)
     {
+        if (unit.IsDead)
+        {
+            return;
+        }
+
         Stack += amount;
         OnStackChanged(unit);
     }

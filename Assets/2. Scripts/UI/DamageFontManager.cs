@@ -30,6 +30,7 @@ public class DamageRequest
         Text = text;
     }
 }
+
 public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
 {
     [SerializeField] private RectTransform rectTransform;
@@ -46,7 +47,7 @@ public class DamageFontManager : SceneOnlySingleton<DamageFontManager>
 
     private Queue<DamageRequest> damageQueue = new();
     private Coroutine damageFontCoroutine;
-    
+
     protected override void Awake()
     {
         base.Awake();

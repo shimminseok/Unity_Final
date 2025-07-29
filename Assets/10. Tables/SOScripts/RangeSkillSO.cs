@@ -11,27 +11,34 @@ public class RangeSkillSO : RangeActionSo
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-        var skillController = attacker.SkillController;
-        var currentSkill = skillController.CurrentSkillData;
+        BaseSkillController skillController = attacker.SkillController;
+        SkillData           currentSkill    = skillController.CurrentSkillData;
         // PlayableAsset timeline = currentSkill.skillSo.skillTimeLine;
         // if (timeline != null)
         // {
         //     TimeLineManager.Instance.director.Play(timeline);
         // }
-        
-        foreach (var effect in currentSkill.Effect.skillEffectDatas)
+
+        foreach (SkillEffectData effect in currentSkill.Effect.skillEffectDatas)
         {
             List<IDamageable> targets = skillController.SkillSubTargets[effect];
             foreach (IDamageable unit in targets)
             {
-                if (unit == null) continue;
+                if (unit == null)
+                {
+                    continue;
+                }
+
                 if (effect.projectilePrefab != null)
-                {   
+                {
                     GameObject projectile = ObjectPoolManager.Instance.GetObject(effect.projectilePoolID);
                     if (projectile == null)
+                    {
                         projectile = Instantiate(effect.projectilePrefab);
+                    }
+
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-                    ProjectileComponent.Initialize(effect, attacker.Collider.bounds.center, unit.Collider.bounds.center, unit);
+                    ProjectileComponent.Initialize(attacker, effect, attacker.Collider.bounds.center, unit.Collider.bounds.center, unit);
                 }
                 else
                 {
@@ -45,7 +52,6 @@ public class RangeSkillSO : RangeActionSo
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
     }
-
 
 
     private void ResetProjectile()

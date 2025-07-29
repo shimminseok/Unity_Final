@@ -51,7 +51,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
     private IAttackable attacker;
 
-    public Collider Collider { get; set; }
+    public Collider Collider => trigger.colider;
 
 
     private void Awake()
@@ -61,7 +61,6 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
     private void Start()
     {
-        Collider = trigger.colider;
     }
 
     private void Update()
@@ -105,10 +104,11 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         }
     }
 
-    public void Initialize(SkillEffectData effect, Vector3 startPos, Vector3 dir, IDamageable target)
+    public void Initialize(IAttackable attacker, SkillEffectData effect, Vector3 startPos, Vector3 dir, IDamageable target)
     {
         //기존 구독되어있던 이벤트 해제
         trigger.OnTriggerTarget -= HandleTrigger;
+        this.attacker = attacker;
         effectData = effect;
         startPosition = startPos;
         direction = dir;
@@ -118,6 +118,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleTrigger;
         OnSpawnFromPool();
+        CameraManager.Instance.ChangeFollowTarget(this);
     }
 
     public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir, IDamageable target)
@@ -150,6 +151,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         effectData.AffectTargetWithSkill(Target as Unit);
         if (attacker is Unit unit)
         {
+            unit.OnSkillFinished += unit.InvokeHitFinished;
             unit.InvokeSkillFinished();
         }
 

@@ -345,10 +345,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
 
-        if (!IsDead)
-        {
-            CurrentEmotion.AddStack(this);
-        }
+
+        // CurrentEmotion.AddStack(this);
 
         Target = null;
         ChangeAction(ActionType.None);
