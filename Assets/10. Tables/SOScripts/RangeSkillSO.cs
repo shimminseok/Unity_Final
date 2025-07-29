@@ -38,7 +38,7 @@ public class RangeSkillSO : RangeActionSo
                     }
 
                     ProjectileComponent = projectile.GetComponent<PoolableProjectile>();
-                    ProjectileComponent.Initialize(effect, attacker.Collider.bounds.center, unit.Collider.bounds.center, unit);
+                    ProjectileComponent.Initialize(attacker, effect, attacker.Collider.bounds.center, unit.Collider.bounds.center, unit);
                 }
                 else
                 {
