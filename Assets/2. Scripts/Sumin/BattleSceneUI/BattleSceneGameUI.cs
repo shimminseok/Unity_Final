@@ -128,6 +128,9 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnExitButton()
     {
+        if (TutorialManager.Instance.IsActive)
+            return;
+
         string message = "전투를 중단하시겠습니까?";
         Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
         PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "중단", "취소");

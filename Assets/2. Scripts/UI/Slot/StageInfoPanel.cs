@@ -44,6 +44,9 @@ public class StageInfoPanel : MonoBehaviour
 
     public void ClosePanel()
     {
+        if (TutorialManager.Instance.IsActive)
+            return;
+
         panelRect.DOKill();
         panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
         {
