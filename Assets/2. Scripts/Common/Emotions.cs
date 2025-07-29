@@ -1,11 +1,13 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
 
 public abstract class BaseEmotion
 {
     public EmotionType EmotionType;
     private int stack;
+
     public int Stack
     {
         get => stack;
@@ -133,9 +135,12 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
         if (Random.value < chance)
         {
             //타겟을 아군으로 바꿔줌
-            var allies = BattleManager.Instance.GetAllies(attacker);
-            target = allies[Random.Range(0, allies.Count)];
-            Debug.Log("아군 공격함!");
+            List<Unit> allies = BattleManager.Instance.GetAllies(attacker);
+            if (allies.Count > 0)
+            {
+                target = allies[Random.Range(0, allies.Count)];
+                Debug.Log("아군 공격함!");
+            }
         }
     }
 

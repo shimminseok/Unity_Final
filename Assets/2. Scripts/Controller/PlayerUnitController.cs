@@ -12,7 +12,8 @@ public enum ActionType
     SKill
 }
 
-[RequireComponent(typeof(PlayerSkillController))] public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
+[RequireComponent(typeof(PlayerSkillController))]
+public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
     [SerializeField]
     private int id;
@@ -193,6 +194,7 @@ public enum ActionType
             return;
         }
 
+        finalTarget.SetLastAttacker(this);
         PlayerUnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }
@@ -220,6 +222,18 @@ public enum ActionType
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
             if (isIgnore)
             {
+                if (LastAttacker != null)
+                {
+                    if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                    {
+                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                    }
+                    else
+                    {
+                        LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                    }
+                }
+
                 return;
             }
         }
