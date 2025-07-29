@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
+    public enum TutorialPhase
+    {
+        DeckBuildingBefore = 0,
+        DeckBuildingAfter = 1,
+        LevelUp = 2
+    }
+
     [SerializeField] private TutorialTable tutorialTable;
 
     // 행동별 실행기 매핑 (FSM처럼 동작)
@@ -12,6 +19,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private TutorialStepSO currentStep;
     public TutorialStepSO CurrentStep => currentStep;
 
+    [HideInInspector]
     public bool IsActive;
 
     protected override void Awake()
@@ -38,9 +46,29 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Start()
     {
+        IsActive = false;
+
+        var tutorialData = SaveLoadManager.Instance
+            .SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) as SaveTutorialData;
+
+        // 이미 튜토리얼 완료한 유저는 실행 안 함
+        if (tutorialData?.IsCompleted == true)
+        {
+            IsActive = false;
+            Debug.Log("[튜토리얼] 이미 완료된 유저입니다.");
+            return;
+        }
+
         IsActive = true;
-        // 튜토리얼 첫 단계 실행
-        GoToStep(0);
+
+        int resumeStep = tutorialData?.Phase switch
+        {
+            TutorialPhase.LevelUp => 81,
+            TutorialPhase.DeckBuildingAfter => 72,
+            _ => 0
+        };
+
+        GoToStep(resumeStep);
     }
 
     // 특정 ID의 튜토리얼 스텝 실행
@@ -79,6 +107,9 @@ public class TutorialManager : Singleton<TutorialManager>
         var executor = executorMap[currentStep.ActionData.ActionType];
         executor?.Exit();
 
+        // 진행 중간 저장
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+
         GoToStep(currentStep.NextID);
         Debug.Log("튜토리얼 다음 단계로");
     }
@@ -88,7 +119,16 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         IsActive = false;
 
-        // RewardManager.Instance.GiveReward 같은 걸로 추후 보상 지급 예정
+        // 튜토리얼 완료 저장
+        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
+        {
+            tutorialData.IsCompleted = true;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        }
+
+        // 튜토리얼 끝났을 때만 아이템/스킬 저장
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventorySkill);
 
         Debug.LogWarning("튜토리얼 종료!");
     }
