@@ -5,27 +5,20 @@ using UnityEngine.UI;
 
 public class UICharacterSetting : UIBase
 {
-    [SerializeField]
-    private Transform playerUnitSlotRoot;
+    [SerializeField] private Transform playerUnitSlotRoot;
 
-    [SerializeField]
-    private CharacterInfo characterInfoPanel;
+    [SerializeField] private CharacterInfo characterInfoPanel;
 
-    [SerializeField]
-    private UnitSlot playerUnitSlot;
+    [SerializeField] private UnitSlot playerUnitSlot;
 
-    [SerializeField]
-    private RectTransform characterListRect;
+    [SerializeField] private RectTransform characterListRect;
 
     [Header("유닛 스탠딩 이미지")]
-    [SerializeField]
-    private CanvasGroup standingPanel;
+    [SerializeField] private CanvasGroup standingPanel;
 
-    [SerializeField]
-    private Image standingImage;
+    [SerializeField] private Image standingImage;
 
-    [SerializeField]
-    private float fadeInDuration;
+    [SerializeField] private float fadeInDuration;
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
@@ -58,6 +51,7 @@ public class UICharacterSetting : UIBase
         SetPlayerUnitData(SelectedPlayerUnitData);
         standingImage.sprite = SelectedPlayerUnitData.CharacterSo.UnitStanding;
 
+        standingPanel.DOKill();
         standingPanel.gameObject.SetActive(true);
         standingPanel.alpha = 0;
         standingPanel.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
@@ -73,6 +67,7 @@ public class UICharacterSetting : UIBase
         {
             if (slotDic.ContainsKey(entryDeckData.Key))
             {
+                slotDic[entryDeckData.Key].Initialize(entryDeckData.Value);
                 continue;
             }
 
