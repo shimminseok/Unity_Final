@@ -153,7 +153,7 @@ public class ActState : ITurnState
                 unit.ChangeUnitState(EnemyUnitState.Skill);
             }
 
-            if (unit.CurrentAttackAction.ActionSo is RangeActionSo rangeSkill)
+            if (unit.CurrentAttackAction.ActionSo is RangeSkillSO rangeSkill)
             {
                 if (!rangeSkill.IsProjectile)
                 {

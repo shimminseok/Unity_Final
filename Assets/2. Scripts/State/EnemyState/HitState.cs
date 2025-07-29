@@ -8,7 +8,6 @@ namespace EnemyState
         private readonly int isHit = Define.HitAnimationHash;
         private bool canCounter;
         private bool hasHandler;
-        private Action onAttackFinishedHandler;
 
         public void OnEnter(EnemyUnitController owner)
         {
@@ -16,6 +15,29 @@ namespace EnemyState
             owner.Animator.SetTrigger(isHit);
             canCounter = owner.CanCounterAttack(owner.LastAttacker);
             hasHandler = false;
+            if (owner.LastAttacker == null)
+            {
+                return;
+            }
+
+            Action onHitFinished = null;
+
+            if (canCounter)
+            {
+                onHitFinished = () =>
+                {
+                    owner.StartCountAttack(owner.LastAttacker);
+                };
+            }
+            else if (!owner.LastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
+            {
+                onHitFinished = owner.LastAttacker.InvokeHitFinished;
+            }
+
+            if (onHitFinished != null)
+            {
+                owner.OnHitFinished += onHitFinished;
+            }
         }
 
         public void OnUpdate(EnemyUnitController owner)
@@ -26,14 +48,6 @@ namespace EnemyState
             }
 
             hasHandler = true;
-            if (canCounter)
-            {
-                owner.StartCountAttack(owner.LastAttacker);
-            }
-            else
-            {
-                owner.LastAttacker?.InvokeHitFinished();
-            }
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)
@@ -42,11 +56,6 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController owner)
         {
-            if (canCounter)
-            {
-                owner.OnMeleeAttackFinished -= onAttackFinishedHandler;
-                onAttackFinishedHandler = null;
-            }
         }
     }
 }

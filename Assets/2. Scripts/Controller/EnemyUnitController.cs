@@ -182,6 +182,8 @@ using Random = UnityEngine.Random;
             return;
         }
 
+        Debug.Log("Enemy Take Damage Font");
+
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);

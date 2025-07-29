@@ -213,7 +213,7 @@ public class SaveCurrentStageData : SaveData
 [Serializable]
 public class SaveTutorialData : SaveData
 {
-    public int Tutorial { get; set; } = 1;
+    public int Tutorial { get; set; } = 0;
 
     public override void OnBeforeSave()
     {

@@ -24,12 +24,14 @@ public class TutorialManager : Singleton<TutorialManager>
             { TutorialActionType.Dialogue, new DialogueActionExecutor() },
             { TutorialActionType.HighlightUI, new HighlightUIExecutor() },
             { TutorialActionType.TriggerWait, new TriggerWaitExecutor() },
-            { TutorialActionType.Reward, new RewardActionExecutor() },
+            { TutorialActionType.Reward, new RewardActionExecutor() }
         };
 
         // 실행기에 튜토리얼 매니저 주입
-        foreach (var exec in executorMap.Values)
+        foreach (TutorialActionExecutor exec in executorMap.Values)
+        {
             exec.SetManager(this);
+        }
 
         // 테이블 가져오기 
         tutorialTable = TableManager.Instance.GetTable<TutorialTable>();
@@ -40,7 +42,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         IsActive = true;
         // 튜토리얼 첫 단계 실행
-        GoToStep(0);
+        // GoToStep(0);
     }
 
     // 특정 ID의 튜토리얼 스텝 실행
@@ -62,7 +64,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         Debug.Log($"[튜토리얼] Step {id}의 ActionType: {currentStep.ActionData.ActionType}");
 
-        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out var executor))
+        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out TutorialActionExecutor executor))
         {
             Debug.LogError($"[튜토리얼] 해당 ActionType({currentStep.ActionData.ActionType})에 대한 실행기가 없습니다!");
             return;
@@ -76,7 +78,7 @@ public class TutorialManager : Singleton<TutorialManager>
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
     {
-        var executor = executorMap[currentStep.ActionData.ActionType];
+        TutorialActionExecutor executor = executorMap[currentStep.ActionData.ActionType];
         executor?.Exit();
 
         GoToStep(currentStep.NextID);
@@ -91,5 +93,10 @@ public class TutorialManager : Singleton<TutorialManager>
         // RewardManager.Instance.GiveReward 같은 걸로 추후 보상 지급 예정
 
         Debug.LogWarning("튜토리얼 종료!");
+    }
+
+    public void SetTutorialIndex(int index)
+    {
+        GoToStep(index);
     }
 }
