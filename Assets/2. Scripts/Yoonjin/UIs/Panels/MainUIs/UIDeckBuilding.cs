@@ -48,6 +48,7 @@ public class UIDeckBuilding : UIBase
             UnitSlot slot = Instantiate(unitSlotPrefab, ownedCharacterParent);
             slot.Initialize(entryDeckData.Value);
             characterSlotDic.Add(entryDeckData.Key, slot);
+            slot.SetDoubleClicked(false);
             slot.OnClicked += OnClickedHasUnitSlot;
             slot.OnHeld += OnHeldHasUnitSlot;
         }

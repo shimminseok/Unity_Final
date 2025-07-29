@@ -80,6 +80,7 @@ public class UICharacterSetting : UIBase
             slot.name = $"UnitSlot_{entryDeckData.Value.CharacterSo.ID}";
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
+            slot.SetDoubleClicked(false);
             slot.OnClicked += OnClickPlayerUnitSlot;
         }
 
