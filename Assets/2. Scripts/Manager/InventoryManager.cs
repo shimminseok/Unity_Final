@@ -132,6 +132,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         inventoryList.Add(itemId);
+
         JobInventory[jobType] = inventoryList;
     }
 

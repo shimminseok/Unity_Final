@@ -25,7 +25,8 @@ public enum SaveModule
     Tutorial,
     InventoryItem,
     InventoryUnit,
-    InventorySkill
+    InventorySkill,
+    FirstInit
 }
 
 public class SaveLoadManager : Singleton<SaveLoadManager>
@@ -73,6 +74,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 SaveModule.InventoryItem  => Load<SaveInventoryItemData>(module),
                 SaveModule.InventoryUnit  => Load<SaveUnitInventoryData>(module),
                 SaveModule.InventorySkill => Load<SaveInventorySkill>(module),
+                SaveModule.FirstInit      => Load<SaveFirstInit>(module),
                 _                         => null
             };
 
@@ -110,6 +112,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveDataMap[SaveModule.Tutorial] = new SaveTutorialData();
         SaveDataMap[SaveModule.InventoryItem] = new SaveInventoryItemData();
         SaveDataMap[SaveModule.InventoryUnit] = new SaveUnitInventoryData();
+        SaveDataMap[SaveModule.FirstInit] = new SaveFirstInit();
     }
 
     private void Save(SaveModule module, SaveData data)
@@ -147,6 +150,20 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 public abstract class SaveData
 {
     public abstract void OnBeforeSave();
+}
+
+[Serializable]
+public class SaveFirstInit : SaveData
+{
+    public bool IsFirstInit { get; set; }
+
+    public override void OnBeforeSave()
+    {
+        if (!IsFirstInit)
+        {
+            IsFirstInit = true;
+        }
+    }
 }
 
 [Serializable]
@@ -210,7 +227,7 @@ public class SaveTutorialData : SaveData
 [Serializable]
 public class SaveInventoryItemData : SaveData
 {
-    public List<SaveInventoryItem> InventoryItems { get; set; } = new() { new SaveInventoryItem(new EquipmentItem(11101)) };
+    public List<SaveInventoryItem> InventoryItems { get; set; } = new();
 
     public override void OnBeforeSave()
     {
@@ -221,7 +238,7 @@ public class SaveInventoryItemData : SaveData
 [Serializable]
 public class SaveUnitInventoryData : SaveData
 {
-    public List<SaveEntryDeckData> UnitInventory { get; set; } = new() { new SaveEntryDeckData(1) };
+    public List<SaveEntryDeckData> UnitInventory { get; set; } = new();
 
     public override void OnBeforeSave()
     {
@@ -232,7 +249,7 @@ public class SaveUnitInventoryData : SaveData
 [Serializable]
 public class SaveInventorySkill : SaveData
 {
-    public List<SaveSkillData> SkillInventory { get; set; } = new() { new SaveSkillData(1002) };
+    public List<SaveSkillData> SkillInventory { get; set; } = new();
 
     public override void OnBeforeSave()
     {

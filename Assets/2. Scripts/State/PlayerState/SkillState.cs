@@ -9,7 +9,12 @@ namespace PlayerState
         public void OnEnter(PlayerUnitController owner)
         {
             owner.OnToggleNavmeshAgent(false);
-            owner.Animator.SetTrigger(Define.SkillAnimationHash);
+            owner.IsAnimationDone = false;
+            TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain, CameraManager.Instance.skillCameraController, owner, out bool isPlaying);
+            if (!isPlaying)
+            {
+                owner.Animator.SetTrigger(Define.SkillAnimationHash);
+            }
         }
 
         public void OnUpdate(PlayerUnitController owner)
@@ -24,7 +29,6 @@ namespace PlayerState
         {
             owner.Animator.ResetTrigger(skill);
             owner.OnToggleNavmeshAgent(true);
-
         }
     }
 }

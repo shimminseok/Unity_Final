@@ -8,6 +8,7 @@ namespace EnemyState
 
         public void OnEnter(EnemyUnitController owner)
         {
+            owner.IsAnimationDone = false;
             owner.OnToggleNavmeshAgent(false);
             owner.transform.LookAt(owner.IsCounterAttack ? owner.CounterTarget.Collider.transform : owner.Target.Collider.transform);
             owner.Animator.SetTrigger(attack);
@@ -23,8 +24,7 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController owner)
         {
-            owner.Animator.ResetTrigger(attack);
-            owner.OnToggleNavmeshAgent(true);
+            owner.transform.localRotation = Quaternion.identity;
         }
     }
 }

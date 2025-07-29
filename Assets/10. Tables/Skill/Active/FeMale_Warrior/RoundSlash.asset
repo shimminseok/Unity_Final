@@ -49,7 +49,7 @@ MonoBehaviour:
           Stat:
             StatType: 0
             ModifierType: 0
-            Value: 40
+            Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
               type: 3}
             VFXPoolID: RoundSlashVFX
             LocalPosition: {x: 0, y: 0, z: 0}
-            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 135, z: 0}
             LocalScale: {x: 1, y: 1, z: 1}
             reference: 0
             isParent: 0
@@ -103,8 +103,8 @@ MonoBehaviour:
       - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
           type: 3}
         VFXPoolID: RoundSlashVFX
-        LocalPosition: {x: 0, y: 0.5, z: 1}
-        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 135, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
@@ -130,6 +130,6 @@ MonoBehaviour:
   activeSkillTier: 3
   reuseMaxCount: 2
   coolTime: 4
-  skillAnimation: {fileID: 7400000, guid: a313e483479663e468572d3f7af8561b, type: 3}
+  skillAnimation: {fileID: 7400000, guid: 1c09047ecdb0548428f2137b03a4f7dc, type: 2}
   skillTimeLine: {fileID: 11400000, guid: 209315368567d9f49b6f46c4d6e78261, type: 2}
   isSkillScene: 1

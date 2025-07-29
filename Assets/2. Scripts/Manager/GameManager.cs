@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 
 public class GameManager : Singleton<GameManager>
@@ -6,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     private AccountManager   AccountManager   => AccountManager.Instance;
     private InventoryManager InventoryManager => InventoryManager.Instance;
     private SaveLoadManager  SaveLoadManager  => SaveLoadManager.Instance;
+    private TableManager     TableManager     => TableManager.Instance;
 
     private void Start()
     {
@@ -55,6 +58,18 @@ public class GameManager : Singleton<GameManager>
             AccountManager.UpdateLastChallengedStageId(currentStageData.LastClearedStage);
         }
 
+        if (SaveLoadManager.SaveDataMap[SaveModule.FirstInit] is SaveFirstInit firstInit)
+        {
+            if (!firstInit.IsFirstInit)
+            {
+                foreach (Action action in Define.FirstGivenItem.Values)
+                {
+                    action?.Invoke();
+                }
+
+                SaveLoadManager.SaveModuleData(SaveModule.FirstInit);
+            }
+        }
         // 등등...
     }
 }

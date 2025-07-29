@@ -12,28 +12,42 @@ public enum ActionType
     SKill
 }
 
-[RequireComponent(typeof(PlayerSkillController))]
-public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
+[RequireComponent(typeof(PlayerSkillController))] public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    [SerializeField] private int id;
-    [SerializeField] private AnimationClip idleClip;
-    [SerializeField] private AnimationClip moveClip;
-    [SerializeField] private AnimationClip victoryClip;
-    [SerializeField] private AnimationClip readyActionClip;
-    [SerializeField] private AnimationClip deadClip;
+    [SerializeField]
+    private int id;
+
+    [SerializeField]
+    private AnimationClip idleClip;
+
+    [SerializeField]
+    private AnimationClip moveClip;
+
+    [SerializeField]
+    private AnimationClip victoryClip;
+
+    [SerializeField]
+    private AnimationClip readyActionClip;
+
+    [SerializeField]
+    private AnimationClip deadClip;
+
+    [SerializeField]
+    private AnimationClip hitClip;
+
     public EquipmentManager EquipmentManager { get; private set; }
     public Vector3          StartPostion     { get; private set; }
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
     public PassiveSO        PassiveSo        { get; private set; }
 
-    public override bool IsAnimationDone
-    {
-        get
-        {
-            AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsTag("Action") && info.normalizedTime >= 0.9f;
-        }
-    }
+    // public override bool IsAnimationDone
+    // {
+    //     get
+    //     {
+    //         AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
+    //         return info.IsTag("Action") && info.normalizedTime >= 0.9f;
+    //     }
+    // }
 
     public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
@@ -58,6 +72,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             PlayerUnitState.Skill       => new SkillState(),
             PlayerUnitState.Victory     => new VictoryState(),
             PlayerUnitState.ReadyAction => new ReadyAction(),
+            PlayerUnitState.Hit         => new HitState(),
             _                           => null
         };
     }
@@ -133,6 +148,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeClip(Define.VictoryClipName, victoryClip);
         ChangeClip(Define.ReadyActionClipName, readyActionClip);
         ChangeClip(Define.DeadClipName, deadClip);
+        ChangeClip(Define.HitClipName, hitClip);
+
+        CurrentAttackAction = UnitSo.AttackType;
     }
 
 
@@ -162,6 +180,16 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (!isHit)
         {
             DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
+            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                OnRangeAttackFinished += InvokeHitFinished;
+                InvokeRangeAttackFinished();
+            }
+
             return;
         }
 
@@ -229,7 +257,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (curHp.Value <= 0)
         {
             Dead();
+            return;
         }
+
+        ChangeUnitState(PlayerUnitState.Hit);
     }
 
     public override void Dead()
@@ -240,6 +271,18 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         IsDead = true;
+        if (LastAttacker != null)
+        {
+            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+            }
+        }
+
         ChangeUnitState(PlayerUnitState.Die);
 
 
@@ -297,7 +340,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
-        TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
+        // TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

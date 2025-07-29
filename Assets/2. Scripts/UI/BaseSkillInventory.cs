@@ -21,9 +21,10 @@ public class BaseSkillInventory : MonoBehaviour
         List<SkillData> dataList = GetSkillInventorySource();
 
         int count = Mathf.Min(reuseScrollview.ItemList.Count, dataList.Count);
+
         for (int i = 0; i < count; i++)
         {
-            if (reuseScrollview.ItemList[i].TryGetComponent<SkillSlot>(out var slot))
+            if (reuseScrollview.ItemList[i].TryGetComponent(out SkillSlot slot))
             {
                 slot.SetOnClickCallback(onClickHandler);
                 skillToSlotMap.Add(dataList[i], slot);

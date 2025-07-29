@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnHandler
 {
-    private Queue<Unit> turnQueue = new Queue<Unit>();
+    private Queue<Unit> turnQueue = new();
 
     private Unit currentTurnUnit;
 
@@ -38,7 +38,7 @@ public class TurnHandler
             BattleManager.Instance.EndTurn();
 
             // 튜토리얼에서 TurnChanged 이벤트 발행
-            var tutorial = TutorialManager.Instance;
+            TutorialManager tutorial = TutorialManager.Instance;
 
             if (tutorial != null && tutorial.IsActive &&
                 TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&

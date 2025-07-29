@@ -8,7 +8,8 @@ public class RangeCombatAction : ICombatAction
     private readonly IDamageable target;
 
     public event Action OnActionComplete;
-    
+
+    private bool isTimeLinePlaying;
 
     public RangeCombatAction(RangeActionSo so, IDamageable target)
     {
@@ -18,7 +19,6 @@ public class RangeCombatAction : ICombatAction
 
     public void Execute(Unit attacker)
     {
-        TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain,CameraManager.Instance.skillCameraController,attacker);
         if (attackData.IsProjectile)
         {
             attacker.ExecuteCoroutine(WaitForSpawnProjectile());
@@ -42,7 +42,10 @@ public class RangeCombatAction : ICombatAction
 
     private IEnumerator WaitForAnimationDone(Unit attacker)
     {
-        yield return new WaitUntil(() => attacker.IsAnimationDone|| !attacker.IsTimeLinePlaying);
-        OnActionComplete?.Invoke();
+        if (isTimeLinePlaying)
+        {
+            yield return new WaitUntil(() => !attacker.IsTimeLinePlaying);
+            OnActionComplete?.Invoke();
+        }
     }
 }

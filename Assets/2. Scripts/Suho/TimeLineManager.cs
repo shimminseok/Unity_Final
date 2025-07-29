@@ -1,5 +1,6 @@
 using Cinemachine;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -13,7 +14,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public GameObject effectObject;
     private Animator effectAnimator;
     private IAttackable attacker;
-    public VirtualCameraController CurrentCameraController{get;set;}
+    public VirtualCameraController CurrentCameraController { get; set; }
 
     protected override void Awake()
     {
@@ -32,27 +33,26 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
     public void StartVFXOnEffectObject()
     {
-        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
+        foreach (SkillEffectData data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
         {
-            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Start,effectObject);
+            VFXController.VFXListPlayOnTransform(data.skillVFX, VFXType.Start, effectObject);
         }
     }
-    
+
     public void OnAttackVFXOnEffectObject()
     {
-        foreach (var data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
+        foreach (SkillEffectData data in attacker.SkillController.CurrentSkillData.skillSo.effect.skillEffectDatas)
         {
-            VFXController.VFXListPlayOnTransform(data.skillVFX,VFXType.Hit,effectObject);
+            VFXController.VFXListPlayOnTransform(data.skillVFX, VFXType.Hit, effectObject);
         }
     }
 
     public void OnAttackVFX()
     {
-        var type = attacker.SkillController.CurrentSkillData.skillSo.skillType;
+        CombatActionSo type = attacker.SkillController.CurrentSkillData.skillSo.skillType;
         type.PlayVFX(attacker, attacker.Target);
-        
     }
-    
+
     public void AffectSkillInTimeline()
     {
         attacker.SkillController.UseSkill();
@@ -84,32 +84,39 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         effectObject.transform.rotation = rot;
     }
 
-    public void PlayTimeLine(CinemachineBrain brain,VirtualCameraController vCamController, IAttackable user)
+    public void PlayTimeLine(CinemachineBrain brain, VirtualCameraController vCamController, IAttackable user, out bool isTimeLine)
     {
         attacker = user;
         director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
         isPlaying = true;
-        if (director.playableAsset == null) return;
+        if (director.playableAsset == null)
+        {
+            isTimeLine = false;
+            return;
+        }
+
         CurrentCameraController = vCamController;
         CurrentCameraController.ChangeCamera();
-        Unit attackerUnit = attacker as Unit;
-        var timelineAsset = director.playableAsset as TimelineAsset;
+        Unit          attackerUnit  = attacker as Unit;
+        TimelineAsset timelineAsset = director.playableAsset as TimelineAsset;
         if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
         {
             InitializeTimeline();
         }
-        foreach (var track in timelineAsset.GetOutputTracks())
+
+        foreach (TrackAsset track in timelineAsset.GetOutputTracks())
         {
             if (track is CinemachineTrack cinemachineTrack)
             {
-                var clips = cinemachineTrack.GetClips();
-                foreach (var clip in clips)
+                IEnumerable<TimelineClip> clips = cinemachineTrack.GetClips();
+                foreach (TimelineClip clip in clips)
                 {
-                    var shot = clip.asset as CinemachineShot;
+                    CinemachineShot shot = clip.asset as CinemachineShot;
                     if (shot == null)
                     {
-                         continue;
+                        continue;
                     }
+
                     if (shot.DisplayName == "SkillCamera")
                     {
                         director.SetReferenceValue(shot.VirtualCamera.exposedName, CameraManager.Instance.skillCameraController.vCam);
@@ -121,8 +128,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 }
 
                 // 뇌 (CinemachineBrain) 바인딩은 여전히 필요
-                var output = timelineAsset.outputs.FirstOrDefault(
-                    o => o.outputTargetType == typeof(CinemachineBrain)
+                PlayableBinding output = timelineAsset.outputs.FirstOrDefault(o => o.outputTargetType == typeof(CinemachineBrain)
                 );
                 if (output.sourceObject != null)
                 {
@@ -174,16 +180,14 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         director.time = 0f;
         director.Evaluate();
         director.Play();
+        isTimeLine = true;
     }
 
     public void StopTimeLine(PlayableDirector pd)
     {
         director.Stop();
         isPlaying = false;
-        if (CurrentCameraController != null)
-        {
-            CurrentCameraController.DefaultCamera();
-        }
+        CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
         
