@@ -128,7 +128,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnExitButton()
     {
-        if (TutorialManager.Instance.IsActive)
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
             return;
 
         string message = "전투를 중단하시겠습니까?";

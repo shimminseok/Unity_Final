@@ -12,7 +12,8 @@ public class CompeteUnitSlot : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (competeUnitData != null && !TutorialManager.Instance.IsActive)
+        if (competeUnitData != null &&
+            (TutorialManager.Instance == null || !TutorialManager.Instance.IsActive))
         {
             UIDeckBuilding.RemoveUnitInDeck(competeUnitData);
             competeUnitData = null;

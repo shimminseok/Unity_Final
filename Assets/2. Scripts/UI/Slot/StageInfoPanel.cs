@@ -44,7 +44,7 @@ public class StageInfoPanel : MonoBehaviour
 
     public void ClosePanel()
     {
-        if (TutorialManager.Instance.IsActive)
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
             return;
 
         panelRect.DOKill();

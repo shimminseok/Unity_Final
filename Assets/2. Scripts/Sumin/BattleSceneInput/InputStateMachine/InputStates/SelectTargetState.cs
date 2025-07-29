@@ -29,8 +29,8 @@ public class SelectTargetState : IInputState
             var tutorial = TutorialManager.Instance;
 
             if (tutorial != null && tutorial.IsActive &&
-            TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
-            triggerData.triggerEventName == "TargetSelected")
+                tutorial.CurrentStep?.ActionData is TriggerWaitActionData triggerData &&
+                triggerData.triggerEventName == "TargetSelected")
             {
                 EventBus.Publish("TargetSelected");
             }
