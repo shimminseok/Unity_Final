@@ -14,14 +14,15 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     protected BattleManager BattleManager => BattleManager.Instance;
 
-    public BaseEmotion                CurrentEmotion { get; private set; }
-    public BaseEmotion[]              Emotions       { get; private set; }
-    public event Action<BaseEmotion>  EmotionChanged; // 감정이 바뀌었을 때 알리는 이벤트
-    public ActionType                 CurrentAction              { get; private set; } = ActionType.None;
-    public TurnStateMachine           TurnStateMachine           { get; protected set; }
-    public ITurnState[]               TurnStates                 { get; private set; }
-    public TurnStateType              CurrentTurnState           { get; private set; }
-    public StatManager                StatManager                { get; protected set; }
+    public BaseEmotion               CurrentEmotion { get; private set; }
+    public BaseEmotion[]             Emotions       { get; private set; }
+    public event Action<BaseEmotion> EmotionChanged; // 감정이 바뀌었을 때 알리는 이벤트
+    public ActionType                CurrentAction    { get; private set; } = ActionType.None;
+    public TurnStateMachine          TurnStateMachine { get; protected set; }
+    public ITurnState[]              TurnStates       { get; private set; }
+    public TurnStateType             CurrentTurnState { get; private set; }
+    public StatManager               StatManager      { get; protected set; }
+
     public StatusEffectManager        StatusEffectManager        { get; protected set; }
     public SkillManager               SkillManager               { get; protected set; }
     public Animator                   Animator                   { get; protected set; }
@@ -305,10 +306,9 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         }
     }
 
-    public void SetLastAttacker(Unit attacker)
+    public void SetLastAttacker(IAttackable attacker)
     {
-        Debug.Log($"{attacker.name}");
-        LastAttacker = attacker;
+        LastAttacker = attacker as Unit;
     }
 
     public void InvokeHitFinished()
