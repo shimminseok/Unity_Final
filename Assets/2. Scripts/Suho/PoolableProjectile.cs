@@ -16,11 +16,14 @@ using Random = UnityEngine.Random;
  */
 public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 {
-    [SerializeField] private string poolId;
+    [SerializeField]
+    private string poolId;
 
-    [SerializeField] private int poolSize;
+    [SerializeField]
+    private int poolSize;
 
-    [SerializeField] private float projectileSpeed;
+    [SerializeField]
+    private float projectileSpeed;
 
     private SkillEffectData effectData;
 
@@ -145,6 +148,11 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
     private void HandleTrigger()
     {
         effectData.AffectTargetWithSkill(Target as Unit);
+        if (attacker is Unit unit)
+        {
+            unit.InvokeSkillFinished();
+        }
+
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 

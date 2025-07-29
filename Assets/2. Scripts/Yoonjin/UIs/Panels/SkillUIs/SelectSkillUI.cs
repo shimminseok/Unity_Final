@@ -11,30 +11,44 @@ using UnityEngine.UI;
 public class SelectSkillUI : UIBase
 {
     [Header("장착한 스킬 이름 / 설명 / 효과")]
-    [SerializeField] private RectTransform panelRect;
+    [SerializeField]
+    private RectTransform panelRect;
 
-    [SerializeField] private TextMeshProUGUI skillName;
+    [SerializeField]
+    private TextMeshProUGUI skillName;
 
-    [SerializeField] private TextMeshProUGUI skillDescription;
-    [SerializeField] private TextMeshProUGUI skillCooltimeTxt;
-    [SerializeField] private TextMeshProUGUI skillTotalUseCountTxt;
-    [SerializeField] private TextMeshProUGUI skillEffect;
+    [SerializeField]
+    private TextMeshProUGUI skillDescription;
+
+    [SerializeField]
+    private TextMeshProUGUI skillCooltimeTxt;
+
+    [SerializeField]
+    private TextMeshProUGUI skillTotalUseCountTxt;
+
+    [SerializeField]
+    private TextMeshProUGUI skillEffect;
 
 
     [Header("스킬 슬롯")]
-    [SerializeField] private List<SkillSlot> activeSkillSlots = new();
+    [SerializeField]
+    private List<SkillSlot> activeSkillSlots = new();
 
-    [SerializeField] private SkillSlot passiveSkillSlot;
+    [SerializeField]
+    private SkillSlot passiveSkillSlot;
 
     [Header("스킬 버튼 프리팹")]
-    [SerializeField] private SkillSlot skillSlotPrefab;
+    [SerializeField]
+    private SkillSlot skillSlotPrefab;
 
 
     [Header("인벤토리")]
-    [SerializeField] private EquipmentSkillInventory inventoryUI;
+    [SerializeField]
+    private EquipmentSkillInventory inventoryUI;
 
     [Header("캐릭터 이름")]
-    [SerializeField] private TextMeshProUGUI chaName;
+    [SerializeField]
+    private TextMeshProUGUI chaName;
 
 
     private SkillSlot selectedSkillSlot;
@@ -139,6 +153,17 @@ public class SelectSkillUI : UIBase
         RefreshEquippedSkillSlots();
     }
 
+    private void OnClickPassiveSkillSlot(SkillData skill)
+    {
+        OnClickPassiveSkillSlot(CurrentCharacter.CharacterSo.PassiveSkill);
+    }
+
+    private void OnClickPassiveSkillSlot(PassiveSO passiveSkill)
+    {
+        OpenInfo();
+        SetSkillInfoUI(passiveSkill);
+    }
+
     private void SetSkillInfoUI(SkillSo equipmentSkill)
     {
         skillName.text = equipmentSkill.skillName;
@@ -178,6 +203,7 @@ public class SelectSkillUI : UIBase
         }
 
         passiveSkillSlot.SetSkillIcon(CurrentCharacter.CharacterSo.PassiveSkill, false);
+        passiveSkillSlot.OnClickSlot += OnClickPassiveSkillSlot;
 
         RefreshEquipSkillUI();
         DeckSelectManager.Instance.OnEquipSkillChanged += HandleEquipItemChanged;
@@ -203,6 +229,7 @@ public class SelectSkillUI : UIBase
             }
         }
 
+        passiveSkillSlot.OnClickSlot -= OnClickPassiveSkillSlot;
         DeckSelectManager.Instance.OnEquipSkillChanged -= HandleEquipItemChanged;
         OnSkillChanged?.Invoke(CurrentCharacter);
         CloseInfo();

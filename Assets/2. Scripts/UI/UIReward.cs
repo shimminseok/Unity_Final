@@ -68,7 +68,7 @@ public class UIReward : UIBase
             inventorySlotList[index].transform.localScale = Vector3.zero;
             rewardSequence.Append(inventorySlotList[index].transform.DOScale(Vector3.one, 0.3f)
                 .SetEase(Ease.OutBack)
-                .SetDelay(index * 0.1f));
+                .SetDelay(index * 0.01f));
             index++;
         }
     }

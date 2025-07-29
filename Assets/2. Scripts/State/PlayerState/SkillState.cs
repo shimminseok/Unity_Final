@@ -11,10 +11,8 @@ namespace PlayerState
             owner.OnToggleNavmeshAgent(false);
             owner.IsAnimationDone = false;
             TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain, CameraManager.Instance.skillCameraController, owner, out bool isPlaying);
-            if (!isPlaying)
-            {
-                owner.Animator.SetTrigger(Define.SkillAnimationHash);
-            }
+
+            owner.Animator.SetTrigger(Define.SkillAnimationHash);
         }
 
         public void OnUpdate(PlayerUnitController owner)

@@ -5,16 +5,27 @@ using UnityEngine.UI;
 
 public class UICharacterSetting : UIBase
 {
-    [SerializeField] private Transform playerUnitSlotRoot;
-    [SerializeField] private CharacterInfo characterInfoPanel;
-    [SerializeField] private UnitSlot playerUnitSlot;
+    [SerializeField]
+    private Transform playerUnitSlotRoot;
 
-    [SerializeField] private RectTransform characterListRect;
+    [SerializeField]
+    private CharacterInfo characterInfoPanel;
+
+    [SerializeField]
+    private UnitSlot playerUnitSlot;
+
+    [SerializeField]
+    private RectTransform characterListRect;
 
     [Header("유닛 스탠딩 이미지")]
-    [SerializeField] private CanvasGroup standingPanel;
-    [SerializeField] private Image standingImage;
-    [SerializeField] private float fadeInDuration;
+    [SerializeField]
+    private CanvasGroup standingPanel;
+
+    [SerializeField]
+    private Image standingImage;
+
+    [SerializeField]
+    private float fadeInDuration;
 
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
@@ -40,7 +51,10 @@ public class UICharacterSetting : UIBase
         SelectedPlayerUnitData = playerUnitData;
 
         if (SelectedPlayerUnitData == null)
+        {
             return;
+        }
+
         SetPlayerUnitData(SelectedPlayerUnitData);
         standingImage.sprite = SelectedPlayerUnitData.CharacterSo.UnitStanding;
 
@@ -53,28 +67,32 @@ public class UICharacterSetting : UIBase
     {
         base.Open();
 
-        var units = AccountManager.Instance.MyPlayerUnits;
+        Dictionary<int, EntryDeckData> units = AccountManager.Instance.MyPlayerUnits;
 
         foreach (KeyValuePair<int, EntryDeckData> entryDeckData in units)
         {
             if (slotDic.ContainsKey(entryDeckData.Key))
+            {
                 continue;
+            }
 
-            var slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
+            UnitSlot slot = Instantiate(playerUnitSlot, playerUnitSlotRoot);
             slot.name = $"UnitSlot_{entryDeckData.Value.CharacterSo.ID}";
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
+            slot.SetDoubleClicked(false);
             slot.OnClicked += OnClickPlayerUnitSlot;
         }
 
         characterListRect.DOKill();
-        characterListRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.left * 500f).SetEase(Ease.OutBack);
+        characterListRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.left * 500f)).SetEase(Ease.OutBack);
     }
 
     public override void Close()
     {
         base.Close();
         characterInfoPanel.ClosePanel();
+        standingPanel.DOKill();
         standingPanel.gameObject.SetActive(false);
     }
 
