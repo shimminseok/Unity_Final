@@ -7,10 +7,11 @@ using EnemyState;
 using Random = UnityEngine.Random;
 
 
-[RequireComponent(typeof(EnemySkillContorller))]
-public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
+[RequireComponent(typeof(EnemySkillContorller))] public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
-    [SerializeField] private int id;
+    [SerializeField]
+    private int id;
+
     public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
@@ -146,6 +147,15 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (!isHit)
         {
             DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
+            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                InvokeRangeAttackFinished();
+            }
+
             return;
         }
 
@@ -169,6 +179,15 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         if (IsDead)
         {
             return;
+        }
+
+        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
+        {
+            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
+            if (isIgnore)
+            {
+                return;
+            }
         }
 
         float finalDam = amount;
@@ -217,7 +236,17 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
 
-        InvokeHitFinished();
+        if (LastAttacker != null)
+        {
+            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+            }
+        }
 
         Agent.enabled = false;
         Obstacle.carving = false;
