@@ -26,7 +26,7 @@ public class CharacterInfo : MonoBehaviour
     private EntryDeckData selectedPlayerUnitData;
 
 
-    private Dictionary<StatType, StatSlot> statSlotDic = new Dictionary<StatType, StatSlot>();
+    private Dictionary<StatType, StatSlot> statSlotDic = new();
 
     private void Awake()
     {
@@ -45,7 +45,7 @@ public class CharacterInfo : MonoBehaviour
 
     private void InitializeStatSlotDic()
     {
-        foreach (var slot in statSlots)
+        foreach (StatSlot slot in statSlots)
         {
             if (!statSlotDic.TryAdd(slot.StatType, slot))
             {
@@ -56,32 +56,36 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetCharacterStatInfo()
     {
-        var level          = selectedPlayerUnitData.Level;
-        var charBaseStats  = selectedPlayerUnitData.CharacterSo.Stats;
-        var statGrowthList = statIncreaseSo.Stats;
-        var equippedItems  = selectedPlayerUnitData.EquippedItems;
+        int                                      level          = selectedPlayerUnitData.Level;
+        List<StatData>                           charBaseStats  = selectedPlayerUnitData.CharacterSo.Stats;
+        List<StatData>                           statGrowthList = statIncreaseSo.Stats;
+        Dictionary<EquipmentType, EquipmentItem> equippedItems  = selectedPlayerUnitData.EquippedItems;
 
         Dictionary<StatType, float> baseStats    = new();
         Dictionary<StatType, float> levelUpStats = new();
         Dictionary<StatType, float> equipStats   = new();
 
         // 1. 기본 스탯 + 레벨 증가 계산
-        foreach (var stat in charBaseStats)
+        foreach (StatData stat in charBaseStats)
         {
-            var statType = stat.StatType;
+            StatType statType = stat.StatType;
             baseStats[statType] = stat.Value;
 
-            var growth = statGrowthList.Find(s => s.StatType == statType);
+            StatData growth = statGrowthList.Find(s => s.StatType == statType);
             if (growth != null && level > 1)
+            {
                 levelUpStats[statType] = growth.Value * (level - 1);
+            }
             else
+            {
                 levelUpStats[statType] = 0;
+            }
         }
 
         // 2. 장비 스탯 누적
-        foreach (var equipment in equippedItems.Values)
+        foreach (EquipmentItem equipment in equippedItems.Values)
         {
-            foreach (var equipStat in equipment.EquipmentItemSo.Stats)
+            foreach (StatData equipStat in equipment.EquipmentItemSo.Stats)
             {
                 equipStats.TryAdd(equipStat.StatType, 0);
 
@@ -90,7 +94,7 @@ public class CharacterInfo : MonoBehaviour
         }
 
         // 3. StatSlot UI 초기화
-        foreach (var statType in statSlotDic.Keys)
+        foreach (StatType statType in statSlotDic.Keys)
         {
             float baseValue  = baseStats.GetValueOrDefault(statType, 0);
             float levelValue = levelUpStats.GetValueOrDefault(statType, 0);
@@ -102,7 +106,7 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitEquipmentInfo()
     {
-        var equipItem = selectedPlayerUnitData.EquippedItems;
+        Dictionary<EquipmentType, EquipmentItem> equipItem = selectedPlayerUnitData.EquippedItems;
         for (int i = 0; i < equippedItemSlot.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))
@@ -120,8 +124,8 @@ public class CharacterInfo : MonoBehaviour
 
     private void SetPlayerUnitSkillInfo()
     {
-        var passiveSkill = selectedPlayerUnitData.CharacterSo.PassiveSkill;
-        var activeSkills = selectedPlayerUnitData.SkillDatas;
+        PassiveSO   passiveSkill = selectedPlayerUnitData.CharacterSo.PassiveSkill;
+        SkillData[] activeSkills = selectedPlayerUnitData.SkillDatas;
 
         for (int i = 0; i < skillSlots.Length; i++)
         {
@@ -142,15 +146,15 @@ public class CharacterInfo : MonoBehaviour
 
     private void UpdateUnitLevel()
     {
-        int level  = selectedPlayerUnitData.Level;
-        var unitSo = selectedPlayerUnitData.CharacterSo;
+        int          level  = selectedPlayerUnitData.Level;
+        PlayerUnitSO unitSo = selectedPlayerUnitData.CharacterSo;
 
         unitLevel.text = $"Lv. {level}";
 
         foreach (StatData statData in statIncreaseSo.Stats)
         {
             float baseValue      = unitSo.GetStat(statData.StatType)?.Value ?? 0;
-            float increasedValue = baseValue + statData.Value * (level - 1);
+            float increasedValue = baseValue + (statData.Value * (level - 1));
 
             UpdateLevelUpStatValue(statData.StatType, increasedValue);
         }
@@ -185,7 +189,11 @@ public class CharacterInfo : MonoBehaviour
         }
 
         panelRect.DOKill();
-        panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic);
+        panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic).OnComplete(() =>
+        {
+            panelRect.anchoredPosition = offScreenPos;
+            panelRect.gameObject.SetActive(false);
+        });
         selectedPlayerUnitData = null;
     }
 
@@ -200,7 +208,9 @@ public class CharacterInfo : MonoBehaviour
     public void OpenUnitLevelUpPanel()
     {
         if (selectedPlayerUnitData != null)
+        {
             selectedPlayerUnitData.OnLevelUp -= UpdateUnitLevel;
+        }
 
         selectedPlayerUnitData.OnLevelUp += UpdateUnitLevel;
         unitLevelUpPanel.OpenPanel(selectedPlayerUnitData);
@@ -210,6 +220,8 @@ public class CharacterInfo : MonoBehaviour
     private void UpdateLevelUpStatValue(StatType statType, float value)
     {
         if (statSlotDic.TryGetValue(statType, out StatSlot statSlot))
+        {
             statSlot.UpdateStatValue(value);
+        }
     }
 }

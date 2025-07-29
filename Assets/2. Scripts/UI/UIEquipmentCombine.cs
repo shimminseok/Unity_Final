@@ -19,7 +19,13 @@ public class UIEquipmentCombine : UIBase
     private CombineManager combineManager;
     private InventoryManager inventoryManager;
 
-    private List<EquipmentItem> MaterialItems = new() { null, null, null };
+    private List<EquipmentItem> MaterialItems = new()
+    {
+        null,
+        null,
+        null
+    };
+
     private Vector2 originalPos;
 
     private EquipmentItem resultItem;
@@ -137,6 +143,7 @@ public class UIEquipmentCombine : UIBase
             });
 
         resultItem = null;
+        requireCombineGoldTxt.text = AccountManager.Instance.Gold >= RequierCombineItemGold ? $"<color=#ffffffff>{RequierCombineItemGold:N0}G</color>" : $"<color=#ff0000ff>{RequierCombineItemGold:N0}G</color>";
     }
 
 

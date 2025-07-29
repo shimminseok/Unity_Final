@@ -160,6 +160,7 @@ using Random = UnityEngine.Random;
         }
 
         //TODO: 크리티컬 구현
+        finalTarget.SetLastAttacker(this);
         MonsterSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }
@@ -186,6 +187,18 @@ using Random = UnityEngine.Random;
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
             if (isIgnore)
             {
+                if (LastAttacker != null)
+                {
+                    if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                    {
+                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                    }
+                    else
+                    {
+                        LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                    }
+                }
+
                 return;
             }
         }
