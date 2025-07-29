@@ -31,6 +31,9 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
         if (requireLongPress)
         {
+            // 버튼의 기본 클릭 동작을 비활성화
+            targetButton.interactable = false;
+
             holdPressDetector = targetButton.gameObject.GetComponent<HoldPressDetector>();
             if (holdPressDetector == null)
                 holdPressDetector = targetButton.gameObject.AddComponent<HoldPressDetector>();
@@ -64,6 +67,9 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
     private void OnLongPressed()
     {
+        // 버튼 재활성화
+        targetButton.interactable = true;
+
         manager.CompleteCurrentStep();
     }
 
