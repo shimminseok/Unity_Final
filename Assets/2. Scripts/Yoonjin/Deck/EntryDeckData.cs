@@ -111,7 +111,7 @@ public class EntryDeckData
         // 장비 복원 (장비는 ID로 하면 안댐)
         foreach (EquippedItemSaveData equipSave in data.EquipItemItems)
         {
-            if (equipSave.InventoryId <= 0 || !InventoryManager.Instance.Inventory.TryGetValue(equipSave.InventoryId, out InventoryItem item))
+            if (equipSave.InventoryId < 0 || !InventoryManager.Instance.Inventory.TryGetValue(equipSave.InventoryId, out InventoryItem item))
             {
                 continue;
             }
@@ -122,7 +122,6 @@ public class EntryDeckData
             }
         }
 
-        ActiveSkillTable skillTable = TableManager.Instance.GetTable<ActiveSkillTable>();
         SkillDatas = new SkillData[3];
         for (int i = 0; i < data.SkillDataIds.Length && i < SkillDatas.Length; i++)
         {
@@ -132,7 +131,10 @@ public class EntryDeckData
                 continue;
             }
 
-            EquipSkill(new SkillData(skillTable.GetDataByID(skillId)));
+            //스킬 인벤토리에 있는걸 가져와야댐
+            SkillData skills = AccountManager.Instance.GetInventorySkillsByJob(CharacterSo.JobType).Find(x => x.skillSo.ID == skillId);
+
+            EquipSkill(skills);
         }
     }
 

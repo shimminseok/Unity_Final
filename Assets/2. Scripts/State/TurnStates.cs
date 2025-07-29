@@ -153,7 +153,17 @@ public class ActState : ITurnState
                 unit.ChangeUnitState(EnemyUnitState.Skill);
             }
 
-            unit.OnSkillFinished += onReactionEndHandler;
+            if (unit.CurrentAttackAction.ActionSo is RangeActionSo rangeSkill)
+            {
+                if (!rangeSkill.IsProjectile)
+                {
+                    unit.OnSkillFinished += onReactionEndHandler;
+                }
+            }
+            else
+            {
+                unit.OnSkillFinished += onReactionEndHandler;
+            }
         }
     }
 

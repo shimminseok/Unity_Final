@@ -70,12 +70,12 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
     public void InitializeTimeline()
     {
-        Unit attackerUnit = attacker as Unit;
+        Unit      attackerUnit  = attacker as Unit;
         Transform unitTransform = attackerUnit.transform;
         unitTransform.LookAt(attackerUnit.Target.Collider.bounds.center);
-        unitTransform.eulerAngles = new Vector3(0,unitTransform.eulerAngles.y,0);
-        var pos = unitTransform.position;
-        var rot = unitTransform.rotation;
+        unitTransform.eulerAngles = new Vector3(0, unitTransform.eulerAngles.y, 0);
+        Vector3    pos = unitTransform.position;
+        Quaternion rot = unitTransform.rotation;
         CurrentCameraController.Unfocus();
         CameraManager.Instance.followNextIEffectProvider = false;
         CurrentCameraController.transform.position = pos;
@@ -102,6 +102,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
         {
             InitializeTimeline();
+            isTimeLine = true;
         }
 
         foreach (TrackAsset track in timelineAsset.GetOutputTracks())
@@ -135,13 +136,13 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                     director.SetGenericBinding(output.sourceObject, brain);
                 }
             }
-            
+
             if (track is SignalTrack)
             {
                 director.SetGenericBinding(track, receiver);
             }
-            
-            
+
+
             if (track is AnimationTrack animationTrack)
             {
                 // if (animationTrack.trackOffset == TrackOffset.ApplyTransformOffsets)
@@ -159,9 +160,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
                 if (animationTrack.name == "AttackerTrack")
                 {
-
                     director.SetGenericBinding(animationTrack, attackerUnit?.Animator);
-
                 }
                 else if (animationTrack.name == "EffectTrack")
                 {
@@ -171,16 +170,13 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 {
                     director.SetGenericBinding(animationTrack, CurrentCameraController.CameraAnimator);
                 }
-                
-
-
             }
         }
 
         director.time = 0f;
         director.Evaluate();
         director.Play();
-        isTimeLine = true;
+        isTimeLine = false;
     }
 
     public void StopTimeLine(PlayableDirector pd)
@@ -190,10 +186,5 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
-        
     }
-    
-    
-    
-    
 }
