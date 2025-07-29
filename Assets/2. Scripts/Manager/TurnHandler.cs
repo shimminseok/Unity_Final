@@ -41,12 +41,13 @@ public class TurnHandler
             TutorialManager tutorial = TutorialManager.Instance;
 
             if (tutorial != null && tutorial.IsActive &&
-                TutorialManager.Instance.CurrentStep.ActionData.ActionType == TutorialActionType.TriggerWait &&
-                TutorialManager.Instance.CurrentStep.ActionData is TriggerWaitActionData triggerData &&
+                tutorial.CurrentStep?.ActionData is TriggerWaitActionData triggerData &&
+                triggerData.ActionType == TutorialActionType.TriggerWait &&
                 triggerData.triggerEventName == "TurnChanged")
             {
                 EventBus.Publish("TurnChanged");
             }
+
         }
     }
 
