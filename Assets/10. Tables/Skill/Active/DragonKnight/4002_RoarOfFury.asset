@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 4002_RoarOfFury
+  m_EditorClassIdentifier: 
+  ID: 4002
+  SkillIcon: {fileID: 21300000, guid: 3aa95e71b3910a44abf6da1aa9f007d6, type: 3}
+  skillName: "\uD3ED\uB82C\uC758 \uD3EC\uD6A8"
+  skillDescription: "\uACF5\uACA9 \uD6C4 \uBD84\uB178 \uBD80\uC5EC"
+  jobType: 3
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  effect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.6
+        value: 50
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 2
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 2018416911825896717, guid: ede98bb716cdb494c818fc30bd77b2e3,
+              type: 3}
+            VFXPoolID: RoarOfFuryVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+              type: 3}
+            VFXPoolID: FireballHit
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 2018416911825896717, guid: ede98bb716cdb494c818fc30bd77b2e3,
+          type: 3}
+        VFXPoolID: RoarOfFuryVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+          type: 3}
+        VFXPoolID: FireballHit
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+  activeSkillTier: 1
+  reuseMaxCount: 2
+  coolTime: 4
+  skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
