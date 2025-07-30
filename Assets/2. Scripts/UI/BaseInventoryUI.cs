@@ -18,18 +18,18 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
         reuseScrollview.SetData(GetInventorySource());
         itemToSlotMap.Clear();
-        var dataList = GetInventorySource();
+        List<InventoryItem> dataList = GetInventorySource();
 
         int count = Mathf.Min(reuseScrollview.ItemList.Count, dataList.Count);
 
         for (int i = 0; i < count; i++)
         {
-            if (reuseScrollview.ItemList[i].TryGetComponent<InventorySlot>(out var slot))
+            if (reuseScrollview.ItemList[i].TryGetComponent<InventorySlot>(out InventorySlot slot))
             {
                 slot.SetOnClickCallback(onClickHandler);
                 if (dataList[i] is EquipmentItem item)
                 {
-                    itemToSlotMap.Add(item, slot);
+                    itemToSlotMap[item] = slot;
                 }
             }
         }

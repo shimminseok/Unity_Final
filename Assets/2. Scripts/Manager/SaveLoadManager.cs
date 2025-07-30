@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using static TutorialManager;
-using static UnityEditor.Progress;
 
 
 /*
@@ -223,16 +222,22 @@ public class SaveTutorialData : SaveData
 
         // 현재 스텝에 따라 어떤 Phase에 해당하는지 판단
         if (stepId >= 79)
+        {
             Phase = TutorialPhase.LevelUp;
+        }
         else if (stepId >= 70)
+        {
             Phase = TutorialPhase.DeckBuildingAfter;
+        }
         else
+        {
             Phase = TutorialPhase.DeckBuildingBefore;
+        }
     }
 }
 
 
-    [Serializable]
+[Serializable]
 public class SaveInventoryItemData : SaveData
 {
     public List<SaveInventoryItem> InventoryItems { get; set; } = new();
@@ -261,7 +266,7 @@ public class SaveUnitInventoryData : SaveData
 
     public override void OnBeforeSave()
     {
-        if (TutorialManager.Instance != null &&  TutorialManager.Instance.IsActive)
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
         {
             int stepId = TutorialManager.Instance.CurrentStep?.ID ?? 0;
 
