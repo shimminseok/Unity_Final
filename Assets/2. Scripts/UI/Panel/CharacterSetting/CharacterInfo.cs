@@ -189,7 +189,7 @@ public class CharacterInfo : MonoBehaviour
             selectedPlayerUnitData.OnSkillChanged -= SetPlayerUnitSkillInfo;
         }
 
-        // panelRect.DOKill();
+        panelRect.DOKill();
         panelRect.DOAnchorPos(offScreenPos, 0.5f).SetEase(Ease.OutCubic).OnComplete(() =>
         {
             panelRect.anchoredPosition = offScreenPos;
