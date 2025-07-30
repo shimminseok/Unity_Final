@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,6 +19,8 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField] private GameObject selectedNotiImg;
     [SerializeField] private Image holdCheckImage;
     [SerializeField] private List<Sprite> unitGradeSprites;
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     private bool isSelected;
     private EntryDeckData selectedUnit;
@@ -46,6 +49,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         nameText.text = characterSo.UnitName;
         unitLevel.text = $"Lv.{data.Level}";
         unitSlotFrame.sprite = unitGradeSprites[(int)characterSo.Tier];
+        jobTypeImage.sprite = jobTypeSprites[(int)characterSo.JobType];
 
         gameObject.name = $"UnitSlot_{characterSo.ID}";
 
