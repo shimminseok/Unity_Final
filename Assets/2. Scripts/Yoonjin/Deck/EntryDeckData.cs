@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 [Serializable]
 public class SaveEntryDeckData
@@ -107,6 +108,11 @@ public class EntryDeckData
         Amount = data.Amount;
         TranscendLevel = data.TranscendLevel;
         CharacterSo = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(data.CharacterId);
+        if (CharacterSo == null)
+        {
+            Debug.LogError($"Character So is NUll ID : {data.CharacterId}");
+        }
+
         Compete(data.CompeteSlotInfo.SlotIndex, data.CompeteSlotInfo.IsInDeck);
         // 장비 복원 (장비는 ID로 하면 안댐)
         foreach (EquippedItemSaveData equipSave in data.EquipItemItems)
@@ -132,6 +138,7 @@ public class EntryDeckData
             }
 
             //스킬 인벤토리에 있는걸 가져와야댐
+
             SkillData skills = AccountManager.Instance.GetInventorySkillsByJob(CharacterSo.JobType).Find(x => x.skillSo.ID == skillId);
 
             EquipSkill(skills);
