@@ -9,6 +9,8 @@ public class EquipmentGachaSlotUI : MonoBehaviour
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private List<GameObject> itemGradeStars;
     [SerializeField] private List<Sprite> itemGradeSprites;
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     public void Initialize(EquipmentItemSO equipment)
     {
@@ -19,6 +21,16 @@ public class EquipmentGachaSlotUI : MonoBehaviour
         for (int i = 0; i < itemGradeStars.Count; i++)
         {
             itemGradeStars[i].SetActive(i <= (int)equipment.Tier);
+        }
+
+        if (equipment.IsEquipableByAllJobs)
+        {
+            jobTypeImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            jobTypeImage.gameObject.SetActive(true);
+            jobTypeImage.sprite = jobTypeSprites[(int)equipment.JobType];
         }
     }
 }
