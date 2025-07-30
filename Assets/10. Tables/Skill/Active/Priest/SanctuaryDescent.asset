@@ -29,15 +29,15 @@ MonoBehaviour:
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 0
-      selectTarget: 0
+      selectTarget: 3
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
       damageEffects: []
       buffEffects:
-      - ownerStatType: 0
-        weight: 0.3
-        value: 25
-        opponentStatType: 1
+      - ownerStatType: 4
+        weight: 0
+        value: -10
+        opponentStatType: 12
         lastTurn: 0
         statusEffectType: 6
         modifierType: 0
@@ -46,10 +46,247 @@ MonoBehaviour:
           ID: 0
           EffectType: 6
           Stat:
-            StatType: 1
+            StatType: 12
             ModifierType: 0
-            Value: 280
+            Value: 0
           Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+      skillVFX:
+      - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+          type: 3}
+        VFXPoolID: HealVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+          type: 3}
+        VFXPoolID: LevelUpVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 4
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0.5
+        value: 50
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+      - ownerStatType: 4
+        weight: 0.5
+        value: 50
+        opponentStatType: 6
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 6
+            ModifierType: 1
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+      - ownerStatType: 4
+        weight: 0
+        value: -10
+        opponentStatType: 12
+        lastTurn: 0
+        statusEffectType: 6
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 6
+          Stat:
+            StatType: 12
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+      skillVFX:
+      - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+          type: 3}
+        VFXPoolID: HealVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+          type: 3}
+        VFXPoolID: LevelUpVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 4
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 1
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0.25
+        value: 25
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 4
+      - ownerStatType: 4
+        weight: 0.25
+        value: 25
+        opponentStatType: 6
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 6
+            ModifierType: 1
+            Value: 0
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
           VFX:

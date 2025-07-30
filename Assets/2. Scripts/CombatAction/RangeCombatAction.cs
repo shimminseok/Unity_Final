@@ -19,33 +19,5 @@ public class RangeCombatAction : ICombatAction
 
     public void Execute(Unit attacker)
     {
-        if (attackData.IsProjectile)
-        {
-            attacker.ExecuteCoroutine(WaitForSpawnProjectile());
-        }
-        else
-        {
-            attacker.ExecuteCoroutine(WaitForAnimationDone(attacker));
-        }
-    }
-
-    private IEnumerator WaitForSpawnProjectile()
-    {
-        yield return new WaitUntil(() => attackData.ProjectileComponent != null);
-
-        attackData.ProjectileComponent.trigger.OnTriggerTarget += () =>
-        {
-            OnActionComplete?.Invoke();
-        };
-        CameraManager.Instance.ChangeFollowTarget(attackData.ProjectileComponent);
-    }
-
-    private IEnumerator WaitForAnimationDone(Unit attacker)
-    {
-        if (isTimeLinePlaying)
-        {
-            yield return new WaitUntil(() => !attacker.IsTimeLinePlaying);
-            OnActionComplete?.Invoke();
-        }
     }
 }

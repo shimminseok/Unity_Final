@@ -10,7 +10,8 @@ public class StagePanelHeroSlot : MonoBehaviour
     [SerializeField] private List<GameObject> heroTierStars;
     [SerializeField] private List<Sprite> heroTierFrameSprites;
     [SerializeField] private Sprite emptyFrameSprite;
-
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     private PlayerUnitSO playerUnitSo;
 
@@ -28,6 +29,7 @@ public class StagePanelHeroSlot : MonoBehaviour
         playerUnitSo = data;
         heroIcon.sprite = data.UnitIcon;
         heroTierFrame.sprite = heroTierFrameSprites[(int)data.Tier];
+        jobTypeImage.sprite = jobTypeSprites[(int)data.JobType];
 
         for (int i = 0; i < heroTierStars.Count; i++)
         {

@@ -45,6 +45,7 @@ public class PlayerUnitInfoSlotHpBarUI : MonoBehaviour
 
     public void Initialize(IDamageable owner)
     {
+        CreateMaterial();
         target = owner;
         statManager = target.Collider.GetComponent<StatManager>();
         statManager.GetStat<ResourceStat>(StatType.CurHp).OnValueChanged += UpdateHealthBarWrapper;
@@ -70,7 +71,6 @@ public class PlayerUnitInfoSlotHpBarUI : MonoBehaviour
         }
 
         UpdateShield(statManager.GetValue(StatType.Shield));
-        CreateMaterial();
     }
 
     private void CreateMaterial()

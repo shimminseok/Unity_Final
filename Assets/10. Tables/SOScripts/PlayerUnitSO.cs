@@ -9,6 +9,6 @@ public class PlayerUnitSO : UnitSO
     public Tier Tier;
 
     public Sprite UnitStanding;
-
+    public Sprite UnitCircleIcon;
     //TODO : 스킬 리스트 
 }
