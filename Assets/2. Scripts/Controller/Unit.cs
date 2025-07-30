@@ -245,6 +245,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return false;
         }
 
+        if (attacker == null)
+        {
+            return false;
+        }
 
         if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
         {

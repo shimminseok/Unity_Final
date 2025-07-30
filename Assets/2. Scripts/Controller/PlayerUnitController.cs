@@ -226,11 +226,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
                 {
                     if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
                     {
-                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                        LastAttacker.OnMeleeAttackFinished += LastAttacker.InvokeHitFinished;
                     }
                     else
                     {
-                        LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                        LastAttacker.InvokeHitFinished();
                     }
                 }
 

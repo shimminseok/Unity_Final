@@ -300,12 +300,15 @@ using Random = UnityEngine.Random;
     {
         if (campType == SelectCampType.Enemy)
         {
-            List<Unit> allies = BattleManager.Instance.GetAllies(this);
-            SetTarget(allies[Random.Range(0, allies.Count)]);
+            SetTarget(mainTargetSelector.Select());
         }
         else if (campType == SelectCampType.Player)
         {
-            SetTarget(mainTargetSelector.Select());
+            List<Unit> allies = BattleManager.Instance.GetAllies(this);
+            if (allies.Count > 0)
+            {
+                SetTarget(allies[Random.Range(0, allies.Count)]);
+            }
         }
     }
 
@@ -318,7 +321,7 @@ using Random = UnityEngine.Random;
         }
         else if (actionType == ActionType.Attack)
         {
-            WeightedMainTargetSelector(SelectCampType.Player);
+            WeightedMainTargetSelector(SelectCampType.Enemy);
         }
     }
 

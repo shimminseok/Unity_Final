@@ -12,29 +12,51 @@ namespace PlayerState
 
         public void OnEnter(PlayerUnitController owner)
         {
-            Debug.Log("Enter Hit State");
             owner.IsAnimationDone = false;
             owner.Animator.SetTrigger(isHit);
             canCounter = owner.CanCounterAttack(owner.LastAttacker);
             hasHandler = false;
-        }
-
-        public void OnUpdate(PlayerUnitController owner)
-        {
-            if (hasHandler || !owner.IsAnimationDone)
+            if (owner.LastAttacker == null)
             {
                 return;
             }
 
-            hasHandler = true;
+            Action onHitFinished = null;
+
             if (canCounter)
             {
-                owner.StartCountAttack(owner.LastAttacker);
+                onHitFinished = () =>
+                {
+                    owner.StartCountAttack(owner.LastAttacker);
+                };
             }
-            else
+            else if (!owner.LastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {
-                owner.LastAttacker.InvokeHitFinished();
+                onHitFinished = owner.LastAttacker.InvokeHitFinished;
             }
+
+            if (onHitFinished != null)
+            {
+                owner.OnHitFinished += onHitFinished;
+            }
+        }
+
+        public void OnUpdate(PlayerUnitController owner)
+        {
+            // if (hasHandler || !owner.IsAnimationDone)
+            // {
+            //     return;
+            // }
+            //
+            // hasHandler = true;
+            // if (canCounter)
+            // {
+            //     owner.StartCountAttack(owner.LastAttacker);
+            // }
+            // else
+            // {
+            //     owner.LastAttacker.InvokeHitFinished();
+            // }
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)
