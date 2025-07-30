@@ -16,6 +16,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private Image itemEquippedUnitIconImg;
     [SerializeField] private Image selectedSlotImg;
     [SerializeField] private List<GameObject> itemGradeStars;
 
@@ -51,6 +52,9 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         // 이름
         gameObject.name = $"InventorySlot_{item.InventoryId}";
         ShowEquipMark(item.IsEquipped);
+        if (item.IsEquipped)
+            itemEquippedUnitIconImg.sprite = item.EquippedUnit.CharacterSo.UnitCircleIcon;
+        
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
         itemIcon.gameObject.SetActive(true);
@@ -104,6 +108,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         // 아이템 아이콘 비우기
         itemIcon.sprite = null;
         itemIcon.gameObject.SetActive(false);
+        jobTypeImage.gameObject.SetActive(false);
 
         // 아이템 프레임 비활성화
         itemSlotFrame.sprite = emptySlotSprite;

@@ -16,6 +16,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     [SerializeField] private Image skillTier;
     [SerializeField] private List<GameObject> skillGradeStars;
     [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private Image itemEquippedUnitIconImg;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private GameObject selectedSlotImg;
     [SerializeField] private GameObject emptySkillImg;
@@ -44,6 +45,9 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
 
         this.activeSkillSo = skillData.skillSo;
         ShowEquipMark(skillData.IsEquipped);
+        if (skillData.IsEquipped && skillData.skillSo is ActiveSkillSO)
+            itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
+
         skillTier.gameObject.SetActive(true);
         skillTier.sprite = itemGradeSprites[(int)skillData.skillSo.activeSkillTier];
         skillIcon.gameObject.SetActive(true);
@@ -93,6 +97,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         // 아이템 아이콘 비우기
         skillIcon.sprite = null;
         skillIcon.gameObject.SetActive(false);
+        jobTypeImage.gameObject.SetActive(false);
 
         // 아이템 프레임 비활성화
         skillTier.gameObject.SetActive(false);
