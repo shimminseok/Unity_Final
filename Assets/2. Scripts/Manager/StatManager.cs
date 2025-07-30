@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class StatManager : MonoBehaviour
 {
-    public Dictionary<StatType, StatBase> Stats { get; private set; } = new Dictionary<StatType, StatBase>();
+    public Dictionary<StatType, StatBase> Stats { get; private set; } = new();
 
     public IDamageable Owner { get; private set; }
 
@@ -16,18 +16,58 @@ public class StatManager : MonoBehaviour
     /// </summary>
     /// <param name="statProvider">스탯 정보를 제공하는 객체</param>
     /// <param name="owner">스탯의 소유자</param>
-    public void Initialize(IStatProvider statProvider, IDamageable owner = null)
+    public void Initialize(IStatProvider statProvider, IDamageable owner, List<EquipmentItem> items, int level, IIncreaseStat increaseStat)
     {
         Owner = owner;
-        foreach (StatData stat in statProvider.Stats)
-        {
-            // stat.Value *= //스테이지 보정값.
 
-            Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
+        Dictionary<StatType, float> equipmentStatMap = new();
+        Dictionary<StatType, float> levelStatMap     = new();
+
+        foreach (EquipmentItem item in items)
+        {
+            foreach (StatData stat in item.EquipmentItemSo.Stats)
+            {
+                if (!equipmentStatMap.ContainsKey(stat.StatType))
+                {
+                    equipmentStatMap[stat.StatType] = 0;
+                }
+
+                equipmentStatMap[stat.StatType] += stat.Value;
+            }
+        }
+
+        if (level > 1)
+        {
+            foreach (StatData stat in increaseStat.Stats)
+            {
+                if (!levelStatMap.ContainsKey(stat.StatType))
+                {
+                    levelStatMap[stat.StatType] = 0;
+                }
+
+                levelStatMap[stat.StatType] += (stat.Value * level) - 1;
+            }
+        }
+
+        foreach (StatData baseStat in statProvider.Stats)
+        {
+            float finalValue = baseStat.Value;
+
+            if (equipmentStatMap.TryGetValue(baseStat.StatType, out float equipBonus))
+            {
+                finalValue += equipBonus;
+            }
+
+            if (levelStatMap.TryGetValue(baseStat.StatType, out float levelBonus))
+            {
+                finalValue += levelBonus;
+            }
+
+            Stats[baseStat.StatType] = BaseStatFactory(baseStat.StatType, finalValue);
         }
     }
 
-    //몬스터 전용 Initialize
+    //Initialize
     public void Initialize(IStatProvider statProvider, IDamageable owner, int level, IIncreaseStat increaseStat)
     {
         Owner = owner;
@@ -38,7 +78,7 @@ public class StatManager : MonoBehaviour
             {
                 if (data.StatType == stat.StatType && level > 1) //1일땐 적용 안되도록
                 {
-                    finalStatValue += (data.Value * level - 1);
+                    finalStatValue += (data.Value * level) - 1;
                 }
             }
 
@@ -56,11 +96,11 @@ public class StatManager : MonoBehaviour
     {
         return type switch
         {
-            StatType.CurHp  => new ResourceStat(type, value, value),
+            StatType.CurHp  => new ResourceStat(type, Stats[StatType.MaxHp].Value, Stats[StatType.MaxHp].Value),
             StatType.CurMp  => new ResourceStat(type, value, value),
             StatType.Shield => new ResourceStat(type, value, int.MaxValue),
             ///////////////////////////////////////////////////////////////////////////////////
-            _ => new CalculatedStat(type, value),
+            _ => new CalculatedStat(type, value)
         };
     }
 
@@ -103,7 +143,7 @@ public class StatManager : MonoBehaviour
                         DamageFontManager.Instance.SetDamageNumber(Owner, value, DamageType.Heal);
                         break;
                 }
-                
+
                 switch (modifierType)
                 {
                     case StatModifierType.Base:
@@ -170,10 +210,18 @@ public class StatManager : MonoBehaviour
 
         switch (valueType)
         {
-            case StatModifierType.Base:        stat.ModifyBaseValue(value); break;
-            case StatModifierType.BuffFlat:    stat.ModifyBuffFlat(value); break;
-            case StatModifierType.BuffPercent: stat.ModifyBuffPercent(value); break;
-            case StatModifierType.Equipment:   stat.ModifyEquipmentValue(value); break;
+            case StatModifierType.Base:
+                stat.ModifyBaseValue(value);
+                break;
+            case StatModifierType.BuffFlat:
+                stat.ModifyBuffFlat(value);
+                break;
+            case StatModifierType.BuffPercent:
+                stat.ModifyBuffPercent(value);
+                break;
+            case StatModifierType.Equipment:
+                stat.ModifyEquipmentValue(value);
+                break;
         }
 
         switch (type)
@@ -196,7 +244,7 @@ public class StatManager : MonoBehaviour
     /// <param name="stat"></param>
     private void SyncCurrentWithMax(StatType curStatType, CalculatedStat stat)
     {
-        if (Stats.TryGetValue(curStatType, out var res) && res is ResourceStat curStat)
+        if (Stats.TryGetValue(curStatType, out StatBase res) && res is ResourceStat curStat)
         {
             curStat.SetMax(stat.FinalValue);
         }

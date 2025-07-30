@@ -8,9 +8,13 @@ namespace EnemyState
 
         public void OnEnter(EnemyUnitController owner)
         {
-            owner.IsAnimationDone = false;
             owner.OnToggleNavmeshAgent(false);
-            owner.Animator.SetTrigger(Define.SkillAnimationHash);
+            owner.IsAnimationDone = false;
+            TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain, CameraManager.Instance.skillCameraController, owner, out bool isTimeLine);
+            if (!isTimeLine)
+            {
+                owner.Animator.SetTrigger(Define.SkillAnimationHash);
+            }
         }
 
         public void OnUpdate(EnemyUnitController owner)

@@ -34,6 +34,9 @@ public class MonsterUnitInfoSlotUI : MonoBehaviour
 
         IDamageable target     = monsterUnit.Target;
         Unit        targetUnit = target as Unit;
-        TargetIcon.sprite = targetUnit.UnitSo.UnitIcon;
+        if (targetUnit != null)
+        {
+            TargetIcon.sprite = targetUnit.UnitSo.UnitIcon;
+        }
     }
 }

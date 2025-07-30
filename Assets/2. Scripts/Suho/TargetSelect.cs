@@ -8,10 +8,11 @@ using Random = UnityEngine.Random;
  * attacker => 스킬을 사용하는 유닛도 타겟으로 지정가능해야 하므로 추가
  */
 public class TargetSelect
-{   
+{
     private IDamageable mainTargetUnit;
     private IAttackable attacker;
     private int column = 3;
+
     public TargetSelect(IDamageable mainTarget, IAttackable attacker)
     {
         mainTargetUnit = mainTarget;
@@ -20,76 +21,114 @@ public class TargetSelect
 
     public bool IsValidSector(int tempTargetindex, int column, int length)
     {
-        if (tempTargetindex / column <= 0) return false;
-        if (tempTargetindex >= length) return false;
+        if (tempTargetindex / column <= 0)
+        {
+            return false;
+        }
+
+        if (tempTargetindex >= length)
+        {
+            return false;
+        }
+
         return true;
     }
 
     public List<IDamageable> TransLateUnitToIDamagable(List<Unit> units)
     {
-        List<IDamageable> targets = new List<IDamageable>();
+        List<IDamageable> targets = new();
         foreach (Unit unit in units)
         {
             targets.Add(unit);
         }
+
         return targets;
     }
+
     public List<IDamageable> FindTargets(SelectTargetType type, SelectCampType camp)
     {
-        List<IDamageable> targets = new List<IDamageable>();
-        if(mainTargetUnit == null) return null;
+        List<IDamageable> targets = new();
+        if (mainTargetUnit == null)
+        {
+            return null;
+        }
+
+        Unit attackerUnit = attacker as Unit;
+
         List<Unit> combinedUnits = camp switch
         {
-            SelectCampType.Enemy => BattleManager.Instance.EnemyUnits,
-            SelectCampType.Player => BattleManager.Instance.PartyUnits,
-            SelectCampType.BothSide => BattleManager.Instance.PartyUnits
-                .Concat(BattleManager.Instance.EnemyUnits).ToList(),
-            _ => null
+            SelectCampType.Enemy    => BattleManager.Instance.GetEnemies(attackerUnit),
+            SelectCampType.Player   => BattleManager.Instance.GetAllies(attackerUnit),
+            SelectCampType.BothSide => BattleManager.Instance.GetAllUnits(attackerUnit),
+            _                       => null
         };
-         // mainTarget과 죽은 유닛 제거
-        List<Unit> filteredUnits = combinedUnits.Where(u => u != mainTargetUnit && !u.IsDead).ToList();
-        if (combinedUnits == null) return targets;
+        if (combinedUnits == null)
+        {
+            return null;
+        }
+
+        combinedUnits.Remove(mainTargetUnit as Unit);
+
         switch (type)
         {
             case SelectTargetType.MainTarget:
                 targets.Add(mainTargetUnit);
                 return targets;
             case SelectTargetType.AllExceptMainTarget:
-                if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
-                return TransLateUnitToIDamagable(filteredUnits);
-            
+                if (combinedUnits.Count == 0)
+                {
+                    return targets; // 선택 가능한 유닛이 없을 경우
+                }
+
+                return TransLateUnitToIDamagable(combinedUnits);
+
             case SelectTargetType.RandomOneExceptMainTarget:
-                if (filteredUnits.Count == 0) return targets; // 선택 가능한 유닛이 없을 경우
-                Unit randomTarget = filteredUnits[Random.Range(0, filteredUnits.Count)];
+                if (combinedUnits.Count == 0)
+                {
+                    return targets; // 선택 가능한 유닛이 없을 경우
+                }
+
+                Unit randomTarget = combinedUnits[Random.Range(0, combinedUnits.Count)];
                 targets.Add(randomTarget);
                 return targets;
-            
+
             case SelectTargetType.Sector:
                 combinedUnits = camp switch
                 {
-                    SelectCampType.Enemy => BattleManager.Instance.EnemyUnits,
+                    SelectCampType.Enemy  => BattleManager.Instance.EnemyUnits,
                     SelectCampType.Player => BattleManager.Instance.PartyUnits,
-                    _ => null
+                    _                     => null
                 };
-                int mainTargetIndex = combinedUnits.IndexOf(mainTargetUnit as Unit);
-                int tempTargetIndex = mainTargetIndex + column-1;
+                if (combinedUnits == null)
+                {
+                    return null;
+                }
+
+                int mainTargetIndex       = combinedUnits.IndexOf(mainTargetUnit as Unit);
+                int tempTargetIndex       = mainTargetIndex + column - 1;
                 int secondTempTargetIndex = mainTargetIndex + column;
-                if(IsValidSector(tempTargetIndex,column,combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead)
+                if (IsValidSector(tempTargetIndex, column, combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead)
+                {
                     targets.Add(combinedUnits[tempTargetIndex]);
-                if(IsValidSector(secondTempTargetIndex,column,combinedUnits.Count)&& !combinedUnits[secondTempTargetIndex].IsDead) 
+                }
+
+                if (IsValidSector(secondTempTargetIndex, column, combinedUnits.Count) && !combinedUnits[secondTempTargetIndex].IsDead)
+                {
                     targets.Add(combinedUnits[secondTempTargetIndex]);
+                }
+
                 return targets;
-            
+
             case SelectTargetType.OnSelf:
                 targets.Add(attacker as IDamageable);
                 return targets;
-            
+
             case SelectTargetType.All:
-                targets = TransLateUnitToIDamagable(filteredUnits);
+                targets = TransLateUnitToIDamagable(combinedUnits);
                 targets.Add(mainTargetUnit);
                 return targets;
-            
-            
+
+
             default:
                 return null;
         }
