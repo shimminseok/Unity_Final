@@ -36,10 +36,12 @@ public class MonsterUnitInfoUI : MonoBehaviour
         {
             slots[i].gameObject.SetActive(true);
             slots[i].Initialize(units[i]);
+            units[i].OnDead += UpdateUnits;
         }
 
         // 전투 종료 후 적 타겟 갱신될때마다 업데이트
         battleManager.OnBattleEnd += UpdateUnits;
+        
     }
 
     private void Start()
@@ -55,7 +57,7 @@ public class MonsterUnitInfoUI : MonoBehaviour
     {
         for (int i = 0; i < units.Count; i++)
         {
-            if (!units[i].isActiveAndEnabled) // 유닛 사망 시 UI도 꺼줌
+            if (units[i].IsDead) // 유닛 사망 시 UI도 꺼줌
             {
                 slots[i].gameObject.SetActive(false);
             }
@@ -80,6 +82,14 @@ public class MonsterUnitInfoUI : MonoBehaviour
         if (battleManager != null)
         {
             battleManager.OnBattleEnd -= UpdateUnits;
+        }
+        
+        if (units != null)
+        {
+            for (int i = 0; i < units.Count; i++)
+            {
+                units[i].OnDead -= UpdateUnits;
+            }
         }
     }
 }
