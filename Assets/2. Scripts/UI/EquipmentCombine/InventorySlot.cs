@@ -26,6 +26,10 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 
     [SerializeField] private Sprite opalSprite;
     [SerializeField] private Sprite goldSprite;
+
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
+
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
@@ -51,6 +55,16 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 
         itemIcon.gameObject.SetActive(true);
         itemIcon.sprite = item.ItemSo.ItemSprite;
+
+        if (item.EquipmentItemSo.IsEquipableByAllJobs)
+        {
+            jobTypeImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            jobTypeImage.gameObject.SetActive(true);
+            jobTypeImage.sprite = jobTypeSprites[(int)item.EquipmentItemSo.JobType];
+        }
 
         for (int i = 0; i < itemGradeStars.Count; i++)
         {

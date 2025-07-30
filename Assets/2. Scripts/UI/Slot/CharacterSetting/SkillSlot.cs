@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,8 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     [SerializeField] private GameObject selectedSlotImg;
     [SerializeField] private GameObject emptySkillImg;
     [SerializeField] private List<Sprite> itemGradeSprites;
-
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     public SkillData SkillData { get; private set; }
     private ActiveSkillSO activeSkillSo;
@@ -47,6 +49,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         skillIcon.gameObject.SetActive(true);
         skillIcon.sprite = activeSkillSo.SkillIcon;
         skillName.text = activeSkillSo.skillName;
+        jobTypeImage.sprite = jobTypeSprites[(int)activeSkillSo.jobType];
 
         gameObject.name = $"SkillSlot_{skillData.skillSo.ID}";
 
