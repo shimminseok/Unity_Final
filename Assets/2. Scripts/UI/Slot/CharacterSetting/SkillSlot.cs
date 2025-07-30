@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,10 +40,12 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         gameObject.SetActive(true);
         emptySkillImg.SetActive(false);
 
-        this.activeSkillSo = skillData.skillSo;
+        activeSkillSo = skillData.skillSo;
         ShowEquipMark(skillData.IsEquipped);
         if (skillData.IsEquipped && skillData.skillSo is ActiveSkillSO)
+        {
             itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
+        }
 
         skillTier.gameObject.SetActive(true);
         skillTier.sprite = itemGradeSprites[(int)skillData.skillSo.activeSkillTier];
@@ -78,7 +77,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         gameObject.SetActive(true);
         emptySkillImg.SetActive(false);
 
-        this.passiveSo = skillSo;
+        passiveSo = skillSo;
         ShowEquipMark(false);
         skillTier.gameObject.SetActive(true);
         skillIcon.gameObject.SetActive(true);
@@ -89,7 +88,9 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void ShowEquipMark(bool isEquip)
     {
         if (itemEquipmentImg != null)
+        {
             itemEquipmentImg.gameObject.SetActive(isEquip);
+        }
     }
 
     public void EmptySlot(bool isHide)
@@ -120,7 +121,9 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void SetSelectedSlot(bool isSelected)
     {
         if (selectedSlotImg == null)
+        {
             return;
+        }
 
         selectedSlotImg.gameObject.SetActive(isSelected);
     }
@@ -134,7 +137,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void UpdateSlot(ScrollData<SkillData> data)
     {
         DataIndex = data.DataIndex;
-        SetSkillIcon(data.Data, isHide: false);
+        SetSkillIcon(data.Data, false);
         SetSelectedSlot(data.IsSelected);
     }
 }
