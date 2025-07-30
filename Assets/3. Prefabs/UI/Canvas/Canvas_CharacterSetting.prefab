@@ -1605,7 +1605,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4695262450183838119}
         m_TargetAssemblyTypeName: CharacterInfo, Assembly-CSharp
         m_MethodName: OpenUnitLevelUpPanel
         m_Mode: 1
@@ -1940,10 +1940,10 @@ RectTransform:
   - {fileID: 9051239395557875178}
   m_Father: {fileID: 2645505714755189348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -68, y: -128}
-  m_SizeDelta: {x: 500, y: 902}
+  m_SizeDelta: {x: 500, y: -178}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2137418769838932519
 CanvasRenderer:
@@ -2309,7 +2309,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contents: {fileID: 1159595660361484851}
   playerUnitSlotRoot: {fileID: 8801457786409534914}
-  characterInfoPanel: {fileID: 1285353554604890577}
+  characterInfoPanel: {fileID: 4695262450183838119}
   playerUnitSlot: {fileID: 640342470593220936, guid: 089bd4c7c13935b498d9927bc594acfa,
     type: 3}
   characterListRect: {fileID: 4529911798712848820}
@@ -3197,7 +3197,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.26}
   m_AnchorMax: {x: 1, y: 0.49436837}
-  m_AnchoredPosition: {x: 0, y: 9.499939}
+  m_AnchoredPosition: {x: 0, y: 9.5}
   m_SizeDelta: {x: -30, y: -19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5091933460244223338
@@ -4502,7 +4502,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2645505714755189348}
-  - component: {fileID: 1285353554604890577}
+  - component: {fileID: 4695262450183838119}
   m_Layer: 0
   m_Name: CharacterInfoPanel
   m_TagString: Untagged
@@ -4530,7 +4530,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 630, y: 0}
   m_Pivot: {x: 1, y: 0.5}
---- !u!114 &1285353554604890577
+--- !u!114 &4695262450183838119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4543,7 +4543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statIncreaseSo: {fileID: 11400000, guid: f947402864edc58459b1648978fd1d09, type: 2}
-  panelRect: {fileID: 5774356081873184306}
+  panelRect: {fileID: 2645505714755189348}
   unitName: {fileID: 2983943686731106161}
   unitLevel: {fileID: 5687833619194997760}
   statSlots:
