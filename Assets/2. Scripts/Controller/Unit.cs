@@ -240,11 +240,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return false;
         }
 
-        if (Random.value > StatManager.GetValue(StatType.Counter))
-        {
-            return false;
-        }
-
         if (attacker == null)
         {
             return false;
@@ -259,6 +254,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             return false;
         }
+
+        if (Random.value > StatManager.GetValue(StatType.Counter))
+        {
+            return false;
+        }
+
 
         return true;
     }
@@ -326,6 +327,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             LastAttacker?.InvokeHitFinished();
         }
+
+        SetLastAttacker(null);
     }
 
     public void InvokeAttackFinished()

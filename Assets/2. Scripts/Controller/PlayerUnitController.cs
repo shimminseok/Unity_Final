@@ -15,51 +15,20 @@ public enum ActionType
 [RequireComponent(typeof(PlayerSkillController))]
 public class PlayerUnitController : BaseController<PlayerUnitController, PlayerUnitState>
 {
-    [SerializeField]
-    private int id;
-
-    [SerializeField]
-    private AnimationClip idleClip;
-
-    [SerializeField]
-    private AnimationClip moveClip;
-
-    [SerializeField]
-    private AnimationClip victoryClip;
-
-    [SerializeField]
-    private AnimationClip readyActionClip;
-
-    [SerializeField]
-    private AnimationClip deadClip;
-
-    [SerializeField]
-    private AnimationClip hitClip;
+    [SerializeField] private PlayerUnitIncreaseSo playerUnitIncreaseSo;
+    [SerializeField] private AnimationClip idleClip;
+    [SerializeField] private AnimationClip moveClip;
+    [SerializeField] private AnimationClip victoryClip;
+    [SerializeField] private AnimationClip readyActionClip;
+    [SerializeField] private AnimationClip deadClip;
+    [SerializeField] private AnimationClip hitClip;
 
     public EquipmentManager EquipmentManager { get; private set; }
     public Vector3          StartPostion     { get; private set; }
     public PlayerUnitSO     PlayerUnitSo     { get; private set; }
     public PassiveSO        PassiveSo        { get; private set; }
 
-    // public override bool IsAnimationDone
-    // {
-    //     get
-    //     {
-    //         AnimatorStateInfo info = Animator.GetCurrentAnimatorStateInfo(0);
-    //         return info.IsTag("Action") && info.normalizedTime >= 0.9f;
-    //     }
-    // }
-
-    public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
-
-    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
-
-    public float setRemainDistance;
-
     private HPBarUI hpBar;
-
-
-    private float remainDistance;
 
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
@@ -115,14 +84,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
         PassiveSo = PlayerUnitSo.PassiveSkill;
         PassiveSo.Initialize(this);
-        if (PlayerDeckContainer.Instance.SelectedStage == null)
-        {
-            StatManager.Initialize(PlayerUnitSo);
-        }
-        else
-        {
-            StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.Level, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
-        }
+
 
         foreach (SkillData skillData in deckData.DeckData.SkillDatas)
         {
@@ -135,10 +97,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
-        foreach (EquipmentItem deckDataEquippedItem in deckData.DeckData.EquippedItems.Values)
-        {
-            EquipmentManager.EquipItem(deckDataEquippedItem);
-        }
+        StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.EquippedItems.Values.ToList(), deckData.DeckData.Level, playerUnitIncreaseSo);
+        // foreach (EquipmentItem deckDataEquippedItem in deckData.DeckData.EquippedItems.Values)
+        // {
+        //     EquipmentManager.EquipItem(deckDataEquippedItem);
+        // }
 
         SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
@@ -298,14 +261,19 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         ChangeUnitState(PlayerUnitState.Die);
+        StatusEffectManager.RemoveAllEffects();
+        hpBar.UnLink();
 
+
+        Agent.enabled = false;
+        Obstacle.carving = false;
+        Obstacle.enabled = false;
 
         //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
         List<IPassiveAllyDeathTrigger> allyDeathPassives = BattleManager.Instance.GetAllies(this)
             .Select(u => (u as PlayerUnitController)?.PassiveSo)
             .OfType<IPassiveAllyDeathTrigger>()
             .ToList();
-
         foreach (IPassiveAllyDeathTrigger unit in allyDeathPassives)
         {
             unit.OnAllyDead();

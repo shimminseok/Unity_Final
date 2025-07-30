@@ -43,20 +43,6 @@ namespace PlayerState
 
         public void OnUpdate(PlayerUnitController owner)
         {
-            // if (hasHandler || !owner.IsAnimationDone)
-            // {
-            //     return;
-            // }
-            //
-            // hasHandler = true;
-            // if (canCounter)
-            // {
-            //     owner.StartCountAttack(owner.LastAttacker);
-            // }
-            // else
-            // {
-            //     owner.LastAttacker.InvokeHitFinished();
-            // }
         }
 
         public void OnFixedUpdate(PlayerUnitController owner)

@@ -75,15 +75,8 @@ using Random = UnityEngine.Random;
             return;
         }
 
-        //Test
-        if (PlayerDeckContainer.Instance.SelectedStage == null)
-        {
-            StatManager.Initialize(MonsterSo);
-        }
-        else
-        {
-            StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
-        }
+
+        StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
 
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         AnimationEventListener.Initialize(this);
