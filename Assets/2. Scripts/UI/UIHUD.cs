@@ -8,12 +8,13 @@ public class UIHUD : MonoBehaviour
     private UIEquipmentCombine EquipmentCombine => UIManager.GetUIComponent<UIEquipmentCombine>();
     private UIDeckBuilding     DeckBuilding     => UIManager.GetUIComponent<UIDeckBuilding>();
 
-    void Start()
+
+    private void Start()
     {
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
     }
 
@@ -33,6 +34,10 @@ public class UIHUD : MonoBehaviour
 #if UNITY_EDITOR
         AccountManager.Instance.AddGold(10000);
 #endif
+        if (GameManager.Instance.isTestMode)
+        {
+            AccountManager.Instance.AddGold(10000);
+        }
     }
 
     public void OnClickOpalBtn()
@@ -40,5 +45,9 @@ public class UIHUD : MonoBehaviour
 #if UNITY_EDITOR
         AccountManager.Instance.AddOpal(10000);
 #endif
+        if (GameManager.Instance.isTestMode)
+        {
+            AccountManager.Instance.AddOpal(10000);
+        }
     }
 }
