@@ -26,6 +26,7 @@ using Random = UnityEngine.Random;
     public Vector3 StartPostion { get; private set; }
     public WeightedSelector<Unit> mainTargetSelector;
 
+    public override event Action OnDead;
 
     protected override void Awake()
     {
@@ -240,6 +241,7 @@ using Random = UnityEngine.Random;
     public override void Dead()
     {
         IsDead = true;
+        OnDead?.Invoke();
         ChangeUnitState(EnemyUnitState.Die);
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();

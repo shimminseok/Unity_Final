@@ -27,7 +27,7 @@ public class SelectSkillUI : UIBase
     private TextMeshProUGUI skillTotalUseCountTxt;
 
     [SerializeField]
-    private TextMeshProUGUI skillEffect;
+    private GameObject skillEffect;
 
 
     [Header("스킬 슬롯")]
@@ -170,8 +170,13 @@ public class SelectSkillUI : UIBase
         skillDescription.text = equipmentSkill.skillDescription;
         if (equipmentSkill is ActiveSkillSO activeSkill)
         {
+            skillEffect.SetActive(true);
             skillCooltimeTxt.text = $"{activeSkill.coolTime}";
             skillTotalUseCountTxt.text = $"{activeSkill.reuseMaxCount}";
+        }
+        else
+        {
+            skillEffect.SetActive(false);
         }
     }
 

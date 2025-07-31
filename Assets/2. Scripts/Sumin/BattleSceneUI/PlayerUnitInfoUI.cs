@@ -27,6 +27,7 @@ public class PlayerUnitInfoUI : MonoBehaviour
             slots[i].gameObject.SetActive(true);
             slots[i].UpdateUnitInfo(units[i]);
             slots[i].UpdateHpBar(units[i] as IDamageable);
+            units[i].OnDead += UpdatePlayerUnitDead;
         }
         commandPlanner = CommandPlanner.Instance;
 
@@ -42,9 +43,26 @@ public class PlayerUnitInfoUI : MonoBehaviour
         }
     }
 
+    private void UpdatePlayerUnitDead()
+    {
+        for (int i=0; i< units.Count; i++)
+        {
+            if (units[i].SelectedUnit.IsDead)
+                slots[i].UpdateUnitDead();
+        }
+    }
+
     private void OnDisable()
     {
         if (commandPlanner != null)
             commandPlanner.commandUpdated -= UpdatePlayerUnitSelect;
+
+        if (units != null)
+        {
+            for (int i = 0; i < units.Count; i++)
+            {
+                units[i].OnDead -= UpdatePlayerUnitDead;
+            }
+        }
     }
 }
