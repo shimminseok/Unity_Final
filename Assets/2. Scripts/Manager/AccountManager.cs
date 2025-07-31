@@ -55,6 +55,7 @@ public class AccountManager : Singleton<AccountManager>
                 AddPlayerUnit(unit);
             }
         }
+
 #endif
         if (Input.GetKeyDown(KeyCode.F4))
         {
