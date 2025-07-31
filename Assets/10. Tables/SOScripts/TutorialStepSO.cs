@@ -16,5 +16,8 @@ public class TutorialStepSO : ScriptableObject
 
     public TutorialActionData ActionData;
 
+    public TutorialManager.TutorialPhase phase; // 이 스텝이 속한 페이즈
+    public bool isResumeEntryPoint;             // 재개 시점 여부
+
     [TextArea] public string Description;
 }
