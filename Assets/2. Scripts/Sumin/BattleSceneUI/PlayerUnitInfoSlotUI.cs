@@ -29,6 +29,13 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
         unitIcon.sprite = playerUnit.UnitSo.UnitIcon;
     }
 
+    public void UpdateUnitDead()
+    {
+        Color newColor = unitIcon.color;
+        newColor.a = 0.5f;
+        unitIcon.color = newColor;
+    }
+
     public void UpdateUnitSelect(Unit playerUnit)
     {
         if (CommandPlanner.Instance.HasPlannedCommand(playerUnit))
