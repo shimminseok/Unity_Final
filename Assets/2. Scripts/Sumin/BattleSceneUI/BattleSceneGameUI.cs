@@ -132,6 +132,11 @@ public class BattleSceneGameUI : MonoBehaviour
         playingImage.SetActive(!toggle);
     }
 
+    public void BattleEnd()
+    {
+        playingImage.SetActive(false);
+    }
+
     public void ToggleInteractableStartButton(bool toggle)
     {
         startBtn.interactable = toggle;
