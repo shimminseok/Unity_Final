@@ -6,9 +6,9 @@ using DG.Tweening;
 
 public class LoadingScreenController : Singleton<LoadingScreenController>
 {
-    public event Action OnLoadingComplete; // 로딩 완료 시점을 알리는 이벤트 
-    private Image overlayImage;            // 검은 화면 처리용 이미지
-    private Slider progressSlider;         // 로딩  슬라이더
+    public event Action OnLoadingComplete;  // 로딩 완료 시점을 알리는 이벤트 
+    private Image overlayImage;          // 검은 화면 처리용 이미지
+    private Slider progressSlider;       // 로딩  슬라이더
 
     [SerializeField] private float minLoadTime = 1.5f;          // 최소 로딩 시간
     [SerializeField] private float extraDelayAfterReady = 0.4f; // 로딩 완료 후 추가 여유 시간
@@ -21,10 +21,10 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
         // 프리팹이 없다면 Resources에서 로드해서 자식으로 붙임
         if (overlayImage == null || progressSlider == null)
         {
-            GameObject prefab = Resources.Load<GameObject>("UI/LoadingCanvas");
-            GameObject uiRoot = Instantiate(prefab, transform); // 자식으로 붙임
+            var prefab = Resources.Load<GameObject>("UI/LoadingCanvas");
+            var uiRoot = Instantiate(prefab, transform); // 자식으로 붙임
             progressSlider = uiRoot.GetComponentInChildren<Slider>();
-            overlayImage = uiRoot.transform.GetChild(1).GetComponent<Image>();
+            overlayImage = uiRoot.transform.GetChild(2).GetComponent<Image>();
         }
 
         gameObject.SetActive(false);
@@ -80,9 +80,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
         // 4. 최소 로딩 시간 보장
         float elapsed = Time.time - startTime;
         if (elapsed < minLoadTime)
-        {
             yield return new WaitForSeconds(minLoadTime - elapsed);
-        }
 
         // 5. 로딩 완료 후 여유 시간
         yield return new WaitForSeconds(extraDelayAfterReady);
@@ -99,4 +97,5 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
         // 8. 로딩 UI 숨김
         gameObject.SetActive(false);
     }
+
 }
