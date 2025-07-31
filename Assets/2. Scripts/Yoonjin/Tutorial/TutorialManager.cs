@@ -126,6 +126,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GoToStep(resumeStep);
+        Debug.Log($"resumeStep {resumeStep}부터 재시작합니다!");
     }
 
 

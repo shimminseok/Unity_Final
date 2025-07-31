@@ -6,6 +6,7 @@ public class DialogueActionExecutor : TutorialActionExecutor
 {
     public override void Enter(TutorialActionData actionData)
     {
+        Debug.Log("다이얼로그 액션 실행기 Enter!");
         var dialogueData = actionData as DialogueActionData;
         if (dialogueData == null) return;
 

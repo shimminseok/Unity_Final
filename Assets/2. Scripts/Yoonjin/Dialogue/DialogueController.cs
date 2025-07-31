@@ -115,6 +115,7 @@ public class DialogueController : Singleton<DialogueController>
         }
         else if (currentGroup.mode == DialogueMode.Tutorial)
         {
+            Debug.Log("튜토리얼 다이얼로그 ShowCurrentLine");
             var ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
             ui.gameObject.SetActive(true);
             ui.Show(line);
