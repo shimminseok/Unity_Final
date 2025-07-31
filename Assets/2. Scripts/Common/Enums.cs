@@ -197,7 +197,7 @@ public enum VFXType
     Dot,  // 스킬로 인한 DotDamage가 발생할 때마다
     Buff, // 스킬로 인한 Buff, Debuff가 유지되는 동안 반복
     Hit,  // 스킬, 공격으로 인한 SkillEffect가 발생했을 때
-    Start //스킬이 시작하자마자 
+    Start // 타임라인에서 호출
 }
 
 
@@ -208,4 +208,21 @@ public enum RewardType
     Item,
     Skill,
     Unit
+}
+
+//씬 이름 데이터
+public enum SceneName
+{
+    TitleScene,
+    DeckBuildingScene,
+    DialogueScene,
+    BattleScene_Main
+}
+
+
+
+//항상 추가해야하는 사운드데이터레이블 ( UI사운드 등 )
+public enum AlwaysLoad
+{
+    AlwaysLoadSound
 }

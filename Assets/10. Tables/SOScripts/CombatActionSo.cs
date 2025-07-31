@@ -1,4 +1,5 @@
 ﻿using PixPlays.ElementalVFX;
+using System;
 using UnityEngine;
 
 
@@ -16,4 +17,13 @@ public abstract class CombatActionSo : ScriptableObject, IAttackAction
             VFXController.VFXListPlay(data.skillVFX,VFXType.Cast,VFXSpawnReference.Caster, attacker as IEffectProvider,true);
         }
     }
+
+    public virtual void PlaySFX(IAttackable attacker)
+    {
+        foreach (SFXName sfx in attacker.SkillController.CurrentSkillData.skillSo.SFX)
+        {
+            AudioManager.Instance.PlaySFX(sfx.ToString());
+        }
+    }
+    
 }
