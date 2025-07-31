@@ -15,60 +15,15 @@ MonoBehaviour:
   ID: 1004
   SkillIcon: {fileID: 21300000, guid: 96cd7f89cdb318846bfc8aa6a21fcd40, type: 3}
   skillName: "\uC218\uD638\uC758 \uD30C\uB3D9"
-  skillDescription: "\uC544\uAD70\uC804\uCCB4\uC5D0\uAC8C \uC274\uB4DC\uB97C \uC900\uB2E4.
-    \uBA54\uC778 \uD0C0\uAC9F\uC778 \uC544\uAD70\uC5D0\uAC8C\uB294 \uB354 \uD070
-    \uC274\uB4DC\uB97C \uC900\uB2E4."
+  skillDescription: "\uC544\uAD70 \uC804\uCCB4\uC5D0\uAC8C \uC274\uB4DC\uB97C \uC0DD\uC131\uD55C\uB2E4.
+    \uBA54\uC778 \uD0C0\uAC9F\uC5D0\uAC90 \uB354 \uB9CE\uC740 \uC274\uB4DC\uB97C
+    \uC0DD\uC131\uD55C\uB2E4."
   jobType: 0
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   effect:
     owner: {fileID: 0}
     skillEffectDatas:
-    - owner: {fileID: 0}
-      selectCamp: 0
-      selectTarget: 1
-      projectilePrefab: {fileID: 0}
-      projectilePoolID: 
-      damageEffects: []
-      buffEffects:
-      - ownerStatType: 0
-        weight: 0.1
-        value: 0
-        opponentStatType: 11
-        lastTurn: 3
-        statusEffectType: 9
-        modifierType: 0
-        emotionType: 0
-        StatusEffect:
-          ID: 40001
-          EffectType: 9
-          Stat:
-            StatType: 11
-            ModifierType: 0
-            Value: 0
-          Duration: 3
-          TickInterval: 0
-          IsStackable: 0
-          VFX:
-          - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
-              type: 3}
-            VFXPoolID: ShieldVFX
-            LocalPosition: {x: 0, y: 0.5, z: 0}
-            LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 0.3, y: 0.3, z: 0.3}
-            reference: 1
-            isParent: 1
-            type: 2
-      skillVFX:
-      - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
-          type: 3}
-        VFXPoolID: ShieldVFX
-        LocalPosition: {x: 0, y: 0.5, z: 0}
-        LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 0.3, y: 0.3, z: 0.3}
-        reference: 1
-        isParent: 1
-        type: 2
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 0
@@ -114,9 +69,55 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 1
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0.1
+        value: 0
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 40001
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
+              type: 3}
+            VFXPoolID: ShieldVFX
+            LocalPosition: {x: 0, y: 0.5, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+            reference: 1
+            isParent: 1
+            type: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
+          type: 3}
+        VFXPoolID: ShieldVFX
+        LocalPosition: {x: 0, y: 0.5, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+        reference: 1
+        isParent: 1
+        type: 2
   activeSkillTier: 2
   reuseMaxCount: 2
   coolTime: 4
   skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
+  SFX: 

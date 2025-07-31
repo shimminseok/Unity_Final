@@ -76,6 +76,9 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
 
     public void OnCalculateHitChance(Unit unit, ref float hitRate)
     {
+        float perStack = MissChanceAmount;
+
+
         if (unit is PlayerUnitController playerUnit)
         {
             if (playerUnit.PassiveSo is ComposurePassiveSo composurePassive)
@@ -83,9 +86,13 @@ public class JoyEmotion : BaseEmotion, IEmotionOnHitChance
                 hitRate = composurePassive.ComposureValue(hitRate);
                 return;
             }
+            else if (playerUnit.PassiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            {
+                emotionDebuffReducer.OnDebuffReducer(ref perStack);
+            }
         }
 
-        float chance = Mathf.Min(Stack * MissChanceAmount, MissChanceMax);
+        float chance = Mathf.Min(Stack * perStack, MissChanceMax);
         hitRate = Mathf.Clamp01(hitRate - chance);
     }
 
@@ -135,8 +142,17 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
 
     public void OnBeforeAttack(Unit attacker, ref IDamageable target)
     {
-        float chance = Mathf.Min(Stack * AllyAttackChancePerStack, AllyHitChanceMax);
+        float perStack = AllyAttackChancePerStack;
 
+        if (attacker is PlayerUnitController playerUnit)
+        {
+            if (playerUnit.PassiveSo is IPassiveEmotionDebuffReducer emotionDebuffReducer)
+            {
+                emotionDebuffReducer.OnDebuffReducer(ref perStack);
+            }
+        }
+
+        float chance = Mathf.Min(Stack * perStack, AllyHitChanceMax);
         if (Random.value < chance)
         {
             //타겟을 아군으로 바꿔줌
@@ -152,6 +168,8 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
     public override void OnStackChanged(Unit unit)
     {
         base.OnStackChanged(unit);
+
+
         // 1. 기존 버프 제거
         unit.StatManager.ApplyStatEffect(StatType.AttackPow, StatModifierType.BuffPercent, -attackUpAmount);
         // 2. 새 버프 계산

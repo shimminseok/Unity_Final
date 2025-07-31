@@ -14,8 +14,15 @@ public class AllyDeathPassiveSo : PassiveSO, IPassiveAllyDeathTrigger
     public void OnAllyDead()
     {
         if (!CanTrigger(Owner.CurrentEmotion))
+        {
             return;
+        }
 
         Owner.CurrentEmotion.AddStack(Owner, emotionStackPerAllyDeath);
+    }
+
+    public override void ExecutePassive()
+    {
+        OnAllyDead();
     }
 }
