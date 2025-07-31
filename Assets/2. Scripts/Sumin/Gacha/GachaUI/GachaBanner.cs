@@ -53,8 +53,23 @@ public class GachaBanner : MonoBehaviour
         bannerSequence.Append(bannerTransform.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.right * 200f)).SetEase(Ease.OutBack));
         bannerSequence.Join(bannerCanvasGroup.DOFade(1f, fadeInDuration));
 
-        bannerSequence.Append(gachaImageTransforms[index].DOAnchorPos(skillsOriginalPos, 0.3f).From(skillsOriginalPos + (Vector2.left * 200f)).SetEase(Ease.OutBack));
-        bannerSequence.Join(gachaImageCanvasGroups[index].DOFade(1f, fadeInDuration));
+        switch (index)
+        {
+            case 0:
+                gachaImageTransforms[0].localScale = Vector3.one * 1.2f;
+                bannerSequence.Append(gachaImageTransforms[0].DOScale(Vector3.one, 0.2f).SetEase(Ease.InBack));
+                bannerSequence.Join(gachaImageCanvasGroups[0].DOFade(1f, fadeInDuration));
+                break;
+            case 1:
+                bannerSequence.Append(gachaImageTransforms[1].DOAnchorPos(skillsOriginalPos, 0.3f).From(skillsOriginalPos + Vector2.up * 200f).SetEase(Ease.OutBack));
+                bannerSequence.Join(gachaImageCanvasGroups[1].DOFade(1f, fadeInDuration));
+                break;
+            case 2:
+                bannerSequence.Append(gachaImageTransforms[2].DOAnchorPos(skillsOriginalPos, 0.3f).From(skillsOriginalPos + (Vector2.left * 200f)).SetEase(Ease.OutBack));
+                bannerSequence.Join(gachaImageCanvasGroups[2].DOFade(1f, fadeInDuration));
+                break;
+        }
+        
     }
 
     public void HideBanner(int index)

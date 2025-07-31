@@ -51,9 +51,14 @@ public class SkillGachaResultUI : UIBase
         });
     }
 
-    public void OnResultExitBtn()
+    public override void Close()
     {
         ResetSlots();
+        base.Close();
+    }
+
+    public void OnResultExitBtn()
+    {
         UIManager.Instance.Close(this);
     }
 
