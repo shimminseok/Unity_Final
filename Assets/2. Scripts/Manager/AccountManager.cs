@@ -168,7 +168,7 @@ public class AccountManager : Singleton<AccountManager>
         else
         {
             // 다음 챕터의 첫 스테이지로 (챕터+1, 스테이지 0101)
-            int nextChapterId = chapterId + 1;
+            int nextChapterId = chapterId + 100;
             return (nextChapterId * 10000) + 101;
         }
     }

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
+    public enum TutorialPhase
+    {
+        DeckBuildingBefore = 0,
+        DeckBuildingAfter = 1,
+        LevelUp = 2
+    }
+
     [SerializeField] private TutorialTable tutorialTable;
 
     // 행동별 실행기 매핑 (FSM처럼 동작)
@@ -12,6 +19,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private TutorialStepSO currentStep;
     public TutorialStepSO CurrentStep => currentStep;
 
+    [HideInInspector]
     public bool IsActive;
 
     protected override void Awake()
@@ -24,12 +32,14 @@ public class TutorialManager : Singleton<TutorialManager>
             { TutorialActionType.Dialogue, new DialogueActionExecutor() },
             { TutorialActionType.HighlightUI, new HighlightUIExecutor() },
             { TutorialActionType.TriggerWait, new TriggerWaitExecutor() },
-            { TutorialActionType.Reward, new RewardActionExecutor() },
+            { TutorialActionType.Reward, new RewardActionExecutor() }
         };
 
         // 실행기에 튜토리얼 매니저 주입
-        foreach (var exec in executorMap.Values)
+        foreach (TutorialActionExecutor exec in executorMap.Values)
+        {
             exec.SetManager(this);
+        }
 
         // 테이블 가져오기 
         tutorialTable = TableManager.Instance.GetTable<TutorialTable>();
@@ -38,9 +48,29 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Start()
     {
+        IsActive = false;
+
+        var tutorialData = SaveLoadManager.Instance
+            .SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) as SaveTutorialData;
+
+        // 이미 튜토리얼 완료한 유저는 실행 안 함
+        if (tutorialData?.IsCompleted == true)
+        {
+            IsActive = false;
+            Debug.Log("[튜토리얼] 이미 완료된 유저입니다.");
+            return;
+        }
+
         IsActive = true;
-        // 튜토리얼 첫 단계 실행
-        GoToStep(0);
+
+        int resumeStep = tutorialData?.Phase switch
+        {
+            TutorialPhase.LevelUp => 81,
+            TutorialPhase.DeckBuildingAfter => 72,
+            _ => 0
+        };
+
+        GoToStep(resumeStep);
     }
 
     // 특정 ID의 튜토리얼 스텝 실행
@@ -62,7 +92,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         Debug.Log($"[튜토리얼] Step {id}의 ActionType: {currentStep.ActionData.ActionType}");
 
-        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out var executor))
+        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out TutorialActionExecutor executor))
         {
             Debug.LogError($"[튜토리얼] 해당 ActionType({currentStep.ActionData.ActionType})에 대한 실행기가 없습니다!");
             return;
@@ -76,8 +106,11 @@ public class TutorialManager : Singleton<TutorialManager>
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
     {
-        var executor = executorMap[currentStep.ActionData.ActionType];
+        TutorialActionExecutor executor = executorMap[currentStep.ActionData.ActionType];
         executor?.Exit();
+
+        // 진행 중간 저장
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
 
         GoToStep(currentStep.NextID);
         Debug.Log("튜토리얼 다음 단계로");
@@ -88,7 +121,16 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         IsActive = false;
 
-        // RewardManager.Instance.GiveReward 같은 걸로 추후 보상 지급 예정
+        // 튜토리얼 완료 저장
+        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
+        {
+            tutorialData.IsCompleted = true;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        }
+
+        // 튜토리얼 끝났을 때만 아이템/스킬 저장
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventorySkill);
 
         Debug.LogWarning("튜토리얼 종료!");
     }

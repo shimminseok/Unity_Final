@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 3050_LeapAttack
+  m_EditorClassIdentifier: 
+  ID: 3050
+  SkillIcon: {fileID: 21300000, guid: 92921892e911dca47bee1cecf31f692d, type: 3}
+  skillName: "\uB9AC\uD504\uC5B4\uD0DD"
+  skillDescription: "\uB192\uAC8C \uC810\uD504\uD574\uC11C \uAC15\uB825\uD55C \uC77C\uACA9\uC744
+    \uB0A0\uB9B0\uB2E4."
+  jobType: 2
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  effect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 0
+        weight: 0.5
+        value: 200
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 6522621237677203293, guid: c2011cada9fd7bf41b4747f8db2e8b48,
+          type: 3}
+        VFXPoolID: YellowHit2VFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 4
+      - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
+          type: 3}
+        VFXPoolID: YellowHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 3533928269051653686, guid: fed0ead404414984a8bc1033b08360fa,
+          type: 3}
+        VFXPoolID: YellowGroundSlashVFX
+        LocalPosition: {x: 0, y: -0.5, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 0
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 5
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.3
+        value: 100
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
+          type: 3}
+        VFXPoolID: YellowHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+  activeSkillTier: 3
+  reuseMaxCount: 5
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 1c09047ecdb0548428f2137b03a4f7dc, type: 2}
+  skillTimeLine: {fileID: 11400000, guid: 3ae69a6e28a40e449ba1cea1ce3a359e, type: 2}
+  isSkillScene: 1

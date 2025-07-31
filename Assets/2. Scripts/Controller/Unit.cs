@@ -240,11 +240,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return false;
         }
 
-        if (Random.value > StatManager.GetValue(StatType.Counter))
+        if (attacker == null)
         {
             return false;
         }
-
 
         if (attacker.CurrentAttackAction.DistanceType == AttackDistanceType.Range)
         {
@@ -255,6 +254,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         {
             return false;
         }
+
+        if (Random.value > StatManager.GetValue(StatType.Counter))
+        {
+            return false;
+        }
+
 
         return true;
     }
@@ -315,13 +320,15 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     {
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
+        OnHitFinished = null;
+
 
         if (IsDead)
         {
             LastAttacker?.InvokeHitFinished();
         }
 
-        OnHitFinished = null;
+        SetLastAttacker(null);
     }
 
     public void InvokeAttackFinished()

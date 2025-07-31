@@ -75,15 +75,8 @@ using Random = UnityEngine.Random;
             return;
         }
 
-        //Test
-        if (PlayerDeckContainer.Instance.SelectedStage == null)
-        {
-            StatManager.Initialize(MonsterSo);
-        }
-        else
-        {
-            StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
-        }
+
+        StatManager.Initialize(MonsterSo, this, PlayerDeckContainer.Instance.SelectedStage.MonsterLevel, PlayerDeckContainer.Instance.SelectedStage.MonsterIncrease);
 
         AnimatorOverrideController = new AnimatorOverrideController(Animator.runtimeAnimatorController);
         AnimationEventListener.Initialize(this);
@@ -181,6 +174,8 @@ using Random = UnityEngine.Random;
         {
             return;
         }
+
+        Debug.Log("Enemy Take Damage Font");
 
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
@@ -298,12 +293,15 @@ using Random = UnityEngine.Random;
     {
         if (campType == SelectCampType.Enemy)
         {
-            List<Unit> allies = BattleManager.Instance.GetAllies(this);
-            SetTarget(allies[Random.Range(0, allies.Count)]);
+            SetTarget(mainTargetSelector.Select());
         }
         else if (campType == SelectCampType.Player)
         {
-            SetTarget(mainTargetSelector.Select());
+            List<Unit> allies = BattleManager.Instance.GetAllies(this);
+            if (allies.Count > 0)
+            {
+                SetTarget(allies[Random.Range(0, allies.Count)]);
+            }
         }
     }
 
@@ -316,7 +314,7 @@ using Random = UnityEngine.Random;
         }
         else if (actionType == ActionType.Attack)
         {
-            WeightedMainTargetSelector(SelectCampType.Player);
+            WeightedMainTargetSelector(SelectCampType.Enemy);
         }
     }
 
@@ -358,15 +356,9 @@ using Random = UnityEngine.Random;
 
     public override void EndTurn()
     {
-        if (!IsDead)
-        {
-            CurrentEmotion.AddStack(this);
-        }
-
-
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-        ChangeUnitState(PlayerUnitState.Idle);
+        ChangeUnitState(EnemyUnitState.Idle);
     }
 
     public void OnAnimationCompleteEvent()

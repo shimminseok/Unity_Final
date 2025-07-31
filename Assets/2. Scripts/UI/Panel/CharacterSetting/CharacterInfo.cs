@@ -177,6 +177,7 @@ public class CharacterInfo : MonoBehaviour
         RefreshUI();
         SetPlayerUnitSkillInfo();
         panelRect.DOKill();
+        panelRect.gameObject.SetActive(true);
         panelRect.DOAnchorPos(onScreenPos, 0.5f).SetEase(Ease.OutCubic);
     }
 

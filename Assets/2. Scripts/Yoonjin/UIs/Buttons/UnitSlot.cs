@@ -5,16 +5,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField] private TextMeshProUGUI nameText; // 캐릭터 이름
     [SerializeField] private TextMeshProUGUI unitLevel;
+    [SerializeField] private Image unitSlotFrame;
     [SerializeField] private List<GameObject> unitTierStar;
     [SerializeField] private GameObject competedMarker;
     [SerializeField] private Image iconImage; // 캐릭터 이미지
     [SerializeField] private GameObject selectedNotiImg;
     [SerializeField] private Image holdCheckImage;
+    [SerializeField] private List<Sprite> unitGradeSprites;
 
     private bool isSelected;
     private EntryDeckData selectedUnit;
@@ -42,6 +45,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         iconImage.sprite = characterSo.UnitIcon;
         nameText.text = characterSo.UnitName;
         unitLevel.text = $"Lv.{data.Level}";
+        unitSlotFrame.sprite = unitGradeSprites[(int)characterSo.Tier];
 
         gameObject.name = $"UnitSlot_{characterSo.ID}";
 
