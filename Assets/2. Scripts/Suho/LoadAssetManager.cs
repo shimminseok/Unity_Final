@@ -12,7 +12,6 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     //비동기 로딩 시 사용할 핸들
     private List<AsyncOperationHandle<AudioClip>> loadAudioClipHandles = new();
     private List<AsyncOperationHandle<IList<AudioClip>>> loadSceneAudiohandles = new();
-    private IList<IResourceLocation> locations;
     
     // 레이블을 사용해서 에셋번들의 로케이션을 받아오는 메서드
     public void LoadAssetBundle(string labelName)
@@ -22,9 +21,9 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
             {
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
-                    locations = handle.Result;
+                    var locations = handle.Result;
                     Debug.Log($"로케이션 {locations.Count}개 가져옴");
-                    OnLoadAssetsChangeScene(labelName);
+                    OnLoadAssetsChangeScene(labelName, locations);
                 }
                 else
                 {
@@ -34,7 +33,7 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     }
     
     // 받아온 로케이션을 통해 에셋을 로드해오는 메서드
-    public void OnLoadAssetsChangeScene(string lableName)
+    public void OnLoadAssetsChangeScene(string lableName, IList<IResourceLocation> locations)
     {   
         //스테이지에 필요한 사운드레이블을 가져오기
         Addressables.LoadAssetsAsync<AudioClip>(locations,null).Completed +=

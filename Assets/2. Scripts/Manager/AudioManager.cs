@@ -4,46 +4,6 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 
-public enum BgmType
-{
-    VillageMorning_Loop = 0,
-    VillageAfternoon_Loop,
-    VillageEvening_Loop,
-    PeacefulTownSquare_Loop,
-    ForestPath_Loop,
-    DeepForest_Loop,
-    OpenField_Loop,
-    RollingHills_Loop,
-    CalmLake_Loop,
-    SnowyMountain_Loop,
-    DesertJourney_Loop,
-    RuinsExploration_Loop,
-    AncientTemple,
-    CastleHall,
-    ShopTheme_Loop,
-    InnRest_Loop,
-    CaveAmbience_Loop,
-    DarkDungeon_Loop,
-    BattleTheme1_Loop,
-    BattleTheme2_Loop,
-    BattleTheme3_Loop,
-    BossBattle1_Loop,
-    BossBattle2_Loop,
-    FinalBattle_Loop,
-    VictoryFanfare,
-    DefeatStinger,
-    EpicAdventure,
-    HerosTheme,
-    SuspensefulEncounter,
-    MysteriousDiscovery,
-    // Bonus
-    Bonus_HerosTheme,
-    Bonus_BattleTheme1_Loop,
-    Bonus_DarkDungeon
-}
-
-
-
 public enum AudioType
 {
     BGM,
@@ -52,7 +12,6 @@ public enum AudioType
 
 public class AudioManager : SceneOnlySingleton<AudioManager>
 {
-    [SerializeField] private BgmType currentBgm = BgmType.VillageMorning_Loop;
         /* 사운드 조절 기능 */
     [SerializeField][Range(0, 1)] private float soundEffectVolume = 1f;
     [SerializeField][Range(0, 1)] private float soundEffectPitchVariance = 0.1f;
@@ -63,8 +22,9 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     public Dictionary<string, AudioClip> AudioDictionary = new();
     protected ObjectPoolManager objectPoolManager;
     private string sfxPlayerPoolName = "sfxSource";
+    
     [SerializeField] private AudioSource bgmAudioSource;
-
+    [SerializeField] private GameObject sfxAudioSourcePrefab;
     protected override void Awake()
     {
         base.Awake();
@@ -89,7 +49,7 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             PlayBGM(clip);
         });
         LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound)); // 항상 로드해와야 하는 사운드
-        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name); // 특정 씬에서 로드해와야 하는 사운드
+        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
         
         bgmAudioSource.volume = musicVolume;
         bgmAudioSource.loop = true;
@@ -164,6 +124,7 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
         if (AudioDictionary != null && AudioDictionary.ContainsKey(clipName))
         {
             GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
+            if(sfxPlayer == null) sfxPlayer = Instantiate(sfxAudioSourcePrefab);
             PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
             if (sfxPlayer != null)
             {
@@ -188,35 +149,33 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             Debug.LogError("SoundManager: PlaySfxReturnSoundSource - clipName이 null 또는 빈 문자열입니다.");
             return null;
         }
-
-        // if (objectPoolManager == null)
-        // {
-        //     objectPoolManager = SoundPoolManager.Instance;
-        //     if (objectPoolManager == null)
-        //     {
-        //         Debug.LogError("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
-        //         return null;
-        //     }
-        // }
-        //
-        // if (_audioDictionary != null && _audioDictionary.ContainsKey(clipName))
-        // {
-        //     SoundSource soundSource = objectPoolManager.GetObject(0, Vector3.zero, Quaternion.identity);
-        //     if (soundSource != null)
-        //     {
-        //         soundSource.Play(_audioDictionary[clipName], _soundEffectVolume);
-        //         return soundSource;
-        //     }
-        //     else
-        //     {
-        //         Debug.LogError("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
-        //         return null;
-        //     }
-        // }
-        // else
-        // {
-        //     Debug.LogError($"SoundManager: PlaySfxReturnSoundSource - {clipName}은 존재하지 않는 오디오 클립입니다.");
-        return null;
-        // }
+        if (objectPoolManager == null)
+        {
+            Debug.LogError("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
+            return null;
         }
+
+        if (AudioDictionary != null && AudioDictionary.ContainsKey(clipName))
+        {
+            GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
+            if(sfxPlayer == null) Instantiate(sfxAudioSourcePrefab);
+            PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
+            if (sfxPlayer != null)
+            {
+                sfxSource.Play(AudioDictionary[clipName], soundEffectVolume);
+            }
+            else
+            {
+                Debug.LogError("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
+            }
+
+            return sfxSource;
+        }
+        else
+        {
+            Debug.LogError($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            return null;
+        }
+
+    }
 }

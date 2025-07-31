@@ -5,7 +5,7 @@ public class PoolableAudioSource : MonoBehaviour, IPoolObject
     public AudioSource AudioSource => audioSource;
     [SerializeField] private string poolId = "sfxSource";
     [SerializeField] private int poolSize;
-    public GameObject GameObject { get; }
+    public GameObject GameObject => gameObject;
     public string PoolID  => poolId;
     public int PoolSize => poolSize;
 
@@ -62,7 +62,6 @@ public class PoolableAudioSource : MonoBehaviour, IPoolObject
 
         // 모든 Invoke 취소
         CancelInvoke();
-
         ObjectPoolManager.Instance.ReturnObject(this.gameObject);
     }
 

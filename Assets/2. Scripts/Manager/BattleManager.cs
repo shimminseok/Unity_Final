@@ -15,6 +15,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private StageSO currentStage;
     private List<Unit> allUnits = new();
+    public List<Unit> AllUnits { get => allUnits; set => allUnits = value; }
     public event Action OnBattleEnd;
 
     private UIReward uiReward;
@@ -36,6 +37,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
+        BattleSceneLoader.Instance.LoadAssets();
     }
 
     private void SetAlliesUnit(PlayerDeck playerDeck)
