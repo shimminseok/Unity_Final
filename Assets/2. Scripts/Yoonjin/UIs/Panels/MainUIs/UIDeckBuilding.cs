@@ -134,6 +134,7 @@ public class UIDeckBuilding : UIBase
             slot.Deselect();
         }
 
+        unitInfoPanel.ClosePanel();
         avatarPreviewManager.HideAllBuilindUIAvatars();
         selectedUnitSlot = null;
     }

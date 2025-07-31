@@ -27,12 +27,13 @@ public class ToastMessageUI : UIBase
     public override void Close()
     {
         base.Close();
+        fadeTween?.Kill();
     }
 
     public void SetToastMessage(string message)
     {
         toastMassage.text = message;
-        UIManager.Open(this);
+        this.Open();
     }
 
     private void ShowToastMessage()
