@@ -34,7 +34,7 @@ public class LoadDataEnum
         using (StreamWriter writer = new StreamWriter(enumPath))
         {
             writer.WriteLine("public enum SFXName");
-            writer.WriteLine("{");
+            writer.WriteLine("{    None,");
 
             foreach (var entry in entries)
             {
@@ -77,7 +77,7 @@ public class LoadDataEnum
         using (StreamWriter writer = new StreamWriter(enumPath))
         {
             writer.WriteLine("public enum BGMName");
-            writer.WriteLine("{");
+            writer.WriteLine("{    None,");
 
             foreach (var entry in entries)
             {

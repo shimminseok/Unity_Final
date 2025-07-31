@@ -4,13 +4,14 @@
 [CreateAssetMenu(fileName = "NewMeleeAttack", menuName = "ScriptableObjects/AttackType/Melee", order = 0)]
 public class MeleeAttackSo : CombatActionSo
 {
+
     public override AttackDistanceType DistanceType => AttackDistanceType.Melee;
 
     public override void Execute(IAttackable attacker, IDamageable target)
     {
         float baseAttackPow = attacker.StatManager.GetValue(StatType.AttackPow);
         float finalValue    = baseAttackPow;
-
+        PlaySFX(attacker);
         bool isCritical = Random.value < attacker.StatManager.GetValue(StatType.CriticalRate);
         if (isCritical)
         {
@@ -33,5 +34,11 @@ public class MeleeAttackSo : CombatActionSo
 
         float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, target.CurrentEmotion.EmotionType);
         target.TakeDamage(finalValue * multiplier);
+    }
+    
+    public override void PlaySFX(IAttackable attacker)
+    {
+        AudioManager.Instance.PlaySFX(AttackSound.ToString());
+        AudioManager.Instance.PlaySFX(HitSound.ToString());
     }
 }

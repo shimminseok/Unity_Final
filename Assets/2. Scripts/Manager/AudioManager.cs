@@ -32,6 +32,7 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     }
 
     protected void Start()
+    
     {
         objectPoolManager = ObjectPoolManager.Instance;
     }
@@ -78,9 +79,9 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     /* BGM은 Loop를 돌며 계속해서 반복 재생 */
     public void PlayBGM(string clipName, bool isLoop = true)
     {
-        if (bgmAudioSource == null || AudioDictionary == null)
+        if (bgmAudioSource == null || AudioDictionary == null || clipName == "None")
         {
-            Debug.LogError("SoundManager: BGM 재생 실패 - AudioSource 또는 AudioDictionary가 null입니다.");
+            Debug.LogWarning("SoundManager: BGM 재생 실패 - AudioSource 또는 AudioDictionary가 null입니다.");
             return;
         }
 
@@ -93,7 +94,7 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
         }
         else
         {
-            Debug.LogError($"SoundManager: PlayBGM - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            Debug.LogWarning($"SoundManager: PlayBGM - {clipName}은 존재하지 않는 오디오 클립입니다.");
         }
     }
 
@@ -109,15 +110,15 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     /* 효과음 재생용 메서드 */
     public void PlaySFX(string clipName)
     {
-        if (string.IsNullOrEmpty(clipName))
+        if (string.IsNullOrEmpty(clipName) || clipName == "None")
         {
-            Debug.LogError("SoundManager: PlaySFX - clipName이 null 또는 빈 문자열입니다.");
+            Debug.LogWarning("SoundManager: PlaySFX - clipName이 null 또는 빈 문자열입니다.");
             return;
         }
 
         if (objectPoolManager == null)
         {
-            Debug.LogError("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
+            Debug.LogWarning("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
             return;
         }
 
@@ -132,26 +133,26 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             }
             else
             {
-                Debug.LogError("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
+                Debug.LogWarning("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
             }
         }
         else
         {
-            Debug.LogError($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            Debug.LogWarning($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
         }
     }
 
     /* 효과음 재생 후 해당 효과음 제어를 위해 만들어진 효과음 Prefab을 Return받는데 사용되는 메서드 */
     public PoolableAudioSource PlaySfxReturnSoundSource(string clipName)
     {
-        if (string.IsNullOrEmpty(clipName))
+        if (string.IsNullOrEmpty(clipName) || clipName == "None" )
         {
-            Debug.LogError("SoundManager: PlaySfxReturnSoundSource - clipName이 null 또는 빈 문자열입니다.");
+            Debug.LogWarning("SoundManager: PlaySfxReturnSoundSource - clipName이 null 또는 빈 문자열입니다.");
             return null;
         }
         if (objectPoolManager == null)
         {
-            Debug.LogError("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
+            Debug.LogWarning("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
             return null;
         }
 
@@ -166,14 +167,14 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             }
             else
             {
-                Debug.LogError("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
+                Debug.LogWarning("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
             }
 
             return sfxSource;
         }
         else
         {
-            Debug.LogError($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            Debug.LogWarning($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
             return null;
         }
 

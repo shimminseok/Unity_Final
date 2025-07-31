@@ -159,6 +159,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     }
 
 
+    public abstract void PlayAttackVoiceSound();
+    public abstract void PlayHitVoiceSound();
     public abstract void Attack();
     public abstract void MoveTo(Vector3 destination);
 
