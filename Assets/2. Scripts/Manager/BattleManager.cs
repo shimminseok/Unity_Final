@@ -36,6 +36,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
         TurnHandler = new TurnHandler();
         SetAllUnits(PartyUnits.Concat(EnemyUnits).ToList());
+        BattleSceneLoader.Instance.LoadAssets();
     }
 
     /// <summary>
