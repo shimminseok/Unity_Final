@@ -140,7 +140,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void PlayHitVoiceSound()
     {
         PlayerUnitSO so = UnitSo as PlayerUnitSO;
-        if (so.AttackVoiceSound != SFXName.None)
+        if (so.HitVoiceSound != SFXName.None)
         {
             AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
         }
@@ -150,6 +150,23 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             StringBuilder sb = new StringBuilder();
             sb.Append(gender.ToString());
             sb.Append("HitSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+
+    public override void PlayDeadSound()
+    {
+        PlayerUnitSO so = UnitSo as PlayerUnitSO;
+        if (so.DeadSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+        }
+        else
+        {
+            Gender gender = Define.GetGender(so.JobType);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(gender.ToString());
+            sb.Append("DeadSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
         }
     }

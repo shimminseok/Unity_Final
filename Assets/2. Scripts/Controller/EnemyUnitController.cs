@@ -124,7 +124,7 @@ using Random = UnityEngine.Random;
     public override void PlayHitVoiceSound()
     {
         EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.AttackVoiceSound != SFXName.None)
+        if (so.HitVoiceSound != SFXName.None)
         {
             AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
         }
@@ -138,7 +138,25 @@ using Random = UnityEngine.Random;
             AudioManager.Instance.PlaySFX(sb.ToString());
         }
     }
-    
+
+    public override void PlayDeadSound()
+    {
+        EnemyUnitSO so = UnitSo as EnemyUnitSO;
+        if (so.DeadSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+        }
+        else
+        {
+            MonsterType monsterType = so.monsterType;
+            if (monsterType == MonsterType.None) return;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(monsterType.ToString());
+            sb.Append("DeadSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+
     public override void PlayAttackVoiceSound()
     {
         EnemyUnitSO so = UnitSo as EnemyUnitSO;
