@@ -145,6 +145,7 @@ public class CharacterIntroManager : MonoBehaviour
 
     public void OnClickBannermenu()
     {
+        Debug.Log("Test Mode On");
         GameManager.Instance.isTestMode = true;
     }
 
