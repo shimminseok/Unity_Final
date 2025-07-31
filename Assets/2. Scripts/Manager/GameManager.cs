@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public bool isTestMode;
     private AccountManager   AccountManager   => AccountManager.Instance;
     private InventoryManager InventoryManager => InventoryManager.Instance;
     private SaveLoadManager  SaveLoadManager  => SaveLoadManager.Instance;

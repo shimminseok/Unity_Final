@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class CharacterIntroManager : MonoBehaviour
 {
-     /*
+    /*
      * 캐릭터 등장 씬 연출 스크립트
      *
      * - Start() : 시작 시 PlaceCharacters 코루틴 실행. 전체 연출의 시작점
@@ -15,13 +15,13 @@ public class CharacterIntroManager : MonoBehaviour
      * - IEnumerator ShowStartButton() : 걷기가 일정 시간 지난 후, 스타트 버튼을 등장시킴
      */
 
-    public GameObject[] characterObjects;     // 씬에 직접 배치한 캐릭터 오브젝트들 (7명)
-    public Transform[] formationPositions;    // 각 캐릭터가 서야 할 대열 위치 (씬에 빈 오브젝트 7개)
-    public Transform walkDirection;           // 걷는 방향을 나타내는 기준 오브젝트 (Z+ 방향으로 설정)
-    public GameObject startButton;            // 스타트 버튼 UI (걷기 이후에 등장)
-    public GameObject startLOGO;              // 스타트 로고
+    public GameObject[] characterObjects;  // 씬에 직접 배치한 캐릭터 오브젝트들 (7명)
+    public Transform[] formationPositions; // 각 캐릭터가 서야 할 대열 위치 (씬에 빈 오브젝트 7개)
+    public Transform walkDirection;        // 걷는 방향을 나타내는 기준 오브젝트 (Z+ 방향으로 설정)
+    public GameObject startButton;         // 스타트 버튼 UI (걷기 이후에 등장)
+    public GameObject startLOGO;           // 스타트 로고
     public GameObject exitButton;
-    public Image overlay;                     // 시작할 때 화면 연출
+    public Image overlay; // 시작할 때 화면 연출
 
     // 캐릭터를 추적할 리스트
     private List<GameObject> spawnedCharacters = new();
@@ -38,7 +38,6 @@ public class CharacterIntroManager : MonoBehaviour
 
         // 동시에 캐릭터 등장 연출 시작
         StartCoroutine(PlaceCharacters());
-
     }
 
     private void Update()
@@ -51,14 +50,14 @@ public class CharacterIntroManager : MonoBehaviour
     }
 
     // 씬에 배치된 캐릭터들을 대열 위치로 이동
-    IEnumerator PlaceCharacters()
+    private IEnumerator PlaceCharacters()
     {
         for (int i = 0; i < characterObjects.Length; i++)
         {
-            GameObject character = characterObjects[i]; 
-            character.SetActive(true); 
+            GameObject character = characterObjects[i];
+            character.SetActive(true);
 
-            Vector3 spawnPos = character.transform.position; // 현재 위치
+            Vector3 spawnPos  = character.transform.position;   // 현재 위치
             Vector3 targetPos = formationPositions[i].position; // 대열 목표 위치
 
             // 캐릭터가 목표 위치를 향해 바라보게 설정 (Y 고정)
@@ -83,9 +82,9 @@ public class CharacterIntroManager : MonoBehaviour
     }
 
     // 캐릭터들이 앞으로 걷기 시작하는 메서드
-    void StartWalking()
+    private void StartWalking()
     {
-        foreach (var character in spawnedCharacters)
+        foreach (GameObject character in spawnedCharacters)
         {
             Animator anim = character.GetComponent<Animator>();
             anim.SetBool("isWalking", true);
@@ -96,24 +95,24 @@ public class CharacterIntroManager : MonoBehaviour
             character.transform.LookAt(new Vector3(lookTarget.x, character.transform.position.y, lookTarget.z));
 
             // 걷는 목표 위치: 현재 위치 + 걷는 방향으로 100
-            Vector3 walkTarget = character.transform.position + walkDirection.forward * 100f;
+            Vector3 walkTarget = character.transform.position + (walkDirection.forward * 100f);
 
             // 속도 기준 걷기
             character.transform.DOMove(walkTarget, 1f)
-                .SetSpeedBased(true)         // 거리 기반이 아닌 속도 기반 이동
-                .SetEase(Ease.Linear);       // 일정한 속도
+                .SetSpeedBased(true)   // 거리 기반이 아닌 속도 기반 이동
+                .SetEase(Ease.Linear); // 일정한 속도
         }
 
         StartCoroutine(ShowStartButton()); // 스타트 버튼 등장 시작
     }
 
     // UI 스타트 버튼을 서서히 등장시키는 코루틴
-    IEnumerator ShowStartButton()
+    private IEnumerator ShowStartButton()
     {
         isStartButtonShown = true;
 
         yield return new WaitForSeconds(1f); // 걷기 도중 약간 대기
-        startButton.SetActive(true); // 버튼 활성화
+        startButton.SetActive(true);         // 버튼 활성화
         exitButton.SetActive(true);
         startLOGO.SetActive(true);
 
@@ -142,5 +141,15 @@ public class CharacterIntroManager : MonoBehaviour
     // 실제 빌드된 애플리케이션에서는 게임 종료
     Application.Quit();
 #endif
+    }
+
+    public void OnClickBannermenu()
+    {
+        GameManager.Instance.isTestMode = true;
+    }
+
+    public void OnClickDeleteSaveFile()
+    {
+        SaveLoadManager.Instance.DeleteAll();
     }
 }
