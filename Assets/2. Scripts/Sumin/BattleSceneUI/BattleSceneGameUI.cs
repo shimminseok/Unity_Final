@@ -30,6 +30,12 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private float fadeOutDuration;
     [SerializeField] private float turnAniDuration;
 
+    [Header("처음 전투 입장 시 UI 등장")]
+    [SerializeField] private RectTransform monsterInfoUI;
+    [SerializeField] private RectTransform playerInfoUI;
+    [SerializeField] private RectTransform selectPhaseUI;
+    [SerializeField] private RectTransform topButtons;
+
     private Vector2 originalPos;
     private bool initialized = false;
     private Sequence turnAniSequence;
@@ -46,6 +52,20 @@ public class BattleSceneGameUI : MonoBehaviour
     private void WaitForLoading()
     {
         PlayTurnIntroAnimation(false);
+        PlayAniUIs();
+    }
+
+    // 처음 시작 시 UI Ani
+    private void PlayAniUIs()
+    {
+        monsterInfoUI.DOKill();
+        playerInfoUI.DOKill();
+        topButtons.DOKill();
+
+        turnAniSequence.Append(monsterInfoUI.DOAnchorPos(monsterInfoUI.anchoredPosition, 0.3f).From(monsterInfoUI.anchoredPosition + Vector2.left * 500f).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(topButtons.DOAnchorPos(topButtons.anchoredPosition, 0.3f).From(topButtons.anchoredPosition + Vector2.up * 500f).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(playerInfoUI.DOAnchorPos(playerInfoUI.anchoredPosition, 0.5f).From(playerInfoUI.anchoredPosition + Vector2.down * 500f).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(selectPhaseUI.DOAnchorPos(selectPhaseUI.anchoredPosition, 0.6f).From(selectPhaseUI.anchoredPosition + Vector2.down * 500f).SetEase(Ease.OutQuint));
     }
 
     // 턴 UI 애니메이션
@@ -68,6 +88,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
         titleTextRect.DOKill();
         TurnAniUI.DOKill();
+        selectPhaseUI.DOKill();
 
         // 초기 설정
         TurnTopUI.gameObject.SetActive(false);
