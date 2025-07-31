@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using static TutorialManager;
+using static UnityEditor.Progress;
 
 
 /*
@@ -213,48 +214,23 @@ public class SaveCurrentStageData : SaveData
 [Serializable]
 public class SaveTutorialData : SaveData
 {
-    public TutorialPhase Phase { get; set; } = TutorialPhase.DeckBuildingBefore;
     public bool IsCompleted = false;
+    public TutorialManager.TutorialPhase Phase = TutorialManager.TutorialPhase.DeckBuildingBefore;
 
-    public override void OnBeforeSave()
+    public override void OnBeforeSave() 
     {
-        int stepId = TutorialManager.Instance.CurrentStep?.ID ?? 0;
 
-        // 현재 스텝에 따라 어떤 Phase에 해당하는지 판단
-        if (stepId >= 79)
-        {
-            Phase = TutorialPhase.LevelUp;
-        }
-        else if (stepId >= 70)
-        {
-            Phase = TutorialPhase.DeckBuildingAfter;
-        }
-        else
-        {
-            Phase = TutorialPhase.DeckBuildingBefore;
-        }
     }
 }
 
 
-[Serializable]
+    [Serializable]
 public class SaveInventoryItemData : SaveData
 {
     public List<SaveInventoryItem> InventoryItems { get; set; } = new();
 
     public override void OnBeforeSave()
     {
-        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
-        {
-            int stepId = TutorialManager.Instance.CurrentStep?.ID ?? 0;
-
-            //  보상 지급 단계만 저장 허용
-            if (stepId != 70)
-            {
-                return;
-            }
-        }
-
         InventoryItems = InventoryManager.Instance.GetInventoryItems().ConvertAll(item => new SaveInventoryItem(item));
     }
 }
@@ -266,16 +242,6 @@ public class SaveUnitInventoryData : SaveData
 
     public override void OnBeforeSave()
     {
-        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
-        {
-            int stepId = TutorialManager.Instance.CurrentStep?.ID ?? 0;
-
-            if (stepId < 70)
-            {
-                return; // 저장하지 않음 (이전 장착 상태 무시)
-            }
-        }
-
         UnitInventory = AccountManager.Instance.GetPlayerUnits().ConvertAll(unit => new SaveEntryDeckData(unit));
     }
 }
@@ -287,16 +253,6 @@ public class SaveInventorySkill : SaveData
 
     public override void OnBeforeSave()
     {
-        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
-        {
-            int stepId = TutorialManager.Instance.CurrentStep?.ID ?? 0;
-
-            if (stepId != 70)
-            {
-                return;
-            }
-        }
-
         SkillInventory = AccountManager.Instance.GetInventorySkills().ConvertAll(skill => new SaveSkillData(skill));
     }
 }
