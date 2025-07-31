@@ -96,6 +96,11 @@ public class InputManager : SceneOnlySingleton<InputManager>
         gameUI.ToggleActiveStartBtn(true);
     }
 
+    public void BattleEnd()
+    {
+        gameUI.BattleEnd();
+    }
+
     // Skill 선택 중 나가기 버튼
     public void OnClickSkillExitButton()
     {
