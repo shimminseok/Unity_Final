@@ -69,7 +69,7 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
 
 
     // 메모리에 올라온 오디오클립을 릴리즈
-    private void ReleaseAudioClips()
+    public void ReleaseAudioClips()
     {
         foreach (var handle in loadAudioClipHandles)
         {

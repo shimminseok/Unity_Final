@@ -17,7 +17,7 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
     {
         // 로딩창
         LoadingScreenController.Instance.Show();
-
+        LoadAssetManager.Instance.ReleaseAudioClips();
         StartCoroutine(InternalLoadScene(sceneName, LoadSceneMode.Single, onComplete));
     }
 
