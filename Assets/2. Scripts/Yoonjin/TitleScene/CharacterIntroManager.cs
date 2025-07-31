@@ -129,6 +129,7 @@ public class CharacterIntroManager : MonoBehaviour
 
     public void OnClickStart()
     {
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
         LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
     }
 
