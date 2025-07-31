@@ -38,16 +38,15 @@ public class TurnHandler
             BattleManager.Instance.EndTurn();
 
             // 튜토리얼에서 TurnChanged 이벤트 발행
-            TutorialManager tutorial = TutorialManager.Instance;
+            var tutorial = TutorialManager.Instance;
 
             if (tutorial != null && tutorial.IsActive &&
-                tutorial.CurrentStep?.ActionData is TriggerWaitActionData triggerData &&
-                triggerData.ActionType == TutorialActionType.TriggerWait &&
-                triggerData.triggerEventName == "TurnChanged")
+                tutorial.CurrentStep?.Actions
+                    .OfType<TriggerWaitActionData>()
+                    .Any(x => x.triggerEventName == "TurnChanged") == true)
             {
                 EventBus.Publish("TurnChanged");
             }
-
         }
     }
 

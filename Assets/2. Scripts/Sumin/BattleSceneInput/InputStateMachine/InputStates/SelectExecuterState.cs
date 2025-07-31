@@ -1,4 +1,6 @@
 // 플레이어 유닛 선택
+using System.Linq;
+
 public class SelectExecuterState : IInputState
 {
     private readonly InputContext context;
@@ -36,15 +38,14 @@ public class SelectExecuterState : IInputState
         var tutorial = TutorialManager.Instance;
 
         // 튜토리얼 중 HighlightUI 액션일 경우엔 유닛 선택 막기
-        if (tutorial != null && tutorial.IsActive
-            && tutorial.CurrentStep != null
-            && tutorial.CurrentStep.ActionData != null
-            && tutorial.CurrentStep.ActionData.ActionType == TutorialActionType.HighlightUI)
+        if (tutorial != null && tutorial.IsActive &&
+            tutorial.CurrentStep?.Actions
+                .Any(x => x.ActionType == TutorialActionType.HighlightUI) == true)
         {
             return;
         }
 
-        if (selector.TrySelectUnit(context.PlayerUnitLayer, out ISelectable unit))
+            if (selector.TrySelectUnit(context.PlayerUnitLayer, out ISelectable unit))
         {
             // Unit Select하면 context의 SelectedUnit에 넘겨줌
             context.SelectedExecuter = unit;
@@ -62,17 +63,13 @@ public class SelectExecuterState : IInputState
             context.DisableStartButtonUI?.Invoke();
             context.OpenSkillUI?.Invoke(context.SelectedExecuter.SelectedUnit);
 
-
-            if (tutorial != null && tutorial.IsActive
-                && tutorial.CurrentStep != null
-                && tutorial.CurrentStep.ActionData is TriggerWaitActionData triggerData
-                && triggerData.ActionType == TutorialActionType.TriggerWait
-                && triggerData.triggerEventName == "PlayerSelected")
+            if (tutorial != null && tutorial.IsActive &&
+                tutorial.CurrentStep?.Actions
+                    .OfType<TriggerWaitActionData>()
+                    .Any(x => x.triggerEventName == "PlayerSelected") == true)
             {
                 EventBus.Publish("PlayerSelected");
             }
-
-
 
             // 스킬 선택 상태로 넘어감
             inputStateMachine.ChangeState<SelectSkillState>();

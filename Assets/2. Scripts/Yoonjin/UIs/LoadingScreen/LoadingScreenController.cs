@@ -24,7 +24,7 @@ public class LoadingScreenController : Singleton<LoadingScreenController>
             var prefab = Resources.Load<GameObject>("UI/LoadingCanvas");
             var uiRoot = Instantiate(prefab, transform); // 자식으로 붙임
             progressSlider = uiRoot.GetComponentInChildren<Slider>();
-            overlayImage = uiRoot.transform.GetChild(2).GetComponent<Image>();
+            overlayImage = uiRoot.transform.GetChild(3).GetComponent<Image>();
         }
 
         gameObject.SetActive(false);
