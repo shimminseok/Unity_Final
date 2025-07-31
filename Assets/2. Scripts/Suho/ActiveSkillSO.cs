@@ -30,6 +30,7 @@ public class ActiveSkillSO : SkillSo
     public AnimationClip skillAnimation;
     public PlayableAsset skillTimeLine;
     public bool isSkillScene = false;
+    public List<SFXName> SFX;
 
     public CombatActionSo SkillType { get; private set; }
 

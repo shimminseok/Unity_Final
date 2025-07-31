@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
@@ -48,30 +49,85 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Start()
     {
-        IsActive = false;
-
         var tutorialData = SaveLoadManager.Instance
             .SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) as SaveTutorialData;
 
-        // 이미 튜토리얼 완료한 유저는 실행 안 함
-        if (tutorialData?.IsCompleted == true)
+        // 데이터가 없으면 새로 생성
+        if (tutorialData == null)
+        {
+            tutorialData = new SaveTutorialData
+            {
+                Phase = TutorialPhase.DeckBuildingBefore,
+                IsCompleted = false
+            };
+
+            SaveLoadManager.Instance.SaveDataMap[SaveModule.Tutorial] = tutorialData;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        }
+
+        // 튜토리얼 완료된 경우 비활성화
+        if (tutorialData.IsCompleted)
         {
             IsActive = false;
-            Debug.Log("[튜토리얼] 이미 완료된 유저입니다.");
             return;
         }
 
         IsActive = true;
 
-        int resumeStep = tutorialData?.Phase switch
+        // DeckBuildingBefore 페이즈에서는 장비, 스킬, 유닛 초기화
+        if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
         {
-            TutorialPhase.LevelUp => 81,
-            TutorialPhase.DeckBuildingAfter => 72,
-            _ => 0
-        };
+            var unitList = AccountManager.Instance.GetPlayerUnits();
+
+            foreach (var unit in unitList)
+            {
+                // 출전 중인 유닛 해제
+                unit.Compete(-1, false);
+
+                // 장비 해제
+                var equippedTypes = unit.EquippedItems.Keys.ToList();
+                foreach (var type in equippedTypes)
+                {
+                    unit.UnEquipItem(type);
+                }
+
+                // 스킬 해제
+                foreach (var skill in unit.SkillDatas)
+                {
+                    if (skill != null)
+                        unit.UnEquipSkill(skill);
+                }
+            }
+
+            // 저장
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
+        }
+
+        // 재시작 지점 설정
+        int resumeStep = tutorialTable.DataDic.Values
+            .Where(step => step.phase == tutorialData.Phase && step.isResumeEntryPoint)
+            .Select(step => step.ID)
+            .FirstOrDefault();
+
+        // 유효한 ID인지 확인 (예외 처리 추가)
+        if (!tutorialTable.DataDic.ContainsKey(resumeStep))
+        {
+            if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
+            {
+                Debug.LogWarning("[튜토리얼] ResumeStep이 없어 기본 ID 0으로 시작합니다.");
+                resumeStep = 0;
+            }
+            else
+            {
+                Debug.LogError($"[튜토리얼] resumeStep ID {resumeStep}이 존재하지 않습니다. 튜토리얼을 종료합니다.");
+                EndTutorial();
+                return;
+            }
+        }
 
         GoToStep(resumeStep);
     }
+
 
     // 특정 ID의 튜토리얼 스텝 실행
     public void GoToStep(int id)
@@ -99,6 +155,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         Debug.Log($"[튜토리얼] {currentStep.ActionData.ActionType} 실행기 호출!");
+        Debug.Log($"현재 페이즈 {currentStep.phase}");
         executor.Enter(currentStep.ActionData);
     }
 
@@ -106,14 +163,17 @@ public class TutorialManager : Singleton<TutorialManager>
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
     {
-        TutorialActionExecutor executor = executorMap[currentStep.ActionData.ActionType];
+        var executor = executorMap[currentStep.ActionData.ActionType];
         executor?.Exit();
 
-        // 진행 중간 저장
-        SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        // 현재 페이즈 저장
+        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
+        {
+            tutorialData.Phase = currentStep.phase;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        }
 
         GoToStep(currentStep.NextID);
-        Debug.Log("튜토리얼 다음 단계로");
     }
 
     // 튜토리얼 종료
@@ -121,17 +181,14 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         IsActive = false;
 
-        // 튜토리얼 완료 저장
         if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
         {
             tutorialData.IsCompleted = true;
+
             SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
-        // 튜토리얼 끝났을 때만 아이템/스킬 저장
-        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
-        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventorySkill);
-
         Debug.LogWarning("튜토리얼 종료!");
     }
+
 }

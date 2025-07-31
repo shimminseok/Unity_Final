@@ -8,34 +8,39 @@ public class GachaUI : UIBase
 {
     [Header("뽑기 버튼들")]
     [SerializeField] private GachaDrawButton drawButtonOne;
+
     [SerializeField] private GachaDrawButton drawButtonTen;
     [SerializeField] private TextMeshProUGUI drawOneCost;
     [SerializeField] private TextMeshProUGUI drawTenCost;
 
     [Header("캐릭터 가챠")]
     [SerializeField] private Button characterGachaButton;
+
     [SerializeField] private CharacterGachaSystem characterGachaSystem;
     [SerializeField] private CharacterGachaResultUI characterGachaResultUI;
-    [SerializeField] private CharacterGachaBannerUI characterGachaBannerUI;
     private CharacterGachaHandler characterHandler;
 
     [Header("스킬 가챠")]
     [SerializeField] private Button skillGachaButton;
+
     [SerializeField] private SkillGachaSystem skillGachaSystem;
     [SerializeField] private SkillGachaResultUI skillGachaResultUI;
-    [SerializeField] private SkillGachaBannerUI skillGachaBannerUI;
     private SkillGachaHandler skillHandler;
 
     [Header("장비 가챠")]
     [SerializeField] private Button equipmentGachaButton;
+
     [SerializeField] private EquipmentGachaSystem equipmentGachaSystem;
     [SerializeField] private EquipmentGachaResultUI equipmentGachaResultUI;
-    [SerializeField] private EquipmentGachaBannerUI equipmentGachaBannerUI;
     private EquipmentGachaHandler equipmentHandler;
 
     [Header("좌측 메뉴")]
     [SerializeField] private GameObject gachaMenu;
+
     [SerializeField] private float fadeInDuration;
+
+
+    [SerializeField] private GachaBanner gachaBanner;
     private RectTransform gachaMenuRect;
     private CanvasGroup gachaMenuCanvasGroup;
     private Vector2 originalPos;
@@ -51,13 +56,13 @@ public class GachaUI : UIBase
         gachaMenuCanvasGroup = gachaMenu.GetComponent<CanvasGroup>();
 
         characterGachaButton.onClick.RemoveAllListeners();
-        characterGachaButton.onClick.AddListener(() => OnCharacterGachaSelected());
+        characterGachaButton.onClick.AddListener(OnCharacterGachaSelected);
 
         skillGachaButton.onClick.RemoveAllListeners();
-        skillGachaButton.onClick.AddListener(() => OnSkillGachaSelected());
+        skillGachaButton.onClick.AddListener(OnSkillGachaSelected);
 
         equipmentGachaButton.onClick.RemoveAllListeners();
-        equipmentGachaButton.onClick.AddListener(() => OnEquipmentGachaSelected());
+        equipmentGachaButton.onClick.AddListener(OnEquipmentGachaSelected);
     }
 
     public override void Open()
@@ -81,11 +86,11 @@ public class GachaUI : UIBase
         gachaMenuRect.DOKill();
         gachaMenuCanvasGroup.DOKill();
 
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         gachaMenuCanvasGroup.alpha = 0f;
 
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(gachaMenuRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.left * 200f).SetEase(Ease.OutBack));
+        sequence.Append(gachaMenuRect.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.left * 200f)).SetEase(Ease.OutBack));
         sequence.Join(gachaMenuCanvasGroup.DOFade(1f, fadeInDuration));
     }
 
@@ -98,27 +103,27 @@ public class GachaUI : UIBase
         button.interactable = false;
     }
 
-    public void OnCharacterGachaSelected()
+    private void OnCharacterGachaSelected()
     {
-        SetGachaSelection(characterHandler, characterGachaBannerUI, characterGachaButton);
+        SetGachaSelection(characterHandler, 0, characterGachaButton);
     }
 
-    public void OnSkillGachaSelected()
+    private void OnSkillGachaSelected()
     {
-        SetGachaSelection(skillHandler, skillGachaBannerUI, skillGachaButton);
+        SetGachaSelection(skillHandler, 1, skillGachaButton);
     }
 
-    public void OnEquipmentGachaSelected()
+    private void OnEquipmentGachaSelected()
     {
-        SetGachaSelection(equipmentHandler, equipmentGachaBannerUI, equipmentGachaButton);
+        SetGachaSelection(equipmentHandler, 2, equipmentGachaButton);
     }
 
-    private void SetGachaSelection(IGachaHandler handler, IGachaBannerUI bannerUI, Button activeButton)
+    private void SetGachaSelection(IGachaHandler handler, int index, Button activeButton)
     {
         drawButtonOne.Initialize(handler, 1);
         drawButtonTen.Initialize(handler, 10);
         InitializeGachaTypeUI();
-        bannerUI.ShowBanner();
+        gachaBanner.ShowBanner(index);
         ToggleActiveButtons(activeButton);
         drawOneCost.text = $"x {handler.GetTotalCost(1)}";
         drawTenCost.text = $"x {handler.GetTotalCost(10)}";
@@ -134,9 +139,10 @@ public class GachaUI : UIBase
     // 배너들 초기화
     private void ResetAllBanners()
     {
-        characterGachaBannerUI.HideBanner();
-        skillGachaBannerUI.HideBanner();
-        equipmentGachaBannerUI.HideBanner();
+        gachaBanner.HideAllBanner();
+        // characterGachaBannerUI.HideBanner();
+        // skillGachaBannerUI.HideBanner();
+        // equipmentGachaBannerUI.HideBanner();
     }
 
     // 버튼들 초기화

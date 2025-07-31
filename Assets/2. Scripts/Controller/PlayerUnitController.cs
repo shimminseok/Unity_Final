@@ -30,6 +30,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     private HPBarUI hpBar;
 
+    public override event Action OnDead;
+
     protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
         return state switch
@@ -248,6 +250,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         IsDead = true;
+        OnDead?.Invoke();
         if (LastAttacker != null)
         {
             if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)

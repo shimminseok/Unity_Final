@@ -187,6 +187,7 @@ public class CharacterInfo : MonoBehaviour
         {
             selectedPlayerUnitData.OnEquipmmmentChanged -= RefreshUI;
             selectedPlayerUnitData.OnSkillChanged -= SetPlayerUnitSkillInfo;
+            unitLevelUpPanel.ClosePanel();
         }
 
         panelRect.DOKill();

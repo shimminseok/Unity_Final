@@ -28,7 +28,11 @@ MonoBehaviour:
       selectTarget: 0
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
-      damageEffects: []
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.8
+        value: 30
       buffEffects:
       - ownerStatType: 4
         weight: 0
@@ -48,11 +52,48 @@ MonoBehaviour:
           Duration: 2
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
+              type: 3}
+            VFXPoolID: YellowHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+          - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+              type: 3}
+            VFXPoolID: StunVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
+          type: 3}
+        VFXPoolID: YellowHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+      - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+          type: 3}
+        VFXPoolID: StunVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2
   skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
+  SFX: 01000000

@@ -50,6 +50,10 @@ public class UnitSelector
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableUnit))
         {
             selected = hit.transform.GetComponent<ISelectable>();
+            if (selected.SelectedUnit.IsDead)
+            {
+                return false;
+            }
             return selected != null;
         }
 
@@ -64,8 +68,12 @@ public class UnitSelector
         selectableUnits.AddRange(GetUnitsFromLayer(layer));
 
         foreach (Unit unit in selectableUnits)
-        {
+        {    
             unit.ToggleSelectableIndicator(show);
+            if (unit.IsDead)
+            {
+                unit.ToggleSelectableIndicator(false);
+            }
         }
     }
 

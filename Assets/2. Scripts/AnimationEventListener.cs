@@ -29,6 +29,7 @@ public class AnimationEventListener : MonoBehaviour
         else if (owner.CurrentAction == ActionType.SKill)
         {
             owner.SkillController.CurrentSkillData.skillSo.skillType.PlayVFX(owner,owner.Target);
+            owner.SkillController.CurrentSkillData.skillSo.skillType.PlaySFX(owner);
             UseSkill();
         }
     }

@@ -122,6 +122,7 @@ public class UnitLevelUpPanel : MonoBehaviour
             {
                 currentPlayerUnitData.OnLevelUp -= UpdateLevelText;
                 currentPlayerUnitData.OnTranscendChanged -= UpdateDupeCount;
+                PopupManager.Instance.GetUIComponent<ToastMessageUI>().Close();
             }
 
             contents.SetActive(false);

@@ -51,6 +51,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public event Action  OnMeleeAttackFinished;
     public event Action  OnRangeAttackFinished;
     public event Action  OnSkillFinished;
+    public abstract event Action  OnDead;
     public          Unit SelectedUnit => this;
     public abstract void StartTurn();
     public abstract void EndTurn();
