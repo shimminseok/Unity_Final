@@ -15,6 +15,10 @@ public class UnitSO : ScriptableObject, IStatProvider
 
     public AnimationClip AttackAniClip;
 
+    [Header("무기로 때릴때의 보이스 사운드")]public SFXName AttackVoiceSound;
+    [Header("데미지를 입었을 때의 보이스 사운드")]public SFXName HitVoiceSound;
+    [Header("죽을 때의 효과음")]public SFXName DeadSound;
+
     private Dictionary<StatType, StatData> statDic = new Dictionary<StatType, StatData>();
 
     public StatData GetStat(StatType statType)
@@ -26,4 +30,6 @@ public class UnitSO : ScriptableObject, IStatProvider
 
         return statDic[statType];
     }
+    
+    
 }

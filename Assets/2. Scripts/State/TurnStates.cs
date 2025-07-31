@@ -118,6 +118,7 @@ public class ActState : ITurnState
 
     public void OnEnter(Unit unit)
     {
+        
         target = unit.Target as Unit;
         if (target != null)
         {

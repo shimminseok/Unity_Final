@@ -117,4 +117,19 @@ public static class Define
         { "Item", () => InventoryManager.Instance.AddItem(new EquipmentItem(11101)) },
         { "Skill", () => AccountManager.Instance.AddSkill(TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(1002), out _) }
     };
+
+    public static Gender GetGender(JobType jobType)
+    {
+        switch (jobType)
+        {
+            case JobType.Archer:
+            case JobType.Male_Warrior: return Gender.Male;
+            case JobType.FeMale_Warrior :
+            case JobType.DragonKnight:
+            case JobType.Priest:
+            case JobType.SpearMan:
+            case JobType.Mage: 
+            default: return Gender.Female;
+        }
+    }
 }
