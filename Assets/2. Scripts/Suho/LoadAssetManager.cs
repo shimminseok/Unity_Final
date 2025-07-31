@@ -11,7 +11,6 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     
     //비동기 로딩 시 사용할 핸들
     private List<AsyncOperationHandle<AudioClip>> loadAudioClipHandles = new();
-    private List<AsyncOperationHandle<IList<AudioClip>>> loadSceneAudiohandles = new();
     
     // 레이블을 사용해서 에셋번들의 로케이션을 받아오는 메서드
     public void LoadAssetBundle(string labelName)
@@ -33,18 +32,32 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     }
     
     // 받아온 로케이션을 통해 에셋을 로드해오는 메서드
-    public void OnLoadAssetsChangeScene(string lableName, IList<IResourceLocation> locations)
-    {   
-        //스테이지에 필요한 사운드레이블을 가져오기
-        Addressables.LoadAssetsAsync<AudioClip>(locations,null).Completed +=
-            (handle =>
+    public void OnLoadAssetsChangeScene(string labelName, IList<IResourceLocation> locations)
+    {
+        foreach (var location in locations)
+        {
+            // 각 location의 주소를 키로 사용하기 위해 LoadAssetAsync 사용
+            var handle = Addressables.LoadAssetAsync<AudioClip>(location);
+
+            handle.Completed += (clipHandle) =>
             {
-                loadSceneAudiohandles.Add(handle);
-                foreach (AudioClip clip in handle.Result)
+                if (clipHandle.Status == AsyncOperationStatus.Succeeded)
                 {
-                    AudioManager.Instance.AudioDictionary.TryAdd(clip.name, clip);
+                    AudioClip clip = clipHandle.Result;
+                    string addressKey = location.PrimaryKey;
+
+                    // 키는 address, 값은 AudioClip
+                    AudioManager.Instance.AudioDictionary.TryAdd(addressKey, clip);
+                    Debug.Log($"{addressKey} 오디오 클립 추가!");
                 }
-            });
+                else
+                {
+                    Debug.LogError($"오디오 로딩 실패: {location.PrimaryKey}");
+                }
+            };
+
+            loadAudioClipHandles.Add(handle);
+        }
     }
     
     //비동기 오디오클립 로드 메서드
@@ -75,13 +88,8 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
         {
             Addressables.Release(handle);
         }
-
-        foreach (var handle in loadSceneAudiohandles)
-        {
-            Addressables.Release(handle);
-        }
+ 
         loadAudioClipHandles.Clear();
-        loadSceneAudiohandles.Clear();
         AudioManager.Instance.AudioDictionary.Clear();
     }
     

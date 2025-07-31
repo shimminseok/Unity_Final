@@ -9,10 +9,10 @@ using UnityEngine.UI;
 public class PanelSelectedUnitInfo : MonoBehaviour
 {
     [FormerlySerializedAs("inventoryItems")]
-    [SerializeField] private InventorySlot[] unitEquippedItems = new InventorySlot[3];
+    [SerializeField] private InventorySlot[] unitEquippedItems;
 
     [SerializeField] private SkillSlot passiveSkillSlot;
-    [SerializeField] private SkillSlot[] activeSkillSlots = new SkillSlot[3];
+    [SerializeField] private SkillSlot[] activeSkillSlots;
 
     [SerializeField] private UnitSlot unitSlot;
 
@@ -27,7 +27,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
     {
         data.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
         data.OnSkillChanged -= UpdateEquippedSkillSlot;
-        this.selectedUnitData = data;
+        selectedUnitData = data;
         unitSlot.Initialize(data);
         UpdateEquippedItemSlot();
         UpdateEquippedSkillSlot();
@@ -67,7 +67,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
     private void UpdateEquippedItemSlot()
     {
-        var equipItem = selectedUnitData.EquippedItems;
+        Dictionary<EquipmentType, EquipmentItem> equipItem = selectedUnitData.EquippedItems;
         for (int i = 0; i < unitEquippedItems.Length; i++)
         {
             if (equipItem.TryGetValue((EquipmentType)i, out EquipmentItem item))

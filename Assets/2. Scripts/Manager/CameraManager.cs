@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEngine;
 
 public class CameraManager : SceneOnlySingleton<CameraManager>
@@ -7,7 +8,26 @@ public class CameraManager : SceneOnlySingleton<CameraManager>
     [SerializeField]public VirtualCameraController mainCameraController;
     [SerializeField]public VirtualCameraController skillCameraController;
 
+    [SerializeField] private CinemachineVirtualCamera startCam;
+    [SerializeField] private CinemachineVirtualCamera mainCam;
+
     public bool followNextIEffectProvider = true;
+    private LoadingScreenController loadingScreenController;
+
+    private void OnEnable()
+    {
+        loadingScreenController = LoadingScreenController.Instance;
+        loadingScreenController.OnLoadingComplete += WaitForLoading;
+        startCam.Priority = 20;
+        mainCam.Priority = 11;
+    }
+
+    private void WaitForLoading()
+    {
+        startCam.Priority = 5;
+        mainCam.Priority = 11;
+    }
+
     public void ChangeFollowTarget(IEffectProvider target)
     {
         if (followNextIEffectProvider)
@@ -34,5 +54,10 @@ public class CameraManager : SceneOnlySingleton<CameraManager>
         mainCameraController.ThrowCamera();     
         TimeLineManager.Instance.CurrentCameraController = skillCameraController;
     }
-    
+
+    private void OnDisable()
+    {
+        if (loadingScreenController != null)
+            loadingScreenController.OnLoadingComplete -= WaitForLoading;
+    }
 }

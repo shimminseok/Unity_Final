@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using static TutorialManager;
+#if UNITY_EDITOR
 using static UnityEditor.Progress;
-
+#endif
 
 /*
  * 세이브 목록
