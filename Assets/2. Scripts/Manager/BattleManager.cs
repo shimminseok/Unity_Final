@@ -211,7 +211,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             EventBus.Publish("BattleVictory");
         }
 
-
+        AudioManager.Instance.PlayBGM(BGMName.VictoryBGM.ToString());
         PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.AddReward(rewardKey);
