@@ -50,7 +50,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public void OnAttackVFX()
     {
         CombatActionSo type = attacker.SkillController.CurrentSkillData.skillSo.skillType;
-        type.PlayVFX(attacker, attacker.Target);
+        type.PlayCastVFX(attacker, attacker.Target);
     }
 
     public void AffectSkillInTimeline()

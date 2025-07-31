@@ -14,6 +14,8 @@ namespace EnemyState
             if (!isTimeLine)
             {
                 owner.Animator.SetTrigger(Define.SkillAnimationHash);
+                owner.SkillController.CurrentSkillData.skillSo.skillType.PlayCastVFX(owner,owner.Target);
+                owner.SkillController.CurrentSkillData.skillSo.skillType.PlayCastSFX(owner);
             }
         }
 

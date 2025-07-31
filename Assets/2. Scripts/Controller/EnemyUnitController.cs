@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EnemyState;
+using System.Text;
 using Random = UnityEngine.Random;
 
 
@@ -118,6 +119,60 @@ using Random = UnityEngine.Random;
 
             _ => null
         };
+    }
+    
+    public override void PlayHitVoiceSound()
+    {
+        EnemyUnitSO so = UnitSo as EnemyUnitSO;
+        if (so.HitVoiceSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
+        }
+        else
+        {
+            MonsterType monsterType = so.monsterType;
+            if (monsterType == MonsterType.None) return;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(monsterType.ToString());
+            sb.Append("HitSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+
+    public override void PlayDeadSound()
+    {
+        EnemyUnitSO so = UnitSo as EnemyUnitSO;
+        if (so.DeadSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+        }
+        else
+        {
+            MonsterType monsterType = so.monsterType;
+            if (monsterType == MonsterType.None) return;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(monsterType.ToString());
+            sb.Append("DeadSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+
+    public override void PlayAttackVoiceSound()
+    {
+        EnemyUnitSO so = UnitSo as EnemyUnitSO;
+        if (so.AttackVoiceSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.AttackVoiceSound.ToString());
+        }
+        else
+        {
+            MonsterType monsterType = so.monsterType;
+            if (monsterType == MonsterType.None) return;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(monsterType.ToString());
+            sb.Append("AttackSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
     }
 
     public override void Attack()

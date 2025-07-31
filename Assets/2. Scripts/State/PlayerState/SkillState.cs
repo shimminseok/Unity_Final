@@ -11,9 +11,14 @@ namespace PlayerState
             owner.OnToggleNavmeshAgent(false);
             owner.IsAnimationDone = false;
             TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain, CameraManager.Instance.skillCameraController, owner, out bool isTimeLine);
+            
             if (!isTimeLine)
             {
                 owner.Animator.SetTrigger(Define.SkillAnimationHash);
+                owner.SkillController.CurrentSkillData.skillSo.skillType.PlayCastVFX(owner,owner.Target);
+                owner.SkillController.CurrentSkillData.skillSo.skillType.PlayCastSFX(owner);
+
+
             }
         }
 

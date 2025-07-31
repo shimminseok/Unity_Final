@@ -226,3 +226,21 @@ public enum AlwaysLoad
 {
     AlwaysLoadSound
 }
+
+public enum Gender
+{
+    Male,
+    Female
+}
+
+public enum MonsterType
+{
+    None,
+    Slime,
+    Dotorini,
+    Sprout,
+    Bee,
+    Tree,
+    Male,
+    Female,
+}

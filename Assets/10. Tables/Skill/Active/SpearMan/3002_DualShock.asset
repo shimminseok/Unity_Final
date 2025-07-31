@@ -34,7 +34,7 @@ MonoBehaviour:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.3
-        value: 50
+        value: 0
       buffEffects:
       - ownerStatType: 4
         weight: 0
@@ -82,7 +82,7 @@ MonoBehaviour:
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
-        type: 0
+        type: 3
       - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
           type: 3}
         VFXPoolID: SplashHitVFX
@@ -101,13 +101,13 @@ MonoBehaviour:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.3
-        value: 25
+        value: 0
       buffEffects:
       - ownerStatType: 4
         weight: 0
         value: 0
         opponentStatType: 0
-        lastTurn: 1
+        lastTurn: 3
         statusEffectType: 12
         modifierType: 0
         emotionType: 0
@@ -147,4 +147,5 @@ MonoBehaviour:
   skillAnimation: {fileID: 7400000, guid: 63c645bc279fd5e49b02b390f2dd28ef, type: 2}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
-  SFX: 
+  SFX: 0
+  CastSFX: 0
