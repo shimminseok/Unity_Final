@@ -223,6 +223,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void OnStageFail()
     {
         UIManager.Instance.Open(PopupManager.Instance.GetUIComponent<UIDefeat>());
+        AudioManager.Instance.PlayBGM(BGMName.DefeatBGM.ToString());
         return;
     }
 
