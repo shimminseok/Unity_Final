@@ -12,6 +12,8 @@ public class SkillGachaSlotUI : MonoBehaviour
     [SerializeField] private GameObject duplicatedGO;
     [SerializeField] private TextMeshProUGUI duplicatedText;
     [SerializeField] private List<Sprite> itemGradeSprites;
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     // 스킬 슬롯 내용 업데이트
     public void Initialize(ActiveSkillSO skill)
@@ -24,6 +26,7 @@ public class SkillGachaSlotUI : MonoBehaviour
         {
             skillGradeStars[i].SetActive(i <= (int)skill.activeSkillTier);
         }
+        jobTypeImage.sprite = jobTypeSprites[(int)skill.jobType];
     }
 
     // 스킬 슬롯 중복 보상 업데이트

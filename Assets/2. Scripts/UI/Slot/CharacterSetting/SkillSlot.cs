@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,11 +13,13 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     [SerializeField] private Image skillTier;
     [SerializeField] private List<GameObject> skillGradeStars;
     [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private Image itemEquippedUnitIconImg;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private GameObject selectedSlotImg;
     [SerializeField] private GameObject emptySkillImg;
     [SerializeField] private List<Sprite> itemGradeSprites;
-
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
 
     public SkillData SkillData { get; private set; }
     private ActiveSkillSO activeSkillSo;
@@ -40,13 +40,19 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         gameObject.SetActive(true);
         emptySkillImg.SetActive(false);
 
-        this.activeSkillSo = skillData.skillSo;
+        activeSkillSo = skillData.skillSo;
         ShowEquipMark(skillData.IsEquipped);
+        if (skillData.IsEquipped && skillData.skillSo is ActiveSkillSO)
+        {
+            itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
+        }
+
         skillTier.gameObject.SetActive(true);
         skillTier.sprite = itemGradeSprites[(int)skillData.skillSo.activeSkillTier];
         skillIcon.gameObject.SetActive(true);
         skillIcon.sprite = activeSkillSo.SkillIcon;
         skillName.text = activeSkillSo.skillName;
+        jobTypeImage.sprite = jobTypeSprites[(int)activeSkillSo.jobType];
 
         gameObject.name = $"SkillSlot_{skillData.skillSo.ID}";
 
@@ -71,7 +77,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         gameObject.SetActive(true);
         emptySkillImg.SetActive(false);
 
-        this.passiveSo = skillSo;
+        passiveSo = skillSo;
         ShowEquipMark(false);
         skillTier.gameObject.SetActive(true);
         skillIcon.gameObject.SetActive(true);
@@ -82,7 +88,9 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void ShowEquipMark(bool isEquip)
     {
         if (itemEquipmentImg != null)
+        {
             itemEquipmentImg.gameObject.SetActive(isEquip);
+        }
     }
 
     public void EmptySlot(bool isHide)
@@ -90,6 +98,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         // 아이템 아이콘 비우기
         skillIcon.sprite = null;
         skillIcon.gameObject.SetActive(false);
+        jobTypeImage.gameObject.SetActive(false);
 
         // 아이템 프레임 비활성화
         skillTier.gameObject.SetActive(false);
@@ -112,7 +121,9 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void SetSelectedSlot(bool isSelected)
     {
         if (selectedSlotImg == null)
+        {
             return;
+        }
 
         selectedSlotImg.gameObject.SetActive(isSelected);
     }
@@ -126,7 +137,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     public void UpdateSlot(ScrollData<SkillData> data)
     {
         DataIndex = data.DataIndex;
-        SetSkillIcon(data.Data, isHide: false);
+        SetSkillIcon(data.Data, false);
         SetSelectedSlot(data.IsSelected);
     }
 }

@@ -113,7 +113,7 @@ public static class Define
 
     public static Dictionary<string, Action> FirstGivenItem = new()
     {
-        { "Unit", () => AccountManager.Instance.AddPlayerUnit(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(1)) },
+        { "Unit", () => AccountManager.Instance.AddPlayerUnit(TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(101)) },
         { "Item", () => InventoryManager.Instance.AddItem(new EquipmentItem(11101)) },
         { "Skill", () => AccountManager.Instance.AddSkill(TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(1002), out _) }
     };

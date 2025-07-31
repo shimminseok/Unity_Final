@@ -16,6 +16,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private Image itemIcon;
     [SerializeField] private Image itemSlotFrame;
     [SerializeField] private Image itemEquipmentImg;
+    [SerializeField] private Image itemEquippedUnitIconImg;
     [SerializeField] private Image selectedSlotImg;
     [SerializeField] private List<GameObject> itemGradeStars;
 
@@ -26,6 +27,10 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 
     [SerializeField] private Sprite opalSprite;
     [SerializeField] private Sprite goldSprite;
+
+    [SerializeField] private Image jobTypeImage;
+    [SerializeField] private List<Sprite> jobTypeSprites;
+
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
@@ -47,10 +52,23 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         // 이름
         gameObject.name = $"InventorySlot_{item.InventoryId}";
         ShowEquipMark(item.IsEquipped);
+        if (item.IsEquipped)
+            itemEquippedUnitIconImg.sprite = item.EquippedUnit.CharacterSo.UnitCircleIcon;
+        
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
         itemIcon.gameObject.SetActive(true);
         itemIcon.sprite = item.ItemSo.ItemSprite;
+
+        if (item.EquipmentItemSo.IsEquipableByAllJobs)
+        {
+            jobTypeImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            jobTypeImage.gameObject.SetActive(true);
+            jobTypeImage.sprite = jobTypeSprites[(int)item.EquipmentItemSo.JobType];
+        }
 
         for (int i = 0; i < itemGradeStars.Count; i++)
         {
@@ -90,6 +108,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         // 아이템 아이콘 비우기
         itemIcon.sprite = null;
         itemIcon.gameObject.SetActive(false);
+        jobTypeImage.gameObject.SetActive(false);
 
         // 아이템 프레임 비활성화
         itemSlotFrame.sprite = emptySlotSprite;
