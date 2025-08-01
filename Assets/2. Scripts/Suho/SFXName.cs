@@ -1,5 +1,7 @@
 public enum SFXName
-{    None,
+{
+    None,
+    // {    None,
     OpenUISound,
     BashSound,
     FireballSound,
@@ -24,4 +26,5 @@ public enum SFXName
     SlimeHitSound,
     SlimeTackleSound,
     SlimeAttackSound,
+    SwipeDialogueSound,
 }

@@ -30,7 +30,7 @@ public class StageSlot : MonoBehaviour
         
         if (isLocked)
         {
-            AudioManager.Instance.PlaySFX(SFXName.NoAccessUISound.ToString());
+            
             return;
         }
         
@@ -51,6 +51,7 @@ public class StageSlot : MonoBehaviour
 
     public void OnClickStageLockBtn()
     {
+        AudioManager.Instance.PlaySFX(SFXName.NoAccessUISound.ToString());
         PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("입장 조건이 맞지 않아 입장이 불가능합니다.");
     }
 }
