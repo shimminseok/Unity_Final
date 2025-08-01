@@ -10,7 +10,7 @@ public enum AudioType
     SFX
 }
 
-public class AudioManager : SceneOnlySingleton<AudioManager>
+public class AudioManager : Singleton<AudioManager>
 {
     /* 사운드 조절 기능 */
     [SerializeField] [Range(0, 1)] private float soundEffectVolume = 1f;
@@ -29,7 +29,10 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     protected override void Awake()
     {
         base.Awake();
-        InitializeAudioManager();
+        if (!isDuplicated)
+        {
+            InitializeAudioManager();
+        }
     }
 
     protected void Start()
@@ -46,14 +49,8 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             bgmAudioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        //LoadAssetManager.Instance.OnLoadAssetsChangeScene(SceneManager.GetActiveScene().name);
-        LoadAssetManager.Instance.LoadAudioClipAsync(SceneManager.GetActiveScene().name + "BGM",
-            clip =>
-            {
-                PlayBGM(clip);
-            });
-        LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound));            // 항상 로드해와야 하는 사운드
-        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
+        LoadSceneEvent();
+        LoadSceneManager.Instance.OnLoadingCompleted += LoadSceneEvent;
 
         bgmAudioSource.volume = musicVolume;
         bgmAudioSource.loop = true;
@@ -208,5 +205,17 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             Debug.LogWarning($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
             return null;
         }
+    }
+
+    private void LoadSceneEvent()
+    {
+        //LoadAssetManager.Instance.OnLoadAssetsChangeScene(SceneManager.GetActiveScene().name);
+        LoadAssetManager.Instance.LoadAudioClipAsync(SceneManager.GetActiveScene().name + "BGM",
+            clip =>
+            {
+                PlayBGM(clip);
+            });
+        LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound));            // 항상 로드해와야 하는 사운드
+        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
     }
 }
