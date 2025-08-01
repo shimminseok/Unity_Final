@@ -19,6 +19,11 @@ public class DragonKnightTransformSO : PassiveSO, IPassiveTurnStartTrigger
         return RequiredStack <= currentEmotion.Stack && currentEmotion.EmotionType == TriggerEmotion;
     }
 
+    public override void ExecutePassive()
+    {
+        OnTurnStart(Owner);
+    }
+
     public void OnTurnStart(Unit unit)
     {
         if (!CanTrigger(unit.CurrentEmotion))
@@ -36,7 +41,9 @@ public class DragonKnightTransformSO : PassiveSO, IPassiveTurnStartTrigger
         }
 
         if (isTriggered)
+        {
             return;
+        }
 
         foreach (StatData buffStat in TransformStats)
         {
@@ -44,5 +51,7 @@ public class DragonKnightTransformSO : PassiveSO, IPassiveTurnStartTrigger
         }
 
         isTriggered = true;
+
+        Debug.Log("변신 성공!!");
     }
 }

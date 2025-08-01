@@ -30,6 +30,11 @@ public interface IPassiveTurnStartTrigger
     void OnTurnStart(Unit unit);
 }
 
+public interface IPassiveTurnEndTrigger
+{
+    void OnTurnEnd(Unit unit);
+}
+
 /// <summary>
 /// 감정 데미지를 수정하는 패시브
 /// </summary>

@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 
 
-public class PassiveSO : SkillSo
+public abstract class PassiveSO : SkillSo
 {
     public EmotionType TriggerEmotion;
-    public virtual bool CanTrigger(BaseEmotion currentEmotion) => true;
+
+    public virtual bool CanTrigger(BaseEmotion currentEmotion)
+    {
+        return true;
+    }
 
     public Unit Owner { get; private set; }
 
@@ -12,4 +16,6 @@ public class PassiveSO : SkillSo
     {
         Owner = owner;
     }
+
+    public abstract void ExecutePassive();
 }

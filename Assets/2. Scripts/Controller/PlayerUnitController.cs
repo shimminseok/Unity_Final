@@ -63,6 +63,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
 
         StartPostion = transform.position;
+
+        //Test
+        ChangeEmotion(PlayerUnitSo.PassiveSkill.TriggerEmotion);
     }
 
     public override void ChangeUnitState(Enum newState)
@@ -361,14 +364,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
+        if (PassiveSo is IPassiveTurnEndTrigger turnEndTrigger)
+        {
+            turnEndTrigger.OnTurnEnd(this);
+        }
+
         if (PassiveSo is IPassiveEmotionStackTrigger stackPassive)
         {
             stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
-
-
-        // CurrentEmotion.AddStack(this);
-
         Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
