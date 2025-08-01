@@ -38,7 +38,6 @@ public class AudioManager : Singleton<AudioManager>
     protected void Start()
 
     {
-        objectPoolManager = ObjectPoolManager.Instance;
     }
 
     private void InitializeAudioManager()
@@ -209,6 +208,7 @@ public class AudioManager : Singleton<AudioManager>
 
     private void LoadSceneEvent()
     {
+        objectPoolManager = ObjectPoolManager.Instance;
         //LoadAssetManager.Instance.OnLoadAssetsChangeScene(SceneManager.GetActiveScene().name);
         LoadAssetManager.Instance.LoadAudioClipAsync(SceneManager.GetActiveScene().name + "BGM",
             clip =>
