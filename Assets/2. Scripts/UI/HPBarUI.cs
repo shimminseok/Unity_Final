@@ -238,8 +238,8 @@ public class HPBarUI : MonoBehaviour, IPoolObject
     public void OnSpawnFromPool()
     {
         targetTransform = target.Collider.transform;
-        heightOffset = target.Collider.bounds.size.y - 1.2f; // 위치 보정을 위해 임시로 -1.4f
-        offset.x += 0.1f;                                    // x도 위치보정 임시
+        heightOffset = target.Collider.bounds.max.y; // 위치 보정을 위해 임시로 -1.4f
+        offset.x += 0.1f;                            // x도 위치보정 임시
         offset.y += heightOffset;
         transform.SetParent(HealthBarManager.Instance.hpBarCanvas.transform);
     }
