@@ -52,10 +52,10 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
             yield return null;
         }
 
-        if (mode == LoadSceneMode.Single)
-        {
-            UIManager.Instance.InitializeUIRoot();
-        }
+        // if (mode == LoadSceneMode.Single)
+        // {
+        //     UIManager.Instance.InitializeUIRoot();
+        // }
 
 
         // 후처리 콜백 실행 (ex: 대사 출력)
