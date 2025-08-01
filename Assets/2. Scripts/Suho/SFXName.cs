@@ -3,7 +3,6 @@ public enum SFXName
     OpenUISound,
     BashSound,
     FireballSound,
-    SlimeAttackSound,
     SwordSwingSound,
     FemaleHitSound,
     MaleHitSound,
@@ -23,4 +22,6 @@ public enum SFXName
     NoAccessUISound,
     StartButtonUISound,
     SlimeHitSound,
+    SlimeTackleSound,
+    SlimeAttackSound,
 }
