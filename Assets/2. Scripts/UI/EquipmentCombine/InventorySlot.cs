@@ -53,8 +53,10 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         gameObject.name = $"InventorySlot_{item.InventoryId}";
         ShowEquipMark(item.IsEquipped);
         if (item.IsEquipped)
+        {
             itemEquippedUnitIconImg.sprite = item.EquippedUnit.CharacterSo.UnitCircleIcon;
-        
+        }
+
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
         itemIcon.gameObject.SetActive(true);
@@ -87,18 +89,29 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
             gameObject.SetActive(true);
             amountTxt.gameObject.SetActive(true);
             itemIcon.gameObject.SetActive(true);
-            if (rewardData.RewardType != RewardType.Item)
+            switch (rewardData.RewardType)
             {
-                if (rewardData.RewardType == RewardType.Opal)
-                {
-                    itemIcon.sprite = opalSprite;
-                }
-                else if (rewardData.RewardType == RewardType.Gold)
-                {
+                case RewardType.Gold:
                     itemIcon.sprite = goldSprite;
-                }
-                amountTxt.text = $"x{rewardData.Amount}";
+                    break;
+                case RewardType.Opal:
+                    itemIcon.sprite = opalSprite;
+                    break;
+                case RewardType.Item:
+                    ItemSO item = TableManager.Instance.GetTable<ItemTable>().GetDataByID(rewardData.ItemId);
+                    itemIcon.sprite = item.ItemSprite;
+                    break;
+                case RewardType.Skill:
+                    ActiveSkillSO skill = TableManager.Instance.GetTable<ActiveSkillTable>().GetDataByID(rewardData.ItemId);
+                    itemIcon.sprite = skill.SkillIcon;
+                    break;
+                case RewardType.Unit:
+                    PlayerUnitSO unit = TableManager.Instance.GetTable<PlayerUnitTable>().GetDataByID(rewardData.ItemId);
+                    itemIcon.sprite = unit.UnitIcon;
+                    break;
             }
+
+            amountTxt.text = rewardData.Amount > 1 ? $"x{rewardData.Amount}" : "";
         }
     }
 
@@ -143,7 +156,9 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     public void SetSelectedSlot(bool isSelected)
     {
         if (selectedSlotImg == null)
+        {
             return;
+        }
 
         selectedSlotImg.gameObject.SetActive(isSelected);
     }
@@ -151,7 +166,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     public void UpdateSlot(ScrollData<InventoryItem> data)
     {
         DataIndex = data.DataIndex;
-        Initialize(data.Data as EquipmentItem, isHide: false);
+        Initialize(data.Data as EquipmentItem, false);
         SetSelectedSlot(data.IsSelected);
     }
 }
