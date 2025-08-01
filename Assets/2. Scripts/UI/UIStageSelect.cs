@@ -44,6 +44,7 @@ public class UIStageSelect : UIBase
     }
     public void OnClickEnterStage()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         bool isDeckEmpty = DeckSelectManager.Instance
             .GetSelectedDeck()
             .All(u => u == null);
@@ -129,6 +130,7 @@ public class UIStageSelect : UIBase
 
     private void SlideToNextText(string newText)
     {
+        
         currentChapterNameRect.DOKill();
         nextChapterNameRect.DOKill();
         nextChapterName.text = newText;
@@ -168,6 +170,7 @@ public class UIStageSelect : UIBase
 
     public void OnClickedRightChapterButton()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         int nextIndex = currentChpaterIndex + 1;
         if (Define.ChapterNameDictionary.TryGetValue(nextIndex, out string chapterName))
         {
@@ -180,6 +183,7 @@ public class UIStageSelect : UIBase
 
     public void OnClickedLeftChapterButton()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         int prevIndex = currentChpaterIndex - 1;
         if (Define.ChapterNameDictionary.TryGetValue(prevIndex, out string chapterName))
         {

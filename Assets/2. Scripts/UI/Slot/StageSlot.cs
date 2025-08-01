@@ -27,11 +27,14 @@ public class StageSlot : MonoBehaviour
 
     public void OnClickStageSlot()
     {
+        
         if (isLocked)
         {
+            
             return;
         }
-
+        
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         if (stageSo.HasBeforeDialogue)
         {
             DialogueController.Instance.Play(stageSo.beforeDialogueKey, () =>
@@ -48,6 +51,7 @@ public class StageSlot : MonoBehaviour
 
     public void OnClickStageLockBtn()
     {
+        AudioManager.Instance.PlaySFX(SFXName.NoAccessUISound.ToString());
         PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("입장 조건이 맞지 않아 입장이 불가능합니다.");
     }
 }

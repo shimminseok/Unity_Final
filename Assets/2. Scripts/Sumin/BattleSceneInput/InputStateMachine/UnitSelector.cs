@@ -22,11 +22,11 @@ public class UnitSelector
         selected = null;
         Vector2 inputPos;
 
-        // UI 위 클릭 시 월드 상호작용 차단
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (IsPointerOverUI())
         {
             return false;
         }
+
 
         // PC
         if (Input.GetMouseButtonDown(0))
@@ -54,6 +54,7 @@ public class UnitSelector
             {
                 return false;
             }
+
             return selected != null;
         }
 
@@ -63,12 +64,12 @@ public class UnitSelector
     // 선택 가능한 유닛 레이어에 Selectable Indicator 띄워주기
     public void ShowSelectableUnits(LayerMask layer, bool show)
     {
-        List<Unit> selectableUnits = new List<Unit>();
+        List<Unit> selectableUnits = new();
 
         selectableUnits.AddRange(GetUnitsFromLayer(layer));
 
         foreach (Unit unit in selectableUnits)
-        {    
+        {
             unit.ToggleSelectableIndicator(show);
             if (unit.IsDead)
             {
@@ -82,9 +83,15 @@ public class UnitSelector
     {
         List<Unit> units = new();
         if ((layer.value & context.PlayerUnitLayer) != 0)
+        {
             units.AddRange(BattleManager.Instance.PartyUnits);
+        }
+
         if ((layer.value & context.EnemyUnitLayer) != 0)
+        {
             units.AddRange(BattleManager.Instance.EnemyUnits);
+        }
+
         return units;
     }
 
@@ -92,19 +99,25 @@ public class UnitSelector
     public LayerMask GetLayerFromSkill(SkillData skill)
     {
         // 기본공격이면 skill이 null 이므로 Enemy, 스킬은 SelectCampType에 따라.
-        return skill == null ? context.EnemyUnitLayer : skill.skillSo.selectCamp switch
-        {
-            SelectCampType.Enemy => context.EnemyUnitLayer,
-            SelectCampType.Player => context.PlayerUnitLayer,
-            SelectCampType.BothSide => context.UnitLayer,
-            _ => context.UnitLayer
-        };
+        return skill == null
+            ? context.EnemyUnitLayer
+            : skill.skillSo.selectCamp switch
+            {
+                SelectCampType.Enemy    => context.EnemyUnitLayer,
+                SelectCampType.Player   => context.PlayerUnitLayer,
+                SelectCampType.BothSide => context.UnitLayer,
+                _                       => context.UnitLayer
+            };
     }
 
     // 하이라이트 초기화
     public void InitializeHighlight()
     {
-        if (context.SelectedExecuter == null) return;
+        if (context.SelectedExecuter == null)
+        {
+            return;
+        }
+
         Unit executer = context.SelectedExecuter.SelectedUnit;
 
         if (executer is PlayerUnitController playerUnit)
@@ -115,17 +128,20 @@ public class UnitSelector
                 context.HighlightSkillSlotUI?.Invoke(false, i);
             }
         }
+
         context.HighlightBasicAttackUI?.Invoke(false);
 
-        var command = CommandPlanner.Instance.GetPlannedCommand(executer);
+        IActionCommand command = CommandPlanner.Instance.GetPlannedCommand(executer);
         if (CommandPlanner.Instance.HasPlannedCommand(executer))
+        {
             command.Target?.ToggleSelectedIndicator(false);
+        }
     }
 
     public void ShowPrevCommand(Unit unit)
     {
         InitializeHighlight();
-        var command = CommandPlanner.Instance.GetPlannedCommand(unit);
+        IActionCommand command = CommandPlanner.Instance.GetPlannedCommand(unit);
         if (CommandPlanner.Instance.HasPlannedCommand(unit))
         {
             if (command.SkillData != null)
@@ -138,7 +154,23 @@ public class UnitSelector
             {
                 context.HighlightBasicAttackUI?.Invoke(true);
             }
+
             command.Target?.ToggleSelectedIndicator(true);
         }
+    }
+
+    private bool IsPointerOverUI()
+    {
+#if UNITY_EDITOR
+        return EventSystem.current.IsPointerOverGameObject();
+#elif UNITY_ANDROID || UNITY_IOS
+    if (Input.touchCount > 0)
+    {
+        return EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId);
+    }
+        return false;
+#else
+        return false;
+#endif
     }
 }

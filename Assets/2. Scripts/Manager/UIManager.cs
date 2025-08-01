@@ -15,14 +15,13 @@ public class UIManager : Singleton<UIManager>
         base.Awake();
         if (!isDuplicated)
         {
+            LoadSceneManager.Instance.OnLoadingCompleted += InitializeUIRoot;
             InitializeUIRoot();
         }
     }
 
     public void InitializeUIRoot()
     {
-        uiDict.Clear();
-
         Transform uiRoot = GameObject.Find("UIRoot")?.transform;
         if (uiRoot == null)
         {
@@ -30,6 +29,7 @@ public class UIManager : Singleton<UIManager>
             return;
         }
 
+        uiDict.Clear();
         UIBase[]         uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
         List<GameObject> toDestroy    = new();
         foreach (UIBase uiComponent in uiComponents)
@@ -68,7 +68,7 @@ public class UIManager : Singleton<UIManager>
         if (openedUIList.Contains(ui))
         {
             openedUIList.Remove(ui);
-            AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
+            AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
             ui.Close();
         }
     }

@@ -29,7 +29,7 @@ public abstract class BaseInventoryUI : MonoBehaviour
                 slot.SetOnClickCallback(onClickHandler);
                 if (dataList[i] is EquipmentItem item)
                 {
-                    itemToSlotMap[item] = slot;
+                    itemToSlotMap.Add(item, slot);
                 }
             }
         }

@@ -1,3 +1,4 @@
+using PixPlays.ElementalVFX;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -26,6 +27,18 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         particle.Play();
         yield return new WaitWhile(() => particle.IsAlive(true));
         RemoveVFX();
+    }
+
+    public IEnumerator PlayVFXNoReturn()
+    {
+        particle.Play();
+        yield return new WaitWhile(() => particle.IsAlive(true));
+        StopAllCoroutines();
+    }
+
+    public void PlayDotVFX()
+    {
+        StartCoroutine(PlayVFXNoReturn());
     }
 
     public void RemoveVFX()

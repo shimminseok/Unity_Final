@@ -115,6 +115,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
 
     public void OnClickSlotBtn()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         OnClickSlot?.Invoke(SkillData);
     }
 
