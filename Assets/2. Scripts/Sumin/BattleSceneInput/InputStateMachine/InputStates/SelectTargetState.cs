@@ -1,5 +1,7 @@
 // 유닛의 타겟 선택
 
+using System.Linq;
+
 public class SelectTargetState : IInputState
 {
     private readonly InputContext context;
@@ -29,8 +31,9 @@ public class SelectTargetState : IInputState
             var tutorial = TutorialManager.Instance;
 
             if (tutorial != null && tutorial.IsActive &&
-                tutorial.CurrentStep?.ActionData is TriggerWaitActionData triggerData &&
-                triggerData.triggerEventName == "TargetSelected")
+                tutorial.CurrentStep?.Actions
+                    .OfType<TriggerWaitActionData>()
+                    .Any(x => x.triggerEventName == "TargetSelected") == true)
             {
                 EventBus.Publish("TargetSelected");
             }

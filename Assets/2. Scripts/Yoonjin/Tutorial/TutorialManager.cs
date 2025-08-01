@@ -23,6 +23,9 @@ public class TutorialManager : Singleton<TutorialManager>
     [HideInInspector]
     public bool IsActive;
 
+    // 현재 대기 중인 액션 개수
+    private int waitingActionCount;
+
     protected override void Awake()
     {
         base.Awake();
@@ -33,7 +36,8 @@ public class TutorialManager : Singleton<TutorialManager>
             { TutorialActionType.Dialogue, new DialogueActionExecutor() },
             { TutorialActionType.HighlightUI, new HighlightUIExecutor() },
             { TutorialActionType.TriggerWait, new TriggerWaitExecutor() },
-            { TutorialActionType.Reward, new RewardActionExecutor() }
+            { TutorialActionType.Reward, new RewardActionExecutor() },
+            { TutorialActionType.ImagePopup, new ImagePopupActionExecutor() }
         };
 
         // 실행기에 튜토리얼 매니저 주입
@@ -99,6 +103,14 @@ public class TutorialManager : Singleton<TutorialManager>
                 }
             }
 
+            // 출전 슬롯 비우기
+            var deckList = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
+
+            for (int i = 0; i < deckList.Count; i++)
+            {
+                deckList[i] = null;
+            }
+
             // 저장
             SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         }
@@ -126,45 +138,79 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GoToStep(resumeStep);
+        Debug.Log($"resumeStep {resumeStep}부터 재시작합니다!");
     }
 
 
-    // 특정 ID의 튜토리얼 스텝 실행
     public void GoToStep(int id)
     {
         Debug.Log($"[튜토리얼] GoToStep 호출됨 (ID: {id})");
 
         if (!tutorialTable.DataDic.TryGetValue(id, out currentStep))
         {
+            Debug.LogError($"[튜토리얼] Step ID {id}를 찾을 수 없습니다. 튜토리얼 종료.");
             EndTutorial();
             return;
         }
 
-        if (currentStep.ActionData == null)
+        if (currentStep.Actions == null || currentStep.Actions.Count == 0)
         {
-            Debug.LogError($"[튜토리얼] Step {id}의 ActionData가 null입니다!");
+            Debug.LogError($"[튜토리얼] Step {id}에 등록된 Actions가 없습니다!");
+            CompleteCurrentStep(); // 다음으로 넘겨도 무방
             return;
         }
 
-        Debug.Log($"[튜토리얼] Step {id}의 ActionType: {currentStep.ActionData.ActionType}");
+        waitingActionCount = currentStep.Actions.Count;
+        Debug.Log($"[튜토리얼] Step {id}에서 {waitingActionCount}개의 액션 실행 시작");
 
-        if (!executorMap.TryGetValue(currentStep.ActionData.ActionType, out TutorialActionExecutor executor))
+        foreach (var action in currentStep.Actions)
         {
-            Debug.LogError($"[튜토리얼] 해당 ActionType({currentStep.ActionData.ActionType})에 대한 실행기가 없습니다!");
-            return;
-        }
+            if (action == null)
+            {
+                Debug.LogWarning($"[튜토리얼] Null 액션이 포함되어 있습니다.");
+                NotifyActionComplete(); // 무시하고 완료 카운트 감소
+                continue;
+            }
 
-        Debug.Log($"[튜토리얼] {currentStep.ActionData.ActionType} 실행기 호출!");
-        Debug.Log($"현재 페이즈 {currentStep.phase}");
-        executor.Enter(currentStep.ActionData);
+            if (executorMap.TryGetValue(action.ActionType, out var executor))
+            {
+                executor.Enter(action);
+            }
+            else
+            {
+                Debug.LogError($"[튜토리얼] ActionType({action.ActionType})에 대한 실행기를 찾을 수 없습니다.");
+                NotifyActionComplete(); // 실행 실패시에도 진행
+            }
+        }
     }
+
+    public void NotifyActionComplete()
+    {
+        waitingActionCount--;
+
+        Debug.Log($"[튜토리얼] 실행 완료됨. 남은 액션 수: {waitingActionCount}");
+
+        if (waitingActionCount <= 0)
+        {
+            CompleteCurrentStep();
+        }
+    }
+
 
 
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
     {
-        var executor = executorMap[currentStep.ActionData.ActionType];
-        executor?.Exit();
+        // 모든 실행기에 대해 Exit 호출
+        foreach (var action in currentStep.Actions)
+        {
+            if (action == null) continue;
+
+            if (executorMap.TryGetValue(action.ActionType, out var executor))
+            {
+                executor.Exit();
+            }
+        }
 
         // 현재 페이즈 저장
         if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)

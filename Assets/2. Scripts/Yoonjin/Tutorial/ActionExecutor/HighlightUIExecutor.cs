@@ -67,6 +67,9 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
     private void OnLongPressed()
     {
+        if (!requireLongPress)
+            return;
+
         // 버튼 재활성화
         targetButton.interactable = true;
 
@@ -77,7 +80,14 @@ public class HighlightUIExecutor : TutorialActionExecutor
     {
         // 클릭 리스너 해제
         if (targetButton != null)
+        {
             targetButton.onClick.RemoveListener(OnTargetButtonClicked);
+
+            // 홀드도 해제
+            if (holdPressDetector != null)
+                holdPressDetector.OnLongPress -= OnLongPressed;
+        }
+
 
         TutorialUIBlocker.Clear();
         TutorialUIHighlighter.Clear();
