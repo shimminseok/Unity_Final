@@ -10,29 +10,33 @@ public enum AudioType
     SFX
 }
 
-public class AudioManager : SceneOnlySingleton<AudioManager>
+public class AudioManager : Singleton<AudioManager>
 {
-        /* 사운드 조절 기능 */
-    [SerializeField][Range(0, 1)] private float soundEffectVolume = 1f;
-    [SerializeField][Range(0, 1)] private float soundEffectPitchVariance = 0.1f;
-    [SerializeField][Range(0, 1)] private float musicVolume = 0.5f;
+    /* 사운드 조절 기능 */
+    [SerializeField] [Range(0, 1)] private float soundEffectVolume = 1f;
+    [SerializeField] [Range(0, 1)] private float soundEffectPitchVariance = 0.1f;
+    [SerializeField] [Range(0, 1)] private float musicVolume = 0.5f;
 
     /* 모든 사운드 저장 */
     /* 저장된 사운드를 꺼내쓰기 쉽도록 Dictionary에 저장 */
     public Dictionary<string, AudioClip> AudioDictionary = new();
     protected ObjectPoolManager objectPoolManager;
     private string sfxPlayerPoolName = "sfxSource";
-    
+
     [SerializeField] private AudioSource bgmAudioSource;
     [SerializeField] private GameObject sfxAudioSourcePrefab;
+
     protected override void Awake()
     {
         base.Awake();
-        InitializeAudioManager();
+        if (!isDuplicated)
+        {
+            InitializeAudioManager();
+        }
     }
 
     protected void Start()
-    
+
     {
         objectPoolManager = ObjectPoolManager.Instance;
     }
@@ -44,14 +48,10 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
         {
             bgmAudioSource = gameObject.AddComponent<AudioSource>();
         }
-        //LoadAssetManager.Instance.OnLoadAssetsChangeScene(SceneManager.GetActiveScene().name);
-        LoadAssetManager.Instance.LoadAudioClipAsync(SceneManager.GetActiveScene().name + "BGM", clip =>
-        {
-            PlayBGM(clip);
-        });
-        LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound)); // 항상 로드해와야 하는 사운드
-        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
-        
+
+        LoadSceneEvent();
+        LoadSceneManager.Instance.OnLoadingCompleted += LoadSceneEvent;
+
         bgmAudioSource.volume = musicVolume;
         bgmAudioSource.loop = true;
     }
@@ -87,10 +87,29 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
 
         if (AudioDictionary.ContainsKey(clipName))
         {
-            bgmAudioSource.Stop();
-            bgmAudioSource.clip = AudioDictionary[clipName];
-            bgmAudioSource.loop = isLoop;
-            bgmAudioSource.Play();
+            AudioClip newClip = AudioDictionary[clipName];
+
+            if (bgmAudioSource.isPlaying)
+            {
+                // 현재 재생 중인 BGM 페이드아웃
+                bgmAudioSource.DOFade(0f, 1f).OnComplete(() =>
+                {
+                    bgmAudioSource.Stop();
+                    bgmAudioSource.clip = newClip;
+                    bgmAudioSource.loop = isLoop;
+                    bgmAudioSource.Play();
+                    bgmAudioSource.DOFade(1f, 1f);
+                });
+            }
+            else
+            {
+                // BGM이 재생 중이지 않을 때 바로 페이드인 재생
+                bgmAudioSource.clip = newClip;
+                bgmAudioSource.loop = isLoop;
+                bgmAudioSource.volume = 0f;
+                bgmAudioSource.Play();
+                bgmAudioSource.DOFade(1f, 1f);
+            }
         }
         else
         {
@@ -125,7 +144,11 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
         if (AudioDictionary != null && AudioDictionary.ContainsKey(clipName))
         {
             GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
-            if(sfxPlayer == null) sfxPlayer = Instantiate(sfxAudioSourcePrefab);
+            if (sfxPlayer == null)
+            {
+                sfxPlayer = Instantiate(sfxAudioSourcePrefab);
+            }
+
             PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
             if (sfxPlayer != null)
             {
@@ -145,11 +168,12 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
     /* 효과음 재생 후 해당 효과음 제어를 위해 만들어진 효과음 Prefab을 Return받는데 사용되는 메서드 */
     public PoolableAudioSource PlaySfxReturnSoundSource(string clipName)
     {
-        if (string.IsNullOrEmpty(clipName) || clipName == "None" )
+        if (string.IsNullOrEmpty(clipName) || clipName == "None")
         {
             Debug.LogWarning("SoundManager: PlaySfxReturnSoundSource - clipName이 null 또는 빈 문자열입니다.");
             return null;
         }
+
         if (objectPoolManager == null)
         {
             Debug.LogWarning("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
@@ -159,7 +183,11 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
         if (AudioDictionary != null && AudioDictionary.ContainsKey(clipName))
         {
             GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
-            if(sfxPlayer == null) Instantiate(sfxAudioSourcePrefab);
+            if (sfxPlayer == null)
+            {
+                Instantiate(sfxAudioSourcePrefab);
+            }
+
             PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
             if (sfxPlayer != null)
             {
@@ -177,6 +205,17 @@ public class AudioManager : SceneOnlySingleton<AudioManager>
             Debug.LogWarning($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
             return null;
         }
+    }
 
+    private void LoadSceneEvent()
+    {
+        //LoadAssetManager.Instance.OnLoadAssetsChangeScene(SceneManager.GetActiveScene().name);
+        LoadAssetManager.Instance.LoadAudioClipAsync(SceneManager.GetActiveScene().name + "BGM",
+            clip =>
+            {
+                PlayBGM(clip);
+            });
+        LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound));            // 항상 로드해와야 하는 사운드
+        LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
     }
 }

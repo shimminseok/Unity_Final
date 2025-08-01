@@ -8,6 +8,8 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
     public event Action<float> OnLoadingProgressChanged;             // 로딩 퍼센트 변경 알림 이벤트
     public float               LoadingProgress { get; private set; } // 현재 로딩 퍼센트
 
+    public Action OnLoadingCompleted;
+
     protected override void Awake()
     {
         base.Awake();
@@ -57,6 +59,7 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
 
 
         // 후처리 콜백 실행 (ex: 대사 출력)
+        OnLoadingCompleted?.Invoke();
         onComplete?.Invoke();
     }
 }
