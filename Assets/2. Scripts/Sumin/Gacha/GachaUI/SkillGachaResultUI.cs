@@ -44,9 +44,14 @@ public class SkillGachaResultUI : UIBase
                 }
 
                 slots[i].transform.localScale = Vector3.zero;
+                float delay = i * 0.1f;
                 slots[i].transform.DOScale(Vector3.one, 0.3f)
                     .SetEase(Ease.OutBack)
-                    .SetDelay(i * 0.1f);
+                    .SetDelay(delay);
+                DOVirtual.DelayedCall(delay, () =>
+                {
+                    AudioManager.Instance.PlaySFX(SFXName.GachaCardSound.ToString()); // 여기에 원하는 효과음 함수 호출
+                });
             }
         });
     }

@@ -26,6 +26,7 @@ public class CharacterGachaHandler : IGachaHandler
 
     public void DrawAndDisplayResult(int count)
     {
+        AudioManager.Instance.PlaySFX(SFXName.GachaCacheSound.ToString());
         int cost = GetTotalCost(count);
         accountManager.UseOpal(cost);
 
