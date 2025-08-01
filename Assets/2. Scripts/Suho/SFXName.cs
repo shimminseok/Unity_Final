@@ -11,4 +11,7 @@ public enum SFXName
     SpearAttackSound,
     TackleSound,
     MaleAttackSound,
+    MaleDeadSound,
+    FemaleDeadSound,
+    SlimeDeadSound,
 }
