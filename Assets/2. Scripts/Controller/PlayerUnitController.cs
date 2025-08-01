@@ -63,9 +63,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
 
         StartPostion = transform.position;
-
-        //Test
-        ChangeEmotion(PlayerUnitSo.PassiveSkill.TriggerEmotion);
     }
 
     public override void ChangeUnitState(Enum newState)
@@ -132,14 +129,14 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
         else
         {
-            Gender gender = Define.GetGender(so.JobType);
-            StringBuilder sb = new StringBuilder();
+            Gender        gender = Define.GetGender(so.JobType);
+            StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("AttackSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
         }
     }
-    
+
     public override void PlayHitVoiceSound()
     {
         PlayerUnitSO so = UnitSo as PlayerUnitSO;
@@ -149,8 +146,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
         else
         {
-            Gender gender = Define.GetGender(so.JobType);
-            StringBuilder sb = new StringBuilder();
+            Gender        gender = Define.GetGender(so.JobType);
+            StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("HitSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
@@ -166,8 +163,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
         else
         {
-            Gender gender = Define.GetGender(so.JobType);
-            StringBuilder sb = new StringBuilder();
+            Gender        gender = Define.GetGender(so.JobType);
+            StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("DeadSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
@@ -235,6 +232,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             return;
         }
+
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
@@ -373,6 +371,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
+
         Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
