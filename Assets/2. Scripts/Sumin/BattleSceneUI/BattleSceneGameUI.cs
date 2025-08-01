@@ -144,6 +144,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnStartButton()
     {
+        AudioManager.Instance.PlaySFX(SFXName.BattleStartUISound.ToString());
         PlayTurnIntroAnimation(true);
     }
 

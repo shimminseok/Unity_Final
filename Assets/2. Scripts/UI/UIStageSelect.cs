@@ -44,6 +44,7 @@ public class UIStageSelect : UIBase
     }
     public void OnClickEnterStage()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         bool isDeckEmpty = DeckSelectManager.Instance
             .GetSelectedDeck()
             .All(u => u == null);
