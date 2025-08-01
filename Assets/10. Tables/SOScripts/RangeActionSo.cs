@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 
 public class RangeActionSo : CombatActionSo
 {
+    [Header("투사체")]
     public string projectilePoolID;
     public GameObject projectilePrefab;
 

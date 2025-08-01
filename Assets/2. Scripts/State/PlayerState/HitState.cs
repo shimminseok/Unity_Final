@@ -14,6 +14,7 @@ namespace PlayerState
         {
             owner.IsAnimationDone = false;
             owner.Animator.SetTrigger(isHit);
+            owner.PlayHitVoiceSound();
             canCounter = owner.CanCounterAttack(owner.LastAttacker);
             hasHandler = false;
             if (owner.LastAttacker == null)

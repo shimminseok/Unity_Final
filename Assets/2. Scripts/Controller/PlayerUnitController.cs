@@ -3,6 +3,7 @@ using PlayerState;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Random = UnityEngine.Random;
 
 public enum ActionType
@@ -62,6 +63,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
 
         StartPostion = transform.position;
+
+        //Test
+        ChangeEmotion(PlayerUnitSo.PassiveSkill.TriggerEmotion);
     }
 
     public override void ChangeUnitState(Enum newState)
@@ -119,6 +123,56 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         CurrentAttackAction = UnitSo.AttackType;
     }
 
+    public override void PlayAttackVoiceSound()
+    {
+        PlayerUnitSO so = UnitSo as PlayerUnitSO;
+        if (so.AttackVoiceSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.AttackVoiceSound.ToString());
+        }
+        else
+        {
+            Gender gender = Define.GetGender(so.JobType);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(gender.ToString());
+            sb.Append("AttackSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+    
+    public override void PlayHitVoiceSound()
+    {
+        PlayerUnitSO so = UnitSo as PlayerUnitSO;
+        if (so.HitVoiceSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
+        }
+        else
+        {
+            Gender gender = Define.GetGender(so.JobType);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(gender.ToString());
+            sb.Append("HitSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
+
+    public override void PlayDeadSound()
+    {
+        PlayerUnitSO so = UnitSo as PlayerUnitSO;
+        if (so.DeadSound != SFXName.None)
+        {
+            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+        }
+        else
+        {
+            Gender gender = Define.GetGender(so.JobType);
+            StringBuilder sb = new StringBuilder();
+            sb.Append(gender.ToString());
+            sb.Append("DeadSound");
+            AudioManager.Instance.PlaySFX(sb.ToString());
+        }
+    }
 
     public override void Attack()
     {
@@ -181,7 +235,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         {
             return;
         }
-
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
@@ -311,14 +364,15 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void EndTurn()
     {
         //내 턴이 끝날때의 로직을 쓸꺼임.
+        if (PassiveSo is IPassiveTurnEndTrigger turnEndTrigger)
+        {
+            turnEndTrigger.OnTurnEnd(this);
+        }
+
         if (PassiveSo is IPassiveEmotionStackTrigger stackPassive)
         {
             stackPassive.OnEmotionStackIncreased(CurrentEmotion);
         }
-
-
-        // CurrentEmotion.AddStack(this);
-
         Target = null;
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);

@@ -7,6 +7,7 @@ namespace EnemyState
         public void OnEnter(EnemyUnitController owner)
         {
             owner.Animator.SetTrigger(Define.DeadAnimationHash);
+            owner.PlayDeadSound();
             owner.OnToggleNavmeshAgent(false);
         }
 

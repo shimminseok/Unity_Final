@@ -11,6 +11,7 @@ public class EnemyUnitSO : UnitSO
     public AnimationClip HitAniClip;
     public float skillActionProbability;
     public List<EnemySkillData> SkillDatas = new();
+    public MonsterType monsterType;
 }
 
 [System.Serializable]

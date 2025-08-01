@@ -42,7 +42,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
 
         activeSkillSo = skillData.skillSo;
         ShowEquipMark(skillData.IsEquipped);
-        if (skillData.IsEquipped && skillData.skillSo is ActiveSkillSO)
+        if (skillData.IsEquipped && skillData.EquippedUnit != null && skillData.skillSo is ActiveSkillSO)
         {
             itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
         }

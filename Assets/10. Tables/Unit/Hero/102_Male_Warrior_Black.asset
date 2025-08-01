@@ -29,7 +29,7 @@ MonoBehaviour:
     Value: 20
   - StatType: 5
     ModifierType: 0
-    Value: 1
+    Value: 0.1
   - StatType: 7
     ModifierType: 0
     Value: 3
@@ -48,10 +48,13 @@ MonoBehaviour:
   - StatType: 12
     ModifierType: 0
     Value: 1
-  AttackType: {fileID: 11400000, guid: 7db34b670b3d13d49b975d2564ae81d7, type: 2}
+  AttackType: {fileID: 11400000, guid: 351e3d8aee03b4044a4f77e51f8b05a8, type: 2}
   UnitPrefab: {fileID: 1189874255011212, guid: 5fd9fc54d803bd0449ad24ae9ac93a5b, type: 3}
   UnitIcon: {fileID: 21300000, guid: 27d0bdcfb09c76e42862deb8c97e33d6, type: 3}
   AttackAniClip: {fileID: 7400000, guid: e724c617927a9bd49a9203cf05693dd0, type: 3}
+  AttackVoiceSound: 0
+  HitVoiceSound: 0
+  DeadSound: 0
   PassiveSkill: {fileID: 11400000, guid: 2c2501a493368d140be835273f5bcacd, type: 2}
   JobType: 0
   Tier: 1

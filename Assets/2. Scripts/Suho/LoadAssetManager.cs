@@ -63,6 +63,11 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     //비동기 오디오클립 로드 메서드
     public void LoadAudioClipAsync(string assetName,Action<string> onLoaded)
     {
+        if (assetName == "None")
+        {
+            Debug.Log("CallLoad : None");
+            return;
+        }
         Addressables.LoadAssetAsync<AudioClip>(assetName).Completed += (handle) =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -70,16 +75,16 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
                 var clip = handle.Result;
                 loadAudioClipHandles.Add(handle);
                 AudioManager.Instance.AudioDictionary.TryAdd(assetName, handle.Result);
+                Debug.Log($"{assetName} 오디오 클립 추가!");
                 onLoaded?.Invoke(assetName); // 로드 완료 후 콜백 호출
             }
             else
             {
-                Debug.LogError($"AudioClip 로드 실패: {assetName}");
+                Debug.LogWarning($"AudioClip 로드 실패: {assetName}");
                 onLoaded?.Invoke(null); // 실패했을 때 처리
             }
         };
     }
-
 
     // 메모리에 올라온 오디오클립을 릴리즈
     public void ReleaseAudioClips()

@@ -11,10 +11,17 @@ public class DoubleAttack : PassiveSO, IPassiveAttackTrigger
         return currentEmotion.EmotionType == TriggerEmotion && currentEmotion.Stack >= RequiredStack;
     }
 
+    public override void ExecutePassive()
+    {
+        OnAttack(100f);
+    }
+
     public void OnAttack(float value)
     {
         if (!CanTrigger(Owner.CurrentEmotion))
+        {
             return;
+        }
 
 
         IDamageable finalTarget = Owner.IsCounterAttack ? Owner.CounterTarget : Owner.Target;
@@ -23,5 +30,7 @@ public class DoubleAttack : PassiveSO, IPassiveAttackTrigger
         float finalDamage = value * mutiplier;
 
         finalTarget.TakeDamage(finalDamage);
+
+        Debug.Log("더블 어택 성공");
     }
 }

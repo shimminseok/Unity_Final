@@ -9,6 +9,7 @@ public class AttackState : IState<PlayerUnitController, PlayerUnitState>
     {
         owner.IsAnimationDone = false;
         owner.OnToggleNavmeshAgent(false);
+        owner.PlayAttackVoiceSound();
         owner.transform.LookAt(owner.IsCounterAttack ? owner.CounterTarget.Collider.transform : owner.Target.Collider.transform);
         owner.Animator.SetTrigger(attack);
     }
