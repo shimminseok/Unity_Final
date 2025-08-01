@@ -49,11 +49,13 @@ public class FullscreenDialogueUI : MonoBehaviour
 
     public void OnClickNext()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SwipeDialogueSound.ToString());
         DialogueController.Instance.Next();
     }
 
     public void Skip()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SwipeDialogueSound.ToString());
         DialogueController.Instance.EndDialogue();
     }
 }

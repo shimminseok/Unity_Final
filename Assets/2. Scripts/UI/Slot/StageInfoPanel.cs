@@ -47,6 +47,7 @@ public class StageInfoPanel : MonoBehaviour
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
             return;
 
+        AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
         panelRect.DOKill();
         panelRect.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBack).OnComplete(() =>
         {
