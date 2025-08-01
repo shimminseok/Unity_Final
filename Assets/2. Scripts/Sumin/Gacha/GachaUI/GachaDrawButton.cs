@@ -36,10 +36,11 @@ public class GachaDrawButton : MonoBehaviour
     {
         if (!gachaHandler.CanDraw(drawCount))
         {
+            AudioManager.Instance.PlaySFX(SFXName.RejectUISound.ToString());
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("공명석이 부족합니다!");
             return;
         }
-
+        
         string gachaTypeName = gachaHandler.GetGachaTypeName();
         string message = $"{drawCount}회 {gachaTypeName}을 진행하시겠습니까?\n 소모 공명석 : {gachaHandler.GetTotalCost(drawCount)}";
         Action leftAction = () => gachaHandler.DrawAndDisplayResult(drawCount);
