@@ -28,4 +28,7 @@ public enum SFXName
     SwipeDialogueSound,
     GachaCacheSound,
     GachaCardSound,
+    BowAttackSound,
+    ArrowHitSound,
+    BattleEndSound,
 }
