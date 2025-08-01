@@ -103,6 +103,14 @@ public class TutorialManager : Singleton<TutorialManager>
                 }
             }
 
+            // 출전 슬롯 비우기
+            var deckList = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
+
+            for (int i = 0; i < deckList.Count; i++)
+            {
+                deckList[i] = null;
+            }
+
             // 저장
             SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         }

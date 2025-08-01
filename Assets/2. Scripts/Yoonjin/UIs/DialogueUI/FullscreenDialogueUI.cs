@@ -35,8 +35,8 @@ public class FullscreenDialogueUI : MonoBehaviour
         bool isRightSpeaking = line.portraitRight == line.portraitKey;
 
         // 밝기 조절
-        leftPortraitGroup.DOFade(isLeftSpeaking ? 1f : 0.5f, 0.25f);
-        rightPortraitGroup.DOFade(isRightSpeaking ? 1f : 0.5f, 0.25f);
+        leftPortraitImage.DOColor(isLeftSpeaking ? Color.white : new Color(0.3f, 0.3f, 0.3f), 0.25f);
+        rightPortraitImage.DOColor(isRightSpeaking ? Color.white : new Color(0.3f, 0.3f, 0.3f), 0.25f);
 
         // 배경 설정
         var background = DialogueResourceLoader.LoadBackground(line.backgroundKey);

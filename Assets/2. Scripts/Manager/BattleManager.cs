@@ -201,15 +201,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void OnStageClear()
     {
         // 튜토리얼에서 BattleVictory 이벤트 발행
-        TutorialManager tutorial = TutorialManager.Instance;
+        var tutorial = TutorialManager.Instance;
 
         if (tutorial != null && tutorial.IsActive &&
-            tutorial.CurrentStep?.ActionData is TriggerWaitActionData triggerData &&
-            triggerData.ActionType == TutorialActionType.TriggerWait &&
-            triggerData.triggerEventName == "BattleVictory")
+            tutorial.CurrentStep?.Actions
+                .OfType<TriggerWaitActionData>()
+                .Any(x => x.triggerEventName == "BattleVictory") == true)
         {
             EventBus.Publish("BattleVictory");
         }
+
 
         AudioManager.Instance.PlayBGM(BGMName.VictoryBGM.ToString());
         PartyUnits.Where(x => !x.IsDead).ToList().ForEach(x => x.ChangeUnitState(PlayerUnitState.Victory));

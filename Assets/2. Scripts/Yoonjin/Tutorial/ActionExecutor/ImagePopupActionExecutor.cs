@@ -33,7 +33,7 @@ public class ImagePopupActionExecutor : TutorialActionExecutor
                 }
                 else
                 {
-                    Debug.LogWarning("[튜토리얼] UIRoot를 찾을 수 없습니다. 이미지 팝업이 계층에 추가되지 않았습니다.");
+                    Debug.LogWarning("캔버스가 존재하지 않습니다.");
                 }
             }
             else
