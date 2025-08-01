@@ -27,11 +27,14 @@ public class StageSlot : MonoBehaviour
 
     public void OnClickStageSlot()
     {
+        
         if (isLocked)
         {
+            AudioManager.Instance.PlaySFX(SFXName.NoAccessUISound.ToString());
             return;
         }
-
+        
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         if (stageSo.HasBeforeDialogue)
         {
             DialogueController.Instance.Play(stageSo.beforeDialogueKey, () =>

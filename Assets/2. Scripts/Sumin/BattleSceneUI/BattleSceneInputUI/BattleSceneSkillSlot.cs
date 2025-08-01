@@ -98,6 +98,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     // 버튼 뒤쪽이 보이면 클릭 시 잠시 앞면 보여줌
     public void OnBackSkillBtn()
     {
+        AudioManager.Instance.PlaySFX(SFXName.CardFlipSound.ToString());
         Sequence flip = DOTween.Sequence();
 
         // y축으로 90도 먼저 회전

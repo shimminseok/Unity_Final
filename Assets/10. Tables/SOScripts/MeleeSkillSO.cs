@@ -6,7 +6,7 @@ public class MeleeSkillSO : CombatActionSo
 {
     public override void Execute(IAttackable attacker, IDamageable target)
     {
-
+        PlaySFX(attacker);
         foreach (var effect in attacker.SkillController.CurrentSkillData.Effect.skillEffectDatas)
         {
             List<IDamageable> targets = attacker.SkillController.SkillSubTargets[effect];
