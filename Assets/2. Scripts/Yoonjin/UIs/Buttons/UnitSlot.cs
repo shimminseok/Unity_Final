@@ -87,6 +87,7 @@ public class UnitSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void HandleClick()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         if (holdTriggered)
         {
             holdTriggered = false;

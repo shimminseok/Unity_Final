@@ -41,7 +41,6 @@ public class AnimationEventListener : MonoBehaviour
 
     private void UseSkill()
     {
-        owner.SkillController.CurrentSkillData.skillSo.skillType.PlaySFX(owner);
         owner.UseSkill();
         
     }
