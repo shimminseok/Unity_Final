@@ -28,7 +28,7 @@ public abstract class StatusEffect
     {
     }
 
-    public void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
+    public virtual void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
     {
         if (BuffVFX != null)
         {
@@ -266,6 +266,7 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
     {
         BattleManager.Instance.OnBattleEnd -= TakeDamage;
         ApplyEffect = null;
+        RemoveEffect?.Invoke();
     }
 
     private void TakeDamage()
@@ -273,5 +274,19 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
         ApplyEffect?.Invoke();
         manager.Owner.TakeDamage(Value, ModifierType);
         //대미지를 처리해준다?
+    }
+    
+    public override void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
+    {
+        if (BuffVFX != null)
+        {
+            List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,false);
+            foreach (var vfx in list)
+            {
+                vfx.AdjustTransform();
+                ApplyEffect += vfx.PlayDotVFX;
+                RemoveEffect += vfx.RemoveVFX;
+            }
+        }
     }
 }

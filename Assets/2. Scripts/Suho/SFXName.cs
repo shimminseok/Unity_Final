@@ -14,4 +14,8 @@ public enum SFXName
     MaleDeadSound,
     FemaleDeadSound,
     SlimeDeadSound,
+    HoverUISound,
+    CloseUISound,
+    BattleStartUISound,
+    RejectUISound,
 }

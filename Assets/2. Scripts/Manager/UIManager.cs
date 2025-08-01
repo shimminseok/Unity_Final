@@ -68,7 +68,7 @@ public class UIManager : Singleton<UIManager>
         if (openedUIList.Contains(ui))
         {
             openedUIList.Remove(ui);
-            AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
+            AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
             ui.Close();
         }
     }
