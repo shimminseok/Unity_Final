@@ -9,6 +9,7 @@ public class TutorialDialogueUI : UIBase
 
     public void Show(DialogueLine line)
     {
+        Debug.Log("TutorialDialogueUI: Show");
         dialogueText.text = line.dialogue;
 
         Open();
