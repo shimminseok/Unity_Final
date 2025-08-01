@@ -217,6 +217,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         RewardManager.Instance.AddReward(rewardKey);
         AccountManager.Instance.UpdateBestStage(currentStage);
         RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
+        InputManager.Instance.BattleEnd();
     }
 
     /// 스테이지 실패 시 호출되는 메서드
@@ -224,6 +225,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         UIManager.Instance.Open(PopupManager.Instance.GetUIComponent<UIDefeat>());
         AudioManager.Instance.PlayBGM(BGMName.DefeatBGM.ToString());
+        InputManager.Instance.BattleEnd();
         return;
     }
 

@@ -11,8 +11,24 @@ public class PassiveEmotionEqualizerPassiveSo : PassiveSO, IPassiveEmotionDamage
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
+    public override void ExecutePassive()
+    {
+        ModifyEmotionDamage(100);
+    }
+
     public float ModifyEmotionDamage(float baseDamage)
     {
-        return CanTrigger(Owner.CurrentEmotion) ? baseDamage * FixedMutiplier : baseDamage * 0.7f;
+        float finalDamage = 0f;
+        if (CanTrigger(Owner.CurrentEmotion))
+        {
+            finalDamage = baseDamage * FixedMutiplier;
+        }
+        else
+        {
+            finalDamage = baseDamage * 0.7f;
+        }
+
+        Debug.Log($"상성 무시 디버프 발동 : {CanTrigger(Owner.CurrentEmotion)}, Final Damage : {finalDamage}");
+        return finalDamage;
     }
 }

@@ -13,8 +13,8 @@ public class CharacterInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI unitLevel;
     [SerializeField] private StatSlot[] statSlots;
 
-    [SerializeField] private InventorySlot[] equippedItemSlot = new InventorySlot[3];
-    [SerializeField] private SkillSlot[] skillSlots = new SkillSlot[4];
+    [SerializeField] private InventorySlot[] equippedItemSlot;
+    [SerializeField] private SkillSlot[] skillSlots;
 
     [Header("UnitLevelUpPanel")]
     [SerializeField] private UnitLevelUpPanel unitLevelUpPanel;

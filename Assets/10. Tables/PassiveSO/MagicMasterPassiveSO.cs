@@ -2,7 +2,7 @@
 
 
 [CreateAssetMenu(fileName = "MagicMaster", menuName = "ScriptableObjects/PassiveSkill/MagicMasterPassive", order = 0)]
-public class MagicMasterPassiveSo : PassiveSO
+public class MagicMasterPassiveSo : PassiveSO, IPassiveTurnEndTrigger
 {
     public int addCost;
 
@@ -11,9 +11,14 @@ public class MagicMasterPassiveSo : PassiveSO
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
-
-    public void AddCost()
+    public override void ExecutePassive()
     {
-        Owner.SkillController.generateCost = 2;
+        OnTurnEnd(Owner);
+    }
+
+
+    public void OnTurnEnd(Unit unit)
+    {
+        Owner.SkillController.generateCost = CanTrigger(Owner.CurrentEmotion) ? addCost : 1;
     }
 }
