@@ -27,7 +27,6 @@ public class BaseSkillInventory : MonoBehaviour
             if (reuseScrollview.ItemList[i].TryGetComponent(out SkillSlot slot))
             {
                 slot.SetOnClickCallback(onClickHandler);
-                skillToSlotMap.Add(dataList[i], slot);
             }
         }
     }
