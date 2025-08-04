@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 1050_EarthQuake
+  m_EditorClassIdentifier: 
+  ID: 1050
+  SkillIcon: {fileID: 21300000, guid: 7996127bfc6bc544faf149b2bb3e663a, type: 3}
+  skillName: "\uC9C0\uC9C4\uAC15\uD0C0"
+  skillDescription: "\uC804\uBC29\uC73C\uB85C \uAC15\uB825\uD55C \uCDA9\uACA9\uD30C\uB97C
+    \uBC1C\uC0B0\uD558\uC5EC, \uBAA8\uB4E0 \uC801\uC744 3\uD134\uB3D9\uC548 \uAE30\uC808\uC2DC\uD0A4\uACE0
+    \uC790\uC2E0\uC758 \uBC29\uC5B4\uB825\uACFC \uC801\uB300\uCE58\uB97C \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  jobType: 0
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  effect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.5
+        value: 50
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 3
+        statusEffectType: 12
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 12
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+              type: 3}
+            VFXPoolID: StunVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: -90, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+          - VFXPrefab: {fileID: 2263481632557257710, guid: 6daf8db0414bb6947890afa39892baff,
+              type: 3}
+            VFXPoolID: GroundShockWaveVFX
+            LocalPosition: {x: 5, y: 0, z: 0}
+            LocalRotation: {x: 0, y: -90, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 0
+          - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
+              type: 3}
+            VFXPoolID: StonesHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 0
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+          type: 3}
+        VFXPoolID: StunVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: -90, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+      - VFXPrefab: {fileID: 2263481632557257710, guid: 6daf8db0414bb6947890afa39892baff,
+          type: 3}
+        VFXPoolID: GroundShockWaveVFX
+        LocalPosition: {x: 5, y: 0, z: 0}
+        LocalRotation: {x: 0, y: -90, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 0
+      - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
+          type: 3}
+        VFXPoolID: StonesHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 0
+        type: 3
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 1
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.5
+        value: 50
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 3
+        statusEffectType: 12
+        modifierType: 0
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 12
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+              type: 3}
+            VFXPoolID: StunVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: -90, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+          - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
+              type: 3}
+            VFXPoolID: StonesHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 0
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+          type: 3}
+        VFXPoolID: StunVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: -90, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+      - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
+          type: 3}
+        VFXPoolID: StonesHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 0
+        type: 3
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 3
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 12
+        weight: 0
+        value: 8
+        opponentStatType: 0
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 0
+            ModifierType: 1
+            Value: 8
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX: []
+      skillVFX: []
+  activeSkillTier: 3
+  reuseMaxCount: 2
+  coolTime: 5
+  skillAnimation: {fileID: 0}
+  skillTimeLine: {fileID: 11400000, guid: 55cf8ea4dd550f141aeb7aa1d56c2ccf, type: 2}
+  isSkillScene: 1
+  SFX: 0
+  CastSFX: 0

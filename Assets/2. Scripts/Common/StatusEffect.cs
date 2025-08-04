@@ -215,11 +215,14 @@ public class StunDebuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         manager.Owner.SetStunned(true);
+        ApplyVFX(manager,VFXType.Buff);
+        ApplyEffect?.Invoke();
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager manager)
     {
+        RemoveEffect?.Invoke();
         manager.Owner.SetStunned(false);
     }
 }

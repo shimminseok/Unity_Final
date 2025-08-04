@@ -11,7 +11,15 @@ public class EquipmentSkillInventory : BaseSkillInventory
 
     public SkillSlot GetSlotByItem(SkillData item)
     {
-        return skillToSlotMap[item];
+        foreach (RectTransform go in reuseScrollview.ItemList)
+        {
+            if (go.TryGetComponent(out SkillSlot slot) && slot.SkillData.skillSo.ID == item.skillSo.ID)
+            {
+                return slot;
+            }
+        }
+
+        return null;
     }
 
     public void SelectItemSlot(SkillData data)
