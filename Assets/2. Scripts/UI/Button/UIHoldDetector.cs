@@ -15,9 +15,10 @@ public class UIHoldDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private Coroutine holdCoroutine;
     private bool isHolding = false;
 
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (holdCoroutine == null)
+        if (holdCoroutine == null && OnHoldTriggered != null)
         {
             holdCoroutine = StartCoroutine(HoldCoroutine());
         }

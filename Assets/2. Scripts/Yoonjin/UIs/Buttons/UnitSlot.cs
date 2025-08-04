@@ -27,22 +27,28 @@ public class UnitSlot : MonoBehaviour
 
     public event Action<EntryDeckData> OnClicked;
     public event Action<EntryDeckData> OnHeld;
-    private UIDeckBuilding             uiDeckBuilding => UIManager.Instance.GetUIComponent<UIDeckBuilding>();
 
+    private UIDeckBuilding UIDeckBuilding => UIManager.Instance.GetUIComponent<UIDeckBuilding>();
 
-    private Coroutine holdCoroutine;
-    private bool holdTriggered;
-    private bool isHolding = false;
 
     private bool isDoubleClickSlot = true;
+    private bool isHoldSlot = false;
 
+    private UIHoldDetector holdDetector;
 
     private void Awake()
     {
-        UIHoldDetector holdDetector = GetComponent<UIHoldDetector>();
-        if (holdDetector != null)
+        holdDetector = GetComponent<UIHoldDetector>();
+    }
+
+    private void Start()
+    {
+        if (holdDetector != null && isHoldSlot)
         {
-            holdDetector.OnHoldTriggered += () => OnHeld?.Invoke(selectedUnit);
+            holdDetector.OnHoldTriggered += () =>
+            {
+                OnHeld?.Invoke(selectedUnit);
+            };
         }
     }
 
@@ -94,21 +100,21 @@ public class UnitSlot : MonoBehaviour
         isDoubleClickSlot = isDoubleClicked;
     }
 
+    public void SetHoldSlot(bool isHold)
+    {
+        isHoldSlot = isHold;
+    }
+
     public void HandleClick()
     {
         AudioManager.Instance.PlaySFX(nameof(SFXName.SelectedUISound));
-        if (holdTriggered)
-        {
-            holdTriggered = false;
-            return;
-        }
 
         if (isDoubleClickSlot)
         {
             if (!isSelected)
             {
                 isSelected = true;
-                uiDeckBuilding.SetSelectedUnitSlot(this);
+                UIDeckBuilding.SetSelectedUnitSlot(this);
             }
             else
             {
@@ -118,7 +124,7 @@ public class UnitSlot : MonoBehaviour
         else
         {
             isSelected = true;
-            uiDeckBuilding.SetSelectedUnitSlot(this);
+            UIDeckBuilding.SetSelectedUnitSlot(this);
             OnClicked?.Invoke(selectedUnit);
         }
 

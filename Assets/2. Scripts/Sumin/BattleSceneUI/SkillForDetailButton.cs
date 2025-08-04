@@ -22,6 +22,7 @@ public class SkillForDetailButton : MonoBehaviour, IPointerUpHandler
             {
                 if (interactable)
                 {
+                    hasHeldLongEnough = true;
                     skillDetailPopup.SetActive(true);
                 }
             };

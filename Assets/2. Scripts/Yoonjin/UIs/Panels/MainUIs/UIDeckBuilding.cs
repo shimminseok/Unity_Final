@@ -49,6 +49,7 @@ public class UIDeckBuilding : UIBase
             slot.Initialize(entryDeckData.Value);
             characterSlotDic.Add(entryDeckData.Key, slot);
             slot.SetDoubleClicked(false);
+            slot.SetHoldSlot(true);
             slot.OnClicked += OnClickedHasUnitSlot;
             slot.OnHeld += OnHeldHasUnitSlot;
         }

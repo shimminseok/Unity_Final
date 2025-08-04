@@ -76,6 +76,7 @@ public class UICharacterSetting : UIBase
             slot.Initialize(entryDeckData.Value);
             slotDic.Add(entryDeckData.Key, slot);
             slot.SetDoubleClicked(false);
+            slot.SetHoldSlot(false);
             slot.OnClicked += OnClickPlayerUnitSlot;
         }
 
