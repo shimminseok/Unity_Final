@@ -207,13 +207,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ChangeAction(ActionType action)
     {
         CurrentAction = action;
-        if (action == ActionType.Attack)
-        {
-            CurrentAttackAction = UnitSo.AttackType;
-        }
-        else if (action == ActionType.SKill)
+        if (action == ActionType.SKill)
         {
             CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
+        }
+        else
+        {
+            CurrentAttackAction = UnitSo.AttackType;
         }
     }
 
@@ -271,6 +271,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void StartCountAttack(Unit attacker)
     {
+        Debug.Log($"{CurrentAction}");
         CounterTarget = attacker;
         IsCounterAttack = true;
         attacker.SetLastAttacker(this);

@@ -163,7 +163,7 @@ public enum Tier
 public enum AttackDistanceType
 {
     Melee,
-    Range
+    Range,
 }
 
 public enum ProjectileInterpolationMode
