@@ -328,7 +328,6 @@ using Random = UnityEngine.Random;
         Obstacle.carving = false;
         Obstacle.enabled = false;
         dissolveChilds.PlayDissolve(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.length);
-        // gameObject.SetActive(false);
     }
 
     public bool ShouldUseSkill()
@@ -427,9 +426,5 @@ using Random = UnityEngine.Random;
         ChangeAction(ActionType.None);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
         ChangeUnitState(EnemyUnitState.Idle);
-    }
-
-    public void OnAnimationCompleteEvent()
-    {
     }
 }
