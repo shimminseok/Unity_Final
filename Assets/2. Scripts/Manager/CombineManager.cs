@@ -17,6 +17,7 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
     {
         if (!items.TrueForAll(x => x != null))
         {
+            AudioManager.Instance.PlaySFX(SFXName.RejectUISound.ToString());
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("아이템 3개를 선택해야 합성이 가능합니다.");
             return null;
         }
@@ -24,10 +25,11 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
         AccountManager.Instance.UseGold(Define.RequierCombineItemGold, out bool result);
         if (!result)
         {
+            AudioManager.Instance.PlaySFX(SFXName.RejectUISound.ToString());
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("골드가 부족합니다.");
             return null;
         }
-
+        
         EquipmentType combineResultType = items[Random.Range(0, items.Count)].EquipmentItemSo.EquipmentType;
         Tier          nextTier          = items[0].EquipmentItemSo.Tier;
         if (items[0].EquipmentItemSo.Tier < maxTier)
@@ -41,7 +43,7 @@ public class CombineManager : SceneOnlySingleton<CombineManager>
             return null;
         EquipmentItemSO combineItemSo = combineItemList[Random.Range(0, combineItemList.Count)];
 
-
+        AudioManager.Instance.PlaySFX(SFXName.EquipmentCombineSound.ToString());
         return new EquipmentItem(combineItemSo);
     }
 }

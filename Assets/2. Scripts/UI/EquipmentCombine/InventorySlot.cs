@@ -131,6 +131,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
 
     public void OnClickSlotBtn()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         OnClickSlot?.Invoke(Item);
     }
 
