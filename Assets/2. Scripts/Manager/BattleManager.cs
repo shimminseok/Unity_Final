@@ -19,7 +19,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private UIReward uiReward;
 
-    public int TurnCount = 1;
+    public int TurnCount { get; private set; } = 1;
 
     protected override void Awake()
     {
@@ -70,8 +70,9 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         for (int i = 0; i < units.Count; i++)
         {
             EnemyUnitSO unitSo = units[i];
-            GameObject  go     = Instantiate(unitSo.UnitPrefab, EnemyUnitsTrans[i], false);
-            Unit        unit   = go.GetComponent<Unit>();
+            GameObject  go     = Instantiate(unitSo.UnitPrefab, EnemyUnitsTrans[i], true);
+            go.transform.localPosition = Vector3.zero;
+            Unit unit = go.GetComponent<Unit>();
             unit.Initialize(new UnitSpawnData
             {
                 UnitSo = unitSo, DeckData = null // Enemy
@@ -202,7 +203,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     private void OnStageClear()
     {
         // 튜토리얼에서 BattleVictory 이벤트 발행
-        var tutorial = TutorialManager.Instance;
+        TutorialManager tutorial = TutorialManager.Instance;
 
         if (tutorial != null && tutorial.IsActive &&
             tutorial.CurrentStep?.Actions

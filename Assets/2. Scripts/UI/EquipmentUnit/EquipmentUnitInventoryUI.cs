@@ -14,7 +14,15 @@ public class EquipmentUnitInventoryUI : BaseInventoryUI
 
     public InventorySlot GetSlotByItem(EquipmentItem item)
     {
-        return itemToSlotMap[item];
+        foreach (RectTransform go in reuseScrollview.ItemList)
+        {
+            if (go.TryGetComponent(out InventorySlot slot) && slot.Item.InventoryId == item.InventoryId)
+            {
+                return slot;
+            }
+        }
+
+        return null;
     }
 
     public void SelectItemSlot(EquipmentItem data)
