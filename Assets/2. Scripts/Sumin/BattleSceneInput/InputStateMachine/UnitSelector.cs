@@ -161,7 +161,7 @@ public class UnitSelector
 
     private bool IsPointerOverUI()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         return EventSystem.current.IsPointerOverGameObject();
 #elif UNITY_ANDROID || UNITY_IOS
     if (Input.touchCount > 0)
