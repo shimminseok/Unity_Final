@@ -197,7 +197,6 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         {
             foreach (var audioSourcePrefab in AudioSourcePrefabs)
             {
-                audioSourcePrefab.OnReturnToPool();
                 audioSourcePrefab.Disable();
             }
         }

@@ -22,6 +22,7 @@ public class AudioManager : Singleton<AudioManager>
     /* 모든 사운드 저장 */
     /* 저장된 사운드를 꺼내쓰기 쉽도록 Dictionary에 저장 */
     public Dictionary<string, AudioClip> AudioDictionary = new();
+    public Dictionary<string, int> NestedDictionary = new();
     protected ObjectPoolManager objectPoolManager;
     private string sfxPlayerPoolName = "sfxSource";
 
@@ -149,18 +150,26 @@ public class AudioManager : Singleton<AudioManager>
     {
         if (string.IsNullOrEmpty(clipName) || clipName == "None")
         {
-            Debug.LogWarning("SoundManager: PlaySFX - clipName이 null 또는 빈 문자열입니다.");
             return;
         }
 
         if (objectPoolManager == null)
         {
-            Debug.LogWarning("SoundManager: SoundPoolManager를 찾을 수 없습니다.");
             return;
         }
 
+
         if (AudioDictionary != null && AudioDictionary.ContainsKey(clipName))
         {
+            if (!NestedDictionary.ContainsKey(clipName))
+            {
+                NestedDictionary.Add(clipName, 1);
+            }
+            else if(NestedDictionary[clipName] > 3)
+            {
+                return;
+            }
+            NestedDictionary[clipName]++;
             GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
             if (sfxPlayer == null)
             {
@@ -174,12 +183,12 @@ public class AudioManager : Singleton<AudioManager>
             }
             else
             {
-                Debug.LogWarning("SoundManager: SoundSource 객체를 가져올 수 없습니다.");
+                return;
             }
         }
         else
         {
-            Debug.LogWarning($"SoundManager: PlaySFX - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            return;
         }
     }
 
