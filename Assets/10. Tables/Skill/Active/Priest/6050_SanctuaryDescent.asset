@@ -48,7 +48,7 @@ MonoBehaviour:
           Stat:
             StatType: 11
             ModifierType: 0
-            Value: 0
+            Value: 650
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -71,6 +71,15 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
       - ownerStatType: 0
         weight: 0.5
         value: 50
@@ -85,7 +94,7 @@ MonoBehaviour:
           Stat:
             StatType: 6
             ModifierType: 1
-            Value: 0
+            Value: 650
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -108,6 +117,15 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
       - ownerStatType: 4
         weight: 0
         value: -10
@@ -118,11 +136,11 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 6
+          EffectType: 0
           Stat:
             StatType: 12
             ModifierType: 0
-            Value: 0
+            Value: -10
           Duration: 0
           TickInterval: 0
           IsStackable: 0
@@ -145,6 +163,15 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+          - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+              type: 3}
+            VFXPoolID: LevelUpVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
       skillVFX:
       - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
           type: 3}
@@ -164,6 +191,15 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+      - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
+          type: 3}
+        VFXPoolID: LevelUpVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 1
@@ -270,4 +306,5 @@ MonoBehaviour:
   skillAnimation: {fileID: 7400000, guid: 1c09047ecdb0548428f2137b03a4f7dc, type: 2}
   skillTimeLine: {fileID: 11400000, guid: 547eb465b4b99de44925fcc76d2ee9b8, type: 2}
   isSkillScene: 1
-  SFX: 
+  SFX: 0
+  CastSFX: 0
