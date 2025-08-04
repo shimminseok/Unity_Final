@@ -353,6 +353,7 @@ GameObject:
   - component: {fileID: 7989907577243129234}
   - component: {fileID: 6492325775133147714}
   - component: {fileID: 6174282374142818943}
+  - component: {fileID: 6156578534995397690}
   m_Layer: 0
   m_Name: CombatActionFrame
   m_TagString: Untagged
@@ -475,7 +476,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillDetailPopup: {fileID: 6386750208951491247}
   hideDelay: 0.3
+--- !u!114 &6156578534995397690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255356941846478450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba76c2677d3347e9b6dad5e08e2b9731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   holdTime: 0.5
+  holdProgressImage: {fileID: 0}
 --- !u!1 &9024651405761286056
 GameObject:
   m_ObjectHideFlags: 0
