@@ -185,17 +185,17 @@ public class EntryDeckData
             return;
         }
 
-        SubAmount(Define.DupeCountByTranscend[TranscendLevel], out result);
-        if (!result)
-        {
-            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
-            return;
-        }
-
         AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
         if (!result)
         {
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
+            return;
+        }
+
+        SubAmount(Define.DupeCountByTranscend[TranscendLevel], out result);
+        if (!result)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
             return;
         }
 
