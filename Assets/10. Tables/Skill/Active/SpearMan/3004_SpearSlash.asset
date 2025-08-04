@@ -60,7 +60,7 @@ MonoBehaviour:
             VFXPoolID: SlashInkVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 180, z: -30}
-            LocalScale: {x: 2, y: 2, z: 2}
+            LocalScale: {x: 1.5, y: 1.5, z: 1.5}
             reference: 0
             isParent: 0
             type: 3
@@ -69,7 +69,7 @@ MonoBehaviour:
             VFXPoolID: ExplosionHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
             reference: 1
             isParent: 1
             type: 3
@@ -78,7 +78,7 @@ MonoBehaviour:
             VFXPoolID: ExplosionHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
             reference: 1
             isParent: 1
             type: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
         VFXPoolID: SlashInkVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 180, z: -30}
-        LocalScale: {x: 2, y: 2, z: 2}
+        LocalScale: {x: 1.5, y: 1.5, z: 1.5}
         reference: 0
         isParent: 0
         type: 3
@@ -97,7 +97,7 @@ MonoBehaviour:
         VFXPoolID: ExplosionHitVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 1
         isParent: 1
         type: 3
@@ -106,7 +106,7 @@ MonoBehaviour:
         VFXPoolID: ExplosionHitVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 1
         isParent: 1
         type: 1
@@ -140,21 +140,12 @@ MonoBehaviour:
           TickInterval: 0
           IsStackable: 0
           VFX:
-          - VFXPrefab: {fileID: 8587560481101609250, guid: c1290c469e696774ba506a092b1f09a8,
-              type: 3}
-            VFXPoolID: SlashInkVFX
-            LocalPosition: {x: 0, y: 0, z: 0}
-            LocalRotation: {x: 0, y: 180, z: -30}
-            LocalScale: {x: 2, y: 2, z: 2}
-            reference: 0
-            isParent: 0
-            type: 0
           - VFXPrefab: {fileID: 358637981425055526, guid: cb4139f88b7abbc44969d52f32341a94,
               type: 3}
             VFXPoolID: ExplosionHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
             reference: 1
             isParent: 1
             type: 3
@@ -163,26 +154,17 @@ MonoBehaviour:
             VFXPoolID: ExplosionHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
             reference: 1
             isParent: 1
             type: 1
       skillVFX:
-      - VFXPrefab: {fileID: 8587560481101609250, guid: c1290c469e696774ba506a092b1f09a8,
-          type: 3}
-        VFXPoolID: SlashInkVFX
-        LocalPosition: {x: 0, y: 0, z: 0}
-        LocalRotation: {x: 0, y: 180, z: -30}
-        LocalScale: {x: 2, y: 2, z: 2}
-        reference: 0
-        isParent: 0
-        type: 0
       - VFXPrefab: {fileID: 358637981425055526, guid: cb4139f88b7abbc44969d52f32341a94,
           type: 3}
         VFXPoolID: ExplosionHitVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 1
         isParent: 1
         type: 3
@@ -191,7 +173,7 @@ MonoBehaviour:
         VFXPoolID: ExplosionHitVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
         reference: 1
         isParent: 1
         type: 1
@@ -201,5 +183,5 @@ MonoBehaviour:
   skillAnimation: {fileID: 7400000, guid: 63c645bc279fd5e49b02b390f2dd28ef, type: 2}
   skillTimeLine: {fileID: 11400000, guid: 935f8cf8b80256049a4dba714b980d2b, type: 2}
   isSkillScene: 0
-  SFX: 0
+  SFX: 4
   CastSFX: 0
