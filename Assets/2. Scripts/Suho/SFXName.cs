@@ -31,4 +31,8 @@ public enum SFXName
     BowAttackSound,
     ArrowHitSound,
     BattleEndSound,
+    FireballHitSound,
+    WindBulletSound,
+    WindHitSound,
+    EquipmentCombineSound,
 }
