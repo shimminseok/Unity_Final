@@ -35,4 +35,6 @@ public enum SFXName
     WindBulletSound,
     WindHitSound,
     EquipmentCombineSound,
+    HealingSound,
+    ShieldBreakSound,
 }

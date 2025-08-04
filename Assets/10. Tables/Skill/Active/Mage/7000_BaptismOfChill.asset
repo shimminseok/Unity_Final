@@ -53,8 +53,26 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 161766660727748596, guid: aa492d6c72cf66543ba49950ff79ec47,
+              type: 3}
+            VFXPoolID: IceRainVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+            reference: 1
+            isParent: 1
+            type: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 161766660727748596, guid: aa492d6c72cf66543ba49950ff79ec47,
+          type: 3}
+        VFXPoolID: IceRainVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+        reference: 1
+        isParent: 1
+        type: 0
   activeSkillTier: 2
   reuseMaxCount: 2
   coolTime: 3
