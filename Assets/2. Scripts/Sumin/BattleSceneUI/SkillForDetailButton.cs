@@ -20,7 +20,10 @@ public class SkillForDetailButton : MonoBehaviour, IPointerUpHandler
         {
             holdDetector.OnHoldTriggered += () =>
             {
-                skillDetailPopup.SetActive(true);
+                if (interactable)
+                {
+                    skillDetailPopup.SetActive(true);
+                }
             };
         }
     }
