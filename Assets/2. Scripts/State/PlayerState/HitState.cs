@@ -15,9 +15,10 @@ namespace PlayerState
             owner.IsAnimationDone = false;
             owner.Animator.SetTrigger(isHit);
             owner.PlayHitVoiceSound();
-            canCounter = owner.CanCounterAttack(owner.LastAttacker);
+            Unit lastAttacker = owner.LastAttacker;
+            canCounter = owner.CanCounterAttack(lastAttacker);
             hasHandler = false;
-            if (owner.LastAttacker == null)
+            if (lastAttacker == null)
             {
                 return;
             }
@@ -28,12 +29,12 @@ namespace PlayerState
             {
                 onHitFinished = () =>
                 {
-                    owner.StartCountAttack(owner.LastAttacker);
+                    owner.StartCountAttack(lastAttacker);
                 };
             }
-            else if (!owner.LastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
+            else if (!lastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {
-                onHitFinished = owner.LastAttacker.InvokeHitFinished;
+                onHitFinished = lastAttacker.InvokeHitFinished;
             }
 
             if (onHitFinished != null)
