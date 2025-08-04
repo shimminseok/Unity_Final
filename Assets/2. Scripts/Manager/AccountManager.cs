@@ -30,26 +30,6 @@ public class AccountManager : Singleton<AccountManager>
 
     private void Start()
     {
-        if (GameManager.Instance.isTestMode)
-        {
-            foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
-            {
-                if (itemSo is EquipmentItemSO equipSo)
-                {
-                    InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
-                }
-            }
-
-            foreach (ActiveSkillSO skill in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
-            {
-                AddSkill(skill, out _);
-            }
-
-            foreach (PlayerUnitSO unit in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
-            {
-                AddPlayerUnit(unit);
-            }
-        }
     }
 
     private void Update()
@@ -290,6 +270,28 @@ public class AccountManager : Singleton<AccountManager>
             {
                 AddSkillByJob(data.skillSo.jobType, data.skillSo.ID);
             }
+        }
+    }
+
+
+    public void Cheat()
+    {
+        foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
+        {
+            if (itemSo is EquipmentItemSO equipSo)
+            {
+                InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
+            }
+        }
+
+        foreach (ActiveSkillSO skill in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
+        {
+            AddSkill(skill, out _);
+        }
+
+        foreach (PlayerUnitSO unit in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
+        {
+            AddPlayerUnit(unit);
         }
     }
 }

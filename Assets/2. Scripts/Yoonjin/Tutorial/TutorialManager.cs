@@ -236,6 +236,8 @@ public class TutorialManager : Singleton<TutorialManager>
             SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
+        //치트
+        AccountManager.Instance.Cheat();
         Debug.Log("튜토리얼 종료!");
     }
 }
