@@ -10,10 +10,14 @@ public class HighlightUIExecutor : TutorialActionExecutor
     private int clickCount = 0;
     private bool requireLongPress;
 
+
     public override void Enter(TutorialActionData actionData)
     {
-        var data = actionData as HighlightUIActionData;
-        if (data == null) return;
+        HighlightUIActionData data = actionData as HighlightUIActionData;
+        if (data == null)
+        {
+            return;
+        }
 
         requireDoubleClick = data.requireDoubleClick;
         clickCount = 0;
@@ -29,10 +33,12 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
         //  홀드 감지 컴포넌트 부착 또는 가져오기
         holdDetector = targetButton.GetComponent<UIHoldDetector>();
-        if (holdDetector == null)
-            holdDetector = targetButton.gameObject.AddComponent<UIHoldDetector>();
+        if (holdDetector != null)
+        {
+            // holdDetector = targetButton.gameObject.AddComponent<UIHoldDetector>();
+            holdDetector.OnHoldTriggered += OnHoldTriggered;
+        }
 
-        holdDetector.OnHoldTriggered += OnHoldTriggered;
 
         if (requireLongPress)
         {
@@ -47,7 +53,9 @@ public class HighlightUIExecutor : TutorialActionExecutor
 
         // 주변 클릭 차단
         if (data.autoBlockOthers)
+        {
             TutorialUIBlocker.BlockAllExcept(targetButton.gameObject);
+        }
 
         // 버튼 강조
         TutorialUIHighlighter.Highlight(targetButton.gameObject);
@@ -58,8 +66,17 @@ public class HighlightUIExecutor : TutorialActionExecutor
     {
         clickCount++;
 
-        if (requireDoubleClick && clickCount < 2)
+        if (holdDetector != null && holdDetector.WasHoldTriggered)
+        {
+            Debug.Log("[튜토리얼] 홀드된 상태에서 클릭 무시");
+            holdDetector.WasHoldTriggered = false;
             return;
+        }
+
+        if (requireDoubleClick && clickCount < 2)
+        {
+            return;
+        }
 
         manager.CompleteCurrentStep();
     }
@@ -74,6 +91,11 @@ public class HighlightUIExecutor : TutorialActionExecutor
             return;
         }
 
+        if (holdDetector != null && holdDetector.WasHoldTriggered)
+        {
+            holdDetector.WasHoldTriggered = false;
+        }
+
         // 홀드 성공 시 버튼 다시 활성화하고 다음 스텝으로
         targetButton.interactable = true;
         manager.CompleteCurrentStep();
@@ -86,7 +108,9 @@ public class HighlightUIExecutor : TutorialActionExecutor
         {
             targetButton.onClick.RemoveListener(OnTargetButtonClicked);
             if (holdDetector != null)
+            {
                 holdDetector.OnHoldTriggered -= OnHoldTriggered;
+            }
         }
 
         // 하이라이트 및 블로커 제거

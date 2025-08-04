@@ -14,7 +14,7 @@ public class UIHoldDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     private Coroutine holdCoroutine;
     private bool isHolding = false;
-
+    public bool WasHoldTriggered { get; set; }
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -52,6 +52,7 @@ public class UIHoldDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
         if (isHolding)
         {
+            WasHoldTriggered = true;
             OnHoldTriggered?.Invoke();
         }
 
@@ -63,6 +64,7 @@ public class UIHoldDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        Debug.Log("OnPointer Up");
         if (holdCoroutine != null)
         {
             StopCoroutine(holdCoroutine);
