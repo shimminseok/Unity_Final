@@ -115,6 +115,9 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     public void ClosePanel()
     {
+        if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
+            return;
+        
         DOTween.KillAll();
         panelRect.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine).OnComplete(() =>
         {
