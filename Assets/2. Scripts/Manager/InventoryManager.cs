@@ -89,6 +89,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         OnInventorySlotUpdate?.Invoke(id);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
     }
 
     /// <summary>
@@ -120,6 +121,7 @@ public class InventoryManager : Singleton<InventoryManager>
             }
 
             OnInventorySlotUpdate?.Invoke(nextId);
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
             nextId++;
         }
     }
@@ -189,7 +191,5 @@ public class InventoryManager : Singleton<InventoryManager>
         }
 
         nextId++;
-
-        OnInventorySlotUpdate += (id) => SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryItem);
     }
 }

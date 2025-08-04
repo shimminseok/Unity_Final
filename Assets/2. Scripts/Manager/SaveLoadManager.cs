@@ -224,8 +224,7 @@ public class SaveTutorialData : SaveData
     }
 }
 
-
-    [Serializable]
+[Serializable]
 public class SaveInventoryItemData : SaveData
 {
     public List<SaveInventoryItem> InventoryItems { get; set; } = new();

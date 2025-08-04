@@ -50,6 +50,13 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
         seq.Append(BG.DOFade(0f, 0.3f).SetEase(Ease.OutSine));
         seq.AppendCallback(() => gameObject.SetActive(false));
+
+        if (selectedUnitData != null)
+        {
+            selectedUnitData.OnEquipmmmentChanged -= UpdateEquippedItemSlot;
+            selectedUnitData.OnSkillChanged -= UpdateEquippedSkillSlot;
+            selectedUnitData = null;
+        }
     }
 
 
