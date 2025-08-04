@@ -29,6 +29,7 @@ public class UIManager : Singleton<UIManager>
             return;
         }
 
+        openedUIList.Clear();
         uiDict.Clear();
         UIBase[]         uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
         List<GameObject> toDestroy    = new();
