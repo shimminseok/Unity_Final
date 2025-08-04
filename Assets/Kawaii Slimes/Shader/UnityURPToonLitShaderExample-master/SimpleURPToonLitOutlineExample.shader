@@ -38,6 +38,7 @@ Shader "SimpleURPToonLitExample(With Outline)"
         // for URP Lit shader's naming convention, see URP's Lit.shader
         [Header(Base Color)]
         [MainTexture]_BaseMap("_BaseMap (Albedo)", 2D) = "white" {}
+        [HideInInspector]_MainTex("MainTex (for Unity compatibility)", 2D) = "white" {}
         [HDR][MainColor]_BaseColor("_BaseColor", Color) = (1,1,1,1)
 
         [Header(Alpha)]

@@ -14,6 +14,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public GameObject effectObject;
     private Animator effectAnimator;
     private IAttackable attacker;
+    private List<PoolableAudioSource> AudioSourcePrefabs;
     public VirtualCameraController CurrentCameraController { get; set; }
 
     protected override void Awake()
@@ -142,6 +143,17 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 director.SetGenericBinding(track, receiver);
             }
 
+            if (track is AudioTrack audioTrack)
+            {
+                PoolableAudioSource audioSourcePrefab = ObjectPoolManager.Instance.GetObject("sfxSource").GetComponent<PoolableAudioSource>();
+                director.SetGenericBinding(audioTrack, audioSourcePrefab.AudioSource);
+                if (AudioSourcePrefabs == null)
+                {
+                    AudioSourcePrefabs = new List<PoolableAudioSource>();
+                }
+                AudioSourcePrefabs.Add(audioSourcePrefab);
+            }
+
 
             if (track is AnimationTrack animationTrack)
             {
@@ -181,6 +193,14 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public void StopTimeLine(PlayableDirector pd)
     {
         director.Stop();
+        if (AudioSourcePrefabs != null)
+        {
+            foreach (var audioSourcePrefab in AudioSourcePrefabs)
+            {
+                audioSourcePrefab.OnReturnToPool();
+                audioSourcePrefab.Disable();
+            }
+        }
         isPlaying = false;
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
