@@ -53,17 +53,13 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Start()
     {
-        var tutorialData = SaveLoadManager.Instance
+        SaveTutorialData tutorialData = SaveLoadManager.Instance
             .SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) as SaveTutorialData;
 
         // 데이터가 없으면 새로 생성
         if (tutorialData == null)
         {
-            tutorialData = new SaveTutorialData
-            {
-                Phase = TutorialPhase.DeckBuildingBefore,
-                IsCompleted = false
-            };
+            tutorialData = new SaveTutorialData { Phase = TutorialPhase.DeckBuildingBefore, IsCompleted = false };
 
             SaveLoadManager.Instance.SaveDataMap[SaveModule.Tutorial] = tutorialData;
             SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
@@ -81,35 +77,39 @@ public class TutorialManager : Singleton<TutorialManager>
         // DeckBuildingBefore 페이즈에서는 장비, 스킬, 유닛 초기화
         if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
         {
-            var unitList = AccountManager.Instance.GetPlayerUnits();
+            List<EntryDeckData> unitList = AccountManager.Instance.GetPlayerUnits();
 
-            foreach (var unit in unitList)
+            foreach (EntryDeckData unit in unitList)
             {
                 // 출전 중인 유닛 해제
-                unit.Compete(-1, false);
+                // unit.Compete(-1, false);
 
                 // 장비 해제
-                var equippedTypes = unit.EquippedItems.Keys.ToList();
-                foreach (var type in equippedTypes)
+                List<EquipmentType> equippedTypes = unit.EquippedItems.Keys.ToList();
+                foreach (EquipmentType type in equippedTypes)
                 {
                     unit.UnEquipItem(type);
                 }
 
                 // 스킬 해제
-                foreach (var skill in unit.SkillDatas)
+                foreach (SkillData skill in unit.SkillDatas)
                 {
                     if (skill != null)
+                    {
                         unit.UnEquipSkill(skill);
+                    }
                 }
+
+                DeckSelectManager.Instance.RemoveUnitInDeck(unit);
             }
 
-            // 출전 슬롯 비우기
-            var deckList = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
-
-            for (int i = 0; i < deckList.Count; i++)
-            {
-                deckList[i] = null;
-            }
+            // // 출전 슬롯 비우기
+            // List<EntryDeckData> deckList = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
+            //
+            // for (int i = 0; i < deckList.Count; i++)
+            // {
+            //     deckList[i] = null;
+            // }
 
             // 저장
             SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
@@ -163,7 +163,7 @@ public class TutorialManager : Singleton<TutorialManager>
         waitingActionCount = currentStep.Actions.Count;
         Debug.Log($"[튜토리얼] Step {id}에서 {waitingActionCount}개의 액션 실행 시작");
 
-        foreach (var action in currentStep.Actions)
+        foreach (TutorialActionData action in currentStep.Actions)
         {
             if (action == null)
             {
@@ -172,7 +172,7 @@ public class TutorialManager : Singleton<TutorialManager>
                 continue;
             }
 
-            if (executorMap.TryGetValue(action.ActionType, out var executor))
+            if (executorMap.TryGetValue(action.ActionType, out TutorialActionExecutor executor))
             {
                 executor.Enter(action);
             }
@@ -197,16 +197,18 @@ public class TutorialManager : Singleton<TutorialManager>
     }
 
 
-
     // 현재 스텝을 종료하고 다음 스텝으로 전환
     public void CompleteCurrentStep()
     {
         // 모든 실행기에 대해 Exit 호출
-        foreach (var action in currentStep.Actions)
+        foreach (TutorialActionData action in currentStep.Actions)
         {
-            if (action == null) continue;
+            if (action == null)
+            {
+                continue;
+            }
 
-            if (executorMap.TryGetValue(action.ActionType, out var executor))
+            if (executorMap.TryGetValue(action.ActionType, out TutorialActionExecutor executor))
             {
                 executor.Exit();
             }
@@ -236,5 +238,4 @@ public class TutorialManager : Singleton<TutorialManager>
 
         Debug.LogWarning("튜토리얼 종료!");
     }
-
 }

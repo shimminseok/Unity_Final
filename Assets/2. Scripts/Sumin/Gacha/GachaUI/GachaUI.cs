@@ -105,16 +105,19 @@ public class GachaUI : UIBase
 
     private void OnCharacterGachaSelected()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         SetGachaSelection(characterHandler, 0, characterGachaButton);
     }
 
     private void OnSkillGachaSelected()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         SetGachaSelection(skillHandler, 1, skillGachaButton);
     }
 
     private void OnEquipmentGachaSelected()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         SetGachaSelection(equipmentHandler, 2, equipmentGachaButton);
     }
 

@@ -45,4 +45,10 @@ public class ActiveSkillSO : SkillSo
             rangeSkillSo.SetIsProjectile(isHasProjectileSkill);
         }
     }
+
+
+    public string GetDescription()
+    {
+        return skillDescription;
+    }
 }

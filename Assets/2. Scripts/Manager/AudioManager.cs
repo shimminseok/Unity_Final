@@ -7,12 +7,14 @@ using UnityEngine.SceneManagement;
 public enum AudioType
 {
     BGM,
-    SFX
+    SFX,
+    Master
 }
 
 public class AudioManager : Singleton<AudioManager>
 {
     /* 사운드 조절 기능 */
+    [SerializeField] [Range(0, 1)] private float masterVolume = 1f;
     [SerializeField] [Range(0, 1)] private float soundEffectVolume = 1f;
     [SerializeField] [Range(0, 1)] private float soundEffectPitchVariance = 0.1f;
     [SerializeField] [Range(0, 1)] private float musicVolume = 0.5f;
@@ -61,18 +63,35 @@ public class AudioManager : Singleton<AudioManager>
     {
         volume = Mathf.Clamp01(volume);
 
-        if (type == AudioType.BGM)
+        switch (type)
         {
-            musicVolume = volume;
-            if (bgmAudioSource != null)
-            {
-                bgmAudioSource.volume = musicVolume;
-            }
+            case AudioType.BGM:
+                musicVolume = volume;
+                if (bgmAudioSource != null)
+                {
+                    bgmAudioSource.volume = musicVolume * masterVolume;
+                }
+                break;
+            case AudioType.SFX:
+                soundEffectVolume = volume;
+                break;
+            case AudioType.Master:
+                masterVolume = volume;
+                if (bgmAudioSource != null)
+                    bgmAudioSource.volume = musicVolume * masterVolume;
+                break;
         }
-        else if (type == AudioType.SFX)
+    }
+
+    public float GetVolume(AudioType type)
+    {
+        return type switch
         {
-            soundEffectVolume = volume;
-        }
+            AudioType.BGM => musicVolume,
+            AudioType.SFX => soundEffectVolume,
+            AudioType.Master => masterVolume,
+            _ => 1f
+        };
     }
 
     /* BGM은 Loop를 돌며 계속해서 반복 재생 */
@@ -97,7 +116,7 @@ public class AudioManager : Singleton<AudioManager>
                     bgmAudioSource.clip = newClip;
                     bgmAudioSource.loop = isLoop;
                     bgmAudioSource.Play();
-                    bgmAudioSource.DOFade(1f, 1f);
+                    bgmAudioSource.DOFade(musicVolume * masterVolume, 1f);
                 });
             }
             else
@@ -107,7 +126,7 @@ public class AudioManager : Singleton<AudioManager>
                 bgmAudioSource.loop = isLoop;
                 bgmAudioSource.volume = 0f;
                 bgmAudioSource.Play();
-                bgmAudioSource.DOFade(1f, 1f);
+                bgmAudioSource.DOFade(musicVolume * masterVolume, 1f);
             }
         }
         else
@@ -151,7 +170,7 @@ public class AudioManager : Singleton<AudioManager>
             PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
             if (sfxPlayer != null)
             {
-                sfxSource.Play(AudioDictionary[clipName], soundEffectVolume);
+                sfxSource.Play(AudioDictionary[clipName], soundEffectVolume * masterVolume);
             }
             else
             {
@@ -190,7 +209,7 @@ public class AudioManager : Singleton<AudioManager>
             PoolableAudioSource sfxSource = sfxPlayer.GetComponent<PoolableAudioSource>();
             if (sfxPlayer != null)
             {
-                sfxSource.Play(AudioDictionary[clipName], soundEffectVolume);
+                sfxSource.Play(AudioDictionary[clipName], soundEffectVolume * masterVolume);
             }
             else
             {

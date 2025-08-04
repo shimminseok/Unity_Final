@@ -13,6 +13,7 @@ public class RangeAttackSO : RangeActionSo
         if (target != null)
         {
             GameObject projectile = ObjectPoolManager.Instance.GetObject(projectilePoolID);
+            PlaySFX(attacker);
             if (projectile == null)
             {
                 projectile = Instantiate(projectilePrefab);
@@ -23,6 +24,12 @@ public class RangeAttackSO : RangeActionSo
             ProjectileComponent.trigger.OnTriggerTarget += ResetProjectile;
         }
         
+    }
+    
+    public override void PlaySFX(IAttackable attacker)
+    {
+        AudioManager.Instance.PlaySFX(AttackSound.ToString());
+        AudioManager.Instance.PlaySFX(HitSound.ToString());
     }
 
     private void ResetProjectile()

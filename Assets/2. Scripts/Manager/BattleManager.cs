@@ -142,6 +142,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             return;
         }
 
+        AudioManager.Instance.PlaySFX(SFXName.BattleEndSound.ToString());
         TurnHandler.RefillTurnQueue();
         foreach (EnemyUnitController enemy in EnemyUnits)
         {
