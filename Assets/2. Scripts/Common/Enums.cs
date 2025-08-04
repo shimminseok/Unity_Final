@@ -243,4 +243,5 @@ public enum MonsterType
     Tree,
     Male,
     Female,
+    RabbitSlime,
 }
