@@ -39,4 +39,26 @@ public abstract class BaseInventoryUI : MonoBehaviour
         int index = reuseScrollview.GetDataIndexFromItem(item);
         reuseScrollview.RefreshSlotAt(index);
     }
+
+    private void ClearClickHandlers()
+    {
+        if (reuseScrollview?.ItemList == null)
+        {
+            return;
+        }
+
+        foreach (RectTransform obj in reuseScrollview.ItemList)
+        {
+            if (obj.TryGetComponent(out InventorySlot slot))
+            {
+                slot.SetOnClickCallback(null);
+            }
+        }
+    }
+
+
+    private void OnDestroy()
+    {
+        ClearClickHandlers();
+    }
 }
