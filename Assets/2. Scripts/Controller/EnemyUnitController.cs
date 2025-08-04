@@ -120,7 +120,7 @@ using Random = UnityEngine.Random;
             _ => null
         };
     }
-    
+
     public override void PlayHitVoiceSound()
     {
         EnemyUnitSO so = UnitSo as EnemyUnitSO;
@@ -131,8 +131,12 @@ using Random = UnityEngine.Random;
         else
         {
             MonsterType monsterType = so.monsterType;
-            if (monsterType == MonsterType.None) return;
-            StringBuilder sb = new StringBuilder();
+            if (monsterType == MonsterType.None)
+            {
+                return;
+            }
+
+            StringBuilder sb = new();
             sb.Append(monsterType.ToString());
             sb.Append("HitSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
@@ -149,8 +153,12 @@ using Random = UnityEngine.Random;
         else
         {
             MonsterType monsterType = so.monsterType;
-            if (monsterType == MonsterType.None) return;
-            StringBuilder sb = new StringBuilder();
+            if (monsterType == MonsterType.None)
+            {
+                return;
+            }
+
+            StringBuilder sb = new();
             sb.Append(monsterType.ToString());
             sb.Append("DeadSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
@@ -167,8 +175,12 @@ using Random = UnityEngine.Random;
         else
         {
             MonsterType monsterType = so.monsterType;
-            if (monsterType == MonsterType.None) return;
-            StringBuilder sb = new StringBuilder();
+            if (monsterType == MonsterType.None)
+            {
+                return;
+            }
+
+            StringBuilder sb = new();
             sb.Append(monsterType.ToString());
             sb.Append("AttackSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
@@ -231,8 +243,6 @@ using Random = UnityEngine.Random;
             return;
         }
 
-        Debug.Log("Enemy Take Damage Font");
-
         if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
         {
             emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
@@ -250,6 +260,7 @@ using Random = UnityEngine.Random;
                     }
                 }
 
+                DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Immune);
                 return;
             }
         }
