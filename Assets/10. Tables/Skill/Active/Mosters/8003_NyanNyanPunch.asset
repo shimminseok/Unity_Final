@@ -27,7 +27,11 @@ MonoBehaviour:
       selectTarget: 0
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
-      damageEffects: []
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.3
+        value: 10
       buffEffects: []
       skillVFX: []
   activeSkillTier: 0

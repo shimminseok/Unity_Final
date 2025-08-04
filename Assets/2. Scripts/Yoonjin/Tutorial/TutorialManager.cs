@@ -126,12 +126,12 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
             {
-                Debug.LogWarning("[튜토리얼] ResumeStep이 없어 기본 ID 0으로 시작합니다.");
+                Debug.Log("[튜토리얼] ResumeStep이 없어 기본 ID 0으로 시작합니다.");
                 resumeStep = 0;
             }
             else
             {
-                Debug.LogError($"[튜토리얼] resumeStep ID {resumeStep}이 존재하지 않습니다. 튜토리얼을 종료합니다.");
+                Debug.Log($"[튜토리얼] resumeStep ID {resumeStep}이 존재하지 않습니다. 튜토리얼을 종료합니다.");
                 EndTutorial();
                 return;
             }
@@ -148,14 +148,14 @@ public class TutorialManager : Singleton<TutorialManager>
 
         if (!tutorialTable.DataDic.TryGetValue(id, out currentStep))
         {
-            Debug.LogError($"[튜토리얼] Step ID {id}를 찾을 수 없습니다. 튜토리얼 종료.");
+            Debug.Log($"[튜토리얼] Step ID {id}를 찾을 수 없습니다. 튜토리얼 종료.");
             EndTutorial();
             return;
         }
 
         if (currentStep.Actions == null || currentStep.Actions.Count == 0)
         {
-            Debug.LogError($"[튜토리얼] Step {id}에 등록된 Actions가 없습니다!");
+            Debug.Log($"[튜토리얼] Step {id}에 등록된 Actions가 없습니다!");
             CompleteCurrentStep(); // 다음으로 넘겨도 무방
             return;
         }
@@ -178,7 +178,7 @@ public class TutorialManager : Singleton<TutorialManager>
             }
             else
             {
-                Debug.LogError($"[튜토리얼] ActionType({action.ActionType})에 대한 실행기를 찾을 수 없습니다.");
+                Debug.Log($"[튜토리얼] ActionType({action.ActionType})에 대한 실행기를 찾을 수 없습니다.");
                 NotifyActionComplete(); // 실행 실패시에도 진행
             }
         }
@@ -236,6 +236,6 @@ public class TutorialManager : Singleton<TutorialManager>
             SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
-        Debug.LogWarning("튜토리얼 종료!");
+        Debug.Log("튜토리얼 종료!");
     }
 }

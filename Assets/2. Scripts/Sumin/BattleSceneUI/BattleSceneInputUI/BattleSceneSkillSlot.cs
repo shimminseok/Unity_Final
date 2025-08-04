@@ -11,6 +11,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
 
     [Header("스킬 슬롯 앞면 : 남은 재사용 횟수")]
     [SerializeField] private Button FrontSkillBtn;
+
     [SerializeField] private Image skillIconImage;
     [SerializeField] private TextMeshProUGUI skillName;
     [SerializeField] private TextMeshProUGUI reuseCountText;
@@ -18,15 +19,18 @@ public class BattleSceneSkillSlot : MonoBehaviour
 
     [Header("스킬 슬롯 뒷면 : 스킬 코스트(쿨타임)")]
     [SerializeField] private Button BackSkillBtn;
+
     [SerializeField] private TextMeshProUGUI coolDownText;
     [SerializeField] private GameObject lockImage;
 
     [Header("뒷면 버튼 : 뒤집는 속도와 뒤집고 있는 시간")]
     [SerializeField] private float flipDuration;
+
     [SerializeField] private float waitFlippedTime;
 
     [Header("스킬 팝업")]
     [SerializeField] private SkillDetailPopupUI skillDetailPopup;
+
     [SerializeField] private SkillForDetailButton skillForDetailButton;
 
     [SerializeField] private List<Sprite> skillTierSprites;
@@ -84,7 +88,9 @@ public class BattleSceneSkillSlot : MonoBehaviour
     public void OnFrontSkillBtn()
     {
         if (skillForDetailButton != null && skillForDetailButton.IsClickBolcked)
+        {
             return;
+        }
 
         InputManager.Instance.SelectSkill(currentskillIndex);
         ToggleHighlightSkillBtn(true);
@@ -122,7 +128,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
     // 회전 애니메이션 메서드
     private Tween RotateTo(float y)
     {
-        return this.transform.DORotate(new Vector3(0, y, 0), flipDuration).SetEase(Ease.Linear);
+        return transform.DORotate(new Vector3(0, y, 0), flipDuration).SetEase(Ease.Linear);
     }
 
     // 카드 상태 전환

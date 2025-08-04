@@ -101,10 +101,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
 
         StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.EquippedItems.Values.ToList(), deckData.DeckData.Level, playerUnitIncreaseSo);
-        // foreach (EquipmentItem deckDataEquippedItem in deckData.DeckData.EquippedItems.Values)
-        // {
-        //     EquipmentManager.EquipItem(deckDataEquippedItem);
-        // }
 
         SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
@@ -249,6 +245,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
                         LastAttacker.InvokeHitFinished();
                     }
                 }
+
+                DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Immune);
 
                 return;
             }
