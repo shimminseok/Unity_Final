@@ -156,6 +156,10 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         inventory.Clear();
         JobInventory.Clear();
+        if (loadedItems.Count == 0)
+        {
+            return;
+        }
 
         foreach (SaveInventoryItem savedItem in loadedItems)
         {
