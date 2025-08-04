@@ -41,18 +41,37 @@ MonoBehaviour:
           ID: 0
           EffectType: 6
           Stat:
-            StatType: 0
+            StatType: 1
             ModifierType: 1
-            Value: 33
+            Value: 0
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+              type: 3}
+            VFXPoolID: HealVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+            reference: 1
+            isParent: 1
+            type: 3
+      skillVFX:
+      - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
+          type: 3}
+        VFXPoolID: HealVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+        reference: 1
+        isParent: 1
+        type: 3
   activeSkillTier: 0
   reuseMaxCount: 2
   coolTime: 3
   skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
-  SFX: 
+  SFX: 35
+  CastSFX: 0
