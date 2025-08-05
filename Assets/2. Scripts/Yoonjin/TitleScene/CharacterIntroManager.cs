@@ -153,4 +153,9 @@ public class CharacterIntroManager : MonoBehaviour
     {
         SaveLoadManager.Instance.DeleteAll();
     }
+
+    public void OnSettingButtonClick()
+    {
+        PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
+    }
 }
