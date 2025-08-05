@@ -1,9 +1,12 @@
+## 📚 Table of Contents
 - [Features](#features)
 - [Implementation Details](#-implementation-details)
   - [🎮 전투씬 - 플레이어 인풋 시스템](#-전투씬---플레이어-인풋-시스템)
   - [🎨 전투씬 - UI](#-전투씬---ui)
   - [🎲 가챠 시스템 구조](#-가챠-시스템-구조)
   - [🛠 UI 및 연출](#-ui-및-연출)
+
+---
 
 ## ✨ Features
 
