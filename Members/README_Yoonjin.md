@@ -33,7 +33,7 @@ Unity 기반 프로젝트에서 사용 가능한 **통합 게임 시스템 프�
 ### 1. 튜토리얼 시스템 (FSM 기반)
 
 - `TutorialManager`: FSM 구조 기반으로 `TutorialStepSO`를 순차 실행
-- `TutorialActionExecutor`: 기능별 모듈 분리 (예: UI 강조, 대사 출력, 클릭 감지 등)
+- `TutorialActionExecutor`: 기능별 모듈 분리 (예: UI 강조, 대사 출력, 트리거 대기, 보상 지급 등)
 - 저장/불러오기: Step ID 기반으로 중단 지점부터 재시작 가능
 - 씬 진입 시 특정 단계부터 시작 가능
 
