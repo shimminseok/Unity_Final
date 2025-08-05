@@ -184,23 +184,31 @@ public class EntryDeckData
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("더이상 초월을 할 수 없습니다.");
             return;
         }
-        if (!result)
-        {
-            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
-            return;
-        }
 
-        SubAmount(Define.DupeCountByTranscend[TranscendLevel], out result);
-        if (!result)
+        bool hasEnoughAmount = Amount >= Define.DupeCountByTranscend[TranscendLevel];
+        if (!hasEnoughAmount)
         {
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 영웅이 부족합니다.");
+            result = false;
             return;
         }
 
-        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
+        bool hasEnoughGold = AccountManager.Instance.Gold >= Define.RequierUnitTranscendGold;
+        if (!hasEnoughGold)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
+            result = false;
+            return;
+        }
+
+        // 검사는 끝났으니 이제 실제로 차감
+        SubAmount(Define.DupeCountByTranscend[TranscendLevel], out bool _);
+        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out bool _);
+
         TranscendLevel++;
         OnTranscendChanged?.Invoke();
         SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
+        result = true;
     }
 
     public void Compete(int index, bool isCompeted)
