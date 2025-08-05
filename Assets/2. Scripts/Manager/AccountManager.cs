@@ -23,14 +23,6 @@ public class AccountManager : Singleton<AccountManager>
     protected override void Awake()
     {
         base.Awake();
-#if UNITY_ANDROID || UNITY_IOS
-        ScalableBufferManager.ResizeBuffers(0.7f, 0.7f);
-        Application.targetFrameRate = 45;
-#elif UNITY_EDITOR
-        Application.targetFrameRate = -1;
-#else
-        Application.targetFrameRate = 120;
-#endif
 
         orderedStageIds = TableManager.Instance.GetTable<StageTable>().DataDic.Keys.OrderBy(id => id).ToList();
     }
