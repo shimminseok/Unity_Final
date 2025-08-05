@@ -18,7 +18,6 @@ public class UnitSelector
     // 유닛 선택 메서드
     public bool TrySelectUnit(LayerMask selectableUnit, out ISelectable selected)
     {
-        // selected에 선택한 유닛 넣어주고, true로 반환
         selected = null;
         Vector2 inputPos;
 
@@ -45,6 +44,7 @@ public class UnitSelector
             return false;
         }
 
+        // selected에 선택한 유닛 넣어주고, true로 반환
         Ray ray = cam.ScreenPointToRay(inputPos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, selectableUnit))
@@ -58,6 +58,7 @@ public class UnitSelector
             return selected != null;
         }
 
+        InputManager.Instance.ExitSkillSelect();
         return false;
     }
 

@@ -2,11 +2,13 @@
 public class SelectSkillState : IInputState
 {
     private readonly InputContext context;
+    private readonly UnitSelector selector;
     private readonly InputStateMachine inputStateMachine;
 
-    public SelectSkillState(InputContext context, InputStateMachine inputStateMachine)
+    public SelectSkillState(InputContext context, UnitSelector selector, InputStateMachine inputStateMachine)
     {
         this.context = context;
+        this.selector = selector;
         this.inputStateMachine = inputStateMachine;
     }
 
@@ -14,9 +16,11 @@ public class SelectSkillState : IInputState
 
     public void HandleInput() 
     {
-        // 스킬이 선택되면 타겟 선택 상태로 전환
-        // TODO : 추후 스킬 꾹 누르면 상세정보 표시 등 고려.
-        // 추가 UI 기능 구현 등이 없으면 해당 State는 불필요, ChangeState 각 버튼에 부여.
+        if (selector.TrySelectUnit(context.UnitLayer, out ISelectable target))
+        {
+            // 유닛 클릭 시 아무 일도 하지 않음
+        }
+
         if (context.SelectedSkill != null)
         {
             inputStateMachine.ChangeState<SelectTargetState>();
