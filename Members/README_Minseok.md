@@ -39,7 +39,7 @@
 - 감정 시스템, 패시브, 반격 등 다양한 효과와의 유연한 통합을 고려
 ### 전투 흐름
 1. TurnHandler가 유닛 Speed 스탯 기준으로 턴 순서를 정렬
-2.유닛은 StartTurn()을 통해 턴을 시작하고, 내부에서 TurnStateMachine을 실행
+2. 유닛은 StartTurn()을 통해 턴을 시작하고, 내부에서 TurnStateMachine을 실행
 3. 유닛은 Idle → Move → Act(공격/스킬) → Return → EndTurn 흐름을 따라 동작
 4. 전투 중 상태에 따라 감정/패시브 발동, 반격 처리 등 자동 실행
 ### 특이사항
