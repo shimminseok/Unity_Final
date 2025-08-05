@@ -46,7 +46,7 @@ Unity 기반 프로젝트에서 사용 가능한 **통합 게임 시스템 프�
 
 ### 2. 대사 시스템 (CSV → ScriptableObject)
 
-- TSV 포맷으로 작성된 대사 파일을 CSV → JSON → ScriptableObject로 자동 변환
+- CSV 포맷으로 작성된 대사 파일을 CSV → JSON → ScriptableObject로 자동 변환
 - `DialogueManager`가 SO 파일을 로드하여 컷신/대화 실행
 - 캐릭터 이름, 말투, 초상화, 배경 등이 자동 적용
 - 디자이너가 직접 대사 수정 가능
