@@ -184,8 +184,6 @@ public class EntryDeckData
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("더이상 초월을 할 수 없습니다.");
             return;
         }
-
-        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
         if (!result)
         {
             PopupManager.Instance.GetUIComponent<ToastMessageUI>().SetToastMessage("초월에 필요한 재화가 부족합니다.");
@@ -199,7 +197,7 @@ public class EntryDeckData
             return;
         }
 
-
+        AccountManager.Instance.UseGold(Define.RequierUnitTranscendGold, out result);
         TranscendLevel++;
         OnTranscendChanged?.Invoke();
         SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
