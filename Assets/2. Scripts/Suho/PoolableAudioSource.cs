@@ -103,6 +103,10 @@ public class PoolableAudioSource : MonoBehaviour, IPoolObject
 
     public void OnReturnToPool()
     {
+        if (AudioSource.clip != null && AudioManager.Instance.NestedDictionary.ContainsKey(AudioSource.clip.name))
+        {
+            AudioManager.Instance.NestedDictionary[AudioSource.clip.name]--;
+        }
         audioSource.clip = null;
     }
 }
