@@ -82,6 +82,15 @@ public class UIEquipmentCombine : UIBase
             return;
         }
 
+        // 최고 티어 장비는 합성 불가
+        Tier maxTier = System.Enum.GetValues(typeof(Tier)).Cast<Tier>().Max();
+        if (item.ItemSo.Tier == maxTier)
+        {
+            PopupManager.Instance.GetUIComponent<ToastMessageUI>()
+                .SetToastMessage($"{(int)item.ItemSo.Tier + 1}성 장비는 합성할 수 없습니다.");
+            return;
+        }
+
         // 티어 검사
         if (MaterialItems.Any(e => e != null && e.ItemSo.Tier != item.ItemSo.Tier))
         {
