@@ -68,7 +68,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         selector = new UnitSelector(context, mainCam);
 
         inputStateMachine.CreateInputState<SelectExecuterState>(new SelectExecuterState(context, selector, inputStateMachine));
-        inputStateMachine.CreateInputState<SelectSkillState>(new SelectSkillState(context, inputStateMachine));
+        inputStateMachine.CreateInputState<SelectSkillState>(new SelectSkillState(context, selector, inputStateMachine));
         inputStateMachine.CreateInputState<SelectTargetState>(new SelectTargetState(context, selector, inputStateMachine));
         inputStateMachine.CreateInputState<InputDisabledState>(new InputDisabledState(context, selector));
 
@@ -112,6 +112,14 @@ public class InputManager : SceneOnlySingleton<InputManager>
         context.EnableStartButtonUI?.Invoke();
 
         inputStateMachine.ChangeState<SelectExecuterState>();
+    }
+
+    public void ExitSkillSelect()
+    {
+        if (inputStateMachine.CurrentState is SelectExecuterState)
+            return;
+
+        OnClickSkillExitButton();
     }
 
     // Start 버튼
