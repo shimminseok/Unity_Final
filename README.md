@@ -21,13 +21,19 @@
 ⚔️ 전투 시스템
 🧪 가챠 (소환) 시스템
 🛠 장비 합성
-![1](https://github.com/user-attachments/assets/d4ac0019-2e13-42b1-99b2-b3f88851466c)
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/d4ac0019-2e13-42b1-99b2-b3f88851466c" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/dc3f73cc-f96e-40d6-9c4f-75efca2ccc7f" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/77b8409c-6b99-41ec-a7af-96a8afea7d43" width="250"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/2823f39f-621c-4013-8788-1359d54789b1" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/ceb88eba-3ad2-4c77-ba7c-4e73ddb11664" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/5941a177-cc28-4afc-b92e-4b9cabe0c149" width="250"/></td>
+  </tr>
+</table>
 
-<img width="1920" height="1080" alt="2" src="https://github.com/user-attachments/assets/dc3f73cc-f96e-40d6-9c4f-75efca2ccc7f" />
-<img width="1920" height="1080" alt="3" src="https://github.com/user-attachments/assets/77b8409c-6b99-41ec-a7af-96a8afea7d43" />
-<img width="1920" height="1080" alt="4" src="https://github.com/user-attachments/assets/2823f39f-621c-4013-8788-1359d54789b1" />
-<img width="1920" height="1080" alt="5" src="https://github.com/user-attachments/assets/ceb88eba-3ad2-4c77-ba7c-4e73ddb11664" />
-<img width="1920" height="1080" alt="6" src="https://github.com/user-attachments/assets/5941a177-cc28-4afc-b92e-4b9cabe0c149" />
 
 
 ---
