@@ -47,16 +47,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public virtual bool IsAnimationDone    { get; set; }
     public virtual bool IsTimeLinePlaying  { get; set; }
 
-    public event Action  OnHitFinished;
-    public event Action  OnMeleeAttackFinished;
-    public event Action  OnRangeAttackFinished;
-    public event Action  OnSkillFinished;
-    public abstract event Action  OnDead;
-    public          Unit SelectedUnit => this;
-    public abstract void StartTurn();
-    public abstract void EndTurn();
-    public abstract void UseSkill();
-    public abstract void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
+    public event          Action OnHitFinished;
+    public event          Action OnMeleeAttackFinished;
+    public event          Action OnRangeAttackFinished;
+    public event          Action OnSkillFinished;
+    public abstract event Action OnDead;
+    public          Unit         SelectedUnit => this;
+    public abstract void         StartTurn();
+    public abstract void         EndTurn();
+    public abstract void         UseSkill();
+    public abstract void         TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
 
     public abstract void Dead();
@@ -207,13 +207,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ChangeAction(ActionType action)
     {
         CurrentAction = action;
-        if (action == ActionType.Attack)
-        {
-            CurrentAttackAction = UnitSo.AttackType;
-        }
-        else if (action == ActionType.SKill)
+        if (action == ActionType.SKill)
         {
             CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
+        }
+        else
+        {
+            CurrentAttackAction = UnitSo.AttackType;
         }
     }
 
@@ -271,6 +271,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void StartCountAttack(Unit attacker)
     {
+        Debug.Log($"{CurrentAction}");
         CounterTarget = attacker;
         IsCounterAttack = true;
         attacker.SetLastAttacker(this);
@@ -286,10 +287,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
         {
             OnMeleeAttackFinished += EndCountAttack;
+            OnMeleeAttackFinished += attacker.InvokeHitFinished;
         }
         else
         {
             OnRangeAttackFinished += EndCountAttack;
+            OnRangeAttackFinished += attacker.InvokeHitFinished;
         }
     }
 
@@ -322,6 +325,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void InvokeHitFinished()
     {
+        //반격하는 유닛의 HitFinished가 Null임
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
         OnHitFinished = null;
