@@ -57,7 +57,7 @@
 | 심민석 | 턴제 전투, 감정, 버프, 유닛, 시스템 설계 / 구현 | [심민석_README.md](./Members/README_Minseok.md) |
 | 이수민 | 전투 인풋, 전투 UI, 가챠 시스템, UI 레이아웃 및 연출 | [이수민_README.md](./Members/README_Sumin.md) |
 | 소윤진 | 튜토리얼, 대사, 덱빌딩, 로딩창, 타이틀 씬 | [소윤진_README.md](./Members/README_Yoonjin.md) |
-| 오수호 | (각자 맡은 작업 적어주세요!!) | [오수호_README.md](./Members/README_Suho.md) |
+| 오수호 | 스킬구현, 스킬연출, 사운드, VisualEffect, 적대치/적 스킬사용시스템  | [오수호_README.md](./Members/README_Suho.md) |
 
 ---
 
