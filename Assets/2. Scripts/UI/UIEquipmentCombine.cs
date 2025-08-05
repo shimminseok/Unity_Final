@@ -158,6 +158,7 @@ public class UIEquipmentCombine : UIBase
 
     public override void Close()
     {
+        inventoryUI.ReuseScrollview.ResetScrollviewPosition();
         base.Close();
     }
 

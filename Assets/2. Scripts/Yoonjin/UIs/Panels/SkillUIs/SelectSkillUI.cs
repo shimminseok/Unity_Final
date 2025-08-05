@@ -217,6 +217,7 @@ public class SelectSkillUI : UIBase
 
     public override void Close()
     {
+        inventoryUI.ReuseScrollview.ResetScrollviewPosition();
         base.Close();
         if (CurrentCharacter != null)
         {

@@ -19,7 +19,7 @@ public class UICharacterSetting : UIBase
     [SerializeField] private Image standingImage;
 
     [SerializeField] private float fadeInDuration;
-
+    [SerializeField] private ScrollRect scrollRect;
     public EntryDeckData SelectedPlayerUnitData { get; private set; }
 
     private Vector2 originalPos;
@@ -86,6 +86,7 @@ public class UICharacterSetting : UIBase
 
     public override void Close()
     {
+        scrollRect.verticalNormalizedPosition = 1;
         base.Close();
         characterInfoPanel.ClosePanel();
         standingPanel.DOKill();

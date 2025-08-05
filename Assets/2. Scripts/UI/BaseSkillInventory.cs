@@ -10,14 +10,13 @@ public class BaseSkillInventory : MonoBehaviour
     protected UIManager UIManager => UIManager.Instance;
     protected Func<List<SkillData>> GetSkillInventorySource;
 
-    protected Dictionary<SkillData, SkillSlot> skillToSlotMap { get; private set; } = new();
+    public ReuseScrollview<SkillData> ReuseScrollview => reuseScrollview;
 
     public virtual void Initialize(Func<List<SkillData>> inventoryGetter, Action<SkillSlot> onClickHandler)
     {
         GetSkillInventorySource = inventoryGetter;
 
         reuseScrollview.SetData(GetSkillInventorySource());
-        skillToSlotMap.Clear();
         List<SkillData> dataList = GetSkillInventorySource();
 
         int count = Mathf.Min(reuseScrollview.ItemList.Count, dataList.Count);
