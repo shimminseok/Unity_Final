@@ -93,11 +93,6 @@ FSM 기반 구조와 스탯, 상태 이펙트, 감정 시스템이 통합되어 
 - `StatManager`, `StatusEffectManager`, `Emotion`, `SkillManager` 등 **모듈 단위 컴포넌트 기반 구조**
 - `PlayerUnitController` 내에서 `OnTurnStart`, `OnTurnEnd`, `OnAllyDead` 등의 **패시브 트리거 인터페이스** 통합
 
-### 📌 활용 맥락
-
-이 구조는 싱글 플레이 턴제 RPG 프로젝트에서 유닛 FSM, 전투 진행 흐름, 감정 시스템, 패시브 발동 등을 통합하여 구현된 실제 사례입니다.  
-실제 전투 장면, UI, FSM 전환, 사운드까지 전반적인 유닛 제어가 가능하도록 설계되었습니다.
-
 ### 기타 역할  
 
 - 팀 내 다양한 시스템 설계/구현에 관여  
