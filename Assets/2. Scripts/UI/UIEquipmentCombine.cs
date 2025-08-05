@@ -82,15 +82,6 @@ public class UIEquipmentCombine : UIBase
             return;
         }
 
-        // 최고 티어 장비는 합성 불가
-        Tier maxTier = System.Enum.GetValues(typeof(Tier)).Cast<Tier>().Max();
-        if (item.ItemSo.Tier == maxTier)
-        {
-            PopupManager.Instance.GetUIComponent<ToastMessageUI>()
-                .SetToastMessage($"{(int)item.ItemSo.Tier + 1}성 장비는 합성할 수 없습니다.");
-            return;
-        }
-
         // 티어 검사
         if (MaterialItems.Any(e => e != null && e.ItemSo.Tier != item.ItemSo.Tier))
         {
@@ -121,6 +112,30 @@ public class UIEquipmentCombine : UIBase
     }
 
     public void OnClickCombine()
+    {
+        // 최고 티어 장비 포함 여부 확인
+        Tier maxTier = System.Enum.GetValues(typeof(Tier)).Cast<Tier>().Max();
+        bool hasMaxTier = MaterialItems.Any(i => i != null && i.ItemSo.Tier == maxTier);
+
+        if (hasMaxTier)
+        {
+            PopupManager.Instance.GetUIComponent<TwoChoicePopup>().SetAndOpenPopupUI(
+                "합성 확인",
+                $"{(int)maxTier + 1}성 장비가 포함되어 있습니다.\n정말 합성하시겠습니까?",
+                leftAct: ExecuteCombine, // 확인 시 실행
+                rightAct: null,
+                leftBtnTxt: "진행",
+                rightBtnTxt: "취소"
+            );
+        }
+        else
+        {
+            ExecuteCombine(); // 최고티어 없으면 바로 합성
+        }
+
+    }
+
+    private void ExecuteCombine()
     {
         resultItem = combineManager.TryCombine(MaterialItems);
         if (resultItem == null)
