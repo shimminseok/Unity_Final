@@ -19,7 +19,6 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
     [SerializeField] private GameObject emptySkillImg;
     [SerializeField] private List<Sprite> itemGradeSprites;
     [SerializeField] private Image jobTypeImage;
-    [SerializeField] private List<Sprite> jobTypeSprites;
 
     public SkillData SkillData { get; private set; }
     private ActiveSkillSO activeSkillSo;
@@ -44,7 +43,7 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         ShowEquipMark(skillData.IsEquipped);
         if (skillData.IsEquipped && skillData.EquippedUnit != null && skillData.skillSo is ActiveSkillSO)
         {
-            itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
+            AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, skillData.EquippedUnit.CharacterSo.UnitCircleIcon.name);
         }
 
         skillTier.gameObject.SetActive(true);
@@ -52,7 +51,8 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         skillIcon.gameObject.SetActive(true);
         skillIcon.sprite = activeSkillSo.SkillIcon;
         skillName.text = activeSkillSo.skillName;
-        jobTypeImage.sprite = jobTypeSprites[(int)activeSkillSo.jobType];
+
+        jobTypeImage.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, $"{(int)activeSkillSo.jobType}_icon");
 
         gameObject.name = $"SkillSlot_{skillData.skillSo.ID}";
 

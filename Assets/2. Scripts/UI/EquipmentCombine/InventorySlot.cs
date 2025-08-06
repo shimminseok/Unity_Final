@@ -29,8 +29,6 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private Sprite goldSprite;
 
     [SerializeField] private Image jobTypeImage;
-    [SerializeField] private List<Sprite> jobTypeSprites;
-
     public EquipmentItem Item { get; private set; }
 
     public event Action<EquipmentItem> OnClickSlot;
@@ -54,14 +52,39 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         ShowEquipMark(item.IsEquipped);
         if (item.IsEquipped)
         {
-            itemEquippedUnitIconImg.sprite = item.EquippedUnit.CharacterSo.UnitCircleIcon;
+            itemEquippedUnitIconImg.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, item.EquippedUnit.CharacterSo.UnitCircleIcon.name);
         }
 
         itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
 
         itemIcon.gameObject.SetActive(true);
-        itemIcon.sprite = item.ItemSo.ItemSprite;
 
+        AtlasType atlasType = AtlasType.Equipment;
+        switch (item.EquipmentItemSo.EquipmentType)
+        {
+            case EquipmentType.Weapon:
+                switch (item.EquipmentItemSo.JobType)
+                {
+                    case JobType.Archer:
+                    case JobType.Mage:
+                    case JobType.Priest:
+                        atlasType = AtlasType.WeaponRange;
+                        break;
+                    default:
+                        atlasType = AtlasType.WeaponMelee;
+                        break;
+                }
+
+                break;
+
+            case EquipmentType.Armor:
+            case EquipmentType.Accessory:
+                atlasType = AtlasType.Equipment;
+                break;
+        }
+
+
+        itemIcon.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(atlasType, item.ItemSo.ItemSprite.name);
         if (item.EquipmentItemSo.IsEquipableByAllJobs)
         {
             jobTypeImage.gameObject.SetActive(false);
@@ -69,7 +92,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
         else
         {
             jobTypeImage.gameObject.SetActive(true);
-            jobTypeImage.sprite = jobTypeSprites[(int)item.EquipmentItemSo.JobType];
+            jobTypeImage.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, $"{(int)item.EquipmentItemSo.JobType}_icon");
         }
 
         for (int i = 0; i < itemGradeStars.Count; i++)
