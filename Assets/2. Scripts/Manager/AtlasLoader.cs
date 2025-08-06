@@ -10,7 +10,8 @@ public enum AtlasType
     WeaponMelee,
     WeaponRange,
     Equipment,
-    JobOrCharacterIcon
+    JobOrCharacterIcon,
+    SlotFrame
 }
 
 [Serializable]

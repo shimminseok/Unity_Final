@@ -55,7 +55,7 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
             itemEquippedUnitIconImg.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, item.EquippedUnit.CharacterSo.UnitCircleIcon.name);
         }
 
-        itemSlotFrame.sprite = itemGradeSprites[(int)item.ItemSo.Tier];
+        itemSlotFrame.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.SlotFrame, $"ItemSlot_{(int)item.ItemSo.Tier}");
 
         itemIcon.gameObject.SetActive(true);
 
