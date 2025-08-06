@@ -67,7 +67,6 @@ public class TargetSelect
             return null;
         }
 
-        combinedUnits.Remove(mainTargetUnit as Unit);
 
         switch (type)
         {
@@ -107,6 +106,7 @@ public class TargetSelect
                 int mainTargetIndex       = combinedUnits.IndexOf(mainTargetUnit as Unit);
                 int tempTargetIndex       = mainTargetIndex + column - 1;
                 int secondTempTargetIndex = mainTargetIndex + column;
+                targets.Add(mainTargetUnit);
                 if (IsValidSector(tempTargetIndex, column, combinedUnits.Count) && !combinedUnits[tempTargetIndex].IsDead)
                 {
                     targets.Add(combinedUnits[tempTargetIndex]);
@@ -125,7 +125,6 @@ public class TargetSelect
 
             case SelectTargetType.All:
                 targets = TransLateUnitToIDamagable(combinedUnits);
-                targets.Add(mainTargetUnit);
                 return targets;
 
 
