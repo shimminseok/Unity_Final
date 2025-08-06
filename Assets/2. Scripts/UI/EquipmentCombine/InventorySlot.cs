@@ -21,8 +21,6 @@ public class InventorySlot : MonoBehaviour, IReuseScrollData<InventoryItem>
     [SerializeField] private List<GameObject> itemGradeStars;
 
     [SerializeField] private Sprite emptySlotSprite;
-    [SerializeField] private List<Sprite> itemGradeSprites;
-
     [SerializeField] private TextMeshProUGUI amountTxt;
 
     [SerializeField] private Sprite opalSprite;
