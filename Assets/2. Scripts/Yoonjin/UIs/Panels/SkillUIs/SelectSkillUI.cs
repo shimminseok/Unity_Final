@@ -141,7 +141,7 @@ public class SelectSkillUI : UIBase
                 };
                 string equippedUnitName = skill.EquippedUnit.CharacterSo.UnitName;
                 string skillName        = skill.skillSo.skillName;
-                string message          = $"{skillName}은 {equippedUnitName}가 장착 중입니다.\n해제 후 장착하시겠습니까?";
+                string message          = $"{skillName}은(는) {equippedUnitName}이(가) 장착 중입니다.\n해제 후 장착하시겠습니까?";
                 PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("스킬 장착", message, leftAction, null, "장착", "취소");
             }
             else
@@ -217,6 +217,7 @@ public class SelectSkillUI : UIBase
 
     public override void Close()
     {
+        inventoryUI.ReuseScrollview.ResetScrollviewPosition();
         base.Close();
         if (CurrentCharacter != null)
         {

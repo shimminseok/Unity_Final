@@ -28,6 +28,19 @@ public class CharacterIntroManager : MonoBehaviour
 
     private bool isStartButtonShown = false;
 
+    private void Awake()
+    {
+#if UNITY_ANDROID || UNITY_IOS
+        QualitySettings.vSyncCount = 0;
+        ScalableBufferManager.ResizeBuffers(0.7f, 0.7f);
+        Application.targetFrameRate = 45;
+#elif UNITY_EDITOR
+        Application.targetFrameRate = -1;
+#else
+        Application.targetFrameRate = 120;
+#endif
+    }
+
     private void Start()
     {
         overlay.gameObject.SetActive(true);
@@ -152,5 +165,10 @@ public class CharacterIntroManager : MonoBehaviour
     public void OnClickDeleteSaveFile()
     {
         SaveLoadManager.Instance.DeleteAll();
+    }
+
+    public void OnSettingButtonClick()
+    {
+        PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
     }
 }

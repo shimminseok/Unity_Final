@@ -29,9 +29,9 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     [SerializeField] private RectTransform content;
     [SerializeField] private RectTransform viewportRect;
     [SerializeField] private GameObject itemPrefab;
-    [SerializeField] private Vector2 prefabSize = new Vector2(100f, 100f);
-    [SerializeField] private Vector2 spacing = new Vector2(15f, 15f);
-    [SerializeField] private Vector2 gridStartOffset = new Vector2(0f, 0f);
+    [SerializeField] private Vector2 prefabSize = new(100f, 100f);
+    [SerializeField] private Vector2 spacing = new(15f, 15f);
+    [SerializeField] private Vector2 gridStartOffset = new(0f, 0f);
     [SerializeField] private bool isVertical = true;
 
 
@@ -49,8 +49,10 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     private readonly List<ScrollData<T>> dataList = new();
     private readonly Dictionary<T, int> dataToIndexMap = new();
 
-    public List<RectTransform> ItemList => itemList;
-    public List<ScrollData<T>> DataList => dataList;
+    public List<RectTransform> ItemList   => itemList;
+    public List<ScrollData<T>> DataList   => dataList;
+    public ScrollRect          ScrollRect => scrollRect;
+    public bool                IsVertical => isVertical;
 
     private void Initialize()
     {
@@ -84,7 +86,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
         dataToIndexMap.Clear();
         for (int i = 0; i < items.Count; i++)
         {
-            var scrollData = new ScrollData<T>(i, items[i]);
+            ScrollData<T> scrollData = new(i, items[i]);
             dataList.Add(scrollData);
             dataToIndexMap[items[i]] = i;
         }
@@ -102,8 +104,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     {
         int rowOrColCount = Mathf.CeilToInt((float)dataList.Count / (isVertical ? columnCount : rowCount));
 
-        float contentWidth  = columnCount * (itemWidth + spacing.x) - spacing.x;
-        float contentHeight = rowOrColCount * (itemHeight + spacing.y) + spacing.y;
+        float contentWidth  = (columnCount * (itemWidth + spacing.x)) - spacing.x;
+        float contentHeight = (rowOrColCount * (itemHeight + spacing.y)) + spacing.y;
 
         content.sizeDelta = isVertical
             ? new Vector2(contentWidth, contentHeight)
@@ -151,7 +153,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     private void RecycleItems()
     {
         float position      = isVertical ? content.anchoredPosition.y : content.anchoredPosition.x;
-        int   newStartIndex = Mathf.FloorToInt(position / (isVertical ? (itemHeight + spacing.y) : (itemWidth + spacing.x))) * (isVertical ? columnCount : rowCount);
+        int   newStartIndex = Mathf.FloorToInt(position / (isVertical ? itemHeight + spacing.y : itemWidth + spacing.x)) * (isVertical ? columnCount : rowCount);
 
         int maxStartIndex = Mathf.Max(0, dataList.Count - visibleItemCount);
         newStartIndex = Mathf.Clamp(newStartIndex, 0, maxStartIndex);
@@ -189,8 +191,8 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
             row = dataIndex % rowCount;
         }
 
-        float x = gridStartOffset.x + col * (itemWidth + spacing.x);
-        float y = gridStartOffset.y - row * (itemHeight + spacing.y);
+        float x = gridStartOffset.x + (col * (itemWidth + spacing.x));
+        float y = gridStartOffset.y - (row * (itemHeight + spacing.y));
 
         item.anchoredPosition = new Vector2(x, y);
 
@@ -222,7 +224,7 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
             }
 
             itemList[i].gameObject.SetActive(true);
-            if (itemList[i].TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+            if (itemList[i].TryGetComponent<IReuseScrollData<T>>(out IReuseScrollData<T> scrollData))
             {
                 scrollData.UpdateSlot(dataList[dataIndex]);
             }
@@ -232,16 +234,32 @@ public class ReuseScrollview<T> : MonoBehaviour where T : class
     public void RefreshSlotAt(int dataIndex)
     {
         if (dataIndex < 0 || dataIndex >= dataList.Count)
+        {
             return;
+        }
 
         int relativeIndex = dataIndex - currentStartIndex;
 
         if (relativeIndex < 0 || relativeIndex >= itemList.Count)
+        {
             return;
+        }
 
-        if (itemList[relativeIndex].TryGetComponent<IReuseScrollData<T>>(out var scrollData))
+        if (itemList[relativeIndex].TryGetComponent<IReuseScrollData<T>>(out IReuseScrollData<T> scrollData))
         {
             scrollData.UpdateSlot(dataList[dataIndex]);
+        }
+    }
+
+    public void ResetScrollviewPosition()
+    {
+        if (isVertical)
+        {
+            scrollRect.verticalNormalizedPosition = 1f;
+        }
+        else
+        {
+            scrollRect.horizontalNormalizedPosition = 0;
         }
     }
 }

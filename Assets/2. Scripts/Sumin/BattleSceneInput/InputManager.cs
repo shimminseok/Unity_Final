@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class InputManager : SceneOnlySingleton<InputManager>
@@ -68,7 +69,7 @@ public class InputManager : SceneOnlySingleton<InputManager>
         selector = new UnitSelector(context, mainCam);
 
         inputStateMachine.CreateInputState<SelectExecuterState>(new SelectExecuterState(context, selector, inputStateMachine));
-        inputStateMachine.CreateInputState<SelectSkillState>(new SelectSkillState(context, inputStateMachine));
+        inputStateMachine.CreateInputState<SelectSkillState>(new SelectSkillState(context, selector, inputStateMachine));
         inputStateMachine.CreateInputState<SelectTargetState>(new SelectTargetState(context, selector, inputStateMachine));
         inputStateMachine.CreateInputState<InputDisabledState>(new InputDisabledState(context, selector));
 
@@ -112,6 +113,25 @@ public class InputManager : SceneOnlySingleton<InputManager>
         context.EnableStartButtonUI?.Invoke();
 
         inputStateMachine.ChangeState<SelectExecuterState>();
+    }
+
+    public void ExitSkillSelect()
+    {
+        if (inputStateMachine.CurrentState is SelectExecuterState)
+            return;
+
+        // 튜토리얼에서 PlayerSelected 이벤트 발행
+        var tutorial = TutorialManager.Instance;
+
+        // 튜토리얼 중 HighlightUI 액션일 경우엔 나가기 막기
+        if (tutorial != null && tutorial.IsActive &&
+            tutorial.CurrentStep?.Actions
+                .Any(x => x.ActionType == TutorialActionType.HighlightUI || x.ActionType == TutorialActionType.TriggerWait) == true)
+        {
+            return;
+        }
+
+        OnClickSkillExitButton();
     }
 
     // Start 버튼

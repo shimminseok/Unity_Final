@@ -45,7 +45,7 @@ public class SelectExecuterState : IInputState
             return;
         }
 
-            if (selector.TrySelectUnit(context.PlayerUnitLayer, out ISelectable unit))
+        if (selector.TrySelectUnit(context.PlayerUnitLayer, out ISelectable unit))
         {
             // Unit Select하면 context의 SelectedUnit에 넘겨줌
             context.SelectedExecuter = unit;

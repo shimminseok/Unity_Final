@@ -22,45 +22,9 @@ public class AccountManager : Singleton<AccountManager>
 
     protected override void Awake()
     {
-        Application.targetFrameRate = 60;
         base.Awake();
 
         orderedStageIds = TableManager.Instance.GetTable<StageTable>().DataDic.Keys.OrderBy(id => id).ToList();
-    }
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
-            {
-                if (itemSo is EquipmentItemSO equipSo)
-                {
-                    InventoryManager.Instance.AddItem(new EquipmentItem(equipSo));
-                }
-            }
-
-            foreach (ActiveSkillSO skill in TableManager.Instance.GetTable<ActiveSkillTable>().DataDic.Values)
-            {
-                AddSkill(skill, out _);
-            }
-
-            foreach (PlayerUnitSO unit in TableManager.Instance.GetTable<PlayerUnitTable>().DataDic.Values)
-            {
-                AddPlayerUnit(unit);
-            }
-        }
-
-#endif
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            SaveLoadManager.Instance.DeleteAll();
-        }
     }
 
     /// <summary>

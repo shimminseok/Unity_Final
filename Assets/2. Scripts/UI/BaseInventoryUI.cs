@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class BaseInventoryUI : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public abstract class BaseInventoryUI : MonoBehaviour
 
     protected Func<List<InventoryItem>> GetInventorySource;
     protected List<InventoryItem> inventoryList;
+
+    public ReuseScrollview<InventoryItem> ReuseScrollview => reuseScrollview;
 
     public virtual void Initialize(Func<List<InventoryItem>> inventoryGetter, Action<InventorySlot> onClickHandler)
     {

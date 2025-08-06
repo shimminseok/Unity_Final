@@ -14,6 +14,7 @@ public class UIDeckBuilding : UIBase
     [SerializeField] private RectTransform ownedCharacterRect;
 
     [SerializeField] private List<CompeteUnitSlot> competedUnitSlots;
+    [SerializeField] private ScrollRect scrollRect;
 
     [FormerlySerializedAs("characterButtonPrefab")]
     [SerializeField] private UnitSlot unitSlotPrefab;
@@ -128,6 +129,7 @@ public class UIDeckBuilding : UIBase
 
     public override void Close()
     {
+        scrollRect.horizontalNormalizedPosition = 0;
         base.Close();
 
         foreach (UnitSlot slot in characterSlotDic.Values)

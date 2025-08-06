@@ -35,7 +35,8 @@ public class StageSlot : MonoBehaviour
         }
         
         AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
-        if (stageSo.HasBeforeDialogue)
+
+        if (stageSo.HasBeforeDialogue && stageSo.ID > AccountManager.Instance.BestStage)
         {
             DialogueController.Instance.Play(stageSo.beforeDialogueKey, () =>
             {
