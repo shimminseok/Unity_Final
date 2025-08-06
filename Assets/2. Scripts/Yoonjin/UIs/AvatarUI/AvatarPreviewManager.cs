@@ -9,6 +9,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     [SerializeField] private Transform avatarCamTransform;
 
 
+    [SerializeField] private List<GameObject> deckAvatarCams = new();
     [SerializeField] private Transform avatarPoolTransform;
     [SerializeField] private List<Transform> deckSlotTransforms = new();
 
@@ -18,6 +19,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     protected override void Awake()
     {
         base.Awake();
+        deckAvatarCams.ForEach(cam => cam.SetActive(false));
     }
 
     protected override void OnDestroy()
@@ -64,6 +66,9 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 
     public void ShowAvatar(int index, PlayerUnitSO characterSo)
     {
+        deckAvatarCams.ForEach(cam => cam.SetActive(true));
+
+
         if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
         {
             GameObject go = Resources.Load<GameObject>($"Character/{characterSo.UnitPrefab.name}");
