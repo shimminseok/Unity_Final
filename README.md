@@ -16,11 +16,26 @@
 플레이어는 스킬과 감정의 상호작용을 고려한 전술을 펼쳐야 하며, 감정의 흐름을 파악해 전장의 판도를 바꿀 수 있습니다.  
 **타격감 있는 스킬 연출**과 **감정을 흔드는 전투 이펙트**를 통해 몰입도 높은 전투 경험을 제공합니다.
 
-🧙‍♀️ 파티 편성 및 유닛 성장(레벨업, 초월, 장비와 스킬 장착)
-🌍 모험 스토리와 월드맵
-⚔️ 전투 시스템
-🧪 가챠 (소환) 시스템
-🛠 장비 합성
+🧙‍♀️ 파티 편성 및 유닛 성장(레벨업, 초월, 장비와 스킬 장착)<br>
+🌍 모험 스토리와 월드맵<br>
+⚔️ 전투 시스템<br>
+🧪 가챠 (소환) 시스템<br>
+🛠 장비 합성<br>
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/d4ac0019-2e13-42b1-99b2-b3f88851466c" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/dc3f73cc-f96e-40d6-9c4f-75efca2ccc7f" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/77b8409c-6b99-41ec-a7af-96a8afea7d43" width="250"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/2823f39f-621c-4013-8788-1359d54789b1" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/ceb88eba-3ad2-4c77-ba7c-4e73ddb11664" width="250"/></td>
+    <td><img src="https://github.com/user-attachments/assets/5941a177-cc28-4afc-b92e-4b9cabe0c149" width="250"/></td>
+  </tr>
+</table>
+
+
 
 ---
 
