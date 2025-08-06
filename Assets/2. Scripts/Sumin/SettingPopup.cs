@@ -101,10 +101,10 @@ public class SettingPopup : UIBase
 
     public void OnQuitButton()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>().SetAndOpenPopupUI("타이틀 복귀", "타이틀 화면으로 이동하시겠습니까?",
+            () => {
+                Close();
+                LoadSceneManager.Instance.LoadScene("TitleScene"); 
+            }, null, "이동하기");
     }
 }
