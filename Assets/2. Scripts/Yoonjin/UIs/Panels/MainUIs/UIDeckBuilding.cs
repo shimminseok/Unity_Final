@@ -120,6 +120,7 @@ public class UIDeckBuilding : UIBase
     public override void Open()
     {
         base.Open();
+        avatarPreviewManager.ShowOrHideDeckCamera(true);
         GenerateHasUnitSlots();
         ShowCompetedUnit(DeckSelectManager.Instance.GetSelectedDeck());
 

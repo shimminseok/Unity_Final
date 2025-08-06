@@ -63,10 +63,14 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
         avatar.transform.localRotation = Quaternion.identity;
     }
 
+    public void ShowOrHideDeckCamera(bool isShow)
+    {
+        deckAvatarCams.ForEach(cam => cam.SetActive(isShow));
+    }
 
     public void ShowAvatar(int index, PlayerUnitSO characterSo)
     {
-        deckAvatarCams.ForEach(cam => cam.SetActive(true));
+        ShowOrHideDeckCamera(true);
 
 
         if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
@@ -84,6 +88,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 
     public void HideAllBuilindUIAvatars()
     {
+        ShowOrHideDeckCamera(false);
         foreach (GameObject avatar in unitAvatarDict.Values)
         {
             avatar.SetActive(false);

@@ -43,16 +43,14 @@ public class SkillSlot : MonoBehaviour, IReuseScrollData<SkillData>
         ShowEquipMark(skillData.IsEquipped);
         if (skillData.IsEquipped && skillData.EquippedUnit != null && skillData.skillSo is ActiveSkillSO)
         {
-            // itemEquippedUnitIconImg.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, skillData.EquippedUnit.CharacterSo.UnitCircleIcon.name);
             itemEquippedUnitIconImg.sprite = skillData.EquippedUnit.CharacterSo.UnitCircleIcon;
         }
 
         skillTier.gameObject.SetActive(true);
         skillTier.sprite = itemGradeSprites[(int)skillData.skillSo.activeSkillTier];
         skillIcon.gameObject.SetActive(true);
-        
-        // jobTypeImage.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, $"{(int)activeSkillSo.jobType}_icon");
-        jobTypeImage.sprite = activeSkillSo.SkillIcon;
+        skillIcon.sprite = activeSkillSo.SkillIcon;
+        jobTypeImage.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.JobOrCharacterIcon, $"{(int)activeSkillSo.jobType}_icon");
         skillName.text = activeSkillSo.skillName;
 
 
