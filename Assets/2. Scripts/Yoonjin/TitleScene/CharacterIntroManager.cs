@@ -33,7 +33,7 @@ public class CharacterIntroManager : MonoBehaviour
 #if UNITY_ANDROID || UNITY_IOS
         QualitySettings.vSyncCount = 0;
         ScalableBufferManager.ResizeBuffers(0.7f, 0.7f);
-        Application.targetFrameRate = 45;
+        Application.targetFrameRate = -1;
 #elif UNITY_EDITOR
         Application.targetFrameRate = -1;
 #else

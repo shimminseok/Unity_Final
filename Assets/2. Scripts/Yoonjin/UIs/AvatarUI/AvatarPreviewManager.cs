@@ -9,6 +9,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     [SerializeField] private Transform avatarCamTransform;
 
 
+    [SerializeField] private List<GameObject> deckAvatarCams = new();
     [SerializeField] private Transform avatarPoolTransform;
     [SerializeField] private List<Transform> deckSlotTransforms = new();
 
@@ -18,6 +19,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
     protected override void Awake()
     {
         base.Awake();
+        deckAvatarCams.ForEach(cam => cam.SetActive(false));
     }
 
     protected override void OnDestroy()
@@ -61,9 +63,16 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
         avatar.transform.localRotation = Quaternion.identity;
     }
 
+    public void ShowOrHideDeckCamera(bool isShow)
+    {
+        deckAvatarCams.ForEach(cam => cam.SetActive(isShow));
+    }
 
     public void ShowAvatar(int index, PlayerUnitSO characterSo)
     {
+        ShowOrHideDeckCamera(true);
+
+
         if (!unitAvatarDict.TryGetValue(characterSo.ID, out GameObject avatar))
         {
             GameObject go = Resources.Load<GameObject>($"Character/{characterSo.UnitPrefab.name}");
@@ -79,6 +88,7 @@ public class AvatarPreviewManager : SceneOnlySingleton<AvatarPreviewManager>
 
     public void HideAllBuilindUIAvatars()
     {
+        ShowOrHideDeckCamera(false);
         foreach (GameObject avatar in unitAvatarDict.Values)
         {
             avatar.SetActive(false);
