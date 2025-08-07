@@ -11,7 +11,7 @@ public class UIStageSelect : UIBase
 {
     [SerializeField] private List<Sprite> stageBgSprites;
     [SerializeField] private Image stageBgImg;
-    
+
     [SerializeField] private RectTransform mapContent;
     [SerializeField] private RectTransform viewPort;
     [SerializeField] private StageInfoPanel stageInfoPanel;
@@ -35,6 +35,7 @@ public class UIStageSelect : UIBase
     private int currentChpaterIndex = 0;
 
     private StageTable StageTable => TableManager.Instance.GetTable<StageTable>();
+
     public void SetStageInfo(StageSO stage)
     {
         currentStage = stage;
@@ -42,6 +43,7 @@ public class UIStageSelect : UIBase
         stageInfoPanel.SetStageInfo(stage, DeckSelectManager.Instance.GetSelectedDeck());
         stageInfoPanel.OpenPanel();
     }
+
     public void OnClickEnterStage()
     {
         AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
@@ -70,17 +72,21 @@ public class UIStageSelect : UIBase
         base.Open();
         InitializeCapterNameText();
         SetStageSlot();
-        
+
         foreach (RectTransform rectTransform in cloudList)
         {
             StartCloudLoop(rectTransform);
         }
     }
-    
+
     public override void Close()
     {
         base.Close();
         stageInfoPanel.ClosePanel();
+        foreach (RectTransform rectTransform in cloudList)
+        {
+            rectTransform.DOKill();
+        }
     }
 
     private void SetStageSlot()
@@ -96,6 +102,7 @@ public class UIStageSelect : UIBase
             stageSlots[index++].Initialize(dataDicValue);
         }
     }
+
     private void StartCloudLoop(RectTransform rect)
     {
         rect.anchoredPosition = new Vector2(0, rect.anchoredPosition.y);
@@ -130,7 +137,6 @@ public class UIStageSelect : UIBase
 
     private void SlideToNextText(string newText)
     {
-        
         currentChapterNameRect.DOKill();
         nextChapterNameRect.DOKill();
         nextChapterName.text = newText;

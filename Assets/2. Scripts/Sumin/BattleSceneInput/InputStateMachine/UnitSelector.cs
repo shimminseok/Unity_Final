@@ -104,10 +104,10 @@ public class UnitSelector
             ? context.EnemyUnitLayer
             : skill.skillSo.selectCamp switch
             {
-                SelectCampType.Enemy    => context.EnemyUnitLayer,
-                SelectCampType.Player   => context.PlayerUnitLayer,
-                SelectCampType.BothSide => context.UnitLayer,
-                _                       => context.UnitLayer
+                SelectCampType.Enemy     => context.EnemyUnitLayer,
+                SelectCampType.Colleague => context.PlayerUnitLayer,
+                SelectCampType.BothSide  => context.UnitLayer,
+                _                        => context.UnitLayer
             };
     }
 

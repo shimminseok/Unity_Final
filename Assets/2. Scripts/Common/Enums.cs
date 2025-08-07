@@ -124,7 +124,7 @@ public enum SelectTargetType
  */
 public enum SelectCampType
 {
-    Player,
+    Colleague,
     Enemy,
     BothSide
 }
@@ -163,7 +163,7 @@ public enum Tier
 public enum AttackDistanceType
 {
     Melee,
-    Range,
+    Range
 }
 
 public enum ProjectileInterpolationMode
@@ -220,7 +220,6 @@ public enum SceneName
 }
 
 
-
 //항상 추가해야하는 사운드데이터레이블 ( UI사운드 등 )
 public enum AlwaysLoad
 {
@@ -243,5 +242,5 @@ public enum MonsterType
     Tree,
     Male,
     Female,
-    RabbitSlime,
+    RabbitSlime
 }

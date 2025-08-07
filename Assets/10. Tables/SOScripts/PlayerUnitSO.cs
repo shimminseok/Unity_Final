@@ -7,6 +7,7 @@ public class PlayerUnitSO : UnitSO
     public PassiveSO PassiveSkill;
     public JobType JobType;
     public Tier Tier;
+    public PlayerUnitIncreaseSo IncreaseStatSO;
 
     public Sprite UnitStanding;
     public Sprite UnitCircleIcon;

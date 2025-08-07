@@ -245,5 +245,6 @@ public class AudioManager : Singleton<AudioManager>
             });
         LoadAssetManager.Instance.LoadAssetBundle(nameof(AlwaysLoad.AlwaysLoadSound));            // 항상 로드해와야 하는 사운드
         LoadAssetManager.Instance.LoadAssetBundle(SceneManager.GetActiveScene().name + "Assets"); // 특정 씬에서 로드해와야 하는 사운드
+        NestedDictionary.Clear();
     }
 }
