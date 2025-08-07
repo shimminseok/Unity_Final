@@ -18,6 +18,8 @@ public class LoadSceneManager : Singleton<LoadSceneManager>
     public void LoadScene(string sceneName, Action onComplete = null)
     {
         // 로딩창
+        GameManager.Instance.TimeScaleSetDefault();
+        GameManager.Instance.TimeScaleMultiplierUpdate();
         LoadingScreenController.Instance.Show();
         LoadAssetManager.Instance.ReleaseAudioClips();
         StartCoroutine(InternalLoadScene(sceneName, LoadSceneMode.Single, onComplete));

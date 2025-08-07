@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     public bool isTestMode;
+    public bool TimeScaleMultiplier = false;
     private AccountManager   AccountManager   => AccountManager.Instance;
     private InventoryManager InventoryManager => InventoryManager.Instance;
     private SaveLoadManager  SaveLoadManager  => SaveLoadManager.Instance;
@@ -16,6 +17,31 @@ public class GameManager : Singleton<GameManager>
     {
         SaveLoadManager.Instance.LoadAll();
         ApplySaveDataToManagers();
+    }
+
+
+    public void TimeScaleMultiplierUpdate()
+    {
+        if (TimeScaleMultiplier)
+        {
+            Time.timeScale = 2f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void TimeScaleSetDefault()
+    {
+        Time.timeScale = 1f;
+        TimeScaleMultiplier = false;
+    }
+
+    public void ToggleTimeScale()
+    {
+        TimeScaleMultiplier = !TimeScaleMultiplier;
+        TimeScaleMultiplierUpdate();
     }
 
 

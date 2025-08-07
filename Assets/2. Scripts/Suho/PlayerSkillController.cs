@@ -21,7 +21,6 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerSkillController : BaseSkillController
 {
-    public AnimationClip skillAttackAnim;
 
     public override void SelectSkillSubTargets(IDamageable target)
     {
