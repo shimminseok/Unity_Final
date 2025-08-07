@@ -55,17 +55,26 @@ public class TargetSelect
 
         Unit attackerUnit = attacker as Unit;
 
+        //전부 나를 제외하고 가져옴
         List<Unit> combinedUnits = camp switch
         {
-            SelectCampType.Enemy    => BattleManager.Instance.GetEnemies(attackerUnit),
-            SelectCampType.Player   => BattleManager.Instance.GetAllies(attackerUnit),
-            SelectCampType.BothSide => BattleManager.Instance.GetAllUnits(attackerUnit),
-            _                       => null
+            SelectCampType.Enemy     => BattleManager.Instance.GetEnemies(attackerUnit),
+            SelectCampType.Colleague => BattleManager.Instance.GetAllies(attackerUnit),
+            SelectCampType.BothSide  => BattleManager.Instance.GetAllUnits(attackerUnit),
+            _                        => null
         };
+
         if (combinedUnits == null)
         {
             return null;
         }
+
+        if (camp == SelectCampType.Colleague || camp == SelectCampType.BothSide)
+        {
+            combinedUnits.Add(attackerUnit);
+        }
+
+        //combineUnits = 
 
 
         switch (type)
@@ -94,9 +103,9 @@ public class TargetSelect
             case SelectTargetType.Sector:
                 combinedUnits = camp switch
                 {
-                    SelectCampType.Enemy  => BattleManager.Instance.EnemyUnits,
-                    SelectCampType.Player => BattleManager.Instance.PartyUnits,
-                    _                     => null
+                    SelectCampType.Enemy     => BattleManager.Instance.EnemyUnits,
+                    SelectCampType.Colleague => BattleManager.Instance.PartyUnits,
+                    _                        => null
                 };
                 if (combinedUnits == null)
                 {

@@ -362,7 +362,7 @@ using Random = UnityEngine.Random;
         {
             SetTarget(mainTargetSelector.Select());
         }
-        else if (campType == SelectCampType.Player)
+        else if (campType == SelectCampType.Colleague)
         {
             List<Unit> allies = BattleManager.Instance.GetAllies(this);
             if (allies.Count > 0)
