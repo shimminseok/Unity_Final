@@ -426,6 +426,7 @@ using Random = UnityEngine.Random;
             }
         }
 
+        isTurnEnd = false;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -435,6 +436,7 @@ using Random = UnityEngine.Random;
         ChangeAction(ActionType.None);
         ChangeUnitState(EnemyUnitState.Idle);
         SkillController.EndTurn();
+        isTurnEnd = true;
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }
