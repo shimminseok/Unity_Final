@@ -334,14 +334,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
+        List<Unit> enemies = BattleManager.Instance.GetEnemies(this);
+
+        if (enemies.Count == 0 || IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            if (CurrentAction == ActionType.None || Target == null)
-            {
-                EndTurn();
-                return;
-            }
-            else
+            // if (CurrentAction == ActionType.None || Target == null)
             {
                 EndTurn();
                 return;

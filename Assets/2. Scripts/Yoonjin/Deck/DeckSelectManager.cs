@@ -196,6 +196,7 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         currentSelectedCharacter.EquipItem(item);
 
         OnEquipItemChanged?.Invoke(currentSelectedCharacter, item, alreadyEquipped);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
     }
 
     public void ForceEquipSkillToCurrentCharacter(SkillData skill)
@@ -218,5 +219,6 @@ public class DeckSelectManager : SceneOnlySingleton<DeckSelectManager>
         currentSelectedCharacter.EquipSkill(skill);
 
         OnEquipSkillChanged?.Invoke(currentSelectedCharacter, skill, index != -1 ? skills[index] : null);
+        SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
     }
 }
