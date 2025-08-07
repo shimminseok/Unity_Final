@@ -29,7 +29,7 @@ public class UIReward : UIBase
 
         afterAction = action;
 
-        UIManager.Instance.Open(this);
+        UIManager.Instance.Open(this, false);
     }
 
     public void AddReward(RewardSo rewardSo)
@@ -51,7 +51,7 @@ public class UIReward : UIBase
 
         rewardSequence = DOTween.Sequence();
 
-        rewardSequence.Append(bgTransform.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.up * 500f).SetEase(Ease.InOutSine));
+        rewardSequence.Append(bgTransform.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.up * 500f)).SetEase(Ease.InOutSine));
         rewardSequence.Join(bgCanvasGroup.DOFade(1f, 0.3f));
 
         titleTransform.localScale = Vector3.one * 1.5f;
@@ -61,7 +61,9 @@ public class UIReward : UIBase
         foreach (RewardData rewardData in rewardSo.RewardList)
         {
             if (index >= inventorySlotList.Count)
+            {
                 break;
+            }
 
             inventorySlotList[index].Initialize(rewardData);
             inventorySlotList[index].gameObject.SetActive(true);

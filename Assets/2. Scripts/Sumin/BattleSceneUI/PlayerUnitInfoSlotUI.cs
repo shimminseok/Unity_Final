@@ -26,7 +26,7 @@ public class PlayerUnitInfoSlotUI : MonoBehaviour
 
     public void UpdateUnitInfo(Unit playerUnit)
     {
-        unitIcon.sprite = playerUnit.UnitSo.UnitIcon;
+        unitIcon.sprite = AtlasLoader.Instance.GetSpriteFromAtlas(AtlasType.CharacterSmall, playerUnit.UnitSo.UnitIcon.name);
     }
 
     public void UpdateUnitDead()
