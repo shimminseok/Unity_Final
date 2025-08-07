@@ -412,10 +412,18 @@ using Random = UnityEngine.Random;
 
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || Target == null || Target.IsDead)
+        if (IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
-            return;
+            if (CurrentAction == ActionType.None || Target == null)
+            {
+                EndTurn();
+                return;
+            }
+            else
+            {
+                EndTurn();
+                return;
+            }
         }
 
         ChangeTurnState(TurnStateType.StartTurn);
@@ -423,8 +431,10 @@ using Random = UnityEngine.Random;
 
     public override void EndTurn()
     {
+        Target = null;
         ChangeAction(ActionType.None);
-        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
         ChangeUnitState(EnemyUnitState.Idle);
+        SkillController.EndTurn();
+        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

@@ -118,7 +118,6 @@ public class ActState : ITurnState
 
     public void OnEnter(Unit unit)
     {
-        
         target = unit.Target as Unit;
         if (target != null)
         {
@@ -190,7 +189,7 @@ public class ActState : ITurnState
             return;
         }
 
-        Debug.Log("ProceedToNextState");
+        Debug.Log($"{unit.name} ProceedToNextState");
 
         if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
         {

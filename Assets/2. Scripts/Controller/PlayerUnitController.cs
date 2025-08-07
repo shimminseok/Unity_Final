@@ -343,7 +343,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             }
             else
             {
-                BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+                EndTurn();
                 return;
             }
         }
@@ -353,6 +353,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
+        isTurnEnd = false;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -374,6 +375,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
+        isTurnEnd = true;
         // TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }

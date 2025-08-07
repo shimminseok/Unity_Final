@@ -59,6 +59,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void         TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
 
 
+    protected bool isTurnEnd;
+
     public abstract void Dead();
 
 
@@ -326,6 +328,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void InvokeHitFinished()
     {
         //반격하는 유닛의 HitFinished가 Null임
+
+
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
         OnHitFinished = null;
@@ -356,7 +360,10 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void InvokeSkillFinished()
     {
         IsAnimationDone = true;
-        OnSkillFinished?.Invoke();
+        if (!isTurnEnd)
+        {
+            OnSkillFinished?.Invoke();
+        }
 
         OnSkillFinished = null;
     }

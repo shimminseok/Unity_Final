@@ -151,6 +151,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 {
                     AudioSourcePrefabs = new List<PoolableAudioSource>();
                 }
+
                 AudioSourcePrefabs.Add(audioSourcePrefab);
             }
 
@@ -192,15 +193,16 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
     public void StopTimeLine(PlayableDirector pd)
     {
+        isPlaying = false;
         director.Stop();
         if (AudioSourcePrefabs != null)
         {
-            foreach (var audioSourcePrefab in AudioSourcePrefabs)
+            foreach (PoolableAudioSource audioSourcePrefab in AudioSourcePrefabs)
             {
                 audioSourcePrefab.Disable();
             }
         }
-        isPlaying = false;
+
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
