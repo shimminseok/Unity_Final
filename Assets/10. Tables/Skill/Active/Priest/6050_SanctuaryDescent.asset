@@ -20,7 +20,8 @@ MonoBehaviour:
     \uCCB4\uB825 50%)\uC758 \uC274\uB4DC\uB97C \uBD80\uC5EC\uD558\uACE0 50 + (\uCD5C\uB300
     \uCCB4\uB825 50%) \uC758 \uBC29\uC5B4\uB825\uC744 \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4.
     \uC774\uC678\uC758 \uC544\uAD70\uC5D0\uAC90 \uC808\uBC18\uC758 \uD6A8\uACFC\uB9CC
-    \uC801\uC6A9\uB429\uB2C8\uB2E4."
+    \uC801\uC6A9\uB429\uB2C8\uB2E4. \uC801\uAD70 \uC804\uCCB4\uC5D0\uAC8C \uC6B0\uC6B8
+    \uAC10\uC815\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
   jobType: 5
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
@@ -300,6 +301,33 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 2
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 3
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX: []
+      skillVFX: []
   activeSkillTier: 3
   reuseMaxCount: 2
   coolTime: 5
