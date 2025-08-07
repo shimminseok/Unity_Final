@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UnitLevelUpPanel : MonoBehaviour
 {
-    [SerializeField] private PlayerUnitIncreaseSo increaseSo;
+    // [SerializeField] private PlayerUnitIncreaseSo increaseSo;
     [SerializeField] private GameObject contents;
     [SerializeField] private CanvasGroup panelRect;
     [SerializeField] private TextMeshProUGUI currentLevelTxt;
@@ -72,7 +72,7 @@ public class UnitLevelUpPanel : MonoBehaviour
         int    level  = currentPlayerUnitData.Level;
         UnitSO unitSo = currentPlayerUnitData.CharacterSo;
 
-        foreach (StatData increaseStat in increaseSo.Stats)
+        foreach (StatData increaseStat in (unitSo as PlayerUnitSO).IncreaseStatSO.IncreaseStats)
         {
             StatType statType = increaseStat.StatType;
 
