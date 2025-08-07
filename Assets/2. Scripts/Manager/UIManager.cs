@@ -9,6 +9,7 @@ public class UIManager : Singleton<UIManager>
     private readonly Dictionary<Type, UIBase> uiDict = new();
     private List<UIBase> openedUIList = new();
 
+    private Camera mainCamera;
 
     protected override void Awake()
     {
@@ -31,6 +32,7 @@ public class UIManager : Singleton<UIManager>
 
         openedUIList.Clear();
         uiDict.Clear();
+        mainCamera = Camera.main;
         UIBase[]         uiComponents = uiRoot.GetComponentsInChildren<UIBase>(true);
         List<GameObject> toDestroy    = new();
         foreach (UIBase uiComponent in uiComponents)
@@ -53,7 +55,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void Open(UIBase ui)
+    public void Open(UIBase ui, bool isFull = true)
     {
         if (!openedUIList.Contains(ui))
         {
@@ -62,6 +64,10 @@ public class UIManager : Singleton<UIManager>
         }
 
         ui?.Open();
+        if (mainCamera.enabled && isFull)
+        {
+            mainCamera.enabled = false;
+        }
     }
 
     public void Close(UIBase ui)
@@ -88,6 +94,10 @@ public class UIManager : Singleton<UIManager>
                 null,
                 "종료하기");
             return;
+        }
+        else if (openedUIList.Count == 1)
+        {
+            mainCamera.enabled = true;
         }
 
         UIBase ui = openedUIList.Last();

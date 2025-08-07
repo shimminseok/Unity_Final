@@ -40,21 +40,21 @@ public class BattleSceneSkillUI : UIBase
 
         canvasGroup.alpha = 0f;
         canvasGroup.DOFade(1f, 0.5f).SetEase(Ease.InOutSine);
-        rect.DOAnchorPos(originalPos, 0.3f).From(originalPos + Vector2.down * 500f).SetEase(Ease.OutQuint);
+        rect.DOAnchorPos(originalPos, 0.3f).From(originalPos + (Vector2.down * 500f)).SetEase(Ease.OutQuint);
     }
 
     public override void Close()
     {
         seq = DOTween.Sequence();
         seq.Append(canvasGroup.DOFade(0f, 0.6f).SetEase(Ease.InOutSine));
-        seq.Join(rect.DOAnchorPos(originalPos + Vector2.down * 500f, 0.6f).From(originalPos).SetEase(Ease.OutQuint));
+        seq.Join(rect.DOAnchorPos(originalPos + (Vector2.down * 500f), 0.6f).From(originalPos).SetEase(Ease.OutQuint));
         seq.OnComplete(() => base.Close());
     }
 
     //유닛이 보유한 스킬 리스트들을 차례로 슬롯에 넣어주기
     public void UpdateSkillList(Unit selectedUnit)
     {
-        UIManager.Instance.Open(this);
+        UIManager.Instance.Open(this, false);
         if (selectedUnit is PlayerUnitController playerUnit)
         {
             for (int i = 0; i < skillSlot.Count; i++)

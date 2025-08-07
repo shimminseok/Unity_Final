@@ -34,7 +34,7 @@ public class OneChoicePopup : UIBase
         descTxt.text = desc;
         centerBtnTxt.text = centerTxt;
         SetCenterButtonAction(centerAct);
-        UIManager.Open(this);
+        UIManager.Open(this, false);
     }
 
     public void ClickCenterButton()

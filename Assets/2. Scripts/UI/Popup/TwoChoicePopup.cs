@@ -33,7 +33,7 @@ public class TwoChoicePopup : UIBase
         this.rightBtnTxt.text = rightBtnTxt;
         SetLeftButtonAction(leftAct);
         SetRightButtonAction(rightAct);
-        UIManager.Open(this);
+        UIManager.Open(this, false);
     }
 
     public void ClickLeftButton()
