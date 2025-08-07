@@ -19,6 +19,7 @@ public class GameManager : Singleton<GameManager>
         ApplySaveDataToManagers();
     }
 
+
     public void TimeScaleMultiplierUpdate()
     {
         if (TimeScaleMultiplier)
@@ -34,6 +35,7 @@ public class GameManager : Singleton<GameManager>
     public void TimeScaleSetDefault()
     {
         Time.timeScale = 1f;
+        TimeScaleMultiplier = false;
     }
 
     public void ToggleTimeScale()
