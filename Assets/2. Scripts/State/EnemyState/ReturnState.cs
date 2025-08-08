@@ -11,7 +11,6 @@ namespace EnemyState
         {
             owner.OnToggleNavmeshAgent(true);
             owner.Agent.avoidancePriority = 10;
-            owner.setRemainDistance = 0.1f;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.StartPostion);
 
@@ -48,7 +47,6 @@ namespace EnemyState
             owner.Agent.velocity = Vector3.zero;
             owner.Agent.ResetPath();
             owner.OnToggleNavmeshAgent(false);
-            
         }
     }
 }

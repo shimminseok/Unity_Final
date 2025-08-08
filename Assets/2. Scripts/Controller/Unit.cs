@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -36,12 +37,27 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public Unit                       CounterTarget              { get; private set; }
     public Unit                       LastAttacker               { get; private set; }
 
-    public IDamageable   Target              { get; protected set; } //MainTarget, SubTarget => SkillController
-    public IAttackAction CurrentAttackAction { get; protected set; }
-    public bool          IsDead              { get; protected set; }
-    public bool          IsCompletedAttack   { get; protected set; }
-    public bool          IsStunned           { get; private set; }
-    public bool          IsCounterAttack     { get; private set; }
+    public IDamageable Target { get; protected set; } //MainTarget, SubTarget => SkillController
+
+    public IAttackAction CurrentAttackAction
+    {
+        get
+        {
+            // ⚠ skillSo.skillType vs SkillType 명칭은 네 프로젝트 기준에 맞춰 수정해.
+            // (지금 네 코드에 두 표기 혼용돼 있음)
+            if (CurrentAction == ActionType.Skill)
+            {
+                return SkillController?.CurrentSkillData?.skillSo?.SkillType; // or .skillType
+            }
+
+            return UnitSo?.AttackType;
+        }
+    }
+
+    public bool IsDead            { get; protected set; }
+    public bool IsCompletedAttack { get; protected set; }
+    public bool IsStunned         { get; private set; }
+    public bool IsCounterAttack   { get; private set; }
 
     public virtual bool IsAtTargetPosition => false;
     public virtual bool IsAnimationDone    { get; set; }
@@ -52,14 +68,26 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public event          Action OnRangeAttackFinished;
     public event          Action OnSkillFinished;
     public abstract event Action OnDead;
-    public          Unit         SelectedUnit => this;
-    public abstract void         StartTurn();
-    public abstract void         EndTurn();
-    public abstract void         UseSkill();
-    public abstract void         TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
-
-
+    public Unit                  SelectedUnit => this;
     protected bool isTurnEnd;
+
+    // === 공통 헬퍼 ===
+    public bool IsMeleeAttack => CurrentAttackAction != null && CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
+
+    // === 상태 전이 헬퍼(플레이어/적 분기 제거) ===
+    public abstract void EnterMoveState();
+    public abstract void EnterAttackState();
+    public abstract void EnterReturnState();
+    public abstract void EnterSkillState();
+
+    public abstract void StartTurn();
+    public abstract void EndTurn();
+
+    public void UseSkill()
+    {
+        SkillController.UseSkill();
+    }
+
 
     public abstract void Dead();
 
@@ -164,8 +192,124 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public abstract void PlayAttackVoiceSound();
     public abstract void PlayHitVoiceSound();
     public abstract void PlayDeadSound();
-    public abstract void Attack();
-    public abstract void MoveTo(Vector3 destination);
+
+    public virtual void Attack()
+    {
+        IsCompletedAttack = false;
+        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
+        if (finalTarget == null || finalTarget.IsDead)
+        {
+            return;
+        }
+
+        float hitRate = StatManager.GetValue(StatType.HitRate);
+
+        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
+        {
+            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
+        }
+        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
+        {
+            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
+        }
+
+        bool isHit = Random.value < hitRate;
+
+        if (!isHit)
+        {
+            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
+            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            {
+                OnMeleeAttackFinished += InvokeHitFinished;
+            }
+            else
+            {
+                OnRangeAttackFinished += InvokeHitFinished;
+                InvokeRangeAttackFinished();
+            }
+
+            return;
+        }
+
+        finalTarget.SetLastAttacker(this);
+        UnitSo.AttackType.Execute(this, finalTarget);
+        IsCompletedAttack = true;
+    }
+
+    public virtual void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
+    {
+        if (IsDead)
+        {
+            return;
+        }
+
+        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
+        {
+            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
+            if (isIgnore)
+            {
+                if (LastAttacker != null)
+                {
+                    if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                    {
+                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                    }
+                    else
+                    {
+                        LastAttacker.InvokeHitFinished();
+                    }
+                }
+
+                DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Immune);
+                return;
+            }
+        }
+
+        StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
+
+        float finalDam = amount;
+
+        if (modifierType == StatModifierType.Base)
+        {
+            float defense   = StatManager.GetValue(StatType.Defense);
+            float reduction = defense / (defense + Define.DefenseReductionBase);
+
+            finalDam *= 1f - reduction;
+        }
+
+        ResourceStat curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
+        ResourceStat shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
+
+        if (shield.CurrentValue > 0)
+        {
+            float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
+            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
+            DamageFontManager.Instance.SetDamageNumber(this, shieldUsed, DamageType.Shield);
+            finalDam -= shieldUsed;
+        }
+
+        if (finalDam > 0)
+        {
+            DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
+            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+        }
+
+        if (curHp.Value <= 0)
+        {
+            Dead();
+            return;
+        }
+
+        ChangeUnitState(GetHitStateEnum());
+    }
+
+    public void MoveTo(Vector3 destination)
+    {
+        Agent.SetDestination(destination);
+    }
+
+    protected abstract Enum GetHitStateEnum();
+
 
     public void SetTarget(IDamageable target)
     {
@@ -209,14 +353,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void ChangeAction(ActionType action)
     {
         CurrentAction = action;
-        if (action == ActionType.SKill)
-        {
-            CurrentAttackAction = SkillController.CurrentSkillData.skillSo.SkillType;
-        }
-        else
-        {
-            CurrentAttackAction = UnitSo.AttackType;
-        }
     }
 
     public void ExecuteCoroutine(IEnumerator coroutine)
@@ -241,7 +377,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public bool CanCounterAttack(Unit attacker)
     {
-        if (IsDead)
+        if (IsDead || IsStunned)
         {
             return false;
         }
@@ -256,7 +392,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return false;
         }
 
-        if (attacker.CurrentAction == ActionType.SKill)
+        if (attacker.CurrentAction == ActionType.Skill)
         {
             return false;
         }
@@ -335,9 +471,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         OnHitFinished = null;
 
 
-        if (IsDead)
+        if (IsDead && LastAttacker != null)
         {
-            LastAttacker?.InvokeHitFinished();
+            bool attackerWaitingTimeline = LastAttacker.BattleManager
+                                           || (LastAttacker.CurrentAction == ActionType.Skill &&
+                                               LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null);
+
+            if (!attackerWaitingTimeline)
+            {
+                LastAttacker?.InvokeHitFinished();
+            }
         }
 
         SetLastAttacker(null);
@@ -360,7 +503,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void InvokeSkillFinished()
     {
         IsAnimationDone = true;
-        if (!isTurnEnd)
+        // if (!isTurnEnd)
         {
             OnSkillFinished?.Invoke();
         }
