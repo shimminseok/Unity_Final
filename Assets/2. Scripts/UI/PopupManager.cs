@@ -12,7 +12,9 @@ public class PopupManager : Singleton<PopupManager>
     {
         base.Awake();
         if (isDuplicated)
+        {
             return;
+        }
 
         InitializeUIRoot();
     }
@@ -38,7 +40,9 @@ public class PopupManager : Singleton<PopupManager>
         }
 
         foreach (GameObject go in toDestroy)
+        {
             Destroy(go);
+        }
     }
 
     public T GetUIComponent<T>() where T : UIBase
