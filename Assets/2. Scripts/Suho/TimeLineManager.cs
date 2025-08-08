@@ -21,6 +21,8 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     public event Action TimelineStarted;
     public event Action TimelineEnded;
 
+    private Unit owner;
+
     protected override void Awake()
     {
         base.Awake();
@@ -104,7 +106,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
         CurrentCameraController = vCamController;
         CurrentCameraController.ChangeCamera();
-        Unit          attackerUnit  = attacker as Unit;
+        owner = attacker as Unit;
         TimelineAsset timelineAsset = director.playableAsset as TimelineAsset;
         if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
         {
@@ -165,7 +167,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
             {
                 if (animationTrack.name == "AttackerTrack")
                 {
-                    director.SetGenericBinding(animationTrack, attackerUnit?.Animator);
+                    director.SetGenericBinding(animationTrack, owner?.Animator);
                 }
                 else if (animationTrack.name == "EffectTrack")
                 {
@@ -178,6 +180,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
             }
         }
 
+        owner.IsTimeLinePlaying = true;
         director.time = 0f;
         director.Evaluate();
         director.Play();
@@ -194,6 +197,14 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         isPlaying = false;
         director.Stop();
 
+        if (owner != null)
+        {
+            owner.IsTimeLinePlaying = false;
+        }
+
+        TimelineEnded?.Invoke();
+        owner = null;
+
         if (AudioSourcePrefabs != null)
         {
             foreach (PoolableAudioSource audioSourcePrefab in AudioSourcePrefabs)
@@ -205,7 +216,5 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
-
-        TimelineEnded?.Invoke();
     }
 }

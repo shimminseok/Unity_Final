@@ -470,9 +470,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         OnHitFinished = null;
 
 
-        if (IsDead)
+        if (IsDead && LastAttacker != null)
         {
-            LastAttacker?.InvokeHitFinished();
+            bool attackerWaitingTimeline = LastAttacker.IsTimeLinePlaying
+                                           || (LastAttacker.CurrentAction == ActionType.Skill &&
+                                               LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null);
+
+            if (!attackerWaitingTimeline)
+            {
+                LastAttacker?.InvokeHitFinished();
+            }
         }
 
         SetLastAttacker(null);
@@ -495,7 +502,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public void InvokeSkillFinished()
     {
         IsAnimationDone = true;
-        if (!isTurnEnd)
+        // if (!isTurnEnd)
         {
             OnSkillFinished?.Invoke();
         }

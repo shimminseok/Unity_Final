@@ -83,64 +83,32 @@ public class MoveToTargetState : ITurnState
 
 public class ActState : ITurnState
 {
-    private Action onActSequenceEndHandler;
-    private bool hasAdvanced;
-    private bool subscribedSkillFinished;
+    private bool _advanced;
+    private Action _onEnd;
 
     public void OnEnter(Unit unit)
     {
-        hasAdvanced = false;
-        subscribedSkillFinished = false;
-
-        Unit target = unit.Target as Unit;
-        if (target != null)
+        _advanced = false;
+        _onEnd = () =>
         {
-            target.SetLastAttacker(unit);
-        }
-
-        onActSequenceEndHandler = () =>
-        {
-            if (hasAdvanced)
+            if (_advanced)
             {
                 return;
             }
 
-            hasAdvanced = true;
+            _advanced = true;
             ProceedToNextState(unit);
         };
 
-        // 대상의 피격 리액션이 끝나면 진행(패턴 상 공격자 OnHitFinished가 호출되도록 연결되어 있음)
-        unit.OnHitFinished += onActSequenceEndHandler;
-
         if (unit.CurrentAction == ActionType.Attack)
         {
+            unit.OnHitFinished += _onEnd;
             unit.EnterAttackState();
         }
         else if (unit.CurrentAction == ActionType.Skill)
         {
+            unit.OnSkillFinished += _onEnd;
             unit.EnterSkillState();
-
-            // 논-프로젝타일은 스킬 종료 시점도 함께 기다림
-            try
-            {
-                if (unit.CurrentAttackAction != null && unit.CurrentAttackAction.ActionSo is RangeSkillSO range)
-                {
-                    if (!range.IsProjectile)
-                    {
-                        unit.OnSkillFinished += onActSequenceEndHandler;
-                        subscribedSkillFinished = true;
-                    }
-                }
-                else
-                {
-                    unit.OnSkillFinished += onActSequenceEndHandler;
-                    subscribedSkillFinished = true;
-                }
-            }
-            catch
-            {
-                /* ActionSo 미구현 케이스 대비 */
-            }
         }
     }
 
@@ -150,18 +118,9 @@ public class ActState : ITurnState
 
     public void OnExit(Unit unit)
     {
-        if (onActSequenceEndHandler != null)
-        {
-            unit.OnHitFinished -= onActSequenceEndHandler;
-            if (subscribedSkillFinished)
-            {
-                unit.OnSkillFinished -= onActSequenceEndHandler;
-            }
-        }
-
-        onActSequenceEndHandler = null;
-        subscribedSkillFinished = false;
-        hasAdvanced = false;
+        unit.OnHitFinished -= _onEnd;
+        unit.OnSkillFinished -= _onEnd;
+        _onEnd = null;
     }
 
     private void ProceedToNextState(Unit unit)

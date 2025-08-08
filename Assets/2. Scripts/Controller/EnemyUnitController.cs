@@ -254,13 +254,20 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
         if (LastAttacker != null)
         {
-            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            bool isTimelineAttack =
+                LastAttacker.CurrentAction == ActionType.Skill
+                && LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null;
+
+            if (!isTimelineAttack)
             {
-                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                {
+                    LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                }
+                else
+                {
+                    LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                }
             }
         }
 

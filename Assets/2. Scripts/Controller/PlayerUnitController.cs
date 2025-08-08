@@ -263,13 +263,20 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         OnDead?.Invoke();
         if (LastAttacker != null)
         {
-            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            bool isTimelineAttack =
+                LastAttacker.CurrentAction == ActionType.Skill
+                && LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null;
+
+            if (!isTimelineAttack)
             {
-                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                {
+                    LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                }
+                else
+                {
+                    LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                }
             }
         }
 
