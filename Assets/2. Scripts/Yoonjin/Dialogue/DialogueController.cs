@@ -122,7 +122,6 @@ public class DialogueController : Singleton<DialogueController>
             TutorialDialogueUI ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
             ui.gameObject.SetActive(true);
             ui.SetDialogue(line);
-            UIManager.Instance.Open(ui, false);
         }
         else
         {
@@ -161,7 +160,7 @@ public class DialogueController : Singleton<DialogueController>
     }
 
     // 오버레이나 튜토리얼 프리팹을 찾고, 없으면 생성
-    private T GetOrCreateUI<T>(string resourcePath) where T : UIBase
+    private T GetOrCreateUI<T>(string resourcePath) where T : MonoBehaviour
     {
         // 이미 참조된 OverlayDialogueUI가 있으면 그대로 반환
         if (typeof(T) == typeof(OverlayDialogueUI) && overlayUI != null)
