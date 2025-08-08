@@ -16,7 +16,7 @@ MonoBehaviour:
   SkillIcon: {fileID: 21300000, guid: 50e0eceed3f7c7443a354f8f6f822d79, type: 3}
   skillName: "\uD30C\uC774\uC5B4\uBCFC"
   skillDescription: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C 3\uD134\uB3D9\uC548 50\uC758
-    \uC9C0\uC18D \uB300\uBBF8\uC9C0\uB97C \uC8FC\uACE0 40(+30%)\uC758 \uB300\uBBF8\uC9C0\uB97C
+    \uC9C0\uC18D \uB300\uBBF8\uC9C0\uB97C \uC8FC\uACE0 40(+60%)\uC758 \uB300\uBBF8\uC9C0\uB97C
     \uC90D\uB2C8\uB2E4. \uC801\uC5D0\uAC8C \uBD84\uB178 \uAC10\uC815\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
   jobType: 6
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
@@ -33,7 +33,7 @@ MonoBehaviour:
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
-        weight: 0.3
+        weight: 0.6
         value: 40
       buffEffects:
       - ownerStatType: 4
@@ -64,6 +64,7 @@ MonoBehaviour:
             reference: 0
             isParent: 1
             type: 0
+            bodyType: 0
           - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
               type: 3}
             VFXPoolID: FireballHit
@@ -73,6 +74,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
               type: 3}
             VFXPoolID: FireballHit
@@ -82,6 +84,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 1
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 811919792610040567, guid: b7d5e5abe9215cd428d1ac0edc6199ff,
           type: 3}
@@ -92,6 +95,7 @@ MonoBehaviour:
         reference: 0
         isParent: 1
         type: 0
+        bodyType: 0
       - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
           type: 3}
         VFXPoolID: FireballHit
@@ -101,6 +105,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
           type: 3}
         VFXPoolID: FireballHit
@@ -110,6 +115,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 1
+        bodyType: 0
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 3
