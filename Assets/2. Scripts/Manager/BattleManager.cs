@@ -173,7 +173,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
 
         TurnHandler.RefillTurnQueue();
-        AudioManager.Instance.PlayBGM(BGMName.VictoryBGM.ToString());
 
 
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
@@ -263,6 +262,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
                 LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
                 return;
             }
+
             LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
         });
         InputManager.Instance.BattleEnd();

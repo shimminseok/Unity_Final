@@ -8,9 +8,6 @@ public class ImagePopupActionData : TutorialActionData
     public string prefabAddress;
     public string parentCanvasName;
 
-    private void OnEnable()
-    {
-        ActionType = TutorialActionType.ImagePopup;
-    }
-}
 
+    public override TutorialActionType ActionType { get; } = TutorialActionType.ImagePopup;
+}
