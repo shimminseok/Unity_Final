@@ -19,7 +19,7 @@ namespace PlayerState
                 TimeLineManager.Instance.TimelineEnded += onTimelineEnd;
             }
 
-            if (!isTimeLine)
+            else
             {
                 owner.Animator.SetTrigger(Define.SkillAnimationHash);
                 owner.SkillController.CurrentSkillData.skillSo.skillType.PlayCastVFX(owner, owner.Target);

@@ -148,14 +148,14 @@ public class ActState : ITurnState
     {
     }
 
-    public void OnExit(Unit _unit)
+    public void OnExit(Unit unit)
     {
         if (onActSequenceEndHandler != null)
         {
-            _unit.OnHitFinished -= onActSequenceEndHandler;
+            unit.OnHitFinished -= onActSequenceEndHandler;
             if (subscribedSkillFinished)
             {
-                _unit.OnSkillFinished -= onActSequenceEndHandler;
+                unit.OnSkillFinished -= onActSequenceEndHandler;
             }
         }
 
@@ -164,17 +164,17 @@ public class ActState : ITurnState
         hasAdvanced = false;
     }
 
-    private void ProceedToNextState(Unit _unit)
+    private void ProceedToNextState(Unit unit)
     {
-        if (_unit.IsDead)
+        if (unit.IsDead)
         {
-            _unit.ChangeTurnState(TurnStateType.EndTurn);
+            unit.ChangeTurnState(TurnStateType.EndTurn);
             return;
         }
 
-        bool isMelee = _unit.CurrentAttackAction != null &&
-                       _unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
-        _unit.ChangeTurnState(isMelee ? TurnStateType.Return : TurnStateType.EndTurn);
+        bool isMelee = unit.CurrentAttackAction != null &&
+                       unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
+        unit.ChangeTurnState(isMelee ? TurnStateType.Return : TurnStateType.EndTurn);
     }
 }
 

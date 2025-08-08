@@ -8,7 +8,8 @@ using System.Text;
 using Random = UnityEngine.Random;
 
 
-[RequireComponent(typeof(EnemySkillContorller))] public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
+[RequireComponent(typeof(EnemySkillContorller))]
+public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
     public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
@@ -114,14 +115,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayHitVoiceSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.HitVoiceSound != SFXName.None)
+        if (MonsterSo.HitVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.HitVoiceSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -136,14 +136,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayDeadSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.DeadSound != SFXName.None)
+        if (MonsterSo.DeadSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.DeadSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -158,14 +157,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayAttackVoiceSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.AttackVoiceSound != SFXName.None)
+        if (MonsterSo.AttackVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.AttackVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.AttackVoiceSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -176,16 +174,6 @@ using Random = UnityEngine.Random;
             sb.Append("AttackSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
         }
-    }
-
-    public override void MoveTo(Vector3 destination)
-    {
-        Agent.SetDestination(destination);
-    }
-
-    public override void UseSkill()
-    {
-        SkillController.UseSkill();
     }
 
     public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
@@ -329,7 +317,10 @@ using Random = UnityEngine.Random;
         if (actionType == ActionType.Skill)
         {
             EnemySkillContorller sc = SkillController as EnemySkillContorller;
-            WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
+            if (sc != null)
+            {
+                WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
+            }
         }
         else if (actionType == ActionType.Attack)
         {

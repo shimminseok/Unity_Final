@@ -33,9 +33,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override event Action OnDead;
 
-    protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState _state)
+    protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
     {
-        return _state switch
+        return state switch
         {
             PlayerUnitState.Idle        => new IdleState(),
             PlayerUnitState.Move        => new MoveState(),
@@ -64,10 +64,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         StartPostion = transform.position;
     }
 
-    public override void ChangeUnitState(Enum _newState)
+    public override void ChangeUnitState(Enum newState)
     {
-        stateMachine.ChangeState(states[Convert.ToInt32(_newState)]);
-        CurrentState = (PlayerUnitState)_newState;
+        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
+        CurrentState = (PlayerUnitState)newState;
     }
 
     protected override Enum GetHitStateEnum()
@@ -96,9 +96,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeUnitState(PlayerUnitState.Skill);
     }
 
-    public override void Initialize(UnitSpawnData _deckData)
+    public override void Initialize(UnitSpawnData deckData)
     {
-        UnitSo = _deckData.UnitSo;
+        UnitSo = deckData.UnitSo;
         if (UnitSo is PlayerUnitSO playerUnitSo)
         {
             PlayerUnitSo = playerUnitSo;
@@ -112,7 +112,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         PassiveSo = PlayerUnitSo.PassiveSkill;
         PassiveSo.Initialize(this);
 
-        foreach (SkillData skillData in _deckData.DeckData.SkillDatas)
+        foreach (SkillData skillData in deckData.DeckData.SkillDatas)
         {
             if (skillData == null)
             {
@@ -123,7 +123,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
-        StatManager.Initialize(PlayerUnitSo, this, _deckData.DeckData.EquippedItems.Values.ToList(), _deckData.DeckData.Level, playerUnitIncreaseSo);
+        StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.EquippedItems.Values.ToList(), deckData.DeckData.Level, playerUnitIncreaseSo);
 
         SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
@@ -139,14 +139,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void PlayAttackVoiceSound()
     {
-        PlayerUnitSO so = UnitSo as PlayerUnitSO;
-        if (so.AttackVoiceSound != SFXName.None)
+        if (PlayerUnitSo.AttackVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.AttackVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(PlayerUnitSo.AttackVoiceSound.ToString());
         }
         else
         {
-            Gender        gender = Define.GetGender(so.JobType);
+            Gender        gender = Define.GetGender(PlayerUnitSo.JobType);
             StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("AttackSound");
@@ -156,14 +155,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void PlayHitVoiceSound()
     {
-        PlayerUnitSO so = UnitSo as PlayerUnitSO;
-        if (so.HitVoiceSound != SFXName.None)
+        if (PlayerUnitSo.HitVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(PlayerUnitSo.HitVoiceSound.ToString());
         }
         else
         {
-            Gender        gender = Define.GetGender(so.JobType);
+            Gender        gender = Define.GetGender(PlayerUnitSo.JobType);
             StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("HitSound");
@@ -173,14 +171,13 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override void PlayDeadSound()
     {
-        PlayerUnitSO so = UnitSo as PlayerUnitSO;
-        if (so.DeadSound != SFXName.None)
+        if (PlayerUnitSo.DeadSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+            AudioManager.Instance.PlaySFX(PlayerUnitSo.DeadSound.ToString());
         }
         else
         {
-            Gender        gender = Define.GetGender(so.JobType);
+            Gender        gender = Define.GetGender(PlayerUnitSo.JobType);
             StringBuilder sb     = new();
             sb.Append(gender.ToString());
             sb.Append("DeadSound");
@@ -188,17 +185,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
     }
 
-    public override void MoveTo(Vector3 _destination)
-    {
-        Agent.SetDestination(_destination);
-    }
-
-    public override void UseSkill()
-    {
-        SkillController.UseSkill();
-    }
-
-    public override void TakeDamage(float _amount, StatModifierType _modifierType = StatModifierType.Base)
+    public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
     {
         if (IsDead)
         {
@@ -227,11 +214,11 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             }
         }
 
-        float finalDam = _amount;
+        float finalDam = amount;
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
         float damageReduction = 0f;
-        if (_modifierType == StatModifierType.Base)
+        if (modifierType == StatModifierType.Base)
         {
             float defense = StatManager.GetValue(StatType.Defense);
             damageReduction = defense / (defense + Define.DefenseReductionBase);
@@ -245,7 +232,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (shield.CurrentValue > 0)
         {
             float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
-            StatManager.Consume(StatType.Shield, _modifierType, shieldUsed);
+            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
             DamageFontManager.Instance.SetDamageNumber(this, shieldUsed, DamageType.Shield);
             finalDam -= shieldUsed;
         }
@@ -253,7 +240,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (finalDam > 0)
         {
             DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
-            StatManager.Consume(StatType.CurHp, _modifierType, finalDam);
+            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         }
 
         if (curHp.Value <= 0)

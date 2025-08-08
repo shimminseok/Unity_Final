@@ -82,7 +82,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public abstract void StartTurn();
     public abstract void EndTurn();
-    public abstract void UseSkill();
+
+    public void UseSkill()
+    {
+        SkillController.UseSkill();
+    }
 
 
     public abstract void Dead();
@@ -298,12 +302,13 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         ChangeUnitState(GetHitStateEnum());
     }
 
-    protected virtual Enum GetHitStateEnum()
+    public void MoveTo(Vector3 destination)
     {
-        return null;
+        Agent.SetDestination(destination);
     }
 
-    public abstract void MoveTo(Vector3 destination);
+    protected abstract Enum GetHitStateEnum();
+
 
     public void SetTarget(IDamageable target)
     {
@@ -371,7 +376,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public bool CanCounterAttack(Unit attacker)
     {
-        if (IsDead)
+        if (IsDead || IsStunned)
         {
             return false;
         }
