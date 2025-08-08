@@ -16,7 +16,17 @@ namespace EnemyState
             TimeLineManager.Instance.PlayTimeLine(CameraManager.Instance.cinemachineBrain, CameraManager.Instance.skillCameraController, owner, out bool isTimeLine);
             if (isTimeLine)
             {
-                onTimelineEnd = owner.InvokeSkillFinished;
+                onTimelineEnd = () =>
+                {
+                    bool hasProjectile = SkillHelpers.IsProjectileSkillFromCurrent(owner);
+                    if (!hasProjectile)
+                    {
+                        owner.InvokeSkillFinished();
+                    }
+
+                    TimeLineManager.Instance.TimelineEnded -= onTimelineEnd;
+                    onTimelineEnd = null;
+                };
                 TimeLineManager.Instance.TimelineEnded += onTimelineEnd;
             }
             else
