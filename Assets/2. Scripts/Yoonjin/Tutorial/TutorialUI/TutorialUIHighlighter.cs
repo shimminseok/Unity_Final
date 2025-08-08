@@ -5,14 +5,20 @@ using UnityEngine;
 public static class TutorialUIHighlighter
 {
     private static GameObject highlightEffect;
+    private static GameObject holdEffect;
 
     // 대상 버튼 위에 하이라이트 이펙트를 덮음
-    public static void Highlight(GameObject target)
+    public static void Highlight(GameObject target, bool requireLongPress)
     {
         if (highlightEffect == null)
         {
             // Resources 폴더에서 하이라이트 프리팹 로드 및 인스턴스화
             highlightEffect = GameObject.Instantiate(Resources.Load<GameObject>("UI/HighlightEffect"));
+        }
+
+        if (holdEffect == null)
+        {
+            holdEffect = GameObject.Instantiate(Resources.Load<GameObject>("UI/HoldEffect"));
         }
 
         var effectRect = highlightEffect.GetComponent<RectTransform>();
@@ -36,12 +42,20 @@ public static class TutorialUIHighlighter
         // 버튼 자식 중 가장 위에 위치
         highlightEffect.transform.SetAsLastSibling();
         highlightEffect.SetActive(true);
+
+        if (holdEffect != null)
+        {
+            holdEffect.transform.SetParent(highlightEffect.transform, false);
+
+            holdEffect.transform.SetAsLastSibling();
+            holdEffect.SetActive(requireLongPress);
+        }
     }
 
     // 하이라이트 효과를 숨김
     public static void Clear()
     {
-        if (highlightEffect != null)
-            highlightEffect.SetActive(false);
+        if (holdEffect != null) holdEffect.SetActive(false);
+        if (highlightEffect != null) highlightEffect.SetActive(false);
     }
 }

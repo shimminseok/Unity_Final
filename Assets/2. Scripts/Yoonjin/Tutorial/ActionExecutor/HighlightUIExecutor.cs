@@ -58,7 +58,7 @@ public class HighlightUIExecutor : TutorialActionExecutor
         }
 
         // 버튼 강조
-        TutorialUIHighlighter.Highlight(targetButton.gameObject);
+        TutorialUIHighlighter.Highlight(targetButton.gameObject, requireLongPress);
     }
 
     // 일반 클릭 처리
