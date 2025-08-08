@@ -234,15 +234,19 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void StartTurn()
     {
         List<Unit> enemies = BattleManager.Instance.GetEnemies(this);
-        if (enemies.Count == 0 || IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
+
+        if (!IsDead && PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
+        {
+            turnStartTrigger.OnTurnStart(this);
+        }
+
+
+        bool noEnemyOrUnableToAct = enemies.Count == 0 || IsDead || IsStunned || Target == null || Target.IsDead || CurrentAction == ActionType.None;
+
+        if (noEnemyOrUnableToAct || CurrentAction == ActionType.None)
         {
             EndTurn();
             return;
-        }
-
-        if (PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
-        {
-            turnStartTrigger.OnTurnStart(this);
         }
 
         ChangeTurnState(TurnStateType.StartTurn);
