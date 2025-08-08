@@ -5,8 +5,5 @@ public class DialogueActionData : TutorialActionData
 {
     [TextArea] public string dialogGroupKey;
 
-    private void OnEnable()
-    {
-        ActionType = TutorialActionType.Dialogue;
-    }
+    public override TutorialActionType ActionType { get; } = TutorialActionType.Dialogue;
 }
