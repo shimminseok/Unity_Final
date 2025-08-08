@@ -117,6 +117,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     /// </remarks>
     public void EndTurn()
     {
+        OnBattleEnd?.Invoke();
         foreach (Unit unit in AllUnits)
         {
             if (unit.IsDead)
@@ -152,7 +153,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         TurnCount++;                        // 턴 종료되면 턴 수 +1
-        OnBattleEnd?.Invoke();
     }
 
 
