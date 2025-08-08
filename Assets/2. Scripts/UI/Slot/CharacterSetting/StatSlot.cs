@@ -36,7 +36,7 @@ public class StatSlot : MonoBehaviour
         Debug.Log($"StatType : {Define.GetStatName(statType)}, baseStat : {value} , equipValue {equipmentStatValue}");
 
 
-        string statvalue = equipmentStatValue == 0 ? $"{value:N1}" : $"{value:N1} (+{equipmentStatValue:N1})";
+        string statvalue = equipmentStatValue == 0 ? $"{value:N2}" : $"{value:N2} (+{equipmentStatValue:N2})";
         statValue.text = statvalue;
     }
 }
