@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BattleSceneGameUI : MonoBehaviour
 {
     [SerializeField] private Button startBtn;
-    [SerializeField] private Button SpeedBtn;
+    [SerializeField] private GameObject speedBtnHighlight;
     [SerializeField] private GameObject playingImage;
 
     private BattleManager battleManager;
@@ -49,7 +49,7 @@ public class BattleSceneGameUI : MonoBehaviour
         loadingScreenController = LoadingScreenController.Instance;
         loadingScreenController.OnLoadingComplete += WaitForLoading;
         inputManager = InputManager.Instance;
-        SpeedBtn.onClick.AddListener(GameManager.Instance.ToggleTimeScale);
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
     }
 
     private void WaitForLoading()
@@ -156,15 +156,25 @@ public class BattleSceneGameUI : MonoBehaviour
         PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
     }
 
+    public void OnSpeedUpButton()
+    {
+        GameManager.Instance.ToggleTimeScale();
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
+    }
+
     public void OnExitButton()
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
             return;
 
         string message = "전투를 중단하시겠습니까?";
-        Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        Action leftAction = () =>
+        {
+            LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
+        };
         PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "중단", "취소");
     }
+
 
     private void UpdateTurnCount()
     {
