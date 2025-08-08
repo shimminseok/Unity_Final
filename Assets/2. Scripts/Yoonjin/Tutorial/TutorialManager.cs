@@ -103,15 +103,6 @@ public class TutorialManager : Singleton<TutorialManager>
                 DeckSelectManager.Instance.RemoveUnitInDeck(unit);
             }
 
-            // // 출전 슬롯 비우기
-            // List<EntryDeckData> deckList = PlayerDeckContainer.Instance.CurrentDeck.DeckDatas;
-            //
-            // for (int i = 0; i < deckList.Count; i++)
-            // {
-            //     deckList[i] = null;
-            // }
-
-            // 저장
             SaveLoadManager.Instance.SaveModuleData(SaveModule.InventoryUnit);
         }
 
@@ -122,19 +113,22 @@ public class TutorialManager : Singleton<TutorialManager>
             .FirstOrDefault();
 
         // 유효한 ID인지 확인 (예외 처리 추가)
-        if (!tutorialTable.DataDic.ContainsKey(resumeStep))
+
+        TutorialStepSO tableData = tutorialTable.GetDataByID(resumeStep);
+
+        if (tableData != null)
         {
             if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
             {
                 Debug.Log("[튜토리얼] ResumeStep이 없어 기본 ID 0으로 시작합니다.");
                 resumeStep = 0;
             }
-            else
-            {
-                Debug.Log($"[튜토리얼] resumeStep ID {resumeStep}이 존재하지 않습니다. 튜토리얼을 종료합니다.");
-                EndTutorial();
-                return;
-            }
+        }
+        else
+        {
+            Debug.Log($"[튜토리얼] resumeStep ID {resumeStep}이 존재하지 않습니다. 튜토리얼을 종료합니다.");
+            EndTutorial();
+            return;
         }
 
         GoToStep(resumeStep);

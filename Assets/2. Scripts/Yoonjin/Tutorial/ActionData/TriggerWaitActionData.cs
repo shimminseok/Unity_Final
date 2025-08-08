@@ -14,9 +14,5 @@ public class TriggerWaitActionData : TutorialActionData
     public TriggerType triggerType;
     public string triggerEventName;
     public bool blockAllUI;
-
-    private void OnEnable()
-    {
-        ActionType = TutorialActionType.TriggerWait;
-    }
+    public override TutorialActionType ActionType { get; } = TutorialActionType.TriggerWait;
 }
