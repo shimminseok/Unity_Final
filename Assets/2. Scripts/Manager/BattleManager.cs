@@ -219,14 +219,22 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         string rewardKey = $"{currentStage.ID}_Clear_Reward";
         RewardManager.Instance.AddReward(rewardKey);
         AccountManager.Instance.UpdateBestStage(currentStage);
-        RewardManager.Instance.GiveRewardAndOpenUI(() => LoadSceneManager.Instance.LoadScene("DeckBuildingScene"));
+        RewardManager.Instance.GiveRewardAndOpenUI(() =>
+        {
+            if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
+            {
+                LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+                return;
+            }
+            LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
+        });
         InputManager.Instance.BattleEnd();
     }
 
     /// 스테이지 실패 시 호출되는 메서드
     private void OnStageFail()
     {
-        UIManager.Instance.Open(PopupManager.Instance.GetUIComponent<UIDefeat>());
+        UIManager.Instance.Open(PopupManager.Instance.GetUIComponent<UIDefeat>(), false);
         AudioManager.Instance.PlayBGM(BGMName.DefeatBGM.ToString());
         InputManager.Instance.BattleEnd();
         return;
