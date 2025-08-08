@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BattleSceneGameUI : MonoBehaviour
 {
     [SerializeField] private Button startBtn;
-    [SerializeField] private Button SpeedBtn;
+    [SerializeField] private GameObject speedBtnHighlight;
     [SerializeField] private GameObject playingImage;
 
     private BattleManager battleManager;
@@ -49,7 +49,7 @@ public class BattleSceneGameUI : MonoBehaviour
         loadingScreenController = LoadingScreenController.Instance;
         loadingScreenController.OnLoadingComplete += WaitForLoading;
         inputManager = InputManager.Instance;
-        SpeedBtn.onClick.AddListener(GameManager.Instance.ToggleTimeScale);
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
     }
 
     private void WaitForLoading()
@@ -154,6 +154,12 @@ public class BattleSceneGameUI : MonoBehaviour
     public void OnSettingButton()
     {
         PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
+    }
+
+    public void OnSpeedUpButton()
+    {
+        GameManager.Instance.ToggleTimeScale();
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
     }
 
     public void OnExitButton()
