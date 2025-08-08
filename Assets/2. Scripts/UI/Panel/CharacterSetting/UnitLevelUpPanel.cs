@@ -71,8 +71,9 @@ public class UnitLevelUpPanel : MonoBehaviour
         currentLevelTxt.text = $"{currentPlayerUnitData.Level}";
         int    level  = currentPlayerUnitData.Level;
         UnitSO unitSo = currentPlayerUnitData.CharacterSo;
-
-        foreach (StatData increaseStat in (unitSo as PlayerUnitSO).IncreaseStatSO.IncreaseStats)
+        PlayerUnitSO playerUnitSo = unitSo as PlayerUnitSO;
+        float wight = playerUnitSo.IncreaseStatSO.GetWeight(playerUnitSo.Tier);
+        foreach (StatData increaseStat in playerUnitSo.IncreaseStatSO.IncreaseStats)
         {
             StatType statType = increaseStat.StatType;
 
@@ -84,8 +85,8 @@ public class UnitLevelUpPanel : MonoBehaviour
             StatData baseStat  = unitSo.GetStat(statType);
             float    baseValue = baseStat != null ? baseStat.Value : 0;
 
-            float curValue  = baseValue + (increaseStat.Value * (level - 1));
-            float nextValue = baseValue + (increaseStat.Value * level);
+            float curValue  = baseValue + (increaseStat.Value * (level - 1) * wight);
+            float nextValue = baseValue + (increaseStat.Value * level * wight);
 
             slot.SetStatSlot(curValue, nextValue);
         }
