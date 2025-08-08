@@ -7,7 +7,7 @@ namespace EnemyState
     {
         private readonly int isHit = Define.HitAnimationHash;
         private bool canCounter;
-        private bool hasHandler;
+        private Action onHitFinishedHandler;
 
         public void OnEnter(EnemyUnitController owner)
         {
@@ -15,40 +15,28 @@ namespace EnemyState
             owner.Animator.SetTrigger(isHit);
             owner.PlayHitVoiceSound();
             canCounter = owner.CanCounterAttack(owner.LastAttacker);
-            hasHandler = false;
             if (owner.LastAttacker == null)
             {
                 return;
             }
 
-            Action onHitFinished = null;
-
             if (canCounter)
             {
-                onHitFinished = () =>
-                {
-                    owner.StartCountAttack(owner.LastAttacker);
-                };
+                onHitFinishedHandler = () => owner.StartCountAttack(owner.LastAttacker);
             }
             else if (!owner.LastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {
-                onHitFinished = owner.LastAttacker.InvokeHitFinished;
+                onHitFinishedHandler = owner.LastAttacker.InvokeHitFinished;
             }
 
-            if (onHitFinished != null)
+            if (onHitFinishedHandler != null)
             {
-                owner.OnHitFinished += onHitFinished;
+                owner.OnHitFinished += onHitFinishedHandler;
             }
         }
 
         public void OnUpdate(EnemyUnitController owner)
         {
-            if (hasHandler || !owner.IsAnimationDone)
-            {
-                return;
-            }
-
-            hasHandler = true;
         }
 
         public void OnFixedUpdate(EnemyUnitController owner)
@@ -57,6 +45,12 @@ namespace EnemyState
 
         public void OnExit(EnemyUnitController owner)
         {
+            if (onHitFinishedHandler != null)
+            {
+                owner.OnHitFinished -= onHitFinishedHandler;
+            }
+
+            onHitFinishedHandler = null;
         }
     }
 }

@@ -41,7 +41,7 @@ public class EnemySkillContorller : BaseSkillController
         CurrentSkillData.reuseCount--;
         CurrentSkillData.skillSo.SkillType.Execute(SkillManager.Owner, SkillManager.Owner.Target);
 
-        EndTurn();
+        // EndTurn();
     }
 
     /*

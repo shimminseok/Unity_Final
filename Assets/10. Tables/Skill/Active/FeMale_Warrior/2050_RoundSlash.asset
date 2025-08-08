@@ -49,10 +49,10 @@ MonoBehaviour:
           ID: 0
           EffectType: 11
           Stat:
-            StatType: 0
+            StatType: 1
             ModifierType: 0
-            Value: 37
-          Duration: 3
+            Value: 1590
+          Duration: 6
           TickInterval: 0
           IsStackable: 0
           VFX:
@@ -65,15 +65,17 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 0
           - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
               type: 3}
             VFXPoolID: RoundSlashVFX
-            LocalPosition: {x: 0, y: -0.5, z: 0}
+            LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 90, z: 0}
             LocalScale: {x: 1, y: 1, z: 1}
             reference: 0
             isParent: 0
             type: 0
+            bodyType: 0
           - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
               type: 3}
             VFXPoolID: SpearOfChaosHitVFX
@@ -83,6 +85,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
               type: 3}
             VFXPoolID: SpearOfChaosHitVFX
@@ -92,6 +95,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 1
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 3081362037621676516, guid: ded48de5e83eb7b45992c11651b88eb9,
           type: 3}
@@ -102,15 +106,17 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+        bodyType: 0
       - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
           type: 3}
         VFXPoolID: RoundSlashVFX
-        LocalPosition: {x: 0, y: -0.5, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
         type: 0
+        bodyType: 0
       - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
           type: 3}
         VFXPoolID: SpearOfChaosHitVFX
@@ -120,6 +126,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
           type: 3}
         VFXPoolID: SpearOfChaosHitVFX
@@ -129,6 +136,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 1
+        bodyType: 0
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 1
@@ -152,9 +160,9 @@ MonoBehaviour:
           ID: 0
           EffectType: 11
           Stat:
-            StatType: 0
+            StatType: 1
             ModifierType: 0
-            Value: 37
+            Value: 56.8
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -168,6 +176,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 0
           - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
               type: 3}
             VFXPoolID: RoundSlashVFX
@@ -177,6 +186,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 0
+            bodyType: 0
           - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
               type: 3}
             VFXPoolID: SpearOfChaosHitVFX
@@ -186,6 +196,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
               type: 3}
             VFXPoolID: SpearOfChaosHitVFX
@@ -195,6 +206,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 1
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 3081362037621676516, guid: ded48de5e83eb7b45992c11651b88eb9,
           type: 3}
@@ -205,6 +217,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+        bodyType: 0
       - VFXPrefab: {fileID: 8249806061179617283, guid: 0b549e747121e0449b261fef437abf37,
           type: 3}
         VFXPoolID: RoundSlashVFX
@@ -214,6 +227,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 0
+        bodyType: 0
       - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
           type: 3}
         VFXPoolID: SpearOfChaosHitVFX
@@ -223,6 +237,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 8494300213428694593, guid: 20e7659dbc954e04d88156b68f0c82e6,
           type: 3}
         VFXPoolID: SpearOfChaosHitVFX
@@ -232,6 +247,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 1
+        bodyType: 0
   activeSkillTier: 3
   reuseMaxCount: 2
   coolTime: 4

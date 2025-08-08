@@ -15,7 +15,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
 
     private StageSO currentStage;
     public List<Unit>   AllUnits { get; private set; } = new();
-    public event Action OnBattleEnd;
+    public event Action OnTurnEnded;
 
     private UIReward uiReward;
 
@@ -47,16 +47,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     {
         for (int i = 0; i < playerDeck.DeckDatas.Count; i++)
         {
-            if (playerDeck.DeckDatas[i] == null)
+            EntryDeckData deckData = playerDeck.DeckDatas[i];
+            if (deckData == null)
             {
                 continue;
             }
 
-            EntryDeckData deckData = playerDeck.DeckDatas[i];
-            GameObject    go       = Instantiate(deckData.CharacterSo.UnitPrefab, PartyUnitsTrans[i], false);
-            Unit          unit     = go.GetComponent<Unit>();
+            Transform  parent = i < PartyUnitsTrans.Count ? PartyUnitsTrans[i] : transform;
+            GameObject go     = Instantiate(deckData.CharacterSo.UnitPrefab, parent, false);
+            Unit       unit   = go.GetComponent<Unit>();
             unit.Initialize(new UnitSpawnData { UnitSo = deckData.CharacterSo, DeckData = deckData });
-
             PartyUnits.Add(unit as PlayerUnitController);
         }
     }
@@ -65,20 +65,20 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     /// 적 유닛의 리스트를 설정하고 초기화합니다.
     /// </summary>
     /// <param name="units">적 유닛의 스크립터블 오브젝트 리스트</param>
-    public void SetEnemiesUnit(List<EnemyUnitSO> units)
+    private void SetEnemiesUnit(List<EnemyUnitSO> units)
     {
         for (int i = 0; i < units.Count; i++)
         {
-            EnemyUnitSO unitSo = units[i];
-            GameObject  go     = Instantiate(unitSo.UnitPrefab, EnemyUnitsTrans[i], true);
+            EnemyUnitSO so     = units[i];
+            Transform   parent = i < EnemyUnitsTrans.Count ? EnemyUnitsTrans[i] : transform;
+
+            GameObject go = Instantiate(so.UnitPrefab, parent, true);
             go.transform.localPosition = Vector3.zero;
+
             Unit unit = go.GetComponent<Unit>();
-            unit.Initialize(new UnitSpawnData
-            {
-                UnitSo = unitSo, DeckData = null // Enemy
-            });
-            EnemyUnitController eu = unit as EnemyUnitController;
-            if (eu != null)
+            unit.Initialize(new UnitSpawnData { UnitSo = so, DeckData = null });
+
+            if (unit is EnemyUnitController eu)
             {
                 EnemyUnits.Add(eu);
                 eu.ChoiceAction();
@@ -117,42 +117,68 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     /// </remarks>
     public void EndTurn()
     {
-        foreach (Unit unit in AllUnits)
+        OnTurnEnded?.Invoke();
+        for (int i = 0; i < AllUnits.Count; i++)
         {
-            if (unit.IsDead)
+            Unit u = AllUnits[i];
+            if (u.IsDead)
             {
                 continue;
             }
 
-            unit.CurrentEmotion.AddStack(unit);
-            unit.StatusEffectManager?.OnTurnPassed();
+            u.CurrentEmotion.AddStack(u);
+            u.StatusEffectManager?.OnTurnPassed();
         }
 
-        Debug.Log("배틀 턴이 종료 되었습니다.");
-        PartyUnits.ForEach(x => x.ChangeUnitState(PlayerUnitState.Idle));
-        if (EnemyUnits.TrueForAll(x => x.IsDead))
+        for (int i = 0; i < PartyUnits.Count; i++)
+        {
+            Unit p = PartyUnits[i];
+            if (!p.IsDead)
+            {
+                p.ChangeUnitState(PlayerUnitState.Idle);
+            }
+        }
+
+        bool allEnemiesDead = true;
+        for (int i = 0; i < EnemyUnits.Count; i++)
+        {
+            if (!EnemyUnits[i].IsDead)
+            {
+                allEnemiesDead = false;
+                break;
+            }
+        }
+
+        if (allEnemiesDead)
         {
             OnStageClear();
             return;
         }
 
-        if (PartyUnits.TrueForAll(x => x.IsDead))
+        bool allPartyDead = true;
+        for (int i = 0; i < PartyUnits.Count; i++)
+        {
+            if (!PartyUnits[i].IsDead)
+            {
+                allPartyDead = false;
+                break;
+            }
+        }
+
+        if (allPartyDead)
         {
             OnStageFail();
             return;
         }
 
-        AudioManager.Instance.PlaySFX(SFXName.BattleEndSound.ToString());
+
         TurnHandler.RefillTurnQueue();
-        foreach (EnemyUnitController enemy in EnemyUnits)
-        {
-            enemy.ChoiceAction();
-        }
+        AudioManager.Instance.PlayBGM(BGMName.VictoryBGM.ToString());
+
 
         CommandPlanner.Instance.Clear();    // 턴 종료되면 전략 플래너도 초기화
         InputManager.Instance.Initialize(); // 턴 종료되면 인풋매니저도 초기화
         TurnCount++;                        // 턴 종료되면 턴 수 +1
-        OnBattleEnd?.Invoke();
     }
 
 
@@ -163,16 +189,17 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     /// <returns>기준 유닛이 속한 진영에서 살아 있는 아군 유닛 목록</returns>
     public List<Unit> GetAllies(Unit unit)
     {
-        if (unit is PlayerUnitController playerUnit)
+        if (PartyUnits.Contains(unit))
         {
-            return PartyUnits.Where(u => !u.IsDead && u != playerUnit).ToList();
-        }
-        else if (unit is EnemyUnitController enemy)
-        {
-            return EnemyUnits.Where(u => !u.IsDead && u != enemy).ToList();
+            return PartyUnits.Where(u => !u.IsDead && u != unit).ToList();
         }
 
-        return null;
+        if (EnemyUnits.Contains(unit))
+        {
+            return EnemyUnits.Where(u => !u.IsDead && u != unit).ToList();
+        }
+
+        return new List<Unit>(0);
     }
 
     /// <summary>
@@ -202,6 +229,16 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
     /// </summary>
     private void OnStageClear()
     {
+        for (int i = 0; i < PartyUnits.Count; i++)
+        {
+            Unit p = PartyUnits[i];
+            if (!p.IsDead)
+            {
+                p.ChangeUnitState(PlayerUnitState.Victory);
+            }
+        }
+
+
         // 튜토리얼에서 BattleVictory 이벤트 발행
         TutorialManager tutorial = TutorialManager.Instance;
 

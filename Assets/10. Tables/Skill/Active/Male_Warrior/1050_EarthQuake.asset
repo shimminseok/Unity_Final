@@ -67,15 +67,17 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 1
           - VFXPrefab: {fileID: 2263481632557257710, guid: 6daf8db0414bb6947890afa39892baff,
               type: 3}
             VFXPoolID: GroundShockWaveVFX
-            LocalPosition: {x: 5, y: 0, z: 0}
-            LocalRotation: {x: 0, y: -90, z: 0}
+            LocalPosition: {x: 0, y: 0, z: 1.5}
+            LocalRotation: {x: 0, y: 90, z: 0}
             LocalScale: {x: 1, y: 1, z: 1}
             reference: 0
             isParent: 0
             type: 0
+            bodyType: 0
           - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
               type: 3}
             VFXPoolID: StonesHitVFX
@@ -85,6 +87,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
           type: 3}
@@ -95,15 +98,17 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 1
       - VFXPrefab: {fileID: 2263481632557257710, guid: 6daf8db0414bb6947890afa39892baff,
           type: 3}
         VFXPoolID: GroundShockWaveVFX
-        LocalPosition: {x: 5, y: 0, z: 0}
-        LocalRotation: {x: 0, y: -90, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 1.5}
+        LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
         type: 0
+        bodyType: 0
       - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
           type: 3}
         VFXPoolID: StonesHitVFX
@@ -113,6 +118,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 1
@@ -152,6 +158,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 1
           - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
               type: 3}
             VFXPoolID: StonesHitVFX
@@ -161,6 +168,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
           type: 3}
@@ -171,6 +179,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 1
       - VFXPrefab: {fileID: 1758473627833946668, guid: 9d4a8a10703e42449b9395951d7239ba,
           type: 3}
         VFXPoolID: StonesHitVFX
@@ -180,6 +189,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 3
@@ -201,7 +211,7 @@ MonoBehaviour:
           Stat:
             StatType: 12
             ModifierType: 1
-            Value: 0
+            Value: 8
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -220,7 +230,7 @@ MonoBehaviour:
           Stat:
             StatType: 6
             ModifierType: 1
-            Value: 0
+            Value: 27
           Duration: 3
           TickInterval: 0
           IsStackable: 0
