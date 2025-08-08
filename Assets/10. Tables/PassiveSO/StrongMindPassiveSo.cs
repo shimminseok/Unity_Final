@@ -11,12 +11,6 @@ public class StrongMindPassiveSo : PassiveSO, IPassiveEmotionDebuffReducer
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
-    public override void ExecutePassive()
-    {
-        float value = 0.5f;
-        OnDebuffReducer(ref value);
-    }
-
 
     public void OnDebuffReducer(ref float debuffValue)
     {

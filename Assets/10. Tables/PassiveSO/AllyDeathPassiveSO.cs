@@ -20,9 +20,4 @@ public class AllyDeathPassiveSo : PassiveSO, IPassiveAllyDeathTrigger
 
         Owner.CurrentEmotion.AddStack(Owner, emotionStackPerAllyDeath);
     }
-
-    public override void ExecutePassive()
-    {
-        OnAllyDead();
-    }
 }

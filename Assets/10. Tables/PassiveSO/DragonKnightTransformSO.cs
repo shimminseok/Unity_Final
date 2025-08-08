@@ -19,10 +19,6 @@ public class DragonKnightTransformSO : PassiveSO, IPassiveTurnStartTrigger
         return RequiredStack <= currentEmotion.Stack && currentEmotion.EmotionType == TriggerEmotion;
     }
 
-    public override void ExecutePassive()
-    {
-        OnTurnStart(Owner);
-    }
 
     public void OnTurnStart(Unit unit)
     {
