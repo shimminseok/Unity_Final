@@ -54,7 +54,7 @@ public class UIDefeat : UIBase
             "전투에 패배했습니다.",
             () =>
             {
-                LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+                LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
             },
             "나가기");
     }
