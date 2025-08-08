@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: 8303_Bite
+  m_Name: 8203_GasGas
   m_EditorClassIdentifier: 
-  ID: 8303
-  SkillIcon: {fileID: 21300000, guid: b740dbf1992237949b1312de2f10d6df, type: 3}
-  skillName: "\uAE68\uBB3C\uAE30"
-  skillDescription: "\uB0A0\uCE74\uB85C\uC6B4 \uC774\uBE68?!\uB85C \uBB3C\uC5B4\uBC84\uB9B0\uB2E4.
-    \uC6B0\uC6B8 \uBD80\uC5EC."
+  ID: 8203
+  SkillIcon: {fileID: 21300000, guid: b8399ffe3e9948b4d97c445c82188329, type: 3}
+  skillName: "\uAC00\uC2A4\uAC00\uC2A4"
+  skillDescription: "\uB3C5\uAC00\uC2A4\uB97C \uB0B4\uBFDC\uB294\uB2E4. \uC6B0\uC6B8
+    \uBD80\uC5EC."
   jobType: 7
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
@@ -53,31 +53,32 @@ MonoBehaviour:
           TickInterval: 0
           IsStackable: 0
           VFX:
-          - VFXPrefab: {fileID: 5484218944294176571, guid: d418f471f6fa61f44b4725f1891d7270,
+          - VFXPrefab: {fileID: 4809171458859421548, guid: 13b6ae9cf856bdb45943931e6fcc680a,
               type: 3}
-            VFXPoolID: SlashAGreenVFX
+            VFXPoolID: SmokePuffVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 0.2, y: 0.2, z: 0.2}
             reference: 1
             isParent: 1
             type: 3
-            bodyType: 0
+            bodyType: 2
       skillVFX:
-      - VFXPrefab: {fileID: 5484218944294176571, guid: d418f471f6fa61f44b4725f1891d7270,
+      - VFXPrefab: {fileID: 4809171458859421548, guid: 13b6ae9cf856bdb45943931e6fcc680a,
           type: 3}
-        VFXPoolID: SlashAGreenVFX
+        VFXPoolID: SmokePuffVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 0.2, y: 0.2, z: 0.2}
         reference: 1
         isParent: 1
         type: 3
-        bodyType: 0
+        bodyType: 2
   activeSkillTier: 0
-  reuseMaxCount: 3
-  coolTime: 1
-  skillAnimation: {fileID: 7400000, guid: 6efc77dc15a9ee24d8cfc828bd167ec7, type: 3}
+  reuseMaxCount: 5
+  coolTime: 2
+  skillAnimation: {fileID: 2660459345233648776, guid: 3ee7f83216ef3404eb2e70175185b526,
+    type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
   SFX: 0
