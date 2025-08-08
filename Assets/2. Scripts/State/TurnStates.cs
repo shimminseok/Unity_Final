@@ -104,6 +104,7 @@ public class ActState : ITurnState
             advanced = true;
             ProceedToNextState(unit);
         };
+        //분노로 타겟이 바꼈을때를 대비한 
         onFinalTargetLocked = (finalTarget) =>
         {
             if (lockedTarget != null)
@@ -119,6 +120,13 @@ public class ActState : ITurnState
 
             onAttackerAnimEnd = () =>
             {
+                if (advanced)
+                {
+                    return;
+                }
+
+                advanced = true;
+                ProceedToNextState(unit);
                 unit.InvokeHitFinished();
                 unit.OnMeleeAttackFinished -= onAttackerAnimEnd;
                 unit.OnRangeAttackFinished -= onAttackerAnimEnd;
@@ -136,9 +144,18 @@ public class ActState : ITurnState
                     unit.OnRangeAttackFinished += onAttackerAnimEnd;
                 }
 
+                //진짜 가끔 애니 이벤트가 끝나 있으면 즉시 진행
+                if (unit.IsAnimationDone && onAttackerAnimEnd != null)
+                {
+                    Action animEnd = onAttackerAnimEnd;
+                    onAttackerAnimEnd = null;
+                    animEnd?.Invoke();
+                }
+
                 lockedTarget.OnDead -= onTargetDead;
                 onTargetDead = null;
             };
+            lockedTarget.OnDead += onTargetDead;
         };
         unit.FinalTargetLocked += onFinalTargetLocked;
 
@@ -172,6 +189,11 @@ public class ActState : ITurnState
         {
             unit.OnMeleeAttackFinished -= onAttackerAnimEnd;
             unit.OnRangeAttackFinished -= onAttackerAnimEnd;
+        }
+
+        if (onFinalTargetLocked != null)
+        {
+            unit.FinalTargetLocked -= onFinalTargetLocked;
         }
 
         lockedTarget = null;
