@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: 8303_Bite
+  m_Name: 8202_ScratchToxic
   m_EditorClassIdentifier: 
-  ID: 8303
-  SkillIcon: {fileID: 21300000, guid: b740dbf1992237949b1312de2f10d6df, type: 3}
-  skillName: "\uAE68\uBB3C\uAE30"
-  skillDescription: "\uB0A0\uCE74\uB85C\uC6B4 \uC774\uBE68?!\uB85C \uBB3C\uC5B4\uBC84\uB9B0\uB2E4.
-    \uC6B0\uC6B8 \uBD80\uC5EC."
+  ID: 8202
+  SkillIcon: {fileID: 21300000, guid: e5d4d93a9fe41a54ba8aa15f60031fdf, type: 3}
+  skillName: "\uB3C5 \uD560\uD034\uAE30"
+  skillDescription: "\uB3C5\uBC1C\uD1B1\uC73C\uB85C \uD560\uD038\uB2E4. \uBD84\uB178
+    \uBD80\uC5EC."
   jobType: 7
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
@@ -27,57 +27,58 @@ MonoBehaviour:
       selectCamp: 1
       selectTarget: 0
       projectilePrefab: {fileID: 0}
-      projectilePoolID: 1
+      projectilePoolID: 
       damageEffects:
       - attackCount: 1
         ownerStatType: 4
         weight: 0.3
         value: 10
       buffEffects:
-      - ownerStatType: 0
-        weight: 0
-        value: 0
-        opponentStatType: 0
-        lastTurn: 0
-        statusEffectType: 0
-        modifierType: 0
-        emotionType: 3
+      - ownerStatType: 4
+        weight: 0.5
+        value: 5
+        opponentStatType: 1
+        lastTurn: 3
+        statusEffectType: 11
+        modifierType: 1
+        emotionType: 2
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 11
           Stat:
-            StatType: 0
-            ModifierType: 0
-            Value: 0
-          Duration: 0
+            StatType: 1
+            ModifierType: 1
+            Value: 19.5
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
           VFX:
-          - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
+          - VFXPrefab: {fileID: 5484218944294176571, guid: d418f471f6fa61f44b4725f1891d7270,
               type: 3}
-            VFXPoolID: StarHitVFX
+            VFXPoolID: SlashAGreenVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
+            LocalScale: {x: 1.2, y: 1.2, z: 1.2}
             reference: 1
             isParent: 1
             type: 3
             bodyType: 0
       skillVFX:
-      - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
+      - VFXPrefab: {fileID: 5484218944294176571, guid: d418f471f6fa61f44b4725f1891d7270,
           type: 3}
-        VFXPoolID: StarHitVFX
+        VFXPoolID: SlashAGreenVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 1, y: 1, z: 1}
+        LocalScale: {x: 1.2, y: 1.2, z: 1.2}
         reference: 1
         isParent: 1
         type: 3
         bodyType: 0
   activeSkillTier: 0
-  reuseMaxCount: 3
-  coolTime: 1
-  skillAnimation: {fileID: 7400000, guid: 6efc77dc15a9ee24d8cfc828bd167ec7, type: 3}
+  reuseMaxCount: 5
+  coolTime: 3
+  skillAnimation: {fileID: 2660459345233648776, guid: 3ee7f83216ef3404eb2e70175185b526,
+    type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
   SFX: 0
