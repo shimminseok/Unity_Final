@@ -54,7 +54,7 @@ public class SkillCommand : IActionCommand
             player.SkillController.ChangeCurrentSkill(index);
         }
 
-        Executer.ChangeAction(ActionType.SKill);
+        Executer.ChangeAction(ActionType.Skill);
         Executer.SetTarget(Target);
     }
 }
