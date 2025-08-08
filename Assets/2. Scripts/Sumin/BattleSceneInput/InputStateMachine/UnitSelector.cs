@@ -58,7 +58,7 @@ public class UnitSelector
             return selected != null;
         }
 
-        InputManager.Instance.ExitSkillSelect();
+        //InputManager.Instance.ExitSkillSelect();
         return false;
     }
 

@@ -115,24 +115,25 @@ public class InputManager : SceneOnlySingleton<InputManager>
         inputStateMachine.ChangeState<SelectExecuterState>();
     }
 
-    public void ExitSkillSelect()
-    {
-        if (inputStateMachine.CurrentState is SelectExecuterState)
-            return;
+    // 바깥 부분 누르면 Exit 되는 기능 -> 롤백. 오히려 타겟 선택에 불편감을 줌.
+    //public void ExitSkillSelect()
+    //{
+    //    if (inputStateMachine.CurrentState is SelectExecuterState)
+    //        return;
 
-        // 튜토리얼에서 PlayerSelected 이벤트 발행
-        var tutorial = TutorialManager.Instance;
+    //    // 튜토리얼에서 PlayerSelected 이벤트 발행
+    //    var tutorial = TutorialManager.Instance;
 
-        // 튜토리얼 중 HighlightUI 액션일 경우엔 나가기 막기
-        if (tutorial != null && tutorial.IsActive &&
-            tutorial.CurrentStep?.Actions
-                .Any(x => x.ActionType == TutorialActionType.HighlightUI || x.ActionType == TutorialActionType.TriggerWait) == true)
-        {
-            return;
-        }
+    //    // 튜토리얼 중 HighlightUI 액션일 경우엔 나가기 막기
+    //    if (tutorial != null && tutorial.IsActive &&
+    //        tutorial.CurrentStep?.Actions
+    //            .Any(x => x.ActionType == TutorialActionType.HighlightUI || x.ActionType == TutorialActionType.TriggerWait) == true)
+    //    {
+    //        return;
+    //    }
 
-        OnClickSkillExitButton();
-    }
+    //    OnClickSkillExitButton();
+    //}
 
     // Start 버튼
     public void OnClickTurnStartButton()
