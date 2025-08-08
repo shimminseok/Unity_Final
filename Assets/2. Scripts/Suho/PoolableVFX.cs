@@ -50,13 +50,17 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
     public void AdjustTransform()
     {
         float scaleY = VFXTarget.Collider.transform.localScale.y;
-        Vector3 localPos = VFXTarget.Collider.transform.InverseTransformPoint(VFXTarget.Collider.bounds.size);
+        if (scaleY < 1f)
+        {
+            scaleY = 1f;
+        }
+        Vector3 localPos = VFXTarget.Collider.transform.InverseTransformPoint(VFXTarget.Collider.bounds.extents);
         
         switch (VFXData.bodyType)
         {
             case VFXBodyPartType.Core : transform.position = VFXTarget.Collider.bounds.center;
                 break;
-            case VFXBodyPartType.Head : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,(VFXTarget.Collider.bounds.center.y + localPos.y) * (1/scaleY) - 0.1f,VFXTarget.Collider.bounds.center.z);
+            case VFXBodyPartType.Head : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,(VFXTarget.Collider.bounds.center.y + localPos.y) * (1/scaleY) - 0.3f,VFXTarget.Collider.bounds.center.z);
                 break;
             case VFXBodyPartType.feet : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,VFXTarget.Collider.bounds.min.y,VFXTarget.Collider.bounds.center.z);
                 break;
