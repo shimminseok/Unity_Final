@@ -208,6 +208,8 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             }
         }
 
+        BattleManager.Instance.OnTurnEnded -= ChoiceAction;
+        OnDead = null;
         Agent.enabled = false;
         Obstacle.carving = false;
         Obstacle.enabled = false;

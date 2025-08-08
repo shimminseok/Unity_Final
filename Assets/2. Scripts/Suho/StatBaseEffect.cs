@@ -8,14 +8,20 @@ public class StatBaseEffect
 {
     [HideInInspector] public Unit owner;
     public List<SkillEffectData> skillEffectDatas;
-
+    public bool IsProjectileSkill { get; private set; }
 
     public void Init()
     {
-        foreach (SkillEffectData effect in this.skillEffectDatas)
+        foreach (SkillEffectData effect in skillEffectDatas)
         {
-            effect.owner = this.owner;
-            foreach (var buffSkillEffect in effect.buffEffects)
+            effect.owner = owner;
+            if (!IsProjectileSkill &&
+                (effect.projectilePrefab != null || !string.IsNullOrWhiteSpace(effect.projectilePoolID)))
+            {
+                IsProjectileSkill = true; // 하나라도 맞으면 true
+            }
+
+            foreach (StatBaseBuffSkillEffect buffSkillEffect in effect.buffEffects)
             {
                 buffSkillEffect.StatusEffect = new StatusEffectData();
                 {
@@ -31,5 +37,3 @@ public class StatBaseEffect
         }
     }
 }
-
-

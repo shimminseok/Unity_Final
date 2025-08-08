@@ -15,7 +15,17 @@ namespace PlayerState
 
             if (isTimeLine)
             {
-                onTimelineEnd += owner.InvokeSkillFinished;
+                onTimelineEnd = () =>
+                {
+                    bool hasProjectile = owner.SkillController.IsCurrentSkillProjectile;
+                    if (!hasProjectile)
+                    {
+                        owner.InvokeSkillFinished();
+                    }
+
+                    TimeLineManager.Instance.TimelineEnded -= onTimelineEnd;
+                    onTimelineEnd = null;
+                };
                 TimeLineManager.Instance.TimelineEnded += onTimelineEnd;
             }
 
