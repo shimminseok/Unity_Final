@@ -21,6 +21,7 @@ public class VFXController : MonoBehaviour
 
     public static List<PoolableVFX> VFXListPlay(List<VFXData> vfxList, VFXType vfxType, VFXSpawnReference unit, IEffectProvider effectProvider, bool isAwakePlay)
     {
+        if(vfxList == null) return null;
         List<PoolableVFX> returnVFX = new();
         foreach (VFXData vfxData in vfxList)
         {
@@ -52,6 +53,7 @@ public class VFXController : MonoBehaviour
 
     public static List<PoolableVFX> VFXListPlayOnTransform(List<VFXData> vfxList, VFXType vfxType, GameObject effect)
     {
+        if(vfxList == null) return null;
         List<PoolableVFX> returnVFX = new();
         foreach (VFXData vfxData in vfxList)
         {

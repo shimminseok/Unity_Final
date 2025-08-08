@@ -11,13 +11,16 @@ public class VFXData
     public Vector3 LocalRotation;
     public Vector3 LocalScale = Vector3.one;
     
-    [Header("이펙트가 발생할 위치")]
+    [Header("이펙트가 발생하는 콜라이더 위치")]
     public VFXSpawnReference reference;
 
     public bool isParent = false;
     
     [Header("이펙트가 발생할 타이밍")]
     public VFXType type;
+
+    [Header("이펙트가 발생하는 유닛의 세부위치")] 
+    public VFXBodyPartType bodyType; 
 
     [HideInInspector] public IAttackable Attacker;
     [HideInInspector] public IDamageable Target;

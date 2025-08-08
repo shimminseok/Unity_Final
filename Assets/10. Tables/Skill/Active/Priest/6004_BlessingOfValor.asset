@@ -45,7 +45,7 @@ MonoBehaviour:
           Stat:
             StatType: 4
             ModifierType: 1
-            Value: 0
+            Value: 550
           Duration: 2
           TickInterval: 0
           IsStackable: 0
@@ -59,7 +59,8 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
-          - VFXPrefab: {fileID: 419411002348774512, guid: 4221bab38c91603489bdfff5466ae0f4,
+            bodyType: 0
+          - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
               type: 3}
             VFXPoolID: AuraBuffVFX
             LocalPosition: {x: 0, y: 0, z: 0}
@@ -68,6 +69,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 4159060890352726694, guid: bb6448bf3dd4c184497c5aa89f7974da,
           type: 3}
@@ -78,7 +80,8 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
-      - VFXPrefab: {fileID: 419411002348774512, guid: 4221bab38c91603489bdfff5466ae0f4,
+        bodyType: 2
+      - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
           type: 3}
         VFXPoolID: AuraBuffVFX
         LocalPosition: {x: 0, y: 0, z: 0}
@@ -87,6 +90,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 2
   activeSkillTier: 0
   reuseMaxCount: 2
   coolTime: 5

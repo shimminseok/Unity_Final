@@ -49,22 +49,37 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
 
     public void AdjustTransform()
     {
-        transform.position = VFXTarget.Collider.bounds.center;
+        float scaleY = VFXTarget.Collider.transform.localScale.y;
+        Vector3 localPos = VFXTarget.Collider.transform.InverseTransformPoint(VFXTarget.Collider.bounds.size);
+        
+        switch (VFXData.bodyType)
+        {
+            case VFXBodyPartType.Core : transform.position = VFXTarget.Collider.bounds.center;
+                break;
+            case VFXBodyPartType.Head : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,(VFXTarget.Collider.bounds.center.y + localPos.y) * (1/scaleY) - 0.1f,VFXTarget.Collider.bounds.center.z);
+                break;
+            case VFXBodyPartType.feet : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,VFXTarget.Collider.bounds.min.y,VFXTarget.Collider.bounds.center.z);
+                break;
+        }
+        
         transform.rotation = VFXTarget.Collider.transform.rotation;
         if (VFXData.isParent == true)
         {
-            transform.parent = VFXTarget.Collider.transform;
-            transform.localPosition = VFXData.LocalPosition;
+            transform.SetParent(VFXTarget.Collider.transform, true);
+            transform.localPosition += VFXData.LocalPosition;
             transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
             transform.localScale =  VFXData.LocalScale;
         }
         else
         {
-            transform.localPosition = transform.position + VFXData.LocalPosition;
-            transform.localRotation = Quaternion.Euler(transform.rotation.eulerAngles) * Quaternion.Euler(VFXData.LocalRotation);
-            transform.localScale =  VFXData.LocalScale;
-        }
+            // 월드 좌표 이동 대신 유닛(부모) 기준 로컬 좌표 이동
+            transform.position = VFXTarget.Collider.transform.TransformPoint(
+                VFXTarget.Collider.transform.InverseTransformPoint(transform.position) + VFXData.LocalPosition
+            );
 
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles) * Quaternion.Euler(VFXData.LocalRotation);
+            transform.localScale = VFXData.LocalScale;
+        }
     }
     
     public void AdjustTransform(GameObject effect)
@@ -80,6 +95,7 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
     {
         VFXData = data;
         VFXTarget = effectProvider;
+        
     }    
     
     public void SetData(VFXData data,IEffectProvider effectProvider, Action trigger)

@@ -47,6 +47,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+        bodyType: 0
       - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
           type: 3}
         VFXPoolID: YellowHitVFX
@@ -56,15 +57,17 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 3533928269051653686, guid: fed0ead404414984a8bc1033b08360fa,
           type: 3}
         VFXPoolID: YellowGroundSlashVFX
-        LocalPosition: {x: 0, y: -0.5, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
         type: 0
+        bodyType: 2
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 1
@@ -86,6 +89,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 2

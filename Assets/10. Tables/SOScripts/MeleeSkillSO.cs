@@ -12,7 +12,11 @@ public class MeleeSkillSO : CombatActionSo
             List<IDamageable> targets = attacker.SkillController.SkillSubTargets[effect];
             foreach (var subTarget in targets)
             {
-                if(subTarget.IsDead) continue;
+                
+                if (subTarget == null || subTarget.IsDead)
+                {
+                    continue;
+                }
                 effect.AffectTargetWithSkill(subTarget as Unit);
             }
         }

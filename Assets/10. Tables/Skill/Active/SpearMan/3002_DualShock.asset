@@ -60,11 +60,12 @@ MonoBehaviour:
               type: 3}
             VFXPoolID: FlashShotBlueVFX
             LocalPosition: {x: 0, y: 0, z: 0}
-            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 90, z: 0}
             LocalScale: {x: 1, y: 1, z: 1}
             reference: 0
             isParent: 0
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
               type: 3}
             VFXPoolID: SplashHitVFX
@@ -74,6 +75,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
               type: 3}
             VFXPoolID: StunVFX
@@ -83,16 +85,18 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 1
       skillVFX:
       - VFXPrefab: {fileID: 4369917811383820485, guid: 0d37b7f57001d3043916559ec0bedab5,
           type: 3}
         VFXPoolID: FlashShotBlueVFX
         LocalPosition: {x: 0, y: 0, z: 0}
-        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 0
         isParent: 0
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
           type: 3}
         VFXPoolID: SplashHitVFX
@@ -102,6 +106,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
           type: 3}
         VFXPoolID: StunVFX
@@ -111,6 +116,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 1
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 4
@@ -150,6 +156,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
               type: 3}
             VFXPoolID: SplashHitVFX
@@ -159,6 +166,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 1
       skillVFX:
       - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
           type: 3}
@@ -169,6 +177,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
           type: 3}
         VFXPoolID: SplashHitVFX
@@ -178,6 +187,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 1
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2
