@@ -120,7 +120,7 @@ public class DialogueController : Singleton<DialogueController>
         {
             TutorialDialogueUI ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
             ui.gameObject.SetActive(true);
-            ui.SetDialogue(line);
+            ui.Show(line);
         }
         else
         {
