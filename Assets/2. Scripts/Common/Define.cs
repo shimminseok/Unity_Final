@@ -76,8 +76,8 @@ public static class Define
     // 가챠 비용
     public static readonly Dictionary<GachaType, int> GachaDrawCosts = new()
     {
-        { GachaType.Skill, 150 },
-        { GachaType.Character, 200 },
+        { GachaType.Skill, 200 },
+        { GachaType.Character, 150 },
         { GachaType.Equipment, 150 }
     };
 
