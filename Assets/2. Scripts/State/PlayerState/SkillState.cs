@@ -17,7 +17,7 @@ namespace PlayerState
             {
                 onTimelineEnd = () =>
                 {
-                    bool hasProjectile = SkillHelpers.IsProjectileSkillFromCurrent(owner);
+                    bool hasProjectile = owner.SkillController.IsCurrentSkillProjectile;
                     if (!hasProjectile)
                     {
                         owner.InvokeSkillFinished();
