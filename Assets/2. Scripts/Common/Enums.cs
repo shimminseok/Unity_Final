@@ -229,7 +229,7 @@ public enum AlwaysLoad
 public enum Gender
 {
     Male,
-    Female
+    Female,
 }
 
 public enum MonsterType
@@ -243,4 +243,13 @@ public enum MonsterType
     Male,
     Female,
     RabbitSlime
+}
+
+
+public enum VFXBodyPartType
+{
+    Core,
+    Head,
+    feet,
+    
 }

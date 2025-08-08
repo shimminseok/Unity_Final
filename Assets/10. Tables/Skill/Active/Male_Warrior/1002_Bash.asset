@@ -49,7 +49,7 @@ MonoBehaviour:
           Stat:
             StatType: 0
             ModifierType: 0
-            Value: 0
+            Value: 100
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -63,6 +63,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
               type: 3}
             VFXPoolID: StunVFX
@@ -72,6 +73,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 1
       skillVFX:
       - VFXPrefab: {fileID: 5033994663291868732, guid: 8c4f5e1138ff96c49a7a2fe739715a98,
           type: 3}
@@ -82,6 +84,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
           type: 3}
         VFXPoolID: StunVFX
@@ -91,6 +94,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 1
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 2
