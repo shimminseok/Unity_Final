@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 2001
   SkillIcon: {fileID: 21300000, guid: bab0f58596897ab42891bd590ac1fa7d, type: 3}
   skillName: "\uCE7C\uB0A0 \uD3ED\uD48D"
-  skillDescription: "(+\uACF5\uACA9\uB825\uC758 70%) x 3 \uB9CC\uD07C\uC758 \uB300\uBBF8\uC9C0\uB97C
+  skillDescription: "(+\uACF5\uACA9\uB825\uC758 100%) x 3 \uB9CC\uD07C\uC758 \uB300\uBBF8\uC9C0\uB97C
     \uC90D\uB2C8\uB2E4.\uB9CC\uD07C\uC758 \uB300\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4."
   jobType: 1
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
@@ -31,7 +31,7 @@ MonoBehaviour:
       damageEffects:
       - attackCount: 3
         ownerStatType: 4
-        weight: 0.7
+        weight: 1
         value: 80
       buffEffects: []
       skillVFX:
@@ -44,6 +44,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 0
+        bodyType: 0
       - VFXPrefab: {fileID: 8309495735094290185, guid: c4ac10b2d35e0e04395b04f1bef66723,
           type: 3}
         VFXPoolID: EightCutsHitVFX
@@ -53,6 +54,7 @@ MonoBehaviour:
         reference: 1
         isParent: 0
         type: 3
+        bodyType: 0
   activeSkillTier: 2
   reuseMaxCount: 3
   coolTime: 2

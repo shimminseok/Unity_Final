@@ -7,8 +7,7 @@ namespace PlayerState
     {
         private readonly int isHit = Define.HitAnimationHash;
         private bool canCounter;
-        private bool hasHandler;
-        private Action onAttackFinishedHandler;
+        private Action onHitFinishedHandler;
 
         public void OnEnter(PlayerUnitController owner)
         {
@@ -17,29 +16,28 @@ namespace PlayerState
             owner.PlayHitVoiceSound();
             Unit lastAttacker = owner.LastAttacker;
             canCounter = owner.CanCounterAttack(lastAttacker);
-            hasHandler = false;
             if (lastAttacker == null)
             {
                 return;
             }
 
-            Action onHitFinished = null;
+            if (lastAttacker == null)
+            {
+                return;
+            }
 
             if (canCounter)
             {
-                onHitFinished = () =>
-                {
-                    owner.StartCountAttack(lastAttacker);
-                };
+                onHitFinishedHandler = () => owner.StartCountAttack(lastAttacker);
             }
             else if (!lastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {
-                onHitFinished = lastAttacker.InvokeHitFinished;
+                onHitFinishedHandler = lastAttacker.InvokeHitFinished;
             }
 
-            if (onHitFinished != null)
+            if (onHitFinishedHandler != null)
             {
-                owner.OnHitFinished += onHitFinished;
+                owner.OnHitFinished += onHitFinishedHandler;
             }
         }
 
@@ -53,10 +51,10 @@ namespace PlayerState
 
         public void OnExit(PlayerUnitController owner)
         {
-            if (canCounter)
+            if (onHitFinishedHandler != null)
             {
-                owner.OnMeleeAttackFinished -= onAttackFinishedHandler;
-                onAttackFinishedHandler = null;
+                owner.OnHitFinished -= onHitFinishedHandler;
+                onHitFinishedHandler = null;
             }
         }
     }

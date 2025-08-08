@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class BattleSceneGameUI : MonoBehaviour
 {
     [SerializeField] private Button startBtn;
-    [SerializeField] private Button SpeedBtn;
+    [SerializeField] private GameObject speedBtnHighlight;
     [SerializeField] private GameObject playingImage;
 
     private BattleManager battleManager;
@@ -16,10 +16,12 @@ public class BattleSceneGameUI : MonoBehaviour
 
     [Header("상단에 있는 턴 UI")]
     [SerializeField] private CanvasGroup TurnTopUI;
+
     [SerializeField] private TextMeshProUGUI turnText;
 
     [Header("두트윈으로 재생되는 턴 UI")]
     [SerializeField] private CanvasGroup TurnAniUI;
+
     [SerializeField] private RectTransform backgroundRect;
     [SerializeField] private RectTransform titleTextRect;
     [SerializeField] private TextMeshProUGUI turnAniText;
@@ -33,6 +35,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
     [Header("처음 전투 입장 시 UI 등장")]
     [SerializeField] private RectTransform monsterInfoUI;
+
     [SerializeField] private RectTransform playerInfoUI;
     [SerializeField] private RectTransform selectPhaseUI;
     [SerializeField] private RectTransform topButtons;
@@ -40,16 +43,16 @@ public class BattleSceneGameUI : MonoBehaviour
     private Vector2 originalPos;
     private bool initialized = false;
     private Sequence turnAniSequence;
-    
+
 
     private void OnEnable()
     {
         battleManager = BattleManager.Instance;
-        battleManager.OnBattleEnd += UpdateTurnCount;
+        battleManager.OnTurnEnded += UpdateTurnCount;
         loadingScreenController = LoadingScreenController.Instance;
         loadingScreenController.OnLoadingComplete += WaitForLoading;
         inputManager = InputManager.Instance;
-        SpeedBtn.onClick.AddListener(GameManager.Instance.ToggleTimeScale);
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
     }
 
     private void WaitForLoading()
@@ -65,10 +68,10 @@ public class BattleSceneGameUI : MonoBehaviour
         playerInfoUI.DOKill();
         topButtons.DOKill();
 
-        turnAniSequence.Append(monsterInfoUI.DOAnchorPos(monsterInfoUI.anchoredPosition, 0.3f).From(monsterInfoUI.anchoredPosition + Vector2.left * 500f).SetEase(Ease.OutQuint));
-        turnAniSequence.Join(topButtons.DOAnchorPos(topButtons.anchoredPosition, 0.3f).From(topButtons.anchoredPosition + Vector2.up * 500f).SetEase(Ease.OutQuint));
-        turnAniSequence.Join(playerInfoUI.DOAnchorPos(playerInfoUI.anchoredPosition, 0.5f).From(playerInfoUI.anchoredPosition + Vector2.down * 500f).SetEase(Ease.OutQuint));
-        turnAniSequence.Join(selectPhaseUI.DOAnchorPos(selectPhaseUI.anchoredPosition, 0.6f).From(selectPhaseUI.anchoredPosition + Vector2.down * 500f).SetEase(Ease.OutQuint));
+        turnAniSequence.Append(monsterInfoUI.DOAnchorPos(monsterInfoUI.anchoredPosition, 0.3f).From(monsterInfoUI.anchoredPosition + (Vector2.left * 500f)).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(topButtons.DOAnchorPos(topButtons.anchoredPosition, 0.3f).From(topButtons.anchoredPosition + (Vector2.up * 500f)).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(playerInfoUI.DOAnchorPos(playerInfoUI.anchoredPosition, 0.5f).From(playerInfoUI.anchoredPosition + (Vector2.down * 500f)).SetEase(Ease.OutQuint));
+        turnAniSequence.Join(selectPhaseUI.DOAnchorPos(selectPhaseUI.anchoredPosition, 0.6f).From(selectPhaseUI.anchoredPosition + (Vector2.down * 500f)).SetEase(Ease.OutQuint));
     }
 
     // 턴 UI 애니메이션
@@ -104,7 +107,7 @@ public class BattleSceneGameUI : MonoBehaviour
 
         turnAniSequence.Append(TurnAniUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
 
-        turnAniSequence.Join(titleTextRect.DOAnchorPosY(originalPos.y, slideDuration).From(originalPos + Vector2.down * 200f).SetEase(Ease.OutCubic));
+        turnAniSequence.Join(titleTextRect.DOAnchorPosY(originalPos.y, slideDuration).From(originalPos + (Vector2.down * 200f)).SetEase(Ease.OutCubic));
 
         backgroundRect.localScale = Vector3.one * 2.3f;
         turnAniSequence.Join(backgroundRect.DOScale(2f, scaleDuration).SetEase(Ease.OutBack).SetDelay(0.1f));
@@ -116,9 +119,8 @@ public class BattleSceneGameUI : MonoBehaviour
         turnAniSequence.Append(TurnAniUI.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
         turnAniSequence.Join(TurnTopUI.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine));
 
-        turnAniSequence.AppendCallback (() => TurnAniUI.gameObject.SetActive(false));
+        turnAniSequence.AppendCallback(() => TurnAniUI.gameObject.SetActive(false));
 
-        
 
         // 애니 재생완료된 후에 전투 시작
         if (isBattleStart)
@@ -156,15 +158,27 @@ public class BattleSceneGameUI : MonoBehaviour
         PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
     }
 
+    public void OnSpeedUpButton()
+    {
+        GameManager.Instance.ToggleTimeScale();
+        speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
+    }
+
     public void OnExitButton()
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
+        {
             return;
+        }
 
         string message = "전투를 중단하시겠습니까?";
-        Action leftAction = () => LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+        Action leftAction = () =>
+        {
+            LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
+        };
         PopupManager.Instance.GetUIComponent<TwoChoicePopup>()?.SetAndOpenPopupUI("전투 중단", message, leftAction, null, "중단", "취소");
     }
+
 
     private void UpdateTurnCount()
     {
@@ -177,8 +191,13 @@ public class BattleSceneGameUI : MonoBehaviour
     private void OnDisable()
     {
         if (battleManager != null)
-            battleManager.OnBattleEnd -= UpdateTurnCount;
+        {
+            battleManager.OnTurnEnded -= UpdateTurnCount;
+        }
+
         if (loadingScreenController != null)
+        {
             loadingScreenController.OnLoadingComplete -= WaitForLoading;
+        }
     }
 }

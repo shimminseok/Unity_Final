@@ -65,8 +65,8 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
     {
         if (isShooting)
         {
-            _delta += Time.deltaTime * ProjectileSpeed;
-            ShootProjectile(mode, _delta);
+            float step = ProjectileSpeed * Time.deltaTime;
+            ShootProjectile(mode, step); // ← 매 프레임 이동량만 전달
         }
     }
 
@@ -149,7 +149,6 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         effectData.AffectTargetWithSkill(Target as Unit);
         if (attacker is Unit unit)
         {
-            unit.OnSkillFinished += unit.InvokeHitFinished;
             unit.InvokeSkillFinished();
         }
 

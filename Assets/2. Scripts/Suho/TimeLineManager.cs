@@ -17,6 +17,12 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
     private List<PoolableAudioSource> AudioSourcePrefabs;
     public VirtualCameraController CurrentCameraController { get; set; }
 
+
+    public event Action TimelineStarted;
+    public event Action TimelineEnded;
+
+    private Unit owner;
+
     protected override void Awake()
     {
         base.Awake();
@@ -90,16 +96,17 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
         attacker = user;
         director.playableAsset = attacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine;
         isPlaying = true;
-        isTimeLine = true;
-        if (director.playableAsset == null)
+        isTimeLine = director.playableAsset != null;
+        if (!isTimeLine)
         {
-            isTimeLine = false;
             return;
         }
 
+        TimelineStarted?.Invoke();
+
         CurrentCameraController = vCamController;
         CurrentCameraController.ChangeCamera();
-        Unit          attackerUnit  = attacker as Unit;
+        owner = attacker as Unit;
         TimelineAsset timelineAsset = director.playableAsset as TimelineAsset;
         if (attacker.SkillController.CurrentSkillData.skillSo.isSkillScene)
         {
@@ -151,28 +158,16 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
                 {
                     AudioSourcePrefabs = new List<PoolableAudioSource>();
                 }
+
                 AudioSourcePrefabs.Add(audioSourcePrefab);
             }
 
 
             if (track is AnimationTrack animationTrack)
             {
-                // if (animationTrack.trackOffset == TrackOffset.ApplyTransformOffsets)
-                // {
-                //     foreach (var clip in animationTrack.GetClips())
-                //     {
-                //         var animPlayableAsset = clip.asset as AnimationPlayableAsset;
-                //         if (animPlayableAsset != null)
-                //         {
-                //             animPlayableAsset.position = pos;
-                //             animPlayableAsset.rotation = rot;
-                //         }
-                //     }
-                // }
-
                 if (animationTrack.name == "AttackerTrack")
                 {
-                    director.SetGenericBinding(animationTrack, attackerUnit?.Animator);
+                    director.SetGenericBinding(animationTrack, owner?.Animator);
                 }
                 else if (animationTrack.name == "EffectTrack")
                 {
@@ -185,6 +180,7 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
             }
         }
 
+        owner.IsTimeLinePlaying = true;
         director.time = 0f;
         director.Evaluate();
         director.Play();
@@ -192,21 +188,33 @@ public class TimeLineManager : SceneOnlySingleton<TimeLineManager>
 
     public void StopTimeLine(PlayableDirector pd)
     {
+        if (!isPlaying)
+        {
+            return;
+        }
+
+
+        isPlaying = false;
         director.Stop();
+
+        if (owner != null)
+        {
+            owner.IsTimeLinePlaying = false;
+        }
+
+        TimelineEnded?.Invoke();
+        owner = null;
+
         if (AudioSourcePrefabs != null)
         {
-            foreach (var audioSourcePrefab in AudioSourcePrefabs)
+            foreach (PoolableAudioSource audioSourcePrefab in AudioSourcePrefabs)
             {
                 audioSourcePrefab.Disable();
             }
         }
-        isPlaying = false;
+
         CameraManager.Instance.skillCameraController.DefaultCamera();
         CurrentCameraController = null;
         director.playableAsset = null;
-        if (attacker is Unit unit)
-        {
-            unit.InvokeSkillFinished();
-        }
     }
 }

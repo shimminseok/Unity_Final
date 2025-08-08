@@ -40,8 +40,7 @@ public class MonsterUnitInfoUI : MonoBehaviour
         }
 
         // 전투 종료 후 적 타겟 갱신될때마다 업데이트
-        battleManager.OnBattleEnd += UpdateUnits;
-        
+        battleManager.OnTurnEnded += UpdateUnits;
     }
 
     private void Start()
@@ -61,6 +60,7 @@ public class MonsterUnitInfoUI : MonoBehaviour
             {
                 slots[i].gameObject.SetActive(false);
             }
+
             slots[i].Initialize(units[i]);
         }
     }
@@ -68,8 +68,8 @@ public class MonsterUnitInfoUI : MonoBehaviour
     // 버튼 누르면 몬스터 정보 열고 닫기
     public void OnToggleMonsterList()
     {
-        float targetHeight = isOpen ? 0 : originalHeight;
-        string arrow = isOpen ? ">" : "<";
+        float  targetHeight = isOpen ? 0 : originalHeight;
+        string arrow        = isOpen ? ">" : "<";
 
         buttonArrow.text = arrow;
 
@@ -81,9 +81,9 @@ public class MonsterUnitInfoUI : MonoBehaviour
     {
         if (battleManager != null)
         {
-            battleManager.OnBattleEnd -= UpdateUnits;
+            battleManager.OnTurnEnded -= UpdateUnits;
         }
-        
+
         if (units != null)
         {
             for (int i = 0; i < units.Count; i++)

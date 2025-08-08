@@ -7,8 +7,10 @@ public class RewardActionData : TutorialActionData
 {
     public string rewardKey;
 
+
+    public override TutorialActionType ActionType { get; } = TutorialActionType.Reward;
+
     private void OnEnable()
     {
-        ActionType = TutorialActionType.Reward;
     }
 }

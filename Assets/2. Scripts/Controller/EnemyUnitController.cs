@@ -8,24 +8,18 @@ using System.Text;
 using Random = UnityEngine.Random;
 
 
-[RequireComponent(typeof(EnemySkillContorller))] public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
+[RequireComponent(typeof(EnemySkillContorller))]
+public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
-    [SerializeField]
-    private int id;
-
     public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
     private DissolveChilds dissolveChilds;
     private HPBarUI hpBar;
-    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
-    public float setRemainDistance;
-
     public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
-    private float remainDistance;
     public Vector3 StartPostion { get; private set; }
-    public WeightedSelector<Unit> mainTargetSelector;
+    private WeightedSelector<Unit> mainTargetSelector;
 
     public override event Action OnDead;
 
@@ -46,7 +40,6 @@ using Random = UnityEngine.Random;
         Agent.angularSpeed = 1000f;
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         if (IsDead)
@@ -93,15 +86,14 @@ using Random = UnityEngine.Random;
         }
 
         SkillManager.InitializeSkillManager(this);
-        EnemySkillContorller sc = SkillController as EnemySkillContorller;
-        if (sc != null)
+        if (SkillController is EnemySkillContorller sc)
         {
             sc.InitSkillSelector();
         }
 
+
         InitTargetSelector();
         ChangeEmotion(MonsterSo.StartEmotion);
-        CurrentAttackAction = UnitSo.AttackType;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -123,14 +115,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayHitVoiceSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.HitVoiceSound != SFXName.None)
+        if (MonsterSo.HitVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.HitVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.HitVoiceSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -145,14 +136,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayDeadSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.DeadSound != SFXName.None)
+        if (MonsterSo.DeadSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.DeadSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.DeadSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -167,14 +157,13 @@ using Random = UnityEngine.Random;
 
     public override void PlayAttackVoiceSound()
     {
-        EnemyUnitSO so = UnitSo as EnemyUnitSO;
-        if (so.AttackVoiceSound != SFXName.None)
+        if (MonsterSo.AttackVoiceSound != SFXName.None)
         {
-            AudioManager.Instance.PlaySFX(so.AttackVoiceSound.ToString());
+            AudioManager.Instance.PlaySFX(MonsterSo.AttackVoiceSound.ToString());
         }
         else
         {
-            MonsterType monsterType = so.monsterType;
+            MonsterType monsterType = MonsterSo.monsterType;
             if (monsterType == MonsterType.None)
             {
                 return;
@@ -187,125 +176,13 @@ using Random = UnityEngine.Random;
         }
     }
 
-    public override void Attack()
-    {
-        IsCompletedAttack = false;
-        //어택 타입에 따라서 공격 방식을 다르게 적용
-        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
-
-        float hitRate = StatManager.GetValue(StatType.HitRate);
-        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
-        {
-            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
-        }
-
-        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-        {
-            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
-        }
-
-        bool isHit = Random.value < hitRate;
-        if (!isHit)
-        {
-            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
-            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-            {
-                OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                InvokeRangeAttackFinished();
-            }
-
-            return;
-        }
-
-        //TODO: 크리티컬 구현
-        finalTarget.SetLastAttacker(this);
-        MonsterSo.AttackType.Execute(this, finalTarget);
-        IsCompletedAttack = true;
-    }
-
-    public override void MoveTo(Vector3 destination)
-    {
-        Agent.SetDestination(destination);
-    }
-
-    public override void UseSkill()
-    {
-        SkillController.UseSkill();
-    }
-
-    public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
+    public override void Dead()
     {
         if (IsDead)
         {
             return;
         }
 
-        if (CurrentEmotion is IEmotionOnTakeDamage emotionOnTakeDamage)
-        {
-            emotionOnTakeDamage.OnBeforeTakeDamage(this, out bool isIgnore);
-            if (isIgnore)
-            {
-                if (LastAttacker != null)
-                {
-                    if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-                    {
-                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
-                    }
-                    else
-                    {
-                        LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
-                    }
-                }
-
-                DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Immune);
-                return;
-            }
-        }
-
-        float finalDam = amount;
-
-        //방어력 적용
-        float damageReduction = 0;
-        if (modifierType == StatModifierType.Base)
-        {
-            float defense = StatManager.GetValue(StatType.Defense);
-            damageReduction = defense / (defense + Define.DefenseReductionBase);
-        }
-
-        finalDam *= 1f - damageReduction;
-
-
-        ResourceStat curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
-        ResourceStat shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
-
-        if (shield.CurrentValue > 0)
-        {
-            float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
-            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
-            DamageFontManager.Instance.SetDamageNumber(this, shieldUsed, DamageType.Shield);
-            finalDam -= shieldUsed;
-        }
-
-        if (finalDam > 0)
-        {
-            DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
-            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
-        }
-
-        if (curHp.Value <= 0)
-        {
-            Dead();
-            return;
-        }
-
-        ChangeUnitState(EnemyUnitState.Hit);
-    }
-
-    public override void Dead()
-    {
         IsDead = true;
         OnDead?.Invoke();
         ChangeUnitState(EnemyUnitState.Die);
@@ -314,16 +191,25 @@ using Random = UnityEngine.Random;
 
         if (LastAttacker != null)
         {
-            if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+            bool isTimelineAttack =
+                LastAttacker.CurrentAction == ActionType.Skill
+                && LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null;
+
+            if (!isTimelineAttack)
             {
-                LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                {
+                    LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
+                }
+                else
+                {
+                    LastAttacker.OnRangeAttackFinished += InvokeHitFinished;
+                }
             }
         }
 
+        BattleManager.Instance.OnTurnEnded -= ChoiceAction;
+        OnDead = null;
         Agent.enabled = false;
         Obstacle.carving = false;
         Obstacle.enabled = false;
@@ -374,10 +260,13 @@ using Random = UnityEngine.Random;
 
     public void SelectMainTarget(ActionType actionType)
     {
-        if (actionType == ActionType.SKill)
+        if (actionType == ActionType.Skill)
         {
             EnemySkillContorller sc = SkillController as EnemySkillContorller;
-            WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
+            if (sc != null)
+            {
+                WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
+            }
         }
         else if (actionType == ActionType.Attack)
         {
@@ -398,8 +287,8 @@ using Random = UnityEngine.Random;
             if (sc != null)
             {
                 sc.WeightedSelectSkill();
-                ChangeAction(ActionType.SKill);
-                SelectMainTarget(ActionType.SKill);
+                ChangeAction(ActionType.Skill);
+                SelectMainTarget(ActionType.Skill);
             }
         }
         else
@@ -410,21 +299,53 @@ using Random = UnityEngine.Random;
     }
 
 
+    public override void EnterMoveState()
+    {
+        ChangeUnitState(EnemyUnitState.Move);
+    }
+
+    public override void EnterAttackState()
+    {
+        ChangeUnitState(EnemyUnitState.Attack);
+    }
+
+    public override void EnterReturnState()
+    {
+        ChangeUnitState(EnemyUnitState.Return);
+    }
+
+    public override void EnterSkillState()
+    {
+        ChangeUnitState(EnemyUnitState.Skill);
+    }
+
+    protected override Enum GetHitStateEnum()
+    {
+        return EnemyUnitState.Hit;
+    }
+
     public override void StartTurn()
     {
-        if (IsDead || IsStunned || Target == null || Target.IsDead)
+        List<Unit> enemies = BattleManager.Instance.GetEnemies(this);
+
+
+        if (enemies.Count == 0 || IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
+            EndTurn();
             return;
         }
 
+        isTurnEnd = false;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
     public override void EndTurn()
     {
+        Target = null;
         ChangeAction(ActionType.None);
-        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
         ChangeUnitState(EnemyUnitState.Idle);
+        SkillController.EndTurn();
+        isTurnEnd = true;
+        BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }
