@@ -81,6 +81,7 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
             if (unit is EnemyUnitController eu)
             {
                 EnemyUnits.Add(eu);
+                OnTurnEnded += eu.ChoiceAction;
                 eu.ChoiceAction();
             }
         }
@@ -274,7 +275,6 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         UIManager.Instance.Open(PopupManager.Instance.GetUIComponent<UIDefeat>(), false);
         AudioManager.Instance.PlayBGM(BGMName.DefeatBGM.ToString());
         InputManager.Instance.BattleEnd();
-        return;
     }
 
     protected override void OnDestroy()

@@ -9992,7 +9992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7145b8c2ee8be9047a43245e8b122936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  colider: {fileID: 0}
 --- !u!54 &882098052141334104
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14928,8 +14928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolId: WindBullet
   poolSize: 2
-  projectileSpeed: 1
-  Target: {fileID: 0}
+  projectileSpeed: 20
   isShooting: 0
   mode: 2
   trigger: {fileID: 3554700635898294325}

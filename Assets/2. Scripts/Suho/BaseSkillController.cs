@@ -11,11 +11,28 @@ using UnityEngine;
 [RequireComponent(typeof(SkillManager))]
 public abstract class BaseSkillController : MonoBehaviour
 {
-    public List<SkillData> skills = new List<SkillData>();
+    public List<SkillData> skills = new();
     public SkillData CurrentSkillData;
-    public Dictionary<SkillEffectData, List<IDamageable>> SkillSubTargets = new Dictionary<SkillEffectData, List<IDamageable>>();
+    public Dictionary<SkillEffectData, List<IDamageable>> SkillSubTargets = new();
     public int generateCost = 1; // 턴 종료 시 coolDown을 1감소, defalut 값 = 1
     public SkillManager SkillManager { get; set; }
+
+    public bool IsCurrentSkillProjectile
+    {
+        get
+        {
+            ActiveSkillSO so = CurrentSkillData?.skillSo as ActiveSkillSO;
+            if (so == null)
+            {
+                return false;
+            }
+
+            bool byEffect = so.effect != null && so.effect.IsProjectileSkill;
+            bool byType   = (so.skillType as RangeSkillSO)?.IsProjectile ?? false;
+
+            return byEffect || byType;
+        }
+    }
 
     public void Initialize(SkillManager manager)
     {
@@ -28,13 +45,22 @@ public abstract class BaseSkillController : MonoBehaviour
     public abstract void EndTurn();
 
     public virtual void ChangeCurrentSkill(int index) { }
+
     public bool CheckAllSkills()
     {
         foreach (SkillData skill in skills)
         {
-            if(skill == null) continue;
-            if(skill.CheckCanUseSkill()) return true;
+            if (skill == null)
+            {
+                continue;
+            }
+
+            if (skill.CheckCanUseSkill())
+            {
+                return true;
+            }
         }
+
         return false;
     }
 
