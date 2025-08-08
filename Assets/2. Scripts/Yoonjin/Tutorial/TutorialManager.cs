@@ -110,7 +110,7 @@ public class TutorialManager : Singleton<TutorialManager>
         int resumeStep = tutorialTable.DataDic.Values
             .Where(step => step.phase == tutorialData.Phase && step.isResumeEntryPoint)
             .Select(step => step.ID)
-            .FirstOrDefault();
+            .LastOrDefault();
 
         // 유효한 ID인지 확인 (예외 처리 추가)
 
@@ -145,6 +145,13 @@ public class TutorialManager : Singleton<TutorialManager>
             Debug.Log($"[튜토리얼] Step ID {id}를 찾을 수 없습니다. 튜토리얼 종료.");
             EndTutorial();
             return;
+        }
+
+        // 현재 페이즈 저장
+        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
+        {
+            tutorialData.Phase = currentStep.phase;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
         if (currentStep.Actions == null || currentStep.Actions.Count == 0)
@@ -206,13 +213,6 @@ public class TutorialManager : Singleton<TutorialManager>
             {
                 executor.Exit();
             }
-        }
-
-        // 현재 페이즈 저장
-        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
-        {
-            tutorialData.Phase = currentStep.phase;
-            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
         GoToStep(currentStep.NextID);
