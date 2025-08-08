@@ -49,7 +49,7 @@ MonoBehaviour:
           Stat:
             StatType: 11
             ModifierType: 0
-            Value: 650
+            Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -63,6 +63,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -72,6 +73,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -81,6 +83,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 2
       - ownerStatType: 0
         weight: 0.5
         value: 50
@@ -95,7 +98,7 @@ MonoBehaviour:
           Stat:
             StatType: 6
             ModifierType: 1
-            Value: 650
+            Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -109,6 +112,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -118,6 +122,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -127,6 +132,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 2
       - ownerStatType: 4
         weight: 0
         value: -10
@@ -141,7 +147,7 @@ MonoBehaviour:
           Stat:
             StatType: 12
             ModifierType: 0
-            Value: -10
+            Value: 0
           Duration: 0
           TickInterval: 0
           IsStackable: 0
@@ -155,6 +161,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -164,6 +171,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -173,6 +181,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 2
       skillVFX:
       - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
           type: 3}
@@ -183,6 +192,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 2
       - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
           type: 3}
         VFXPoolID: LevelUpVFX
@@ -192,6 +202,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+        bodyType: 2
       - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
           type: 3}
         VFXPoolID: LevelUpVFX
@@ -201,6 +212,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 2
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 1
@@ -236,6 +248,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -245,6 +258,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 2
       - ownerStatType: 4
         weight: 0.25
         value: 25
@@ -273,6 +287,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 2
           - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
               type: 3}
             VFXPoolID: LevelUpVFX
@@ -282,6 +297,7 @@ MonoBehaviour:
             reference: 0
             isParent: 0
             type: 4
+            bodyType: 2
       skillVFX:
       - VFXPrefab: {fileID: 6331275906715107345, guid: 741acbf67498f76439cc1f3b471f9065,
           type: 3}
@@ -292,6 +308,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 2
       - VFXPrefab: {fileID: 675445769285226232, guid: cb86e1dda90d7ff4ba2408c8a4aef5c8,
           type: 3}
         VFXPoolID: LevelUpVFX
@@ -301,6 +318,7 @@ MonoBehaviour:
         reference: 0
         isParent: 0
         type: 4
+        bodyType: 2
     - owner: {fileID: 0}
       selectCamp: 1
       selectTarget: 2

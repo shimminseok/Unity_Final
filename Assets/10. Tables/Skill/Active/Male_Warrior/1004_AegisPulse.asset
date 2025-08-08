@@ -41,12 +41,12 @@ MonoBehaviour:
         modifierType: 0
         emotionType: 0
         StatusEffect:
-          ID: 40001
+          ID: 0
           EffectType: 9
           Stat:
             StatType: 11
             ModifierType: 0
-            Value: 200
+            Value: 279.80002
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -54,22 +54,24 @@ MonoBehaviour:
           - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
               type: 3}
             VFXPoolID: ShieldVFX
-            LocalPosition: {x: 0, y: 0.5, z: 0}
+            LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
             LocalScale: {x: 0.3, y: 0.3, z: 0.3}
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
           type: 3}
         VFXPoolID: ShieldVFX
-        LocalPosition: {x: 0, y: 0.5, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
         LocalScale: {x: 0.3, y: 0.3, z: 0.3}
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 0
     - owner: {fileID: 0}
       selectCamp: 0
       selectTarget: 1
@@ -86,12 +88,12 @@ MonoBehaviour:
         modifierType: 0
         emotionType: 0
         StatusEffect:
-          ID: 40001
+          ID: 0
           EffectType: 9
           Stat:
             StatType: 11
             ModifierType: 0
-            Value: 0
+            Value: 139.90001
           Duration: 3
           TickInterval: 0
           IsStackable: 0
@@ -99,22 +101,24 @@ MonoBehaviour:
           - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
               type: 3}
             VFXPoolID: ShieldVFX
-            LocalPosition: {x: 0, y: 0.5, z: 0}
+            LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
             LocalScale: {x: 0.3, y: 0.3, z: 0.3}
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
           type: 3}
         VFXPoolID: ShieldVFX
-        LocalPosition: {x: 0, y: 0.5, z: 0}
+        LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
         LocalScale: {x: 0.3, y: 0.3, z: 0.3}
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 0
   activeSkillTier: 2
   reuseMaxCount: 2
   coolTime: 4

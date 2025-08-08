@@ -25,7 +25,7 @@ public class RangeSkillSO : RangeActionSo
             List<IDamageable> targets = skillController.SkillSubTargets[effect];
             foreach (IDamageable unit in targets)
             {
-                if (unit == null)
+                if (unit == null || unit.IsDead)
                 {
                     continue;
                 }

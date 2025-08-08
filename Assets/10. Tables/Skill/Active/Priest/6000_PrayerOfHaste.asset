@@ -44,7 +44,7 @@ MonoBehaviour:
           Stat:
             StatType: 7
             ModifierType: 1
-            Value: 0
+            Value: 3
           Duration: 2
           TickInterval: 0
           IsStackable: 0
@@ -58,6 +58,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 3
+            bodyType: 0
           - VFXPrefab: {fileID: 5905016914026779651, guid: 004eac940aabd5b4ba88e6c18b38cf12,
               type: 3}
             VFXPoolID: HasteBuffVFX
@@ -67,6 +68,7 @@ MonoBehaviour:
             reference: 1
             isParent: 1
             type: 2
+            bodyType: 2
       skillVFX:
       - VFXPrefab: {fileID: 4159060890352726694, guid: bb6448bf3dd4c184497c5aa89f7974da,
           type: 3}
@@ -77,6 +79,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 3
+        bodyType: 0
       - VFXPrefab: {fileID: 5905016914026779651, guid: 004eac940aabd5b4ba88e6c18b38cf12,
           type: 3}
         VFXPoolID: HasteBuffVFX
@@ -86,6 +89,7 @@ MonoBehaviour:
         reference: 1
         isParent: 1
         type: 2
+        bodyType: 2
   activeSkillTier: 0
   reuseMaxCount: 2
   coolTime: 5
