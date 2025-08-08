@@ -110,7 +110,7 @@ public class TutorialManager : Singleton<TutorialManager>
         int resumeStep = tutorialTable.DataDic.Values
             .Where(step => step.phase == tutorialData.Phase && step.isResumeEntryPoint)
             .Select(step => step.ID)
-            .FirstOrDefault();
+            .LastOrDefault();
 
         // 유효한 ID인지 확인 (예외 처리 추가)
 
