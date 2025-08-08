@@ -60,8 +60,7 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
         {
             case VFXBodyPartType.Core : transform.position = VFXTarget.Collider.bounds.center;
                 break;
-            case VFXBodyPartType.Head : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,(VFXTarget.Collider.bounds.center.y) + VFXTarget.Collider.bounds.extents.y * (1/scaleY),VFXTarget.Collider.bounds.center.z);
-                Debug.Log($"{VFXTarget.Collider.gameObject.name} , {VFXTarget.Collider.bounds.center.y} , {VFXTarget.Collider.bounds.extents.y * (1/scaleY)}");
+            case VFXBodyPartType.Head : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,VFXTarget.Collider.bounds.max.y,VFXTarget.Collider.bounds.center.z);
                 break;
             case VFXBodyPartType.feet : transform.position = new Vector3(VFXTarget.Collider.bounds.center.x,VFXTarget.Collider.bounds.min.y,VFXTarget.Collider.bounds.center.z);
                 break;
@@ -73,7 +72,7 @@ public class PoolableVFX : MonoBehaviour, IPoolObject
             transform.SetParent(VFXTarget.Collider.transform, true);
             transform.localPosition += VFXData.LocalPosition;
             transform.localRotation = Quaternion.Euler(VFXData.LocalRotation);
-            transform.localScale =  VFXData.LocalScale;
+            transform.localScale =  VFXData.LocalScale * (1/scaleY);
         }
         else
         {
