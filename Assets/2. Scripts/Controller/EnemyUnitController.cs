@@ -335,7 +335,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
             return;
         }
 
-        isTurnEnd = false;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -345,7 +344,6 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
         ChangeAction(ActionType.None);
         ChangeUnitState(EnemyUnitState.Idle);
         SkillController.EndTurn();
-        isTurnEnd = true;
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

@@ -9,7 +9,7 @@ public class AnimationDone : StateMachineBehaviour
         {
             if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
             {
-                unit.InvokeAttackFinished();
+                unit.InvokeMeleeAttackFinished();
             }
         }
 
