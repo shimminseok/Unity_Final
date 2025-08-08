@@ -221,6 +221,11 @@ public class BattleManager : SceneOnlySingleton<BattleManager>
         AccountManager.Instance.UpdateBestStage(currentStage);
         RewardManager.Instance.GiveRewardAndOpenUI(() =>
         {
+            if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
+            {
+                LoadSceneManager.Instance.LoadScene("DeckBuildingScene");
+                return;
+            }
             LoadSceneManager.Instance.LoadScene("DeckBuildingScene", () => UIManager.Instance.Open(UIManager.Instance.GetUIComponent<UIStageSelect>()));
         });
         InputManager.Instance.BattleEnd();
