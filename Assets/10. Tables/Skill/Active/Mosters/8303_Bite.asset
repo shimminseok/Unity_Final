@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: 8005_Scratch
+  m_Name: 8303_Bite
   m_EditorClassIdentifier: 
-  ID: 8004
-  SkillIcon: {fileID: 21300000, guid: 357b05fd830b3a44b9fd06c3a0a00a8c, type: 3}
-  skillName: "\uC810\uC561\uC9C8"
-  skillDescription: "\uC810\uC561\uC9C8\uB85C \uBD88\uCF8C\uD558\uAC8C \uB9CC\uB4E4\uC5B4\uBC84\uB9B0\uB2E4.
-    \uBD84\uB178 \uBD80\uC5EC"
+  ID: 8303
+  SkillIcon: {fileID: 21300000, guid: b740dbf1992237949b1312de2f10d6df, type: 3}
+  skillName: "\uAE68\uBB3C\uAE30"
+  skillDescription: "\uB0A0\uCE74\uB85C\uC6B4 \uC774\uBE68?!\uB85C \uBB3C\uC5B4\uBC84\uB9B0\uB2E4.
+    \uC6B0\uC6B8 \uBD80\uC5EC."
   jobType: 7
   skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
   selectCamp: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
         lastTurn: 0
         statusEffectType: 0
         modifierType: 0
-        emotionType: 2
+        emotionType: 3
         StatusEffect:
           ID: 0
           EffectType: 0
@@ -53,23 +53,23 @@ MonoBehaviour:
           TickInterval: 0
           IsStackable: 0
           VFX:
-          - VFXPrefab: {fileID: 3223031359271505891, guid: d0f0bfd8c67eb7646b73446528b63aae,
+          - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
               type: 3}
-            VFXPoolID: WaterBlastBlueVFX
+            VFXPoolID: StarHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
-            LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+            LocalScale: {x: 1, y: 1, z: 1}
             reference: 1
             isParent: 1
             type: 3
             bodyType: 0
       skillVFX:
-      - VFXPrefab: {fileID: 3223031359271505891, guid: d0f0bfd8c67eb7646b73446528b63aae,
+      - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
           type: 3}
-        VFXPoolID: WaterBlastBlueVFX
+        VFXPoolID: StarHitVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+        LocalScale: {x: 1, y: 1, z: 1}
         reference: 1
         isParent: 1
         type: 3
@@ -77,8 +77,7 @@ MonoBehaviour:
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 1
-  skillAnimation: {fileID: -3510217540682870009, guid: eb340672e17c0af4089e561b61cdc548,
-    type: 3}
+  skillAnimation: {fileID: 7400000, guid: 6efc77dc15a9ee24d8cfc828bd167ec7, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
   SFX: 0
