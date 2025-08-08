@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
-  m_Name: 8002_Bite
+  m_Name: 8303_Bite
   m_EditorClassIdentifier: 
-  ID: 8002
+  ID: 8303
   SkillIcon: {fileID: 21300000, guid: b740dbf1992237949b1312de2f10d6df, type: 3}
   skillName: "\uAE68\uBB3C\uAE30"
   skillDescription: "\uB0A0\uCE74\uB85C\uC6B4 \uC774\uBE68?!\uB85C \uBB3C\uC5B4\uBC84\uB9B0\uB2E4.
@@ -24,7 +24,7 @@ MonoBehaviour:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
-      selectCamp: 0
+      selectCamp: 1
       selectTarget: 0
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
@@ -52,13 +52,32 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
+              type: 3}
+            VFXPoolID: StarHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
+          type: 3}
+        VFXPoolID: StarHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 1
-  skillAnimation: {fileID: -3510217540682870009, guid: eb340672e17c0af4089e561b61cdc548,
-    type: 3}
+  skillAnimation: {fileID: 7400000, guid: 6efc77dc15a9ee24d8cfc828bd167ec7, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
   SFX: 0
