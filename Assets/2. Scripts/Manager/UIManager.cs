@@ -64,7 +64,12 @@ public class UIManager : Singleton<UIManager>
         }
 
         ui?.Open();
-        if (mainCamera.enabled && isFull)
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+        }
+
+        if (mainCamera != null && mainCamera.enabled && isFull)
         {
             mainCamera.enabled = false;
         }
