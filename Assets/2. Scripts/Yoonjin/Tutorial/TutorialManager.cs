@@ -147,6 +147,13 @@ public class TutorialManager : Singleton<TutorialManager>
             return;
         }
 
+        // 현재 페이즈 저장
+        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
+        {
+            tutorialData.Phase = currentStep.phase;
+            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+        }
+
         if (currentStep.Actions == null || currentStep.Actions.Count == 0)
         {
             Debug.Log($"[튜토리얼] Step {id}에 등록된 Actions가 없습니다!");
@@ -206,13 +213,6 @@ public class TutorialManager : Singleton<TutorialManager>
             {
                 executor.Exit();
             }
-        }
-
-        // 현재 페이즈 저장
-        if (SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) is SaveTutorialData tutorialData)
-        {
-            tutorialData.Phase = currentStep.phase;
-            SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
         }
 
         GoToStep(currentStep.NextID);
