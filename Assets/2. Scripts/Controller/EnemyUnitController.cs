@@ -178,6 +178,11 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
 
     public override void Dead()
     {
+        if (IsDead)
+        {
+            return;
+        }
+
         IsDead = true;
         OnDead?.Invoke();
         ChangeUnitState(EnemyUnitState.Die);

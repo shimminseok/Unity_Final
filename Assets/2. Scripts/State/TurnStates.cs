@@ -86,6 +86,10 @@ public class ActState : ITurnState
     private bool advanced;
     private Action onEnd;
 
+    private Action onAttackerAnimEnd;
+    private Action onTargetDead;
+    private Unit target;
+
     public void OnEnter(Unit unit)
     {
         advanced = false;
@@ -99,6 +103,23 @@ public class ActState : ITurnState
             advanced = true;
             ProceedToNextState(unit);
         };
+
+        target = unit.Target as Unit;
+        if (target != null)
+        {
+            onAttackerAnimEnd = () =>
+            {
+                unit.InvokeHitFinished();
+            };
+
+            onTargetDead = () =>
+            {
+                unit.OnMeleeAttackFinished += onAttackerAnimEnd;
+                unit.OnRangeAttackFinished += onAttackerAnimEnd;
+            };
+
+            target.OnDead += onTargetDead;
+        }
 
         if (unit.CurrentAction == ActionType.Attack)
         {
@@ -120,7 +141,19 @@ public class ActState : ITurnState
     {
         unit.OnHitFinished -= onEnd;
         unit.OnSkillFinished -= onEnd;
+
+        if (target != null)
+        {
+            target.OnDead -= onTargetDead;
+            unit.OnMeleeAttackFinished -= onAttackerAnimEnd;
+            unit.OnRangeAttackFinished -= onAttackerAnimEnd;
+        }
+
+        onAttackerAnimEnd = null;
+        onTargetDead = null;
+        target = null;
         onEnd = null;
+        advanced = false;
     }
 
     private void ProceedToNextState(Unit unit)

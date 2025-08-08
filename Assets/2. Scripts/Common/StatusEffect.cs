@@ -20,7 +20,7 @@ public abstract class StatusEffect
     public Action RemoveEffect;
     public List<VFXData> BuffVFX;
     public bool IsStackable;
-    
+
 
     public abstract IEnumerator Apply(StatusEffectManager manager);
 
@@ -28,19 +28,18 @@ public abstract class StatusEffect
     {
     }
 
-    public virtual void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
+    public virtual void ApplyVFX(StatusEffectManager manager, VFXType vfxType)
     {
         if (BuffVFX != null)
         {
-             List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,false);
-             foreach (var vfx in list)
-             {
-                 ApplyEffect += vfx.OnSpawnFromPool;
-                 RemoveEffect += vfx.RemoveVFX;
-             }
+            List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX, vfxType, VFXSpawnReference.Target, manager.Owner, false);
+            foreach (PoolableVFX vfx in list)
+            {
+                ApplyEffect += vfx.OnSpawnFromPool;
+                RemoveEffect += vfx.RemoveVFX;
+            }
         }
     }
-    
 }
 
 /// <summary>
@@ -197,7 +196,7 @@ public class TurnBasedModifierBuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         manager.ModifyBuffStat(StatType, ModifierType, Value);
-        ApplyVFX(manager,VFXType.Buff);
+        ApplyVFX(manager, VFXType.Buff);
         ApplyEffect?.Invoke();
         yield return null;
     }
@@ -215,7 +214,7 @@ public class StunDebuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         manager.Owner.SetStunned(true);
-        ApplyVFX(manager,VFXType.Buff);
+        ApplyVFX(manager, VFXType.Buff);
         ApplyEffect?.Invoke();
         yield return null;
     }
@@ -242,7 +241,9 @@ public class TriggerBuff : TurnBasedBuff
     public void TryTrigger(StatusEffectManager manager, TriggerEventType eventType)
     {
         if (eventType != TriggerEvent)
+        {
             return;
+        }
 
         if (TriggerCondition?.Invoke(manager) == true)
         {
@@ -260,14 +261,14 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
     public override IEnumerator Apply(StatusEffectManager manager)
     {
         this.manager = manager;
-        BattleManager.Instance.OnBattleEnd += TakeDamage;
-        ApplyVFX(manager,VFXType.Dot);
+        BattleManager.Instance.OnTurnEnded += TakeDamage;
+        ApplyVFX(manager, VFXType.Dot);
         yield return null;
     }
 
     public override void OnEffectRemoved(StatusEffectManager effect)
     {
-        BattleManager.Instance.OnBattleEnd -= TakeDamage;
+        BattleManager.Instance.OnTurnEnded -= TakeDamage;
         ApplyEffect = null;
         RemoveEffect?.Invoke();
     }
@@ -278,13 +279,13 @@ public class TurnBasedPeriodicDamageDebuff : TurnBasedBuff
         manager.Owner.TakeDamage(Value, ModifierType);
         //대미지를 처리해준다?
     }
-    
-    public override void ApplyVFX(StatusEffectManager manager,VFXType vfxType)
+
+    public override void ApplyVFX(StatusEffectManager manager, VFXType vfxType)
     {
         if (BuffVFX != null)
         {
-            List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX,vfxType,VFXSpawnReference.Target,manager.Owner,false);
-            foreach (var vfx in list)
+            List<PoolableVFX> list = VFXController.VFXListPlay(BuffVFX, vfxType, VFXSpawnReference.Target, manager.Owner, false);
+            foreach (PoolableVFX vfx in list)
             {
                 vfx.AdjustTransform();
                 ApplyEffect += vfx.PlayDotVFX;
