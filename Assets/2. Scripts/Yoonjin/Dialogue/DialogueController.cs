@@ -62,8 +62,8 @@ public class DialogueController : Singleton<DialogueController>
         }
 
 
-        var table = TableManager.Instance.GetTable<DialogueGroupTable>();
-        var group = table.GetDataByID(groupKey);
+        DialogueGroupTable table = TableManager.Instance.GetTable<DialogueGroupTable>();
+        DialogueGroupSO    group = table.GetDataByID(groupKey);
 
         if (group == null)
         {
@@ -90,7 +90,10 @@ public class DialogueController : Singleton<DialogueController>
     // 다음 대사 줄로 이동
     public void Next()
     {
-        if (currentGroup == null) return;
+        if (currentGroup == null)
+        {
+            return;
+        }
 
         currentLineIndex++;
         ShowCurrentLine();
@@ -105,24 +108,25 @@ public class DialogueController : Singleton<DialogueController>
             return;
         }
 
-        var line = currentGroup.lines[currentLineIndex];
+        DialogueLine line = currentGroup.lines[currentLineIndex];
 
         if (currentGroup.mode == DialogueMode.Overlay)
         {
-            var ui = GetOrCreateUI<OverlayDialogueUI>("UI/OverlayDialogueUI");
+            OverlayDialogueUI ui = GetOrCreateUI<OverlayDialogueUI>("UI/OverlayDialogueUI");
             ui.gameObject.SetActive(true); // UI 활성화
             ui.Show(line);                 // 대사 내용 출력
         }
         else if (currentGroup.mode == DialogueMode.Tutorial)
         {
             Debug.Log("튜토리얼 다이얼로그 ShowCurrentLine");
-            var ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
+            TutorialDialogueUI ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
             ui.gameObject.SetActive(true);
-            ui.Show(line);
+            ui.SetDialogue(line);
+            UIManager.Instance.Open(ui);
         }
         else
         {
-            var fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
+            FullscreenDialogueUI fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
             fullscreenUI?.Show(line);
         }
     }
@@ -161,31 +165,42 @@ public class DialogueController : Singleton<DialogueController>
     {
         // 이미 참조된 OverlayDialogueUI가 있으면 그대로 반환
         if (typeof(T) == typeof(OverlayDialogueUI) && overlayUI != null)
+        {
             return overlayUI as T;
+        }
 
         // 이미 참조된 TutorialDialogueUI가 있으면 그대로 반환
         if (typeof(T) == typeof(TutorialDialogueUI) && tutorialUI != null)
+        {
             return tutorialUI as T;
+        }
 
         // Resources 폴더에서 UI 프리팹을 불러옴
-        var prefab = Resources.Load<GameObject>(resourcePath);
+        GameObject prefab = Resources.Load<GameObject>(resourcePath);
 
         // UIRoot라는 이름을 가진 UI 최상단 부모 오브젝트 찾기
-        var uiRoot = GameObject.Find("UIRoot")?.transform;
+        Transform uiRoot = GameObject.Find("UIRoot")?.transform;
 
         // 프리팹과 UIRoot가 모두 존재할 때만 인스턴스를 생성
         if (prefab != null && uiRoot != null)
         {
             // UIRoot의 자식으로 UI 프리팹을 생성
-            var instance = Instantiate(prefab, uiRoot);
-            var ui = instance.GetComponent<T>();
+            GameObject instance = Instantiate(prefab, uiRoot);
+            T          ui       = instance.GetComponent<T>();
 
             // 기본적으로 비활성화 상태로 시작
             ui.gameObject.SetActive(false);
 
             // 생성한 UI를 참조 저장 (캐싱)
-            if (typeof(T) == typeof(OverlayDialogueUI)) overlayUI = ui as OverlayDialogueUI;
-            if (typeof(T) == typeof(TutorialDialogueUI)) tutorialUI = ui as TutorialDialogueUI;
+            if (typeof(T) == typeof(OverlayDialogueUI))
+            {
+                overlayUI = ui as OverlayDialogueUI;
+            }
+
+            if (typeof(T) == typeof(TutorialDialogueUI))
+            {
+                tutorialUI = ui as TutorialDialogueUI;
+            }
 
             return ui;
         }
@@ -209,4 +224,3 @@ public static class DialogueResourceLoader
         return Resources.Load<Sprite>($"Backgrounds/{key}");
     }
 }
-
