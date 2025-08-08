@@ -291,6 +291,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         if (finalDam > 0)
         {
             DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
+            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         }
 
         if (curHp.Value <= 0)
@@ -472,7 +473,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
         if (IsDead && LastAttacker != null)
         {
-            bool attackerWaitingTimeline = LastAttacker.IsTimeLinePlaying
+            bool attackerWaitingTimeline = LastAttacker.BattleManager
                                            || (LastAttacker.CurrentAction == ActionType.Skill &&
                                                LastAttacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null);
 

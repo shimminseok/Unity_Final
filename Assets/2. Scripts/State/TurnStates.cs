@@ -83,31 +83,31 @@ public class MoveToTargetState : ITurnState
 
 public class ActState : ITurnState
 {
-    private bool _advanced;
-    private Action _onEnd;
+    private bool advanced;
+    private Action onEnd;
 
     public void OnEnter(Unit unit)
     {
-        _advanced = false;
-        _onEnd = () =>
+        advanced = false;
+        onEnd = () =>
         {
-            if (_advanced)
+            if (advanced)
             {
                 return;
             }
 
-            _advanced = true;
+            advanced = true;
             ProceedToNextState(unit);
         };
 
         if (unit.CurrentAction == ActionType.Attack)
         {
-            unit.OnHitFinished += _onEnd;
+            unit.OnHitFinished += onEnd;
             unit.EnterAttackState();
         }
         else if (unit.CurrentAction == ActionType.Skill)
         {
-            unit.OnSkillFinished += _onEnd;
+            unit.OnSkillFinished += onEnd;
             unit.EnterSkillState();
         }
     }
@@ -118,9 +118,9 @@ public class ActState : ITurnState
 
     public void OnExit(Unit unit)
     {
-        unit.OnHitFinished -= _onEnd;
-        unit.OnSkillFinished -= _onEnd;
-        _onEnd = null;
+        unit.OnHitFinished -= onEnd;
+        unit.OnSkillFinished -= onEnd;
+        onEnd = null;
     }
 
     private void ProceedToNextState(Unit unit)
