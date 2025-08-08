@@ -10,7 +10,7 @@ public enum ActionType
 {
     None,
     Attack,
-    SKill
+    Skill
 }
 
 [RequireComponent(typeof(PlayerSkillController))]
@@ -33,9 +33,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
 
     public override event Action OnDead;
 
-    protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState state)
+    protected override IState<PlayerUnitController, PlayerUnitState> GetState(PlayerUnitState _state)
     {
-        return state switch
+        return _state switch
         {
             PlayerUnitState.Idle        => new IdleState(),
             PlayerUnitState.Move        => new MoveState(),
@@ -61,20 +61,44 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     {
         base.Start();
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
-
         StartPostion = transform.position;
     }
 
-    public override void ChangeUnitState(Enum newState)
+    public override void ChangeUnitState(Enum _newState)
     {
-        stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
-        CurrentState = (PlayerUnitState)newState;
+        stateMachine.ChangeState(states[Convert.ToInt32(_newState)]);
+        CurrentState = (PlayerUnitState)_newState;
     }
 
-    public override void Initialize(UnitSpawnData deckData)
+    protected override Enum GetHitStateEnum()
     {
-        UnitSo = deckData.UnitSo;
+        return PlayerUnitState.Hit;
+    }
 
+    // === 공통 헬퍼 구현 ===
+    public override void EnterMoveState()
+    {
+        ChangeUnitState(PlayerUnitState.Move);
+    }
+
+    public override void EnterAttackState()
+    {
+        ChangeUnitState(PlayerUnitState.Attack);
+    }
+
+    public override void EnterReturnState()
+    {
+        ChangeUnitState(PlayerUnitState.Return);
+    }
+
+    public override void EnterSkillState()
+    {
+        ChangeUnitState(PlayerUnitState.Skill);
+    }
+
+    public override void Initialize(UnitSpawnData _deckData)
+    {
+        UnitSo = _deckData.UnitSo;
         if (UnitSo is PlayerUnitSO playerUnitSo)
         {
             PlayerUnitSo = playerUnitSo;
@@ -88,8 +112,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         PassiveSo = PlayerUnitSo.PassiveSkill;
         PassiveSo.Initialize(this);
 
-
-        foreach (SkillData skillData in deckData.DeckData.SkillDatas)
+        foreach (SkillData skillData in _deckData.DeckData.SkillDatas)
         {
             if (skillData == null)
             {
@@ -100,7 +123,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             SkillManager.AddActiveSkill(skillData.skillSo);
         }
 
-        StatManager.Initialize(PlayerUnitSo, this, deckData.DeckData.EquippedItems.Values.ToList(), deckData.DeckData.Level, playerUnitIncreaseSo);
+        StatManager.Initialize(PlayerUnitSo, this, _deckData.DeckData.EquippedItems.Values.ToList(), _deckData.DeckData.Level, playerUnitIncreaseSo);
 
         SkillManager.InitializeSkillManager(this);
         AnimationEventListener.Initialize(this);
@@ -112,8 +135,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeClip(Define.ReadyActionClipName, readyActionClip);
         ChangeClip(Define.DeadClipName, deadClip);
         ChangeClip(Define.HitClipName, hitClip);
-
-        CurrentAttackAction = UnitSo.AttackType;
     }
 
     public override void PlayAttackVoiceSound()
@@ -167,53 +188,9 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         }
     }
 
-    public override void Attack()
+    public override void MoveTo(Vector3 _destination)
     {
-        //어택 타입에 따라서 공격 방식을 다르게 적용
-        IsCompletedAttack = false;
-        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
-
-        if (finalTarget == null || finalTarget.IsDead)
-        {
-            return;
-        }
-
-        float hitRate = StatManager.GetValue(StatType.HitRate);
-        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
-        {
-            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
-        }
-
-        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-        {
-            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
-        }
-
-        bool isHit = Random.value < hitRate;
-        if (!isHit)
-        {
-            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
-            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-            {
-                OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                OnRangeAttackFinished += InvokeHitFinished;
-                InvokeRangeAttackFinished();
-            }
-
-            return;
-        }
-
-        finalTarget.SetLastAttacker(this);
-        PlayerUnitSo.AttackType.Execute(this, finalTarget);
-        IsCompletedAttack = true;
-    }
-
-    public override void MoveTo(Vector3 destination)
-    {
-        Agent.SetDestination(destination);
+        Agent.SetDestination(_destination);
     }
 
     public override void UseSkill()
@@ -221,8 +198,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         SkillController.UseSkill();
     }
 
-
-    public override void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
+    public override void TakeDamage(float _amount, StatModifierType _modifierType = StatModifierType.Base)
     {
         if (IsDead)
         {
@@ -247,31 +223,29 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
                 }
 
                 DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Immune);
-
                 return;
             }
         }
 
-        float finalDam = amount;
-
-        //이게 반격 스킬에 대한거임.
+        float finalDam = _amount;
         StatusEffectManager?.TryTriggerAll(TriggerEventType.OnAttacked);
 
-        float damageReduction = 0;
-        if (modifierType == StatModifierType.Base)
+        float damageReduction = 0f;
+        if (_modifierType == StatModifierType.Base)
         {
             float defense = StatManager.GetValue(StatType.Defense);
             damageReduction = defense / (defense + Define.DefenseReductionBase);
         }
 
         finalDam *= 1f - damageReduction;
+
         ResourceStat curHp  = StatManager.GetStat<ResourceStat>(StatType.CurHp);
         ResourceStat shield = StatManager.GetStat<ResourceStat>(StatType.Shield);
 
         if (shield.CurrentValue > 0)
         {
             float shieldUsed = Mathf.Min(shield.CurrentValue, finalDam);
-            StatManager.Consume(StatType.Shield, modifierType, shieldUsed);
+            StatManager.Consume(StatType.Shield, _modifierType, shieldUsed);
             DamageFontManager.Instance.SetDamageNumber(this, shieldUsed, DamageType.Shield);
             finalDam -= shieldUsed;
         }
@@ -279,7 +253,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         if (finalDam > 0)
         {
             DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
-            StatManager.Consume(StatType.CurHp, modifierType, finalDam);
+            StatManager.Consume(StatType.CurHp, _modifierType, finalDam);
         }
 
         if (curHp.Value <= 0)
@@ -316,12 +290,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         StatusEffectManager.RemoveAllEffects();
         hpBar.UnLink();
 
-
         Agent.enabled = false;
         Obstacle.carving = false;
         Obstacle.enabled = false;
 
-        //아군이 죽으면 발동되는 패시브를 가진 유닛이 있으면 가져와서 발동 시켜줌
         List<IPassiveAllyDeathTrigger> allyDeathPassives = BattleManager.Instance.GetAllies(this)
             .Select(u => (u as PlayerUnitController)?.PassiveSo)
             .OfType<IPassiveAllyDeathTrigger>()
@@ -335,14 +307,10 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
     public override void StartTurn()
     {
         List<Unit> enemies = BattleManager.Instance.GetEnemies(this);
-
         if (enemies.Count == 0 || IsDead || IsStunned || CurrentAction == ActionType.None || Target == null || Target.IsDead)
         {
-            // if (CurrentAction == ActionType.None || Target == null)
-            {
-                EndTurn();
-                return;
-            }
+            EndTurn();
+            return;
         }
 
         if (PassiveSo is IPassiveTurnStartTrigger turnStartTrigger)
@@ -354,10 +322,8 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
-
     public override void EndTurn()
     {
-        //내 턴이 끝날때의 로직을 쓸꺼임.
         if (PassiveSo is IPassiveTurnEndTrigger turnEndTrigger)
         {
             turnEndTrigger.OnTurnEnd(this);
@@ -373,7 +339,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
         isTurnEnd = true;
-        // TimeLineManager.Instance.StopTimeLine(TimeLineManager.Instance.director);
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }

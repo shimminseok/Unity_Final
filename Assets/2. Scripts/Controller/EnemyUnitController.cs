@@ -10,22 +10,15 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(EnemySkillContorller))] public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnitState>
 {
-    [SerializeField]
-    private int id;
-
     public EnemyUnitSO MonsterSo { get; private set; }
     // Start is called before the first frame update
 
     private DissolveChilds dissolveChilds;
     private HPBarUI hpBar;
-    public override bool IsAtTargetPosition => Agent.remainingDistance < setRemainDistance;
-    public float setRemainDistance;
-
     public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
-    private float remainDistance;
     public Vector3 StartPostion { get; private set; }
-    public WeightedSelector<Unit> mainTargetSelector;
+    private WeightedSelector<Unit> mainTargetSelector;
 
     public override event Action OnDead;
 
@@ -46,7 +39,6 @@ using Random = UnityEngine.Random;
         Agent.angularSpeed = 1000f;
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         if (IsDead)
@@ -93,15 +85,14 @@ using Random = UnityEngine.Random;
         }
 
         SkillManager.InitializeSkillManager(this);
-        EnemySkillContorller sc = SkillController as EnemySkillContorller;
-        if (sc != null)
+        if (SkillController is EnemySkillContorller sc)
         {
             sc.InitSkillSelector();
         }
 
+
         InitTargetSelector();
         ChangeEmotion(MonsterSo.StartEmotion);
-        CurrentAttackAction = UnitSo.AttackType;
     }
 
     protected override IState<EnemyUnitController, EnemyUnitState> GetState(EnemyUnitState unitState)
@@ -185,45 +176,6 @@ using Random = UnityEngine.Random;
             sb.Append("AttackSound");
             AudioManager.Instance.PlaySFX(sb.ToString());
         }
-    }
-
-    public override void Attack()
-    {
-        IsCompletedAttack = false;
-        //어택 타입에 따라서 공격 방식을 다르게 적용
-        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
-
-        float hitRate = StatManager.GetValue(StatType.HitRate);
-        if (CurrentEmotion is IEmotionOnAttack emotionOnAttack)
-        {
-            emotionOnAttack.OnBeforeAttack(this, ref finalTarget);
-        }
-
-        else if (CurrentEmotion is IEmotionOnHitChance emotionOnHit)
-        {
-            emotionOnHit.OnCalculateHitChance(this, ref hitRate);
-        }
-
-        bool isHit = Random.value < hitRate;
-        if (!isHit)
-        {
-            DamageFontManager.Instance.SetDamageNumber(this, 0, DamageType.Miss);
-            if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-            {
-                OnMeleeAttackFinished += InvokeHitFinished;
-            }
-            else
-            {
-                InvokeRangeAttackFinished();
-            }
-
-            return;
-        }
-
-        //TODO: 크리티컬 구현
-        finalTarget.SetLastAttacker(this);
-        MonsterSo.AttackType.Execute(this, finalTarget);
-        IsCompletedAttack = true;
     }
 
     public override void MoveTo(Vector3 destination)
@@ -374,7 +326,7 @@ using Random = UnityEngine.Random;
 
     public void SelectMainTarget(ActionType actionType)
     {
-        if (actionType == ActionType.SKill)
+        if (actionType == ActionType.Skill)
         {
             EnemySkillContorller sc = SkillController as EnemySkillContorller;
             WeightedMainTargetSelector(sc.CurrentSkillData.skillSo.selectCamp);
@@ -398,8 +350,8 @@ using Random = UnityEngine.Random;
             if (sc != null)
             {
                 sc.WeightedSelectSkill();
-                ChangeAction(ActionType.SKill);
-                SelectMainTarget(ActionType.SKill);
+                ChangeAction(ActionType.Skill);
+                SelectMainTarget(ActionType.Skill);
             }
         }
         else
@@ -409,6 +361,31 @@ using Random = UnityEngine.Random;
         }
     }
 
+
+    public override void EnterMoveState()
+    {
+        ChangeUnitState(EnemyUnitState.Move);
+    }
+
+    public override void EnterAttackState()
+    {
+        ChangeUnitState(EnemyUnitState.Attack);
+    }
+
+    public override void EnterReturnState()
+    {
+        ChangeUnitState(EnemyUnitState.Return);
+    }
+
+    public override void EnterSkillState()
+    {
+        ChangeUnitState(EnemyUnitState.Skill);
+    }
+
+    protected override Enum GetHitStateEnum()
+    {
+        return EnemyUnitState.Hit;
+    }
 
     public override void StartTurn()
     {

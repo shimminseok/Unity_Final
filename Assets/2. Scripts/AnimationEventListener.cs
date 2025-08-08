@@ -14,7 +14,7 @@ public class AnimationEventListener : MonoBehaviour
         skillData = owner.SkillController.CurrentSkillData;
     }
 
-     public void EventTrigger()
+    public void EventTrigger()
     {
         if (owner.IsCounterAttack)
         {
@@ -26,7 +26,7 @@ public class AnimationEventListener : MonoBehaviour
         {
             Attack();
         }
-        else if (owner.CurrentAction == ActionType.SKill)
+        else if (owner.CurrentAction == ActionType.Skill)
         {
             // owner.SkillController.CurrentSkillData.skillSo.skillType.PlayVFX(owner,owner.Target);
             UseSkill();
@@ -42,6 +42,5 @@ public class AnimationEventListener : MonoBehaviour
     private void UseSkill()
     {
         owner.UseSkill();
-        
     }
 }

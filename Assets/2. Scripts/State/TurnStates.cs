@@ -48,30 +48,11 @@ public class StartTurnState : ITurnState
     public void OnEnter(Unit unit)
     {
         Debug.Log($"{unit.name} StartTurn State");
-        switch (unit.CurrentAction)
+        if (unit.CurrentAction == ActionType.Attack || unit.CurrentAction == ActionType.Skill)
         {
-            case ActionType.Attack:
-                if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-                {
-                    unit.ChangeTurnState(TurnStateType.MoveToTarget);
-                }
-                else
-                {
-                    unit.ChangeTurnState(TurnStateType.Act);
-                }
-
-                break;
-            case ActionType.SKill:
-                if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-                {
-                    unit.ChangeTurnState(TurnStateType.MoveToTarget);
-                }
-                else
-                {
-                    unit.ChangeTurnState(TurnStateType.Act);
-                }
-
-                break;
+            bool isMelee = unit.CurrentAttackAction != null &&
+                           unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
+            unit.ChangeTurnState(isMelee ? TurnStateType.MoveToTarget : TurnStateType.Act);
         }
     }
 
@@ -88,15 +69,7 @@ public class MoveToTargetState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
-        Debug.Log($"{unit.name} MoveToTarget State");
-        if (unit is PlayerUnitController)
-        {
-            unit.ChangeUnitState(PlayerUnitState.Move);
-        }
-        else if (unit is EnemyUnitController)
-        {
-            unit.ChangeUnitState(EnemyUnitState.Move);
-        }
+        unit.EnterMoveState();
     }
 
     public void OnUpdate(Unit unit)
@@ -110,59 +83,63 @@ public class MoveToTargetState : ITurnState
 
 public class ActState : ITurnState
 {
-    private ICombatAction action;
-    private Action handler;
-
-    private Unit target;
-    private Action onReactionEndHandler;
+    private Action onActSequenceEndHandler;
+    private bool hasAdvanced;
+    private bool subscribedSkillFinished;
 
     public void OnEnter(Unit unit)
     {
-        target = unit.Target as Unit;
+        hasAdvanced = false;
+        subscribedSkillFinished = false;
+
+        Unit target = unit.Target as Unit;
         if (target != null)
         {
             target.SetLastAttacker(unit);
         }
 
-
-        onReactionEndHandler = () =>
+        onActSequenceEndHandler = () =>
         {
+            if (hasAdvanced)
+            {
+                return;
+            }
+
+            hasAdvanced = true;
             ProceedToNextState(unit);
         };
-        unit.OnHitFinished += onReactionEndHandler;
+
+        // 대상의 피격 리액션이 끝나면 진행(패턴 상 공격자 OnHitFinished가 호출되도록 연결되어 있음)
+        unit.OnHitFinished += onActSequenceEndHandler;
 
         if (unit.CurrentAction == ActionType.Attack)
         {
-            if (unit is PlayerUnitController)
-            {
-                unit.ChangeUnitState(PlayerUnitState.Attack);
-            }
-            else if (unit is EnemyUnitController)
-            {
-                unit.ChangeUnitState(EnemyUnitState.Attack);
-            }
+            unit.EnterAttackState();
         }
-        else if (unit.CurrentAction == ActionType.SKill)
+        else if (unit.CurrentAction == ActionType.Skill)
         {
-            if (unit is PlayerUnitController)
-            {
-                unit.ChangeUnitState(PlayerUnitState.Skill);
-            }
-            else if (unit is EnemyUnitController)
-            {
-                unit.ChangeUnitState(EnemyUnitState.Skill);
-            }
+            unit.EnterSkillState();
 
-            if (unit.CurrentAttackAction.ActionSo is RangeSkillSO rangeSkill)
+            // 논-프로젝타일은 스킬 종료 시점도 함께 기다림
+            try
             {
-                if (!rangeSkill.IsProjectile)
+                if (unit.CurrentAttackAction != null && unit.CurrentAttackAction.ActionSo is RangeSkillSO range)
                 {
-                    unit.OnSkillFinished += onReactionEndHandler;
+                    if (!range.IsProjectile)
+                    {
+                        unit.OnSkillFinished += onActSequenceEndHandler;
+                        subscribedSkillFinished = true;
+                    }
+                }
+                else
+                {
+                    unit.OnSkillFinished += onActSequenceEndHandler;
+                    subscribedSkillFinished = true;
                 }
             }
-            else
+            catch
             {
-                unit.OnSkillFinished += onReactionEndHandler;
+                /* ActionSo 미구현 케이스 대비 */
             }
         }
     }
@@ -171,34 +148,33 @@ public class ActState : ITurnState
     {
     }
 
-    public void OnExit(Unit unit)
+    public void OnExit(Unit _unit)
     {
-        unit.OnHitFinished -= onReactionEndHandler;
+        if (onActSequenceEndHandler != null)
+        {
+            _unit.OnHitFinished -= onActSequenceEndHandler;
+            if (subscribedSkillFinished)
+            {
+                _unit.OnSkillFinished -= onActSequenceEndHandler;
+            }
+        }
 
-        action = null;
-        handler = null;
-        target = null;
-        onReactionEndHandler = null;
+        onActSequenceEndHandler = null;
+        subscribedSkillFinished = false;
+        hasAdvanced = false;
     }
 
-    private void ProceedToNextState(Unit unit)
+    private void ProceedToNextState(Unit _unit)
     {
-        if (unit.IsDead)
+        if (_unit.IsDead)
         {
-            unit.ChangeTurnState(TurnStateType.EndTurn);
+            _unit.ChangeTurnState(TurnStateType.EndTurn);
             return;
         }
 
-        Debug.Log($"{unit.name} ProceedToNextState");
-
-        if (unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
-        {
-            unit.ChangeTurnState(TurnStateType.Return);
-        }
-        else
-        {
-            unit.ChangeTurnState(TurnStateType.EndTurn);
-        }
+        bool isMelee = _unit.CurrentAttackAction != null &&
+                       _unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
+        _unit.ChangeTurnState(isMelee ? TurnStateType.Return : TurnStateType.EndTurn);
     }
 }
 
@@ -206,24 +182,11 @@ public class ReturnState : ITurnState
 {
     public void OnEnter(Unit unit)
     {
-        //되돌아가는 함수
-        if (unit is PlayerUnitController)
-        {
-            unit.ChangeUnitState(PlayerUnitState.Return);
-        }
-        else if (unit is EnemyUnitController)
-        {
-            unit.ChangeUnitState(EnemyUnitState.Return);
-        }
+        unit.EnterReturnState();
     }
 
-    public void OnUpdate(Unit unit)
-    {
-    }
-
-    public void OnExit(Unit unit)
-    {
-    }
+    public void OnUpdate(Unit unit) { }
+    public void OnExit(Unit unit)   { }
 }
 
 public class EndTurnState : ITurnState
@@ -234,13 +197,8 @@ public class EndTurnState : ITurnState
         unit.StartCoroutine(DelayEndTurn(unit));
     }
 
-    public void OnUpdate(Unit unit)
-    {
-    }
-
-    public void OnExit(Unit unit)
-    {
-    }
+    public void OnUpdate(Unit unit) { }
+    public void OnExit(Unit unit)   { }
 
     private IEnumerator DelayEndTurn(Unit unit)
     {

@@ -13,7 +13,6 @@ namespace EnemyState
         public void OnEnter(EnemyUnitController owner)
         {
             owner.OnToggleNavmeshAgent(true);
-            owner.setRemainDistance = 1.5f;
             owner.Agent.avoidancePriority = 80;
             owner.Animator.SetBool(isMove, true);
             owner.MoveTo(owner.Target.Collider.transform.position);
@@ -24,7 +23,6 @@ namespace EnemyState
 
         public void OnUpdate(EnemyUnitController owner)
         {
-
             if (!owner.Agent.pathPending && owner.Agent.remainingDistance <= totalReachDistance)
             {
                 owner.ChangeTurnState(TurnStateType.Act);
