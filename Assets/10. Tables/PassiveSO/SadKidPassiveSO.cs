@@ -11,11 +11,6 @@ public class SadKidPassiveSo : PassiveSO, IPassiveChangeEmotionTrigger
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
-    public override void ExecutePassive()
-    {
-        OnChangeEmotion();
-    }
-
     public void OnChangeEmotion()
     {
         if (!CanTrigger(Owner.CurrentEmotion))

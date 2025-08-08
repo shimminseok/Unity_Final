@@ -20,7 +20,6 @@ public class PassiveTestScene : MonoBehaviour
         GameObject go = Instantiate(playerUnit.UnitPrefab);
         unit = go.GetComponent<Unit>();
         emotionType = passiveSkill.TriggerEmotion;
-        passiveSkill.Initialize(unit);
 
         UnitSpawnData data = new();
         data.UnitSo = playerUnit;
@@ -49,10 +48,5 @@ public class PassiveTestScene : MonoBehaviour
     public void OnClickSubtractStack()
     {
         unit.CurrentEmotion.AddStack(unit, -1);
-    }
-
-    public void OnClickExecute()
-    {
-        passiveSkill.ExecutePassive();
     }
 }

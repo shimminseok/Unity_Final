@@ -93,6 +93,11 @@ public class CharacterInfo : MonoBehaviour
             }
         }
 
+        if (statSlotDic.Count == 0)
+        {
+            InitializeStatSlotDic();
+        }
+
         // 3. StatSlot UI 초기화
         foreach (StatType statType in statSlotDic.Keys)
         {

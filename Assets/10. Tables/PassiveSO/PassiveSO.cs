@@ -4,18 +4,19 @@
 public abstract class PassiveSO : SkillSo
 {
     public EmotionType TriggerEmotion;
+    public Unit Owner { get; private set; }
 
     public virtual bool CanTrigger(BaseEmotion currentEmotion)
     {
         return true;
     }
 
-    public Unit Owner { get; private set; }
 
-    public void Initialize(Unit owner)
+    public virtual PassiveSO CloneForRuntime(Unit owner)
     {
-        Owner = owner;
+        PassiveSO inst = Instantiate(this);
+        inst.hideFlags = HideFlags.DontSaveInEditor | HideFlags.DontSaveInBuild;
+        inst.Owner = owner;
+        return inst;
     }
-
-    public abstract void ExecutePassive();
 }

@@ -11,12 +11,6 @@ public class MagicMasterPassiveSo : PassiveSO, IPassiveTurnEndTrigger
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
-    public override void ExecutePassive()
-    {
-        OnTurnEnd(Owner);
-    }
-
-
     public void OnTurnEnd(Unit unit)
     {
         Owner.SkillController.generateCost = CanTrigger(Owner.CurrentEmotion) ? addCost : 1;
