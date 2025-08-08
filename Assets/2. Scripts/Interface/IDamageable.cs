@@ -7,7 +7,7 @@ public interface IDamageable
     public Collider    Collider       { get; }
     public BaseEmotion CurrentEmotion { get; }
     public bool        IsDead         { get; }
-    public void        TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base);
+    public void        TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base, bool isCritical = false);
     public void        SetLastAttacker(IAttackable attacker);
 
     public StatusEffectManager StatusEffectManager { get; }

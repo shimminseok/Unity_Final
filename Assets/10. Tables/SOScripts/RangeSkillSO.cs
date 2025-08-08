@@ -14,11 +14,6 @@ public class RangeSkillSO : RangeActionSo
         BaseSkillController skillController = attacker.SkillController;
         SkillData           currentSkill    = skillController.CurrentSkillData;
         PlaySFX(attacker);
-        // PlayableAsset timeline = currentSkill.skillSo.skillTimeLine;
-        // if (timeline != null)
-        // {
-        //     TimeLineManager.Instance.director.Play(timeline);
-        // }
 
         foreach (SkillEffectData effect in currentSkill.Effect.skillEffectDatas)
         {

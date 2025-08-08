@@ -86,9 +86,10 @@ public class ActState : ITurnState
     private bool advanced;
     private Action onEnd;
 
+    private Action<Unit> onFinalTargetLocked;
     private Action onAttackerAnimEnd;
     private Action onTargetDead;
-    private Unit target;
+    private Unit lockedTarget;
 
     public void OnEnter(Unit unit)
     {
@@ -103,23 +104,43 @@ public class ActState : ITurnState
             advanced = true;
             ProceedToNextState(unit);
         };
-
-        target = unit.Target as Unit;
-        if (target != null)
+        onFinalTargetLocked = (finalTarget) =>
         {
+            if (lockedTarget != null)
+            {
+                return;
+            }
+
+            lockedTarget = finalTarget;
+            if (lockedTarget == null)
+            {
+                return;
+            }
+
             onAttackerAnimEnd = () =>
             {
                 unit.InvokeHitFinished();
+                unit.OnMeleeAttackFinished -= onAttackerAnimEnd;
+                unit.OnRangeAttackFinished -= onAttackerAnimEnd;
+                onAttackerAnimEnd = null;
             };
 
             onTargetDead = () =>
             {
-                unit.OnMeleeAttackFinished += onAttackerAnimEnd;
-                unit.OnRangeAttackFinished += onAttackerAnimEnd;
-            };
+                if (unit.CurrentAttackAction != null && unit.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                {
+                    unit.OnMeleeAttackFinished += onAttackerAnimEnd;
+                }
+                else
+                {
+                    unit.OnRangeAttackFinished += onAttackerAnimEnd;
+                }
 
-            target.OnDead += onTargetDead;
-        }
+                lockedTarget.OnDead -= onTargetDead;
+                onTargetDead = null;
+            };
+        };
+        unit.FinalTargetLocked += onFinalTargetLocked;
 
         if (unit.CurrentAction == ActionType.Attack)
         {
@@ -142,16 +163,21 @@ public class ActState : ITurnState
         unit.OnHitFinished -= onEnd;
         unit.OnSkillFinished -= onEnd;
 
-        if (target != null)
+        if (lockedTarget != null && onTargetDead != null)
         {
-            target.OnDead -= onTargetDead;
+            lockedTarget.OnDead -= onTargetDead;
+        }
+
+        if (onAttackerAnimEnd != null)
+        {
             unit.OnMeleeAttackFinished -= onAttackerAnimEnd;
             unit.OnRangeAttackFinished -= onAttackerAnimEnd;
         }
 
-        onAttackerAnimEnd = null;
+        lockedTarget = null;
         onTargetDead = null;
-        target = null;
+        onAttackerAnimEnd = null;
+        onFinalTargetLocked = null;
         onEnd = null;
         advanced = false;
     }

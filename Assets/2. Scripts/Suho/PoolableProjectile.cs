@@ -116,7 +116,10 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
         trigger.target = Target;
         trigger.OnTriggerTarget += HandleTrigger;
         OnSpawnFromPool();
-        CameraManager.Instance.ChangeFollowTarget(this);
+        if (attacker.SkillController?.CurrentSkillData?.skillSo?.skillTimeLine != null)
+        {
+            CameraManager.Instance.ChangeFollowTarget(this);
+        }
     }
 
     public void Initialize(IAttackable attacker, Vector3 startPos, Vector3 dir, IDamageable target)
@@ -168,7 +171,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
 
         float multiplier = EmotionAffinityManager.GetAffinityMultiplier(attacker.CurrentEmotion.EmotionType, Target.CurrentEmotion.EmotionType);
-        Target.TakeDamage(finalValue * multiplier);
+        Target.TakeDamage(finalValue * multiplier, StatModifierType.Base, isCritical);
 
         if (attacker is Unit unit)
         {

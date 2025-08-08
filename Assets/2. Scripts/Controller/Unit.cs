@@ -63,16 +63,21 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public virtual bool IsAnimationDone    { get; set; }
     public virtual bool IsTimeLinePlaying  { get; set; }
 
-    public event          Action OnHitFinished;
-    public event          Action OnMeleeAttackFinished;
-    public event          Action OnRangeAttackFinished;
-    public event          Action OnSkillFinished;
-    public abstract event Action OnDead;
-    public Unit                  SelectedUnit => this;
-    protected bool isTurnEnd;
+    public event Action OnHitFinished;
+    public event Action OnMeleeAttackFinished;
+    public event Action OnRangeAttackFinished;
+    public event Action OnSkillFinished;
+    public IDamageable  ResolvedActionTarget { get; private set; }
+    public IDamageable  CurrentRawTarget     => IsCounterAttack ? CounterTarget : Target;
+    public IDamageable  CurrentActionTarget  => ResolvedActionTarget ?? CurrentRawTarget;
 
-    // === 공통 헬퍼 ===
-    public bool IsMeleeAttack => CurrentAttackAction != null && CurrentAttackAction.DistanceType == AttackDistanceType.Melee;
+    public event Action<Unit> FinalTargetLocked;
+
+    public abstract event Action OnDead;
+
+
+    public Unit SelectedUnit => this;
+
 
     // === 상태 전이 헬퍼(플레이어/적 분기 제거) ===
     public abstract void EnterMoveState();
@@ -196,7 +201,8 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     public virtual void Attack()
     {
         IsCompletedAttack = false;
-        IDamageable finalTarget = IsCounterAttack ? CounterTarget : Target;
+        IDamageable finalTarget = CurrentRawTarget;
+
         if (finalTarget == null || finalTarget.IsDead)
         {
             return;
@@ -213,7 +219,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             emotionOnHit.OnCalculateHitChance(this, ref hitRate);
         }
 
+        ResolvedActionTarget = finalTarget;
+        if (ResolvedActionTarget is Unit finalUnit)
+        {
+            FinalTargetLocked?.Invoke(finalUnit);
+        }
+
         bool isHit = Random.value < hitRate;
+
 
         if (!isHit)
         {
@@ -231,12 +244,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             return;
         }
 
-        finalTarget.SetLastAttacker(this);
+        ResolvedActionTarget.SetLastAttacker(this);
         UnitSo.AttackType.Execute(this, finalTarget);
         IsCompletedAttack = true;
     }
 
-    public virtual void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base)
+    public virtual void TakeDamage(float amount, StatModifierType modifierType = StatModifierType.Base, bool isCritical = false)
     {
         if (IsDead)
         {
@@ -250,13 +263,16 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
             {
                 if (LastAttacker != null)
                 {
-                    if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                    if (LastAttacker.CurrentAction == ActionType.Attack)
                     {
-                        LastAttacker.OnMeleeAttackFinished += InvokeHitFinished;
-                    }
-                    else
-                    {
-                        LastAttacker.InvokeHitFinished();
+                        if (LastAttacker.CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
+                        {
+                            LastAttacker.OnMeleeAttackFinished += LastAttacker.InvokeHitFinished;
+                        }
+                        else
+                        {
+                            LastAttacker.InvokeHitFinished();
+                        }
                     }
                 }
 
@@ -290,7 +306,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
         if (finalDam > 0)
         {
-            DamageFontManager.Instance.SetDamageNumber(this, finalDam, DamageType.Normal);
+            DamageFontManager.Instance.SetDamageNumber(this, finalDam, isCritical ? DamageType.Critical : DamageType.Normal);
             StatManager.Consume(StatType.CurHp, modifierType, finalDam);
         }
 
@@ -461,6 +477,11 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         LastAttacker = attacker as Unit;
     }
 
+    private void ClearResolvedTarget()
+    {
+        ResolvedActionTarget = null;
+    }
+
     public void InvokeHitFinished()
     {
         //반격하는 유닛의 HitFinished가 Null임
@@ -469,7 +490,7 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
         OnHitFinished = null;
-
+        ClearResolvedTarget();
 
         if (IsDead && LastAttacker != null)
         {
@@ -486,11 +507,12 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         SetLastAttacker(null);
     }
 
-    public void InvokeAttackFinished()
+    public void InvokeMeleeAttackFinished()
     {
         IsAnimationDone = true;
         OnMeleeAttackFinished?.Invoke();
         OnMeleeAttackFinished = null;
+        ClearResolvedTarget();
     }
 
     public void InvokeRangeAttackFinished()
@@ -498,16 +520,14 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         IsAnimationDone = true;
         OnRangeAttackFinished?.Invoke();
         OnRangeAttackFinished = null;
+        ClearResolvedTarget();
     }
 
     public void InvokeSkillFinished()
     {
         IsAnimationDone = true;
-        // if (!isTurnEnd)
-        {
-            OnSkillFinished?.Invoke();
-        }
-
+        OnSkillFinished?.Invoke();
         OnSkillFinished = null;
+        ClearResolvedTarget();
     }
 }

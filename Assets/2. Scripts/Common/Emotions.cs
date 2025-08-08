@@ -153,14 +153,13 @@ public class AngerEmotion : BaseEmotion, IEmotionOnAttack
         }
 
         float chance = Mathf.Min(Stack * perStack, AllyHitChanceMax);
-        if (Random.value < chance)
+        if (Random.value < 2)
         {
             //타겟을 아군으로 바꿔줌
             List<Unit> allies = BattleManager.Instance.GetAllies(attacker);
             if (allies.Count > 0)
             {
                 target = allies[Random.Range(0, allies.Count)];
-                Debug.Log("아군 공격함!");
             }
         }
     }

@@ -245,7 +245,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             turnStartTrigger.OnTurnStart(this);
         }
 
-        isTurnEnd = false;
         ChangeTurnState(TurnStateType.StartTurn);
     }
 
@@ -265,7 +264,6 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
         ChangeAction(ActionType.None);
         ChangeUnitState(PlayerUnitState.ReadyAction);
         SkillController.EndTurn();
-        isTurnEnd = true;
         BattleManager.Instance.TurnHandler.OnUnitTurnEnd();
     }
 }
