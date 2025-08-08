@@ -24,7 +24,7 @@ MonoBehaviour:
     owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
-      selectCamp: 0
+      selectCamp: 1
       selectTarget: 0
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
@@ -52,8 +52,28 @@ MonoBehaviour:
           Duration: 0
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 4809171458859421548, guid: 13b6ae9cf856bdb45943931e6fcc680a,
+              type: 3}
+            VFXPoolID: SmokePuffVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+            reference: 0
+            isParent: 1
+            type: 3
+            bodyType: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 4809171458859421548, guid: 13b6ae9cf856bdb45943931e6fcc680a,
+          type: 3}
+        VFXPoolID: SmokePuffVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+        reference: 0
+        isParent: 1
+        type: 3
+        bodyType: 2
   activeSkillTier: 0
   reuseMaxCount: 3
   coolTime: 1
