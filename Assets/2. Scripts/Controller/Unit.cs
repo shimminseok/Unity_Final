@@ -39,29 +39,17 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public IDamageable Target { get; protected set; } //MainTarget, SubTarget => SkillController
 
-    public IAttackAction CurrentAttackAction
-    {
-        get
-        {
-            // ⚠ skillSo.skillType vs SkillType 명칭은 네 프로젝트 기준에 맞춰 수정해.
-            // (지금 네 코드에 두 표기 혼용돼 있음)
-            if (CurrentAction == ActionType.Skill)
-            {
-                return SkillController?.CurrentSkillData?.skillSo?.SkillType; // or .skillType
-            }
+    public IAttackAction CurrentAttackAction =>
+        CurrentAction == ActionType.Skill
+            ? SkillController?.CurrentSkillData?.skillSo?.SkillType
+            : UnitSo?.AttackType;
 
-            return UnitSo?.AttackType;
-        }
-    }
-
-    public bool IsDead            { get; protected set; }
-    public bool IsCompletedAttack { get; protected set; }
-    public bool IsStunned         { get; private set; }
-    public bool IsCounterAttack   { get; private set; }
-
-    public virtual bool IsAtTargetPosition => false;
-    public virtual bool IsAnimationDone    { get; set; }
-    public virtual bool IsTimeLinePlaying  { get; set; }
+    public         bool IsDead            { get; protected set; }
+    public         bool IsCompletedAttack { get; protected set; }
+    public         bool IsStunned         { get; private set; }
+    public         bool IsCounterAttack   { get; private set; }
+    public virtual bool IsAnimationDone   { get; set; }
+    public virtual bool IsTimeLinePlaying { get; set; }
 
     public event Action OnHitFinished;
     public event Action OnMeleeAttackFinished;
@@ -423,34 +411,27 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
     }
 
 
-    public void StartCountAttack(Unit attacker)
+    public void StartCounterAttack(Unit attacker)
     {
-        Debug.Log($"{CurrentAction}");
         CounterTarget = attacker;
         IsCounterAttack = true;
         attacker.SetLastAttacker(this);
-        if (this is PlayerUnitController)
-        {
-            ChangeUnitState(PlayerUnitState.Attack);
-        }
-        else if (this is EnemyUnitController)
-        {
-            ChangeUnitState(EnemyUnitState.Attack);
-        }
+        ChangeUnitState(this is PlayerUnitController ? PlayerUnitState.Attack : EnemyUnitState.Attack);
+
 
         if (CurrentAttackAction.DistanceType == AttackDistanceType.Melee)
         {
-            OnMeleeAttackFinished += EndCountAttack;
+            OnMeleeAttackFinished += EndCounterAttack;
             OnMeleeAttackFinished += attacker.InvokeHitFinished;
         }
         else
         {
-            OnRangeAttackFinished += EndCountAttack;
+            OnRangeAttackFinished += EndCounterAttack;
             OnRangeAttackFinished += attacker.InvokeHitFinished;
         }
     }
 
-    private void EndCountAttack()
+    private void EndCounterAttack()
     {
         IsCounterAttack = false;
         CounterTarget = null;
@@ -484,9 +465,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
 
     public void InvokeHitFinished()
     {
-        //반격하는 유닛의 HitFinished가 Null임
-
-
         IsAnimationDone = true;
         OnHitFinished?.Invoke();
         OnHitFinished = null;

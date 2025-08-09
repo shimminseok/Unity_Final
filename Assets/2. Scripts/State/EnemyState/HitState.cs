@@ -22,7 +22,7 @@ namespace EnemyState
 
             if (canCounter)
             {
-                onHitFinishedHandler = () => owner.StartCountAttack(owner.LastAttacker);
+                onHitFinishedHandler = () => owner.StartCounterAttack(owner.LastAttacker);
             }
             else if (!owner.LastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {

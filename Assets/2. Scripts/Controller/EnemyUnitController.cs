@@ -18,7 +18,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     private HPBarUI hpBar;
     public override bool IsTimeLinePlaying => TimeLineManager.Instance.isPlaying;
 
-    public Vector3 StartPostion { get; private set; }
+    public Vector3 StartPosition { get; private set; }
     private WeightedSelector<Unit> mainTargetSelector;
 
     public override event Action OnDead;
@@ -33,7 +33,7 @@ public class EnemyUnitController : BaseController<EnemyUnitController, EnemyUnit
     protected override void Start()
     {
         hpBar = HealthBarManager.Instance.SpawnHealthBar(this);
-        StartPostion = transform.position;
+        StartPosition = transform.position;
 
         Agent.speed = 15f;
         Agent.acceleration = 100f;

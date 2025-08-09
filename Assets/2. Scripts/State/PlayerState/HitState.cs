@@ -21,14 +21,9 @@ namespace PlayerState
                 return;
             }
 
-            if (lastAttacker == null)
-            {
-                return;
-            }
-
             if (canCounter)
             {
-                onHitFinishedHandler = () => owner.StartCountAttack(lastAttacker);
+                onHitFinishedHandler = () => owner.StartCounterAttack(lastAttacker);
             }
             else if (!lastAttacker.SkillController.CurrentSkillData?.skillSo.skillTimeLine)
             {
