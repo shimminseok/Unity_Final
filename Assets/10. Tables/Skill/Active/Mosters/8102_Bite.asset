@@ -53,14 +53,15 @@ MonoBehaviour:
           TickInterval: 0
           IsStackable: 0
           VFX:
-          - VFXPrefab: {fileID: 0}
-            VFXPoolID: 
+          - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
+              type: 3}
+            VFXPoolID: StarHitVFX
             LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
             LocalScale: {x: 1, y: 1, z: 1}
-            reference: 0
+            reference: 1
             isParent: 1
-            type: 0
+            type: 3
             bodyType: 0
       skillVFX:
       - VFXPrefab: {fileID: 4535006216103734310, guid: afc0af9682cc0d447939c773a7b40dac,
@@ -74,8 +75,8 @@ MonoBehaviour:
         type: 3
         bodyType: 0
   activeSkillTier: 0
-  reuseMaxCount: 3
-  coolTime: 1
+  reuseMaxCount: 10
+  coolTime: 3
   skillAnimation: {fileID: -3510217540682870009, guid: eb340672e17c0af4089e561b61cdc548,
     type: 3}
   skillTimeLine: {fileID: 0}
