@@ -109,8 +109,7 @@ public class PlayerUnitController : BaseController<PlayerUnitController, PlayerU
             return;
         }
 
-        PassiveSo = PlayerUnitSo.PassiveSkill;
-        PassiveSo.Initialize(this);
+        PassiveSo = PlayerUnitSo.PassiveSkill.CloneForRuntime(this);
 
         foreach (SkillData skillData in deckData.DeckData.SkillDatas)
         {

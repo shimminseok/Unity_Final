@@ -11,11 +11,6 @@ public class DoubleAttack : PassiveSO, IPassiveAttackTrigger
         return currentEmotion.EmotionType == TriggerEmotion && currentEmotion.Stack >= RequiredStack;
     }
 
-    public override void ExecutePassive()
-    {
-        OnAttack(100f);
-    }
-
     public void OnAttack(float value)
     {
         if (!CanTrigger(Owner.CurrentEmotion))

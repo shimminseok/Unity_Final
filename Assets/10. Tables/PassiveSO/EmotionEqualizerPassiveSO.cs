@@ -11,11 +11,6 @@ public class PassiveEmotionEqualizerPassiveSo : PassiveSO, IPassiveEmotionDamage
         return currentEmotion.EmotionType == TriggerEmotion;
     }
 
-    public override void ExecutePassive()
-    {
-        ModifyEmotionDamage(100);
-    }
-
     public float ModifyEmotionDamage(float baseDamage)
     {
         float finalDamage = 0f;

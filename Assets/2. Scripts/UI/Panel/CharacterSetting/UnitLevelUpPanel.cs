@@ -56,14 +56,16 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     private void UpdateDupeCount()
     {
-        int requiredDupeCount = Define.DupeCountByTranscend[currentPlayerUnitData.TranscendLevel];
-        int currentDupeCount  = currentPlayerUnitData.Amount;
-        requiredDupeCountFill.fillAmount = (float)currentDupeCount / requiredDupeCount;
-        requiredDupeCountTxt.text = $"{currentDupeCount} / {requiredDupeCount}";
+        if (Define.DupeCountByTranscend.TryGetValue(currentPlayerUnitData.TranscendLevel, out int requiredDupeCount))
+        {
+            int currentDupeCount = currentPlayerUnitData.Amount;
+            requiredDupeCountFill.fillAmount = (float)currentDupeCount / requiredDupeCount;
+            requiredDupeCountTxt.text = $"{currentDupeCount} / {requiredDupeCount}";
 
-        maxLevelTxt.text = $"{currentPlayerUnitData.MaxLevel}";
+            maxLevelTxt.text = $"{currentPlayerUnitData.MaxLevel + currentPlayerUnitData.MaxLevel}";
 
-        requireTranscendGoldTxt.text = AccountManager.Instance.Gold >= requireTranscendGoldGold ? $"<color=#ffffffff>{requireTranscendGoldGold:N0}G</color>" : $"<color=#ff0000ff>{requireTranscendGoldGold:N0}G</color>";
+            requireTranscendGoldTxt.text = AccountManager.Instance.Gold >= requireTranscendGoldGold ? $"<color=#ffffffff>{requireTranscendGoldGold:N0}G</color>" : $"<color=#ff0000ff>{requireTranscendGoldGold:N0}G</color>";
+        }
     }
 
     private void UpdateLevelText()
@@ -117,8 +119,10 @@ public class UnitLevelUpPanel : MonoBehaviour
     public void ClosePanel()
     {
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
+        {
             return;
-        
+        }
+
         DOTween.KillAll();
         panelRect.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine).OnComplete(() =>
         {
