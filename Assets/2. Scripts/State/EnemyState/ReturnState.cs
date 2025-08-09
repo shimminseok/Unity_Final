@@ -12,7 +12,7 @@ namespace EnemyState
             owner.OnToggleNavmeshAgent(true);
             owner.Agent.avoidancePriority = 10;
             owner.Animator.SetBool(isMove, true);
-            owner.MoveTo(owner.StartPostion);
+            owner.MoveTo(owner.StartPosition);
 
             waitFrame = false;
         }

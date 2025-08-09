@@ -48,6 +48,8 @@ namespace PlayerState
             owner.Agent.isStopped = true;
             owner.Agent.velocity = Vector3.zero;
             owner.Agent.ResetPath();
+            owner.OnToggleNavmeshAgent(false);
+
         }
     }
 }
