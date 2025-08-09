@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,9 +34,17 @@ public class SkillButton : MonoBehaviour
 
     #region
 
-    public ActiveSkillSO GetActiveSkill()  => activeActiveSkill;
-    public PassiveSO     GetPassiveSkill() => passiveSkill;
-    public bool          IsPassive         => isPassive;
+    public ActiveSkillSO GetActiveSkill()
+    {
+        return activeActiveSkill;
+    }
+
+    public PassiveSO GetPassiveSkill()
+    {
+        return passiveSkill;
+    }
+
+    public bool IsPassive => isPassive;
 
     #endregion
 }

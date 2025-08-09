@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillGachaSystem : MonoBehaviour
 {
-    [SerializeField] ActiveSkillTable activeSkillTable;
+    [SerializeField] private ActiveSkillTable activeSkillTable;
 
     private int drawCost = 0;
     public int DrawCost => drawCost;
@@ -35,20 +34,20 @@ public class SkillGachaSystem : MonoBehaviour
     // 가챠 결과를 구조체로 가지고 UI에게 넘겨줌
     public GachaResult<ActiveSkillSO>[] DrawSkills(int count)
     {
-        List<ActiveSkillSO> skillData = GetSkillDatas();
-        GachaResult<ActiveSkillSO>[] results = new GachaResult<ActiveSkillSO>[count];
+        List<ActiveSkillSO>          skillData = GetSkillDatas();
+        GachaResult<ActiveSkillSO>[] results   = new GachaResult<ActiveSkillSO>[count];
 
-        for (int i=0; i<count; i++)
+        for (int i = 0; i < count; i++)
         {
             ActiveSkillSO skill = gachaManager.Draw(skillData, Define.TierRates); // 하나씩 뽑아서 skill에 저장
 
             if (skill != null)
             {
                 results[i].GachaReward = skill; // 저장한 skill Data는 구조체의 GachaReward에
-                
+
                 AccountManager.Instance.AddSkill(skill, out bool isDuplicate); // 중복이 아니라면 스킬 추가
                 results[i].IsDuplicate = isDuplicate;
-                
+
                 // 중복이면 재화 보상 일부 지급
                 if (results[i].IsDuplicate)
                 {
@@ -64,5 +63,4 @@ public class SkillGachaSystem : MonoBehaviour
 
         return results;
     }
-
 }

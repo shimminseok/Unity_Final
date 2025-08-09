@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TriggerWaitExecutor : TutorialActionExecutor
@@ -9,12 +8,17 @@ public class TriggerWaitExecutor : TutorialActionExecutor
 
     public override void Enter(TutorialActionData actionData)
     {
-        var waitData = actionData as TriggerWaitActionData;
-        if (waitData == null) return;
+        TriggerWaitActionData waitData = actionData as TriggerWaitActionData;
+        if (waitData == null)
+        {
+            return;
+        }
 
         // UI 인터랙션 차단
         if (waitData.blockAllUI)
+        {
             TutorialUIBlocker.BlockAll();
+        }
 
         activeEventKey = null;
 
@@ -49,7 +53,9 @@ public class TriggerWaitExecutor : TutorialActionExecutor
         LoadingScreenController.Instance.OnLoadingComplete -= OnTriggered;
 
         if (!string.IsNullOrEmpty(activeEventKey))
+        {
             EventBus.Unsubscribe(activeEventKey, OnTriggered);
+        }
 
         activeEventKey = null;
 
