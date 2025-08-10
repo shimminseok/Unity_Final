@@ -49,12 +49,32 @@ MonoBehaviour:
           Stat:
             StatType: 6
             ModifierType: 1
-            Value: -0.99999964
+            Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 3533928269051653686, guid: 30223c0d9b56c6441942b142670ac7c9,
+              type: 3}
+            VFXPoolID: Slash_GroundVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+            reference: 1
+            isParent: 1
+            type: 0
+            bodyType: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 3533928269051653686, guid: 30223c0d9b56c6441942b142670ac7c9,
+          type: 3}
+        VFXPoolID: Slash_GroundVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+        reference: 1
+        isParent: 1
+        type: 0
+        bodyType: 2
   activeSkillTier: 0
   reuseMaxCount: 2
   coolTime: 3
@@ -62,4 +82,4 @@ MonoBehaviour:
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
   SFX: 36
-  CastSFX: 0
+  CastSFX: 7

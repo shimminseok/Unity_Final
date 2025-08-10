@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 8702_BaptismOfFlower
+  m_EditorClassIdentifier: 
+  ID: 8702
+  SkillIcon: {fileID: 21300000, guid: d7cd6e5c42b4101409d4b8361e39a8f4, type: 3}
+  skillName: "\uAF43\uC758 \uC138\uB840"
+  skillDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uACF5\uACA9\uD55C\uB2E4. \uC6B0\uC6B8\uAC10\uC815\uC744
+    \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  jobType: 6
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  effect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 2
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.5
+        value: 30
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 3
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 7957833072274404953, guid: aa0aa29d925c9d449a62d3fb6d4ef107,
+              type: 3}
+            VFXPoolID: MetorFlowersVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.3, y: 0.5, z: 0.3}
+            reference: 1
+            isParent: 1
+            type: 3
+            bodyType: 2
+          - VFXPrefab: {fileID: 5607819269926399345, guid: 47979d08714337c40b29ea14a46eac81,
+              type: 3}
+            VFXPoolID: PortalCastPinkVFX
+            LocalPosition: {x: 0, y: 0.5, z: 1}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+            reference: 0
+            isParent: 1
+            type: 0
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 7957833072274404953, guid: aa0aa29d925c9d449a62d3fb6d4ef107,
+          type: 3}
+        VFXPoolID: MetorFlowersVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.3, y: 0.5, z: 0.3}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 2
+      - VFXPrefab: {fileID: 5607819269926399345, guid: 47979d08714337c40b29ea14a46eac81,
+          type: 3}
+        VFXPoolID: PortalCastPinkVFX
+        LocalPosition: {x: 0, y: 0.5, z: 1}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+        reference: 0
+        isParent: 1
+        type: 0
+        bodyType: 0
+  activeSkillTier: 2
+  reuseMaxCount: 10
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 8caa71d6d23b18945b42c6d4a1f10737, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 9
+  CastSFX: 35

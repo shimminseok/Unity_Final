@@ -38,7 +38,7 @@ MonoBehaviour:
     Value: 0.05
   - StatType: 7
     ModifierType: 0
-    Value: 1
+    Value: 7
   - StatType: 10
     ModifierType: 0
     Value: 1
@@ -50,14 +50,20 @@ MonoBehaviour:
     type: 3}
   UnitIcon: {fileID: 21300000, guid: 13db6ece249ded54497f3526a37b8db6, type: 3}
   AttackAniClip: {fileID: 7400000, guid: 3b66e2ea77e26bc43b586d43d2763869, type: 3}
-  AttackVoiceSound: 0
+  AttackVoiceSound: 37
   HitVoiceSound: 0
-  DeadSound: 0
+  DeadSound: 39
   StartEmotion: 0
   MoveAniClip: {fileID: 7400000, guid: ff9d680df1473c547b3a387a53661201, type: 3}
   IdleAniClip: {fileID: 7400000, guid: 9533288b7615e73419e07ce5fbb66ef6, type: 3}
   DeadAniClip: {fileID: 7400000, guid: 06a7c8284876eeb48bb124e2c6dd06c2, type: 3}
   HitAniClip: {fileID: 7400000, guid: 7a0ffee17fad90141855424332a840fe, type: 3}
-  skillActionProbability: 0.3
-  SkillDatas: []
-  monsterType: 0
+  skillActionProbability: 0.7
+  SkillDatas:
+  - skillSO: {fileID: 11400000, guid: d24ee4ad42374e745aa40d2fbe65109b, type: 2}
+    individualProbability: 3
+  - skillSO: {fileID: 11400000, guid: b79161c8177bb244b9ca289f608b5642, type: 2}
+    individualProbability: 2
+  - skillSO: {fileID: 11400000, guid: 22a5475a21cb21844ac7691af1934349, type: 2}
+    individualProbability: 1
+  monsterType: 2
