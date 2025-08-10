@@ -43,14 +43,34 @@ MonoBehaviour:
           ID: 0
           EffectType: 9
           Stat:
-            StatType: 10
-            ModifierType: 0
+            StatType: 9
+            ModifierType: 1
             Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
+              type: 3}
+            VFXPoolID: AuraBuffVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: -90, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
+          type: 3}
+        VFXPoolID: AuraBuffVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: -90, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 2
   activeSkillTier: 1
   reuseMaxCount: 2
   coolTime: 3
