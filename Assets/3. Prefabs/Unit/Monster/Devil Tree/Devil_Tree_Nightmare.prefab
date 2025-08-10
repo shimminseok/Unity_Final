@@ -315,9 +315,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2.3
+  m_Height: 2.378791
   m_Direction: 1
-  m_Center: {x: 0, y: 1.1, z: 0}
+  m_Center: {x: 0, y: 1.2431641, z: 0}
 --- !u!114 &-1421013493980563919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,8 +415,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitIndicator: {fileID: 0}
-  id: 0
-  setRemainDistance: 0
 --- !u!208 &3547208306663998281
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -487,6 +485,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067748904062545676, guid: 7b660d27919dda84586197e1ea54e496,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1067748904062545677, guid: 7b660d27919dda84586197e1ea54e496,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 1067748904561731471, guid: 7b660d27919dda84586197e1ea54e496,
         type: 3}
@@ -572,6 +580,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3126666161829093361, guid: 7b660d27919dda84586197e1ea54e496,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4162841626450021940, guid: 7b660d27919dda84586197e1ea54e496,
         type: 3}

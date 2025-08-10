@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 8701_FlowerBall
+  m_EditorClassIdentifier: 
+  ID: 8701
+  SkillIcon: {fileID: 21300000, guid: 1e15999f37ae34947b6f28e7fb18acdb, type: 3}
+  skillName: "\uAF43\uC758 \uD30C\uB3D9"
+  skillDescription: "\uAF43\uC758 \uD30C\uB3D9\uC73C\uB85C \uC801\uC744 \uACF5\uACA9\uD55C\uB2E4.
+    \uC9C0\uC18D \uB370\uBBF8\uC9C0\uB97C \uBC1B\uC2B5\uB2C8\uB2E4. \uAE30\uC068
+    \uBD80\uC5EC."
+  jobType: 6
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  effect:
+    owner: {fileID: 0}
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 4708040339816776061, guid: fe679ef8d21fb85468f6eb57a5ffe48d,
+        type: 3}
+      projectilePoolID: PinkBullet
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1
+        value: 40
+      buffEffects:
+      - ownerStatType: 4
+        weight: 0
+        value: 50
+        opponentStatType: 0
+        lastTurn: 3
+        statusEffectType: 11
+        modifierType: 0
+        emotionType: 4
+        StatusEffect:
+          ID: 0
+          EffectType: 11
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 5607819269926399345, guid: 47979d08714337c40b29ea14a46eac81,
+              type: 3}
+            VFXPoolID: PortalCastPinkVFX
+            LocalPosition: {x: 0, y: 0.5, z: 1}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+            reference: 0
+            isParent: 1
+            type: 0
+            bodyType: 0
+          - VFXPrefab: {fileID: 2955623459812423943, guid: 5a5608b15172c5e4492b1dee99aef85e,
+              type: 3}
+            VFXPoolID: Hit03VFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 10, y: 10, z: 10}
+            reference: 1
+            isParent: 1
+            type: 3
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 5607819269926399345, guid: 47979d08714337c40b29ea14a46eac81,
+          type: 3}
+        VFXPoolID: PortalCastPinkVFX
+        LocalPosition: {x: 0, y: 0.5, z: 1}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+        reference: 0
+        isParent: 1
+        type: 0
+        bodyType: 0
+      - VFXPrefab: {fileID: 2955623459812423943, guid: 5a5608b15172c5e4492b1dee99aef85e,
+          type: 3}
+        VFXPoolID: Hit03VFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 10, y: 10, z: 10}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+  activeSkillTier: 0
+  reuseMaxCount: 10
+  coolTime: 2
+  skillAnimation: {fileID: 7400000, guid: 3b66e2ea77e26bc43b586d43d2763869, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 33
+  CastSFX: 35
