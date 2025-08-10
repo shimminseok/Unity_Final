@@ -25,6 +25,7 @@ public class StatBaseEffect
                 buffSkillEffect.StatusEffect = new StatusEffectData();
                 {
                     //불변 데이터
+
                     buffSkillEffect.StatusEffect.EffectType = buffSkillEffect.statusEffectType;
                     buffSkillEffect.StatusEffect.Duration = buffSkillEffect.lastTurn;
                     buffSkillEffect.StatusEffect.Stat = new StatData();

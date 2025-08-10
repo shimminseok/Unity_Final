@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class StatusEffectManager : MonoBehaviour
 {
-    private List<StatusEffect> activeEffects = new List<StatusEffect>();
-    private List<TriggerBuff> triggerBuffs = new List<TriggerBuff>();
+    private List<StatusEffect> activeEffects = new();
+    private List<TriggerBuff> triggerBuffs = new();
     private StatManager statManager;
     public Unit Owner { get; private set; }
 
@@ -25,13 +25,13 @@ public class StatusEffectManager : MonoBehaviour
     {
         if (!effect.IsStackable)
         {
-            var existing = activeEffects.Find(x =>
+            StatusEffect existing = activeEffects.Find(x =>
                 x.EffectType == effect.EffectType &&
                 x.StatType == effect.StatType &&
                 x.ModifierType == effect.ModifierType);
             if (existing != null)
             {
-                if (Mathf.Abs(effect.Value) >= Mathf.Abs(existing.Value))
+                if (effect.Value > 0 && Mathf.Abs(effect.Value) >= Mathf.Abs(existing.Value))
                 {
                     RemoveEffect(existing);
                 }
@@ -111,7 +111,7 @@ public class StatusEffectManager : MonoBehaviour
 
     public void TryTriggerAll(TriggerEventType eventType)
     {
-        foreach (var trigger in triggerBuffs.ToList())
+        foreach (TriggerBuff trigger in triggerBuffs.ToList())
         {
             trigger.TryTrigger(this, eventType);
         }
