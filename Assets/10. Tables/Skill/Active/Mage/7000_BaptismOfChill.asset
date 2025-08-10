@@ -65,21 +65,31 @@ MonoBehaviour:
             type: 0
             bodyType: 0
       skillVFX:
-      - VFXPrefab: {fileID: 161766660727748596, guid: aa492d6c72cf66543ba49950ff79ec47,
+      - VFXPrefab: {fileID: 584207449403360073, guid: 7ccaa8fa9ed035a4096e65de616dd700,
           type: 3}
         VFXPoolID: IceRainVFX
         LocalPosition: {x: 0, y: 0, z: 0}
         LocalRotation: {x: 0, y: 0, z: 0}
-        LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
         reference: 1
         isParent: 1
         type: 0
-        bodyType: 0
+        bodyType: 2
+      - VFXPrefab: {fileID: 4924508274929071776, guid: 9d66c42f7f5dc8c4b8b5049bad2713d4,
+          type: 3}
+        VFXPoolID: SnowHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 0
+        bodyType: 2
   activeSkillTier: 2
   reuseMaxCount: 2
   coolTime: 3
   skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
-  SFX: 0
+  SFX: 47
   CastSFX: 0
