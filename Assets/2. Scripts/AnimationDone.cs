@@ -20,6 +20,11 @@ public class AnimationDone : StateMachineBehaviour
 
         else if (stateInfo.IsTag("Skill"))
         {
+            if (unit.SkillController.IsCurrentSkillProjectile)
+            {
+                return;
+            }
+
             unit.InvokeSkillFinished();
         }
     }
