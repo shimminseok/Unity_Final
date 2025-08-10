@@ -47,4 +47,5 @@ public enum SFXName
     RabbitSlimeHitSound,
     RabbitSlimeAttackSound,
     RabbitSlimeSkillSound,
+    IceHitSound,
 }
