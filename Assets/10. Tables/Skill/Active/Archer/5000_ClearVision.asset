@@ -43,29 +43,19 @@ MonoBehaviour:
           ID: 0
           EffectType: 9
           Stat:
-            StatType: 9
-            ModifierType: 1
+            StatType: 10
+            ModifierType: 0
             Value: 0
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX:
-          - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
-              type: 3}
-            VFXPoolID: AuraBuffVFX
-            LocalPosition: {x: 0, y: 0, z: 0}
-            LocalRotation: {x: -90, y: 0, z: 0}
-            LocalScale: {x: 1, y: 1, z: 1}
-            reference: 1
-            isParent: 1
-            type: 2
-            bodyType: 2
+          VFX: []
       skillVFX:
-      - VFXPrefab: {fileID: 419411002348774512, guid: 5ebbba27bf7a29945b57076bdead18de,
+      - VFXPrefab: {fileID: 3992058561654064293, guid: 85665d93c41faa84aa4e182a5be5ae6a,
           type: 3}
-        VFXPoolID: AuraBuffVFX
+        VFXPoolID: BuffGreenVFX
         LocalPosition: {x: 0, y: 0, z: 0}
-        LocalRotation: {x: -90, y: 0, z: 0}
+        LocalRotation: {x: 90, y: 0, z: 0}
         LocalScale: {x: 1, y: 1, z: 1}
         reference: 1
         isParent: 1
