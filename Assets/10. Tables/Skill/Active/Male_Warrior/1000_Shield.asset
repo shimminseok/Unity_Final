@@ -39,7 +39,7 @@ MonoBehaviour:
         modifierType: 0
         emotionType: 0
         StatusEffect:
-          ID: 40001
+          ID: 0
           EffectType: 9
           Stat:
             StatType: 11
@@ -52,7 +52,7 @@ MonoBehaviour:
           - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
               type: 3}
             VFXPoolID: ShieldVFX
-            LocalPosition: {x: 0, y: 0.5, z: 0}
+            LocalPosition: {x: 0, y: 0, z: 0}
             LocalRotation: {x: 0, y: 0, z: 0}
             LocalScale: {x: 0.3, y: 0.3, z: 0.3}
             reference: 1
@@ -76,5 +76,5 @@ MonoBehaviour:
   skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
   skillTimeLine: {fileID: 0}
   isSkillScene: 0
-  SFX: 0
-  CastSFX: 0
+  SFX: 2
+  CastSFX: 10
