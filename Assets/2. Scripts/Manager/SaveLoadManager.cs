@@ -51,10 +51,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         foreach (SaveModule module in Enum.GetValues(typeof(SaveModule)))
         {
             SaveAction[module] = () => SaveModuleData(module);
-#if UNITY_ANDROID && !UNITY_EDITOR
-    Debug.Log("[KeystoreDiag] boot probe start");   // ← 이게 안 보이면 호출 자체가 안 된 것
-    AndroidKeystoreDiag.RunOnce("GetPath(module)");
-#endif
         }
     }
 

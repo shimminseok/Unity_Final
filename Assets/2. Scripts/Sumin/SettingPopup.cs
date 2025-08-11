@@ -115,7 +115,6 @@ public class SettingPopup : UIBase
             {
                 SaveLoadManager.Instance.DeleteAll();
                 LoadSceneManager.Instance.LoadScene("TitleScene");
-                SaveLoadManager.Instance.LoadAll();
                 Close();
             },
             null,
