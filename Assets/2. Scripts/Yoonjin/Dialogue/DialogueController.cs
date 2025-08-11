@@ -13,6 +13,8 @@ public class DialogueController : Singleton<DialogueController>
     private OverlayDialogueUI overlayUI;
     private TutorialDialogueUI tutorialUI;
 
+    private IDialogueUI activeUI; // 현재 활성 UI (타자/스킵 제어)
+
     // 읽은 그룹 키들을 저장
     private HashSet<string> readGroups = new();
 
@@ -114,18 +116,21 @@ public class DialogueController : Singleton<DialogueController>
         {
             OverlayDialogueUI ui = GetOrCreateUI<OverlayDialogueUI>("UI/OverlayDialogueUI");
             ui.gameObject.SetActive(true); // UI 활성화
-            ui.Show(line);                 // 대사 내용 출력
+            activeUI = ui as IDialogueUI;
+            activeUI?.Show(line, withTyping: true);
         }
         else if (currentGroup.mode == DialogueMode.Tutorial)
         {
             TutorialDialogueUI ui = GetOrCreateUI<TutorialDialogueUI>("UI/TutorialDialogueUI");
             ui.gameObject.SetActive(true);
-            ui.Show(line);
+            activeUI = ui as IDialogueUI;
+            activeUI?.Show(line, withTyping: true);
         }
         else
         {
-            FullscreenDialogueUI fullscreenUI = FindObjectOfType<FullscreenDialogueUI>();
-            fullscreenUI?.Show(line);
+            FullscreenDialogueUI fullscreenUI = FindFirstObjectByType<FullscreenDialogueUI>(FindObjectsInactive.Include);
+            activeUI = fullscreenUI as IDialogueUI;
+            activeUI?.Show(line, withTyping: true);
         }
     }
 
@@ -152,10 +157,23 @@ public class DialogueController : Singleton<DialogueController>
             tutorialUI?.gameObject.SetActive(false);
         }
 
+        activeUI = null; // 해제: 다음 대사에서 새 UI가 설정됨
+
         currentGroup = null;
         currentLineIndex = 0;
         OnCallBackAction?.Invoke();
         EventBus.Publish("DialogueFinished");
+    }
+
+    public bool TryCompleteTyping()
+    {
+        // 타이핑 중이면 즉시 완료
+        if (activeUI != null && activeUI.IsTyping)
+        {
+            activeUI.CompleteTyping();
+            return true;
+        }
+        return false;
     }
 
     // 오버레이나 튜토리얼 프리팹을 찾고, 없으면 생성
