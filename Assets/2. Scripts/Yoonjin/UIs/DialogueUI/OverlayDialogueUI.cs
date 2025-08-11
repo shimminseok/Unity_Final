@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OverlayDialogueUI : MonoBehaviour
+public class OverlayDialogueUI : MonoBehaviour, IDialogueUI
 {
     [Header("대사창 구성")]
     [SerializeField] private TMP_Text nameText; // 캐릭터 이름
@@ -14,7 +14,12 @@ public class OverlayDialogueUI : MonoBehaviour
     [SerializeField] private CanvasGroup leftPortraitGroup;
     [SerializeField] private CanvasGroup rightPortraitGroup;
 
-    public void Show(DialogueLine line)
+    [Header("타자 효과")]
+    [SerializeField] private TypeWriter typeWriter; // 인스펙터에서 dialogueText 할당
+
+    public bool IsTyping => typeWriter != null && typeWriter.IsTyping;
+
+    public void Show(DialogueLine line, bool withTyping = true)
     {
         nameText.text = line.characterName;
         dialogueText.text = line.dialogue;
@@ -36,11 +41,27 @@ public class OverlayDialogueUI : MonoBehaviour
         // 밝기 조절
         leftPortraitImage.DOColor(isLeftSpeaking ? Color.white : new Color(0.3f, 0.3f, 0.3f), 0.25f);
         rightPortraitImage.DOColor(isRightSpeaking ? Color.white : new Color(0.3f, 0.3f, 0.3f), 0.25f);
+
+        // 텍스트
+        if (withTyping && typeWriter != null) typeWriter.StartTyping(line.dialogue);
+        else
+        {
+            dialogueText.text = line.dialogue;
+            dialogueText.ForceMeshUpdate();
+            dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+        }
+        gameObject.SetActive(true);
+    }
+
+    public void CompleteTyping()
+    {
+        if (typeWriter != null) typeWriter.CompleteTyping();
     }
 
     public void OnClickNext()
     {
         AudioManager.Instance.PlaySFX(SFXName.SwipeDialogueSound.ToString());
+        if (DialogueController.Instance.TryCompleteTyping()) return;
         DialogueController.Instance.Next();
     }
 

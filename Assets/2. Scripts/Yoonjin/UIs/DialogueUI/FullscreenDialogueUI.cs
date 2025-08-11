@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class FullscreenDialogueUI : MonoBehaviour
+public class FullscreenDialogueUI : MonoBehaviour, IDialogueUI
 {
     [Header("대사씬 구성")]
     [SerializeField] private TMP_Text nameText;         // 캐릭터 이름
@@ -14,8 +14,13 @@ public class FullscreenDialogueUI : MonoBehaviour
     [SerializeField] private CanvasGroup leftPortraitGroup;
     [SerializeField] private CanvasGroup rightPortraitGroup;
 
+    [Header("타자 효과")]
+    [SerializeField] private TypeWriter typeWriter;
+
+    public bool IsTyping => typeWriter != null && typeWriter.IsTyping;
+
     // 한 줄의 대사를 받아 화면에 출력한다
-    public void Show(DialogueLine line)
+    public void Show(DialogueLine line, bool withTyping = true)
     {
         nameText.text = line.characterName;
         dialogueText.text = line.dialogue;
@@ -43,13 +48,28 @@ public class FullscreenDialogueUI : MonoBehaviour
         backgroundImage.sprite = background;
         backgroundImage.gameObject.SetActive(background != null);
 
+        // 텍스트 출력
+        if (withTyping && typeWriter != null) typeWriter.StartTyping(line.dialogue);
+        else
+        {
+            dialogueText.text = line.dialogue;
+            dialogueText.ForceMeshUpdate();
+            dialogueText.maxVisibleCharacters = dialogueText.textInfo.characterCount;
+        }
+
         gameObject.SetActive(true);
+    }
+
+    public void CompleteTyping()
+    {
+        if (typeWriter != null) typeWriter.CompleteTyping();
     }
 
 
     public void OnClickNext()
     {
         AudioManager.Instance.PlaySFX(SFXName.SwipeDialogueSound.ToString());
+        if (DialogueController.Instance.TryCompleteTyping()) return; // 첫 클릭: 타이핑 완료
         DialogueController.Instance.Next();
     }
 

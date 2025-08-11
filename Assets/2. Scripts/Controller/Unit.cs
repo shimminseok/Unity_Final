@@ -507,5 +507,6 @@ public abstract class Unit : MonoBehaviour, IDamageable, IAttackable, ISelectabl
         OnSkillFinished?.Invoke();
         OnSkillFinished = null;
         ClearResolvedTarget();
+        CameraManager.Instance.ChangeMainCamera();
     }
 }

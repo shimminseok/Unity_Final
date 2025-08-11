@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 using UnityEngine.SceneManagement;
 
 public enum AudioType
@@ -28,6 +29,7 @@ public class AudioManager : Singleton<AudioManager>
 
     [SerializeField] private AudioSource bgmAudioSource;
     [SerializeField] private GameObject sfxAudioSourcePrefab;
+    
 
     protected override void Awake()
     {
@@ -38,8 +40,7 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    protected void Start()
-
+    private void Start()
     {
     }
 
@@ -74,12 +75,13 @@ public class AudioManager : Singleton<AudioManager>
                 }
                 break;
             case AudioType.SFX:
-                soundEffectVolume = volume;
-                break;
+                soundEffectVolume = volume; break;
             case AudioType.Master:
                 masterVolume = volume;
                 if (bgmAudioSource != null)
+                {
                     bgmAudioSource.volume = musicVolume * masterVolume;
+                }
                 break;
         }
     }
@@ -88,10 +90,10 @@ public class AudioManager : Singleton<AudioManager>
     {
         return type switch
         {
-            AudioType.BGM => musicVolume,
-            AudioType.SFX => soundEffectVolume,
+            AudioType.BGM    => musicVolume,
+            AudioType.SFX    => soundEffectVolume,
             AudioType.Master => masterVolume,
-            _ => 1f
+            _                => 1f
         };
     }
 
@@ -165,10 +167,11 @@ public class AudioManager : Singleton<AudioManager>
             {
                 NestedDictionary.Add(clipName, 1);
             }
-            else if(NestedDictionary[clipName] > 3)
+            else if (NestedDictionary[clipName] > 3)
             {
                 return;
             }
+
             NestedDictionary[clipName]++;
             GameObject sfxPlayer = objectPoolManager.GetObject(sfxPlayerPoolName);
             if (sfxPlayer == null)

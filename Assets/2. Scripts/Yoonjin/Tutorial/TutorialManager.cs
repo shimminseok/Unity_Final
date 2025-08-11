@@ -120,7 +120,7 @@ public class TutorialManager : Singleton<TutorialManager>
         {
             if (tutorialData.Phase == TutorialPhase.DeckBuildingBefore)
             {
-                Debug.Log("[튜토리얼] ResumeStep이 없어 기본 ID 0으로 시작합니다.");
+                Debug.Log("[튜토리얼] 기본 ID 0으로 시작합니다.");
                 resumeStep = 0;
             }
         }
