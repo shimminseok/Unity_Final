@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class StatBaseEffect
 {
-    [HideInInspector] public Unit owner;
     public List<SkillEffectData> skillEffectDatas;
     public bool IsProjectileSkill { get; private set; }
 
@@ -13,7 +12,6 @@ public class StatBaseEffect
     {
         foreach (SkillEffectData effect in skillEffectDatas)
         {
-            effect.owner = owner;
             if (!IsProjectileSkill &&
                 (effect.projectilePrefab != null || !string.IsNullOrWhiteSpace(effect.projectilePoolID)))
             {
