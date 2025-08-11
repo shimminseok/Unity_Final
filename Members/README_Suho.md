@@ -23,16 +23,10 @@
 <hr>
 
 #### 구현방식
+- BaseSkillController라는 제네릭클래스를 만들어 함수 재사용 및 책임분산.
 - 스킬데이터를 ActiveSkillSO라는 ScriptableObject로 저장.
   <img width="594" height="463" alt="image" src="https://github.com/user-attachments/assets/e7479a30-6df7-4b1f-9f8c-fd20a531b4e3" />
-
-- 구조에 맞춰서 스킬의 효과를 데미지를 주는 부분과 버프/디버프/도트데미지와 같은 부가적인 효과를 주는 부분으로 나누어 적용.
-  <img width="538" height="811" alt="image" src="https://github.com/user-attachments/assets/8e793994-c329-44a2-bba3-eac3b587d669" />
-
-- 유저가 선택한 스킬을 유닛에 있는 SkillManager에 저장하고, 이를 SkillController에서 배틀씬초기에 ActiveSkillSO를 실제 인게임내에서 사용하는 SKill객체를 만들어주는 SkillData클래스로 만들어 적용. 이후 SKillData는 자체적으로 스킬의 재사용횟수, 쿨타임등을 관리.
-- 유저가 스킬을 선택하면, 유닛의 SkillController에서 CurrentSkill이 유저가 선택한 스킬로 바뀌고 CurrentSkill의 데이터를 읽어서 TargetSelect클래스를 사용해 SubTarget을 선택하고 Dictionary자료형으로 저장.
-- 이후 유저가 배틀턴을 시작하면 스킬사용효과를 MainTarget과 SubTarget에 적용. 각각의 Target들에 다른 효과를 적용할 수 있도록 EffectData별로 Target과 사용효과를 정할 수 있음.
-
+- 범위스킬의 경우 TargetSelect라는 클래스에서 유효유닛을 찾아오도록 만들어 책임분산.
 
 #### 근거리스킬과 원거리스킬 구현
 - 근거리 스킬의 경우 ActiveSkillSO의 AnimationClip을 Play하며 애니메이션 트리거에 맞춰서 적유닛에 스킬효과를 부여.
@@ -46,35 +40,24 @@
 - 높은 등급의 스킬에 액션을 넣어 유저가 높은 등급의 스킬을 원하는 욕구를 만들어 동기부여.
 
 #### 구현방식
+- 타임라인을 활용하여 스킬컷씬을 구현.
 - [타임라인을 활용한 스킬컷씬 구현링크](https://velog.io/@suho1213/20250722TIL)
-- 카메라 시네머신을 활용. 메인카메라는 움직이지않고 고정적인 위치, 넓은 FOV를 가짐. 타임라인에서 활용될 카메라는 스킬카메라로 FOV가 메인카메라보다 작고, 움직이면서 줌인하는 효과를 줌.
-- 카메라들을 조절하기 쉽도록 VirtualCameraController클래스를 만들어 활용. 해당 카메라들의 처음 위치, 회전, FOV, Noise값을 저장하는 CameraAdjustData클래스로 값들을 저장하여 사용.
-- 타임라인에서는 스킬이펙트가 발생하는 위치인 Effect와 VirualCamera의 이동을 애니메이션 트랙을 활용. VirtualCamera의 경우 MainCamera로 전환되는 것은 Cienmachine트랙을 활용하여 자연스럽게 원래의 구도로 카메라를 전환.
-- TimeLine은 각각의 시작위치가 SceneOffset으로 되어있고, 시작위치를 기준으로 움직이기때문에 TimeLine이 재생되기전에 모든 시작위치를 캐릭터기준으로 초기화해줄 필요가 있기 때문에, TimeLineManager에서는 ActiveSkillSO에 매핑되어있는 TimeLine을 재생하는 역할을 한다. 런타임에서 애니메이션 컨트롤러, 시그널 리시버, 시네머신 트랙등을 바인딩하고 VirtualCamera와 Effect의 위치를 초기화 해준다.
-- 스킬컷씬의 경우에는 스킬이펙트가 발생하고, 데미지가 들어가거나 카메라가 흔들리는 시점을 시그널을 통해서 제어한다.
-
-#### 애니메이션 리깅
-- 타임라인에서 사용되는 애니메이션은 [mixamo](mixamo.com)에서 스켈레톤 애니메이션으로 받아와 이를 유니티의 애니메이션 리깅(Animation Rigging) 패키지를 통해 수정하였다.
-- [애니메이션 리깅을 활용한 애니메이션 수정 포스트 링크](https://velog.io/@suho1213/20250723TIL)
-- 간단한 휴머노이드 애니메이션 정도는 수정할 수 있게 되었다.
-
-#### 결과물
-
-
-![2025-08-04 11-24-07](https://github.com/user-attachments/assets/0e488092-8573-42f7-9f5e-06e5a1501d24)
+- ![2025-08-04 11-24-07](https://github.com/user-attachments/assets/0e488092-8573-42f7-9f5e-06e5a1501d24)
 ![2025-08-04 11-25-12](https://github.com/user-attachments/assets/437f43a4-fb56-4745-a513-9bd5ed6fb594)
 ![2025-08-04 11-24-38](https://github.com/user-attachments/assets/cb0181a3-1ae5-49f3-9837-4b95fd7b9f66)
 ![2025-08-04 11-25-52](https://github.com/user-attachments/assets/ef41b2ed-3563-4f04-b310-5da32a764f79)
 
-이외에도 3가지 정도의 컷씬을 더 추가해서 만들었다.
+- 카메라 시네머신을 활용하여 역동적인 스킬사용효과를 연출.
+ - ![2025-08-05 20-49-21](https://github.com/user-attachments/assets/8434a287-7b6f-4b11-9c11-53372965593e)
+ - Timeline의 Signal Receiver를 활용하여 카메라흔들림, 스킬사용효과 등의 시점을 제어.
 
-#### 가벼운 연출구현
-- 이렇게 장면이 전환되는 스킬컷씬 뿐만아니라 가볍게 카메라가 줌인/줌아웃되고 카메라가 흔들리는 정도의 연출이 발생하는 스킬도 구현하였다.
-- 만약 컷씬형태로 재생되는 경우가 아니라면, 재생되기전에 Effect오브젝트와 VirtualCamera의 위치를 초기화 해줄 필요가 없기때문에 이를 고려하여 연출을 구현하였다.
+#### 애니메이션 리깅
+- 타임라인에서 사용되는 애니메이션은 [mixamo](https://www.mixamo.com/#/)에서 스켈레톤 애니메이션으로 받아와 이를 유니티의 애니메이션 리깅(Animation Rigging) 패키지를 통해 수정하였다.
+- [애니메이션 리깅을 활용한 애니메이션 수정 포스트 링크](https://velog.io/@suho1213/20250723TIL)
+- 간단한 휴머노이드 애니메이션을 수정하여 재사용.
 
-#### 가벼운 연출 결과물
 
-![2025-08-05 20-49-21](https://github.com/user-attachments/assets/8434a287-7b6f-4b11-9c11-53372965593e)
+
 
 ---
 ### 3. VFX시스템
@@ -85,29 +68,22 @@
 - 내부구조를 모르더라도 VFX를 쉽게 적용가능한 형태로 구현.
 
 #### 구현방식
-- 외부에서 VFX를 적용할때는 VFXData를 수정하여 적용.
-- 스킬 사용의 어느시점에 VFX가 발생할지를 Enum으로 정할 수 있음.
-- VFX발생이 어느위치에서 이루어질지 Enum을 통해 정할 수 있음.
-- VFX위치 세부조정을 값을 직접 입력해서 바꿀 수 있음. 이를통해, VFX자체를 변경하지않아도 VFX의 위치, 회전, 크기를 세부적으로 조절가능.
-- VFX프리펩에는 PoolableVFX컴포넌트를 달아주어, VFX가 출력이 완료되면 ObjectPool에 반납하여 재사용.
-- 버프, 도트데미지의 VFX의 경우에는 콜백으로 처리.
+- VFXData라는 래퍼클래스를 정의하여 사용.
+  - VFXData는 ObjectPool이 적용된 VFX Object를 초기화하는데 필요한 데이터를 저장.
 
 ---
 
 ### 4. SFX시스템
 
 #### 설계목적
-- 어드레서블을 활용해 웹빌드를 가능하도록 용량을 맞춤.
-- 어드레서블을 활용해 필요한 상황에서 필요한 Sound만 메모리에 올라오게 함.
-- ObjectPool을 활용하여 AudioSource를 재사용할 수 있게함.
+- 어드레서블을 활용해 성능 최적화.
+- ObjectPool을 활용하여 성능 최적화.
 - AudioManager를 통해 손쉽게 SFX를 출력할 수 있게 함.
 
 #### 구현방식
-- 어드레서블을 적용하여 오디오클립을 관리. 씬에 필요한 사운드는 씬이 바뀔 때 모두 이루어져야 하기때문에 특정 씬에  필요한 사운드는 라벨을 붙여 관리, 특정 상황에 필요한 사운드는 어드레서블 네임을 통하여 직접적으로 로드.
-- 로드해온 오디오 클립은 오디오매니저에서 딕셔너리로 저장하여 SFX를 출력할때 딕셔너리에서 꺼내 빠르게 찾아 올 수 있도록 함.
-- 씬이 바뀔 떄 메모리에 올려놓은 어드레서블 핸들과 딕셔너리는 모두 릴리즈 후 새로 로드.
-- 새로 추가된 SFX는 Enum을 통해 키값을 관리 및 사용. 이때 자동으로 어드레서블 네임에 따라 키값을 생성하는 파싱툴을 만들어 사용.
-- 배틀씬의 경우에 매번 필요한 사운드가 바뀌기때문에 BattleSceneLoader라는 클래스에서 이번 배틀에 나오는 유닛들을 순회하며 스킬사운드, 유닛사운드 등을 HashSet에 담은 뒤, 한 번에 로드
+- 어드레서블을 적용하여 특정 씬에서 필요한 사운드만 Lable을 통해 메모리에 할당.
+- SFX를 출력하는 AudioSource Object는 Object Pool을 활용하여 재사용.
+- 같은 효과음 중복으로 인한 사운드 증폭효과를 방지하기 위하여, 동시에 같은 키값을 가진 SFX가 4개 이상 존재할 수 없도록 로직적용.
 
 
 
