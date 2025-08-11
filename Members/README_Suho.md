@@ -24,7 +24,11 @@
 
 #### 구현방식
 - 스킬데이터를 ActiveSkillSO라는 ScriptableObject로 저장.
+  <img width="594" height="463" alt="image" src="https://github.com/user-attachments/assets/e7479a30-6df7-4b1f-9f8c-fd20a531b4e3" />
+
 - 구조에 맞춰서 스킬의 효과를 데미지를 주는 부분과 버프/디버프/도트데미지와 같은 부가적인 효과를 주는 부분으로 나누어 적용.
+  <img width="538" height="811" alt="image" src="https://github.com/user-attachments/assets/8e793994-c329-44a2-bba3-eac3b587d669" />
+
 - 유저가 선택한 스킬을 유닛에 있는 SkillManager에 저장하고, 이를 SkillController에서 배틀씬초기에 ActiveSkillSO를 실제 인게임내에서 사용하는 SKill객체를 만들어주는 SkillData클래스로 만들어 적용. 이후 SKillData는 자체적으로 스킬의 재사용횟수, 쿨타임등을 관리.
 - 유저가 스킬을 선택하면, 유닛의 SkillController에서 CurrentSkill이 유저가 선택한 스킬로 바뀌고 CurrentSkill의 데이터를 읽어서 TargetSelect클래스를 사용해 SubTarget을 선택하고 Dictionary자료형으로 저장.
 - 이후 유저가 배틀턴을 시작하면 스킬사용효과를 MainTarget과 SubTarget에 적용. 각각의 Target들에 다른 효과를 적용할 수 있도록 EffectData별로 Target과 사용효과를 정할 수 있음.
