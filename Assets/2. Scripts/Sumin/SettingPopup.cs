@@ -110,12 +110,15 @@ public class SettingPopup : UIBase
     {
         TwoChoicePopup popup = PopupManager.Instance.GetUIComponent<TwoChoicePopup>();
         popup.SetAndOpenPopupUI("데이터 초기화",
-            "데이터를 초기화 하시겠습니까?\n삭제된 데이터는 되돌릴 수 없습니다.",
+            "데이터를 초기화 하시겠습니까?\n※ 초기화 시 게임이 자동으로 종료됩니다.\n※ 삭제된 데이터는 되돌릴 수 없습니다.",
             () =>
             {
                 SaveLoadManager.Instance.DeleteAll();
-                LoadSceneManager.Instance.LoadScene("TitleScene");
-                SaveLoadManager.Instance.LoadAll();
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
                 Close();
             },
             null,
