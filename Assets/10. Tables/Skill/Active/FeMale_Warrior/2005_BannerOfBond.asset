@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 2005_BannerOfBond
+  m_EditorClassIdentifier: 
+  ID: 2005
+  SkillIcon: {fileID: 21300000, guid: d79098aad53431645b0e8ed0587041b7, type: 3}
+  skillName: "\uACB0\uC18D\uC758 \uAC00\uCE58"
+  skillDescription: "2\uD134 \uB3D9\uC548 \uC544\uAD70 \uC804\uCCB4\uC758 \uBC29\uC5B4\uB825\uC744
+    10(+\uACF5\uACA9\uB825\uC758 20%)\uB9CC\uD07C \uC99D\uAC00\uC2DC\uD0A4\uACE0,
+    \uBC18\uACA9 \uD655\uB960\uC744 20% \uC99D\uAC00\uC2DC\uD0B5\uB2C8\uB2E4. "
+  jobType: 1
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 0
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 2
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 4
+        weight: 0.2
+        value: 10
+        opponentStatType: 6
+        lastTurn: 2
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 6
+            ModifierType: 1
+            Value: 28
+          Duration: 2
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 4617036660772024948, guid: 34e12138b56e66147b3757161a0edf87,
+              type: 3}
+            VFXPoolID: BuffRedVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 4617036660772024948, guid: 34e12138b56e66147b3757161a0edf87,
+          type: 3}
+        VFXPoolID: BuffRedVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 2
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 2
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 4
+        weight: 0.2
+        value: 0
+        opponentStatType: 5
+        lastTurn: 2
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 0
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 5
+            ModifierType: 1
+            Value: 27.000002
+          Duration: 2
+          TickInterval: 0
+          IsStackable: 0
+          VFX: []
+      skillVFX: []
+  activeSkillTier: 1
+  reuseMaxCount: 2
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 4
+  CastSFX: 7
