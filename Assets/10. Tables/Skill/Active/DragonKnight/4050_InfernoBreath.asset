@@ -26,7 +26,6 @@ MonoBehaviour:
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
   effect:
-    owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 1
@@ -34,10 +33,10 @@ MonoBehaviour:
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
       damageEffects:
-      - attackCount: 1
+      - attackCount: 5
         ownerStatType: 4
-        weight: 2
-        value: 400
+        weight: 0.4
+        value: 80
       buffEffects:
       - ownerStatType: 4
         weight: 0.3

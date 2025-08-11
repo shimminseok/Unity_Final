@@ -21,7 +21,6 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
                 if (handle.Status == AsyncOperationStatus.Succeeded)
                 {
                     var locations = handle.Result;
-                    Debug.Log($"로케이션 {locations.Count}개 가져옴");
                     OnLoadAssetsChangeScene(labelName, locations);
                 }
                 else
@@ -48,7 +47,6 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
 
                     // 키는 address, 값은 AudioClip
                     AudioManager.Instance.AudioDictionary.TryAdd(addressKey, clip);
-                    Debug.Log($"{addressKey} 오디오 클립 추가!");
                 }
                 else
                 {
@@ -75,7 +73,6 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
                 var clip = handle.Result;
                 loadAudioClipHandles.Add(handle);
                 AudioManager.Instance.AudioDictionary.TryAdd(assetName, handle.Result);
-                Debug.Log($"{assetName} 오디오 클립 추가!");
                 onLoaded?.Invoke(assetName); // 로드 완료 후 콜백 호출
             }
             else
