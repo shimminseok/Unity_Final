@@ -96,7 +96,6 @@ public class SettingPopup : UIBase
         seq.AppendCallback(() =>
         {
             base.Close();
-
             PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
             PlayerPrefs.SetFloat("BGMVolume", bgmVolumeSlider.value);
             PlayerPrefs.SetFloat("SFXVolume", sfxVolumeSlider.value);
