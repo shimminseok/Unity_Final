@@ -106,16 +106,46 @@ public class SettingPopup : UIBase
         Close();
     }
 
-    public void OnQuitButton()
+    public void OnDeleteSaveFile()
     {
-        PopupManager.Instance.GetUIComponent<TwoChoicePopup>().SetAndOpenPopupUI("타이틀 복귀",
+        TwoChoicePopup popup = PopupManager.Instance.GetUIComponent<TwoChoicePopup>();
+        popup.SetAndOpenPopupUI("데이터 초기화",
+            "데이터를 초기화 하시겠습니까?\n삭제된 데이터는 되돌릴 수 없습니다.",
+            () =>
+            {
+                SaveLoadManager.Instance.DeleteAll();
+                LoadSceneManager.Instance.LoadScene("TitleScene");
+                SaveLoadManager.Instance.LoadAll();
+                Close();
+            },
+            null,
+            "초기화");
+    }
+
+    public void OnHomeButton()
+    {
+        TwoChoicePopup popup = PopupManager.Instance.GetUIComponent<TwoChoicePopup>();
+        popup.SetAndOpenPopupUI("타이틀 복귀",
             "타이틀 화면으로 이동하시겠습니까?",
             () =>
             {
-                Close();
                 LoadSceneManager.Instance.LoadScene("TitleScene");
+                Close();
             },
             null,
             "이동하기");
+    }
+
+    public void OnQuitButton()
+    {
+        TwoChoicePopup popup = PopupManager.Instance.GetUIComponent<TwoChoicePopup>();
+        popup.SetAndOpenPopupUI("종료하기",
+            "게임을 종료하시겠습니까?",
+            () =>
+            {
+                SaveLoadManager.Instance.HandleApplicationQuit();
+            },
+            null,
+            "종료하기");
     }
 }

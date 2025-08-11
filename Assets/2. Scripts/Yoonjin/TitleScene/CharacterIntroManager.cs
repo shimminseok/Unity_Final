@@ -167,11 +167,6 @@ public class CharacterIntroManager : MonoBehaviour
         GameManager.Instance.isTestMode = true;
     }
 
-    public void OnClickDeleteSaveFile()
-    {
-        SaveLoadManager.Instance.DeleteAll();
-    }
-
     public void OnSettingButtonClick()
     {
         PopupManager.Instance.GetUIComponent<SettingPopup>()?.Open();
