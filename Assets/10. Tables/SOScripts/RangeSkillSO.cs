@@ -38,7 +38,7 @@ public class RangeSkillSO : RangeActionSo
                 }
                 else
                 {
-                    effect.AffectTargetWithSkill(unit);
+                    effect.AffectTargetWithSkill(attacker,unit);
                 }
             }
         }

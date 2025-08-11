@@ -149,7 +149,7 @@ public class PoolableProjectile : MonoBehaviour, IPoolObject, IEffectProvider
 
     private void HandleTrigger()
     {
-        effectData.AffectTargetWithSkill(Target as Unit);
+        effectData.AffectTargetWithSkill(attacker, Target as Unit);
         if (attacker is Unit unit)
         {
             unit.InvokeSkillFinished();

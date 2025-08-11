@@ -17,7 +17,7 @@ public class MeleeSkillSO : CombatActionSo
                 {
                     continue;
                 }
-                effect.AffectTargetWithSkill(subTarget as Unit);
+                effect.AffectTargetWithSkill(attacker, subTarget as Unit);
             }
         }
     }

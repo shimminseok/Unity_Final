@@ -23,7 +23,6 @@ public class SkillManager : MonoBehaviour
 
             SkillData skillData = new(activeSkillSo);
             skillData.skillSo = activeSkillSo;
-            skillData.Effect.owner = Owner;
             skillData.Effect.Init();
             Owner.SkillController.skills.Add(skillData);
         }

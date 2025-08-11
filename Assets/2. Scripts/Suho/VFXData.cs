@@ -22,8 +22,4 @@ public class VFXData
     [Header("이펙트가 발생하는 유닛의 세부위치")] 
     public VFXBodyPartType bodyType; 
 
-    [HideInInspector] public IAttackable Attacker;
-    [HideInInspector] public IDamageable Target;
-    
-
 }
