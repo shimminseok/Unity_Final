@@ -21,7 +21,6 @@ MonoBehaviour:
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 0
   effect:
-    owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 0
@@ -40,16 +39,36 @@ MonoBehaviour:
         emotionType: 0
         StatusEffect:
           ID: 0
-          EffectType: 0
+          EffectType: 9
           Stat:
             StatType: 9
-            ModifierType: 0
+            ModifierType: 2
             Value: 0
-          Duration: 0
+          Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 3992058561654064293, guid: 85665d93c41faa84aa4e182a5be5ae6a,
+              type: 3}
+            VFXPoolID: BuffGreenVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 2
+      skillVFX:
+      - VFXPrefab: {fileID: 3992058561654064293, guid: 85665d93c41faa84aa4e182a5be5ae6a,
+          type: 3}
+        VFXPoolID: BuffGreenVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 2
   activeSkillTier: 1
   reuseMaxCount: 2
   coolTime: 3

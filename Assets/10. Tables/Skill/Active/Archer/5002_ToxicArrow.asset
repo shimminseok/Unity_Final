@@ -23,7 +23,6 @@ MonoBehaviour:
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
   effect:
-    owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 1
@@ -55,8 +54,48 @@ MonoBehaviour:
           Duration: 3
           TickInterval: 0
           IsStackable: 0
-          VFX: []
-      skillVFX: []
+          VFX:
+          - VFXPrefab: {fileID: 2300369305902588757, guid: b55168bec39938f4183835249d8401b4,
+              type: 3}
+            VFXPoolID: SparksExplodeGreenVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0, y: 0, z: 0}
+            reference: 1
+            isParent: 1
+            type: 3
+            bodyType: 0
+          - VFXPrefab: {fileID: 2300369305902588757, guid: b55168bec39938f4183835249d8401b4,
+              type: 3}
+            VFXPoolID: SparksExplodeGreenVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0, y: 0, z: 0}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 2300369305902588757, guid: b55168bec39938f4183835249d8401b4,
+          type: 3}
+        VFXPoolID: SparksExplodeGreenVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0, y: 0, z: 0}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 2300369305902588757, guid: b55168bec39938f4183835249d8401b4,
+          type: 3}
+        VFXPoolID: SparksExplodeGreenVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0, y: 0, z: 0}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 0
   activeSkillTier: 0
   reuseMaxCount: 4
   coolTime: 1
