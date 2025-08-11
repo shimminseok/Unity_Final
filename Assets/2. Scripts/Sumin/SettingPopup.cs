@@ -18,7 +18,8 @@ public class SettingPopup : UIBase
     [SerializeField] private TextMeshProUGUI sfxVolumeText;
     [SerializeField] private TextMeshProUGUI bgmVolumeText;
 
-    AudioManager audioManager;
+    private AudioManager audioManager;
+
 
     private void Start()
     {
@@ -91,7 +92,13 @@ public class SettingPopup : UIBase
         Sequence seq = DOTween.Sequence();
 
         seq.Append(BG.DOFade(0f, fadeOutDuration).SetEase(Ease.OutSine));
-        seq.AppendCallback(() => base.Close());
+        seq.AppendCallback(() =>
+        {
+            base.Close();
+            PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
+            PlayerPrefs.SetFloat("BGMVolume", bgmVolumeSlider.value);
+            PlayerPrefs.SetFloat("SFXVolume", sfxVolumeSlider.value);
+        });
     }
 
     public void OnExitBtn()
@@ -101,10 +108,14 @@ public class SettingPopup : UIBase
 
     public void OnQuitButton()
     {
-        PopupManager.Instance.GetUIComponent<TwoChoicePopup>().SetAndOpenPopupUI("타이틀 복귀", "타이틀 화면으로 이동하시겠습니까?",
-            () => {
+        PopupManager.Instance.GetUIComponent<TwoChoicePopup>().SetAndOpenPopupUI("타이틀 복귀",
+            "타이틀 화면으로 이동하시겠습니까?",
+            () =>
+            {
                 Close();
-                LoadSceneManager.Instance.LoadScene("TitleScene"); 
-            }, null, "이동하기");
+                LoadSceneManager.Instance.LoadScene("TitleScene");
+            },
+            null,
+            "이동하기");
     }
 }
