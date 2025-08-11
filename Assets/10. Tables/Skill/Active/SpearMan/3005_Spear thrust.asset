@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 3005_Spear thrust
+  m_EditorClassIdentifier: 
+  ID: 3005
+  SkillIcon: {fileID: 21300000, guid: bb02440c34ef7c349b6ebfa7ab3f6cc6, type: 3}
+  skillName: "\uC800\uC9C0 \uCC3D\uACA9"
+  skillDescription: "\uCC3D\uB05D\uC73C\uB85C \uAE09\uC18C\uB97C \uCC14\uB7EC \uC6C0\uC9C1\uC784\uC744
+    \uB454\uD654\uC2DC\uD0B5\uB2C8\uB2E4. \uBA54\uC778 \uD0C0\uAC9F\uC5D0\uAC8C 
+    110 + (\uACF5\uACA9\uB825 150%)\uC758 \uB370\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4.
+    2\uD134 \uB3D9\uC548 \uB300\uC0C1\uC758 \uC18D\uB3C4\uB97C 2 \uAC10\uC18C\uC2DC\uD0B5\uB2C8\uB2E4. 
+    \uC6B0\uC6B8 \uAC10\uC815\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  jobType: 2
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.5
+        value: 110
+      buffEffects:
+      - ownerStatType: 4
+        weight: 0
+        value: -2
+        opponentStatType: 7
+        lastTurn: 2
+        statusEffectType: 9
+        modifierType: 1
+        emotionType: 3
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 7
+            ModifierType: 1
+            Value: -2
+          Duration: 2
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 4369917811383820485, guid: 0d37b7f57001d3043916559ec0bedab5,
+              type: 3}
+            VFXPoolID: FlashShotBlueVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 90, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 0
+            isParent: 0
+            type: 3
+            bodyType: 0
+          - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
+              type: 3}
+            VFXPoolID: SplashHitVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 3
+            bodyType: 0
+          - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+              type: 3}
+            VFXPoolID: StunVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: -90, y: 0, z: 0}
+            LocalScale: {x: 1, y: 1, z: 1}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 1
+      skillVFX:
+      - VFXPrefab: {fileID: 4369917811383820485, guid: 0d37b7f57001d3043916559ec0bedab5,
+          type: 3}
+        VFXPoolID: FlashShotBlueVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 0
+        isParent: 0
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 7319556749083704586, guid: 6bbfc8d23207298459c142e99496b810,
+          type: 3}
+        VFXPoolID: SplashHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 6097779538034126439, guid: e6196b19216f38340b3dd39a69eec542,
+          type: 3}
+        VFXPoolID: StunVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: -90, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 1
+  activeSkillTier: 1
+  reuseMaxCount: 3
+  coolTime: 2
+  skillAnimation: {fileID: 7400000, guid: 63c645bc279fd5e49b02b390f2dd28ef, type: 2}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 8
+  CastSFX: 7
