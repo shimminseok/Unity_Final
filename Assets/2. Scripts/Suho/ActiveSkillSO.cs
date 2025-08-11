@@ -40,8 +40,7 @@ public class ActiveSkillSO : SkillSo
         SkillType = Instantiate(skillType);
         if (SkillType is RangeSkillSO rangeSkillSo)
         {
-            // if (effect.skillEffectDatas == null) return;
-            bool isHasProjectileSkill = effect.skillEffectDatas.Any(p => p.projectilePrefab != null);
+            bool isHasProjectileSkill = effect.skillEffectDatas.Any(p => p.projectilePrefab != null || !string.IsNullOrWhiteSpace(rangeSkillSo.projectilePoolID));
             rangeSkillSo.SetIsProjectile(isHasProjectileSkill);
         }
     }
