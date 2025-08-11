@@ -34,9 +34,12 @@ public class CharacterIntroManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         ScalableBufferManager.ResizeBuffers(0.7f, 0.7f);
         Application.targetFrameRate = 45;
-#elif UNITY_EDITOR
+#elif UNITY_EDITOR || UNITY_STANDALONE_WIN
         Application.targetFrameRate = -1;
+                ScalableBufferManager.ResizeBuffers(1f, 1f);
+
 #else
+                ScalableBufferManager.ResizeBuffers(1f, 1f);
         Application.targetFrameRate = 120;
 #endif
     }
