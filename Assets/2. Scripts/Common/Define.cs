@@ -100,10 +100,10 @@ public static class Define
     public static Dictionary<int, string> ChapterNameDictionary =
         new()
         {
-            { 1, "1챕터임" },
-            { 2, "2챕터임" },
-            { 3, "3챕터임" },
-            { 4, "4챕터임" }
+            { 1, "희망의 초원" },
+            { 2, "위안의 평야" },
+            { 3, "분노의 광산" },
+            { 4, "고독의 사막" }
         };
 
     public static readonly int RequierCombineItemGold = 3000;
@@ -124,11 +124,11 @@ public static class Define
         {
             case JobType.Archer:
             case JobType.Male_Warrior: return Gender.Male;
-            case JobType.FeMale_Warrior :
+            case JobType.FeMale_Warrior:
             case JobType.DragonKnight:
             case JobType.Priest:
             case JobType.SpearMan:
-            case JobType.Mage: 
+            case JobType.Mage:
             default: return Gender.Female;
         }
     }
