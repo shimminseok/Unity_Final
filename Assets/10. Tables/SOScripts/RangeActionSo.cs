@@ -1,11 +1,11 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Playables;
 
 public class RangeActionSo : CombatActionSo
 {
     [Header("투사체")]
     public string projectilePoolID;
+
     public GameObject projectilePrefab;
 
     public PoolableProjectile ProjectileComponent { get; protected set; }
@@ -21,6 +21,7 @@ public class RangeActionSo : CombatActionSo
     public void CloneSkillType()
     {
     }
+
     public void SetIsProjectile(bool isProjectile)
     {
         IsProjectile = isProjectile;

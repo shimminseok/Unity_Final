@@ -7,11 +7,10 @@ public class SkillManager : MonoBehaviour
 {
     public List<ActiveSkillSO> selectedSkill;
     public Unit Owner { get; private set; }
-    
+
 
     public void InitializeSkillManager(Unit unit)
     {
-        //테스트 스킬로 들어옴
         Owner = unit;
         Owner.SkillController.Initialize(this);
         foreach (ActiveSkillSO activeSkillSo in selectedSkill)
@@ -22,7 +21,7 @@ public class SkillManager : MonoBehaviour
                 continue;
             }
 
-            SkillData skillData = new SkillData(activeSkillSo);
+            SkillData skillData = new(activeSkillSo);
             skillData.skillSo = activeSkillSo;
             skillData.Effect.owner = Owner;
             skillData.Effect.Init();

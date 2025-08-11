@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,8 +39,11 @@ public class CharacterInfoPanel : MonoBehaviour
         // 장비 표시
         equipmentSlots.ForEach(slot => slot.Initialize(null, false));
         if (data == null)
+        {
             return;
-        foreach (var equipmentItem in data.EquippedItems)
+        }
+
+        foreach (KeyValuePair<EquipmentType, EquipmentItem> equipmentItem in data.EquippedItems)
         {
             equipmentSlots[(int)equipmentItem.Key].Initialize(equipmentItem.Value, false);
             equipmentSlots[(int)equipmentItem.Key].ShowEquipMark(false);
@@ -52,7 +54,10 @@ public class CharacterInfoPanel : MonoBehaviour
     {
         // 액티브 스킬들 표시
         if (data == null)
+        {
             return;
+        }
+
         for (int i = 0; i < activeSkillSlotImage.Length; i++)
         {
             if (data.SkillDatas[i] != null)
@@ -69,7 +74,10 @@ public class CharacterInfoPanel : MonoBehaviour
 
     public void SetData(EntryDeckData data)
     {
-        if (data == null) return;
+        if (data == null)
+        {
+            return;
+        }
 
         // 이름 표시
         selectedUnitData = data;
@@ -82,7 +90,7 @@ public class CharacterInfoPanel : MonoBehaviour
     // 장비 편집창 열기
     private void OnClickEquipUI()
     {
-        var entry = DeckSelectManager.Instance.GetSelectedDeck();
+        List<EntryDeckData> entry = DeckSelectManager.Instance.GetSelectedDeck();
 
         if (entry != null)
         {
@@ -97,7 +105,7 @@ public class CharacterInfoPanel : MonoBehaviour
     // 스킬 편집창 열기
     private void OnClickSkillUI()
     {
-        var entry = DeckSelectManager.Instance.GetSelectedDeck();
+        List<EntryDeckData> entry = DeckSelectManager.Instance.GetSelectedDeck();
 
         if (entry != null)
         {

@@ -38,6 +38,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     public Dictionary<SaveModule, Action> SaveAction { get; private set; } = new();
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -50,7 +51,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         foreach (SaveModule module in Enum.GetValues(typeof(SaveModule)))
         {
             SaveAction[module] = () => SaveModuleData(module);
+#if UNITY_ANDROID && !UNITY_EDITOR
+    Debug.Log("[KeystoreDiag] boot probe start");   // ← 이게 안 보이면 호출 자체가 안 된 것
+    AndroidKeystoreDiag.RunOnce("GetPath(module)");
+#endif
         }
+    }
+
+    private string GetPath(SaveModule module)
+    {
+        return $"save_{module.ToString().ToLowerInvariant()}";
     }
 
     public void SaveModuleData(SaveModule module)
@@ -93,12 +103,26 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     public void DeleteAll()
     {
-        foreach (SaveModule module in Enum.GetValues(typeof(SaveModule)))
+        foreach (SaveModule m in Enum.GetValues(typeof(SaveModule)))
         {
-            string path = Path.Combine(Application.persistentDataPath, $"{module.ToString()}.json");
-            if (File.Exists(path))
+            string path = $"save_{m.ToString().ToLowerInvariant()}";
+            string enc  = Path.Combine(Application.persistentDataPath, path + ".jenc");
+            if (File.Exists(enc))
             {
-                File.Delete(path);
+                File.Delete(enc);
+            }
+
+            string wrapped = Path.Combine(Application.persistentDataPath, "kv", path + "_wrapped.bin");
+            if (File.Exists(wrapped))
+            {
+                File.Delete(wrapped);
+            }
+
+            // 레거시 json 정리(있다면)
+            string legacy = Path.Combine(Application.persistentDataPath, $"{m}.json");
+            if (File.Exists(legacy))
+            {
+                File.Delete(legacy);
             }
         }
     }
@@ -119,22 +143,21 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void Save(SaveModule module, SaveData data)
     {
-        string path = Path.Combine(Application.persistentDataPath, $"{module.ToString()}.json");
+        string path = GetPath(module);
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(path, json);
+        JsonSecureStore.Save(path, json);
     }
 
     private T Load<T>(SaveModule module) where T : new()
     {
-        string path = Path.Combine(Application.persistentDataPath, $"{module}.json");
+        string path = GetPath(module);
 
-        if (!File.Exists(path))
+        try
         {
-            return new T();
+            string json = JsonSecureStore.Load(path);
+            return string.IsNullOrEmpty(json) ? new T() : JsonConvert.DeserializeObject<T>(json);
         }
-
-        string json = File.ReadAllText(path);
-        return JsonConvert.DeserializeObject<T>(json);
+        catch { return new T(); }
     }
 
     public void HandleApplicationQuit()
@@ -216,11 +239,10 @@ public class SaveCurrentStageData : SaveData
 public class SaveTutorialData : SaveData
 {
     public bool IsCompleted = false;
-    public TutorialManager.TutorialPhase Phase = TutorialManager.TutorialPhase.DeckBuildingBefore;
+    public TutorialPhase Phase = TutorialPhase.DeckBuildingBefore;
 
-    public override void OnBeforeSave() 
+    public override void OnBeforeSave()
     {
-
     }
 }
 

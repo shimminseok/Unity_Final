@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,7 +42,7 @@ public class EquipButton : MonoBehaviour
         icon.sprite = null;
         button.onClick.RemoveAllListeners();
         typeText.text = string.Empty;
-        this.isEquipped = false;
+        isEquipped = false;
     }
 
     private void OnClick()
@@ -53,9 +52,13 @@ public class EquipButton : MonoBehaviour
 
     #region
 
-    public EquipmentItem GetEquipmentItem() => equip;
-    public bool          IsEquipped         => isEquipped;
-    public bool          IsSlotButton       => isSlotButton;
+    public EquipmentItem GetEquipmentItem()
+    {
+        return equip;
+    }
+
+    public bool IsEquipped   => isEquipped;
+    public bool IsSlotButton => isSlotButton;
 
     #endregion
 }
