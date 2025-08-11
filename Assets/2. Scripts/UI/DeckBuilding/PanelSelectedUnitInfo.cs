@@ -37,6 +37,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
     public void OpenPanel()
     {
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
         gameObject.SetActive(true);
         passiveSkillSlot.SetSkillIcon(selectedUnitData.CharacterSo.PassiveSkill, false);
         passiveSkillSlot.ShowEquipMark(false);
@@ -46,6 +47,7 @@ public class PanelSelectedUnitInfo : MonoBehaviour
 
     public void ClosePanel()
     {
+        AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
         Sequence seq = DOTween.Sequence();
 
         seq.Append(BG.DOFade(0f, 0.3f).SetEase(Ease.OutSine));

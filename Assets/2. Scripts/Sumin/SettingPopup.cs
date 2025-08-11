@@ -30,6 +30,7 @@ public class SettingPopup : UIBase
     public override void Open()
     {
         base.Open();
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
         BG.alpha = 0;
         BG.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine);
 
@@ -95,6 +96,7 @@ public class SettingPopup : UIBase
         seq.AppendCallback(() =>
         {
             base.Close();
+
             PlayerPrefs.SetFloat("MasterVolume", masterVolumeSlider.value);
             PlayerPrefs.SetFloat("BGMVolume", bgmVolumeSlider.value);
             PlayerPrefs.SetFloat("SFXVolume", sfxVolumeSlider.value);
