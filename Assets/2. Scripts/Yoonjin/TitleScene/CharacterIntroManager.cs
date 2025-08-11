@@ -41,6 +41,7 @@ public class CharacterIntroManager : MonoBehaviour
 #endif
     }
 
+
     private void Start()
     {
         overlay.gameObject.SetActive(true);
@@ -51,6 +52,10 @@ public class CharacterIntroManager : MonoBehaviour
 
         // 동시에 캐릭터 등장 연출 시작
         StartCoroutine(PlaceCharacters());
+
+        AudioManager.Instance.SetVolume(AudioType.Master, PlayerPrefs.GetFloat("MasterVolume", 1));
+        AudioManager.Instance.SetVolume(AudioType.BGM, PlayerPrefs.GetFloat("BGMVolume", 1));
+        AudioManager.Instance.SetVolume(AudioType.SFX, PlayerPrefs.GetFloat("SFXVolume", 1));
     }
 
     private void Update()
