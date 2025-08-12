@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 5004_DoubleShot
+  m_EditorClassIdentifier: 
+  ID: 5004
+  SkillIcon: {fileID: 21300000, guid: fca69a11736b15149bc66c8a7f28bd95, type: 3}
+  skillName: "\uB354\uBE14\uC0F7"
+  skillDescription: "\uC120\uD0DD\uD55C \uC801\uC5D0\uAC8C 60(+\uACF5\uACA9\uB825\uC758
+    120%)\uC758 \uB300\uBBF8\uC9C0\uB97C 2\uD68C \uC90D\uB2C8\uB2E4."
+  jobType: 4
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 4959735784230702290, guid: 5c6ec7d8a7c9836408e645fd68dcb9b1,
+        type: 3}
+      projectilePoolID: Arrow_Projectile
+      damageEffects:
+      - attackCount: 2
+        ownerStatType: 4
+        weight: 1.2
+        value: 60
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 8896002613226205281, guid: 628fb0f4ad22bf34bb87a48182db07ab,
+          type: 3}
+        VFXPoolID: PinpointCastVFX
+        LocalPosition: {x: 0, y: 0.5, z: 0.5}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+        reference: 0
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 7053558978182834975, guid: 3c230a2208b32584790ef479a4276d33,
+          type: 3}
+        VFXPoolID: PinpointShotHitVFX
+        LocalPosition: {x: 0, y: 0.5, z: 0.5}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 9207792929607053519, guid: c94345a9afa44bb4ea1a01cf5504c036,
+          type: 3}
+        VFXPoolID: PinpointShotVFX
+        LocalPosition: {x: 0, y: 0.5, z: 0.5}
+        LocalRotation: {x: 0, y: 90, z: 0}
+        LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+        reference: 0
+        isParent: 1
+        type: 3
+        bodyType: 0
+  activeSkillTier: 0
+  reuseMaxCount: 5
+  coolTime: 2
+  skillAnimation: {fileID: 7400000, guid: 3468435cb73ff414eb2099e5810f9854, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 28
+  CastSFX: 10

@@ -68,6 +68,7 @@ public class MonsterUnitInfoUI : MonoBehaviour
     // 버튼 누르면 몬스터 정보 열고 닫기
     public void OnToggleMonsterList()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         float  targetHeight = isOpen ? 0 : originalHeight;
         string arrow        = isOpen ? ">" : "<";
 

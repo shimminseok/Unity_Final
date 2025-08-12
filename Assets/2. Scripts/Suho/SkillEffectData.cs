@@ -14,9 +14,10 @@ public class SkillEffectData
     public List<StatBaseBuffSkillEffect> buffEffects;
     public List<VFXData> skillVFX;
     
-    public void AffectTargetWithSkill(IDamageable target) // 실질적으로 영향을 끼치는 부분
+    public void AffectTargetWithSkill(IAttackable attacker, IDamageable target) // 실질적으로 영향을 끼치는 부분
     {
         if (target == null || target.IsDead) return;
+        owner = attacker as Unit;
         VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Target, target as IEffectProvider,true);
         VFXController.VFXListPlay(skillVFX,VFXType.Hit,VFXSpawnReference.Caster, owner as IEffectProvider,true);
         foreach (var result in buffEffects)

@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 1005_ EscortPosture
+  m_EditorClassIdentifier: 
+  ID: 1005
+  SkillIcon: {fileID: 21300000, guid: 2d782b0173fcfbf44aae1530656c4cf8, type: 3}
+  skillName: "\uD638\uC704\uD0DC\uC138"
+  skillDescription: "\uC544\uAD70 \uD55C \uBA85\uC5D0\uAC8C \uC274\uB4DC\uB97C \uC0DD\uC131\uD569\uB2C8\uB2E4.
+    3\uD134\uB3D9\uC548 \uC120\uD0DD\uB41C \uC544\uAD70\uC5D0\uAC90 3\uD134\uB3D9\uC548
+    0(+\uCD5C\uB300 \uCCB4\uB825\uC758 35%)\uC758 \uC274\uB4DC\uC640 \uAE30\uC068
+    \uAC10\uC815\uC744 \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  jobType: 0
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 0
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0.35
+        value: 0
+        opponentStatType: 11
+        lastTurn: 3
+        statusEffectType: 9
+        modifierType: 0
+        emotionType: 4
+        StatusEffect:
+          ID: 0
+          EffectType: 9
+          Stat:
+            StatType: 11
+            ModifierType: 0
+            Value: 219.8
+          Duration: 3
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
+              type: 3}
+            VFXPoolID: ShieldVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+            reference: 1
+            isParent: 1
+            type: 2
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 1818660034489646857, guid: 46c1aab70c05b1a418b146e6a86b0c36,
+          type: 3}
+        VFXPoolID: ShieldVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+        reference: 1
+        isParent: 1
+        type: 2
+        bodyType: 0
+  activeSkillTier: 0
+  reuseMaxCount: 2
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 2
+  CastSFX: 10

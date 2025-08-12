@@ -9,6 +9,7 @@ public class BattleSceneGameUI : MonoBehaviour
     [SerializeField] private Button startBtn;
     [SerializeField] private GameObject speedBtnHighlight;
     [SerializeField] private GameObject playingImage;
+    [SerializeField] private GameObject infoWindow;
 
     private BattleManager battleManager;
     private InputManager inputManager;
@@ -77,6 +78,7 @@ public class BattleSceneGameUI : MonoBehaviour
     // 턴 UI 애니메이션
     public void PlayTurnIntroAnimation(bool isBattleStart)
     {
+        AudioManager.Instance.PlaySFX(SFXName.BattleStartUISound.ToString());
         // 이전 시퀀스 정리
         if (turnAniSequence != null && turnAniSequence.IsActive())
         {
@@ -149,7 +151,6 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnStartButton()
     {
-        AudioManager.Instance.PlaySFX(SFXName.BattleStartUISound.ToString());
         PlayTurnIntroAnimation(true);
     }
 
@@ -160,8 +161,21 @@ public class BattleSceneGameUI : MonoBehaviour
 
     public void OnSpeedUpButton()
     {
+        AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
         GameManager.Instance.ToggleTimeScale();
         speedBtnHighlight.SetActive(GameManager.Instance.TimeScaleMultiplier);
+    }
+
+    public void OnInfoButton()
+    {
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
+        infoWindow.SetActive(true);
+    }
+
+    public void OffInfoWindow()
+    {
+        AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
+        infoWindow.SetActive(false);
     }
 
     public void OnExitButton()

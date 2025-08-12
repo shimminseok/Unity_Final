@@ -98,6 +98,7 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     public void OpenPanel(EntryDeckData unitData)
     {
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
         if (currentPlayerUnitData != null)
         {
             currentPlayerUnitData.OnLevelUp -= UpdateLevelText;
@@ -118,6 +119,7 @@ public class UnitLevelUpPanel : MonoBehaviour
 
     public void ClosePanel()
     {
+        AudioManager.Instance.PlaySFX(SFXName.CloseUISound.ToString());
         if (TutorialManager.Instance != null && TutorialManager.Instance.IsActive)
         {
             return;

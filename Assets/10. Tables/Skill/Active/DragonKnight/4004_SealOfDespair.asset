@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 4004_SealOfDespair
+  m_EditorClassIdentifier: 
+  ID: 4004
+  SkillIcon: {fileID: 21300000, guid: b8a5a236ed42b194e9eda72824a248c0, type: 3}
+  skillName: "\uC808\uB9DD\uC758 \uBD09\uC778"
+  skillDescription: "\uC804\uCCB4 \uC801\uC5D0\uAC8C \uBD09\uC778\uB41C \uC6A9\uC758
+    \uC808\uB9DD\uC744 \uB2F4\uC544 80(+\uACF5\uACA9\uB825\uC758 150%) \uB300\uBBF8\uC9C0\uB97C
+    \uC8FC\uACE0, \uC790\uAE30 \uC790\uC2E0\uC5D0\uAC8C \uC6B0\uC6B8\uAC10\uC815\uC744
+    \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  jobType: 3
+  skillType: {fileID: 11400000, guid: c8d0cdd0857a81f4e9470ef648506131, type: 2}
+  selectCamp: 1
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 2
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.5
+        value: 80
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 2018416911825896717, guid: ede98bb716cdb494c818fc30bd77b2e3,
+          type: 3}
+        VFXPoolID: RoarOfFuryVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 8799239972618084933, guid: e6b09f4f75f78274fb50d7ef45ae7e96,
+          type: 3}
+        VFXPoolID: FireballHit
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 1, y: 1, z: 1}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+    - owner: {fileID: 0}
+      selectCamp: 0
+      selectTarget: 3
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects: []
+      buffEffects:
+      - ownerStatType: 0
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 3
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX: []
+      skillVFX: []
+  activeSkillTier: 2
+  reuseMaxCount: 3
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 6bd0cba95c48fe9409d4a7459ba9bedc, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 4
+  CastSFX: 7

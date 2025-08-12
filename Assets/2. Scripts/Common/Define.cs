@@ -55,9 +55,9 @@ public static class Define
     public static readonly Dictionary<Tier, float> TierRates = new()
     {
         { Tier.A, 90f },
-        { Tier.S, 8.5f },
-        { Tier.SR, 1.0f },
-        { Tier.SSR, 0.5f }
+        { Tier.S, 9f },
+        { Tier.SR, 0.8f },
+        { Tier.SSR, 0.2f }
     };
 
     // 티어 별 중복 보상 값 계수

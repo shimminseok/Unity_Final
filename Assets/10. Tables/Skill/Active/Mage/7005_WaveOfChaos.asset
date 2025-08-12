@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 7005_WaveOfChaos
+  m_EditorClassIdentifier: 
+  ID: 7005
+  SkillIcon: {fileID: 21300000, guid: 3b027045b8823ab4fb12d253c8b1b65f, type: 3}
+  skillName: "\uD63C\uB3C8\uC758 \uD30C\uB3D9"
+  skillDescription: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C 80(+\uACF5\uACA9\uB825\uC758
+    120%) \uB370\uBBF8\uC9C0\uB97C \uC785\uD788\uBA70,  \uBD84\uB178 \uAC10\uC815\uC744
+    \uBD80\uC5EC\uD569\uB2C8\uB2E4."
+  jobType: 6
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.2
+        value: 80
+      buffEffects:
+      - ownerStatType: 4
+        weight: 0
+        value: 0
+        opponentStatType: 0
+        lastTurn: 0
+        statusEffectType: 0
+        modifierType: 0
+        emotionType: 2
+        StatusEffect:
+          ID: 0
+          EffectType: 0
+          Stat:
+            StatType: 0
+            ModifierType: 0
+            Value: 0
+          Duration: 0
+          TickInterval: 0
+          IsStackable: 0
+          VFX:
+          - VFXPrefab: {fileID: 6094919540921992403, guid: 8d199f8dd35afef42aeab4dfdcd60fae,
+              type: 3}
+            VFXPoolID: MagicLightningVFX
+            LocalPosition: {x: 0, y: 0, z: 0}
+            LocalRotation: {x: 0, y: 0, z: 0}
+            LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+            reference: 1
+            isParent: 1
+            type: 0
+            bodyType: 0
+      skillVFX:
+      - VFXPrefab: {fileID: 6094919540921992403, guid: 8d199f8dd35afef42aeab4dfdcd60fae,
+          type: 3}
+        VFXPoolID: MagicLightningVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 1
+        isParent: 1
+        type: 0
+        bodyType: 0
+  activeSkillTier: 1
+  reuseMaxCount: 3
+  coolTime: 2
+  skillAnimation: {fileID: 7400000, guid: 66d6e931fba18384eb02381bec3bce88, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 31
+  CastSFX: 7

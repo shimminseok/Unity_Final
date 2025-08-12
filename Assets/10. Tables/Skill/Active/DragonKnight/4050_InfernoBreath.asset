@@ -26,7 +26,6 @@ MonoBehaviour:
   skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
   selectCamp: 1
   effect:
-    owner: {fileID: 0}
     skillEffectDatas:
     - owner: {fileID: 0}
       selectCamp: 1
@@ -34,10 +33,10 @@ MonoBehaviour:
       projectilePrefab: {fileID: 0}
       projectilePoolID: 
       damageEffects:
-      - attackCount: 1
+      - attackCount: 5
         ownerStatType: 4
-        weight: 2
-        value: 400
+        weight: 0.4
+        value: 80
       buffEffects:
       - ownerStatType: 4
         weight: 0.3
@@ -218,8 +217,8 @@ MonoBehaviour:
           VFX: []
       skillVFX: []
   activeSkillTier: 3
-  reuseMaxCount: 5
-  coolTime: 3
+  reuseMaxCount: 3
+  coolTime: 5
   skillAnimation: {fileID: 7400000, guid: 1c09047ecdb0548428f2137b03a4f7dc, type: 2}
   skillTimeLine: {fileID: 11400000, guid: 7d22d274c74022641a907ee6659e1ec2, type: 2}
   isSkillScene: 1

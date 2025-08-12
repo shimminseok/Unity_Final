@@ -92,6 +92,7 @@ public class BattleSceneSkillSlot : MonoBehaviour
             return;
         }
 
+        AudioManager.Instance.PlaySFX(SFXName.OpenUISound.ToString());
         InputManager.Instance.SelectSkill(currentskillIndex);
         ToggleHighlightSkillBtn(true);
     }

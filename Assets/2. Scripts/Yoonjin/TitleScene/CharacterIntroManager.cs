@@ -34,12 +34,16 @@ public class CharacterIntroManager : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         ScalableBufferManager.ResizeBuffers(0.7f, 0.7f);
         Application.targetFrameRate = 45;
-#elif UNITY_EDITOR
+#elif UNITY_EDITOR || UNITY_STANDALONE_WIN
         Application.targetFrameRate = -1;
+                ScalableBufferManager.ResizeBuffers(1f, 1f);
+
 #else
+                ScalableBufferManager.ResizeBuffers(1f, 1f);
         Application.targetFrameRate = 120;
 #endif
     }
+
 
     private void Start()
     {
@@ -51,6 +55,10 @@ public class CharacterIntroManager : MonoBehaviour
 
         // 동시에 캐릭터 등장 연출 시작
         StartCoroutine(PlaceCharacters());
+
+        AudioManager.Instance.SetVolume(AudioType.Master, PlayerPrefs.GetFloat("MasterVolume", 1));
+        AudioManager.Instance.SetVolume(AudioType.BGM, PlayerPrefs.GetFloat("BGMVolume", 1));
+        AudioManager.Instance.SetVolume(AudioType.SFX, PlayerPrefs.GetFloat("SFXVolume", 1));
     }
 
     private void Update()
@@ -160,11 +168,6 @@ public class CharacterIntroManager : MonoBehaviour
     {
         Debug.Log("Test Mode On");
         GameManager.Instance.isTestMode = true;
-    }
-
-    public void OnClickDeleteSaveFile()
-    {
-        SaveLoadManager.Instance.DeleteAll();
     }
 
     public void OnSettingButtonClick()

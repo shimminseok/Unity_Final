@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d3c25c25bba284499c5c8a08d880aa4, type: 3}
+  m_Name: 7007_DoubleFallingFire
+  m_EditorClassIdentifier: 
+  ID: 7007
+  SkillIcon: {fileID: 21300000, guid: 15828a5d6a319c647801319c79a4de08, type: 3}
+  skillName: "\uC774\uC911\uB099\uC131"
+  skillDescription: "\uC120\uD0DD\uB41C \uC801\uC5D0\uAC8C 70(+\uACF5\uACA9\uB825\uC758
+    110%) \uB370\uBBF8\uC9C0\uB97C \uC8FC\uACE0, \uB79C\uB364\uD55C \uC801 \uD55C\uBA85\uC5D0\uAC8C
+    50(+\uACF5\uACA9\uB825\uC758 30%)\uC758 \uB300\uBBF8\uC9C0\uB97C \uC90D\uB2C8\uB2E4. "
+  jobType: 6
+  skillType: {fileID: 11400000, guid: 2514d07179c080344a4758e4d7a450a4, type: 2}
+  selectCamp: 1
+  effect:
+    skillEffectDatas:
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 0
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 1.1
+        value: 70
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 2017779744972556512, guid: 6c94970e542526f428d7446e71cd44fa,
+          type: 3}
+        VFXPoolID: FireHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 3181084675663545699, guid: a4cff2694068b1c408635c0d39a31851,
+          type: 3}
+        VFXPoolID: FireballFallVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 1
+        isParent: 1
+        type: 0
+        bodyType: 0
+    - owner: {fileID: 0}
+      selectCamp: 1
+      selectTarget: 4
+      projectilePrefab: {fileID: 0}
+      projectilePoolID: 
+      damageEffects:
+      - attackCount: 1
+        ownerStatType: 4
+        weight: 0.3
+        value: 50
+      buffEffects: []
+      skillVFX:
+      - VFXPrefab: {fileID: 2017779744972556512, guid: 6c94970e542526f428d7446e71cd44fa,
+          type: 3}
+        VFXPoolID: FireHitVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 1
+        isParent: 1
+        type: 3
+        bodyType: 0
+      - VFXPrefab: {fileID: 3181084675663545699, guid: a4cff2694068b1c408635c0d39a31851,
+          type: 3}
+        VFXPoolID: FireballFallVFX
+        LocalPosition: {x: 0, y: 0, z: 0}
+        LocalRotation: {x: 0, y: 0, z: 0}
+        LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+        reference: 1
+        isParent: 1
+        type: 0
+        bodyType: 0
+  activeSkillTier: 1
+  reuseMaxCount: 3
+  coolTime: 3
+  skillAnimation: {fileID: 7400000, guid: 66d6e931fba18384eb02381bec3bce88, type: 3}
+  skillTimeLine: {fileID: 0}
+  isSkillScene: 0
+  SFX: 31
+  CastSFX: 7
