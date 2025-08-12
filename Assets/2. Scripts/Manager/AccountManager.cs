@@ -240,6 +240,7 @@ public class AccountManager : Singleton<AccountManager>
 
     public void Cheat()
     {
+#if UNITY_EDITOR
         foreach (ItemSO itemSo in TableManager.Instance.GetTable<ItemTable>().DataDic.Values)
         {
             if (itemSo is EquipmentItemSO equipSo)
@@ -257,5 +258,6 @@ public class AccountManager : Singleton<AccountManager>
         {
             AddPlayerUnit(unit);
         }
+#endif
     }
 }
