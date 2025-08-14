@@ -216,7 +216,8 @@ public enum SceneName
     TitleScene,
     DeckBuildingScene,
     DialogueScene,
-    BattleScene_Main
+    BattleScene_Main,
+    IntroCinematicScene
 }
 
 
