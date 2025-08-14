@@ -237,6 +237,9 @@ public class SaveTutorialData : SaveData
     public bool IsCompleted = false;
     public TutorialPhase Phase = TutorialPhase.DeckBuildingBefore;
 
+    // 인트로 컷씬을 타이틀에서 재생할지 여부 판단
+    public bool PlayIntroOnStart = true;
+
     public override void OnBeforeSave()
     {
     }

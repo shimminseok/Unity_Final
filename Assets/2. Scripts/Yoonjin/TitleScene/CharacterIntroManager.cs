@@ -28,6 +28,8 @@ public class CharacterIntroManager : MonoBehaviour
 
     private bool isStartButtonShown = false;
 
+    private static bool s_IsLoaded;
+
     private void Awake()
     {
 #if UNITY_ANDROID || UNITY_IOS
@@ -59,6 +61,8 @@ public class CharacterIntroManager : MonoBehaviour
         AudioManager.Instance.SetVolume(AudioType.Master, PlayerPrefs.GetFloat("MasterVolume", 1));
         AudioManager.Instance.SetVolume(AudioType.BGM, PlayerPrefs.GetFloat("BGMVolume", 1));
         AudioManager.Instance.SetVolume(AudioType.SFX, PlayerPrefs.GetFloat("SFXVolume", 1));
+
+        SaveLoadManager.Instance.LoadAll();
     }
 
     private void Update()
@@ -150,7 +154,30 @@ public class CharacterIntroManager : MonoBehaviour
     public void OnClickStart()
     {
         AudioManager.Instance.PlaySFX(SFXName.SelectedUISound.ToString());
-        LoadSceneManager.Instance.LoadScene("IntroCinematicScene");
+        HandleStartPressed();
+    }
+
+    public void HandleStartPressed()
+    {
+        var tData = SaveLoadManager.Instance.SaveDataMap.GetValueOrDefault(SaveModule.Tutorial) as SaveTutorialData;
+
+        tData.PlayIntroOnStart = true;
+
+        // 덱빌딩 이후 페이즈거나, 이미 튜토리얼 완료면 인트로 비활성
+        if (tData.IsCompleted || tData.Phase != TutorialManager.TutorialPhase.DeckBuildingBefore)
+        {
+            if (tData.PlayIntroOnStart)
+            {
+                tData.PlayIntroOnStart = false;
+                SaveLoadManager.Instance.SaveModuleData(SaveModule.Tutorial);
+            }
+        }
+
+        bool shouldPlayIntro = tData.PlayIntroOnStart;
+
+        // PlayIntro가 true면 Intro가 나오고 false면 덱빌딩으로 바로.
+        string nextScene = shouldPlayIntro ? "IntroCinematicScene" : "DeckBuildingScene";
+        LoadSceneManager.Instance.LoadScene(nextScene);
     }
 
     public void OnClickExit()
