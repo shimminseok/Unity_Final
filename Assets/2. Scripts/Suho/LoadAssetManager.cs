@@ -68,29 +68,54 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
 
     
     //비동기 오디오클립 로드 메서드
-    public void LoadAudioClipAsync(string assetName,Action<string> onLoaded)
+    public void LoadAudioClipAsync(string assetName, Action<string> onLoaded)
     {
-        if (assetName == "None")
+        if (string.IsNullOrEmpty(assetName) || assetName == "None")
         {
-            Debug.Log("CallLoad : None");
+            Debug.Log("[LoadAudioClipAsync] 요청된 오디오 이름이 None이거나 비어있음");
+            onLoaded?.Invoke(null);
             return;
         }
-        Addressables.LoadAssetAsync<AudioClip>(assetName).Completed += (handle) =>
+
+        // 1. 먼저 키 유효성 검사
+        Addressables.LoadResourceLocationsAsync(assetName).Completed += (locHandle) =>
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            if (locHandle.Status == AsyncOperationStatus.Succeeded && locHandle.Result.Count > 0)
             {
-                var clip = handle.Result;
-                loadAudioClipHandles.Add(handle);
-                AudioManager.Instance.AudioDictionary.TryAdd(assetName, handle.Result);
-                onLoaded?.Invoke(assetName); // 로드 완료 후 콜백 호출
+                // 2. 유효한 키면 실제 AudioClip 로드
+                Addressables.LoadAssetAsync<AudioClip>(assetName).Completed += (handle) =>
+                {
+                    if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result != null)
+                    {
+                        var clip = handle.Result;
+
+                        // 메모리 해제를 위해 핸들 저장
+                        loadAudioClipHandles.Add(handle);
+
+                        // Dictionary에 추가 (중복 방지)
+                        if (!AudioManager.Instance.AudioDictionary.TryAdd(assetName, clip))
+                        {
+                            Debug.LogWarning($"[LoadAudioClipAsync] 이미 등록된 키: {assetName}");
+                        }
+
+                        onLoaded?.Invoke(assetName);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[LoadAudioClipAsync] AudioClip 로드 실패: {assetName}");
+                        onLoaded?.Invoke(null);
+                    }
+                };
             }
             else
             {
-                Debug.LogWarning($"AudioClip 로드 실패: {assetName}");
-                onLoaded?.Invoke(null); // 실패했을 때 처리
+                // 3. 키가 존재하지 않을 때 예외 없이 경고
+                Debug.LogWarning($"[LoadAudioClipAsync] Addressables에서 '{assetName}' 키를 찾을 수 없습니다.");
+                onLoaded?.Invoke(null);
             }
         };
     }
+
 
     // 메모리에 올라온 오디오클립을 릴리즈
     public void ReleaseAudioClips()

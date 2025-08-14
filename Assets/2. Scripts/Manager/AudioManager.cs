@@ -100,9 +100,10 @@ public class AudioManager : Singleton<AudioManager>
     /* BGM은 Loop를 돌며 계속해서 반복 재생 */
     public void PlayBGM(string clipName, bool isLoop = true)
     {
-        if (bgmAudioSource == null || AudioDictionary == null || clipName == "None")
+        if (bgmAudioSource == null || AudioDictionary == null || clipName == "None" || clipName == null)
         {
             Debug.LogWarning("SoundManager: BGM 재생 실패 - AudioSource 또는 AudioDictionary가 null입니다.");
+            StopBGM();
             return;
         }
 
