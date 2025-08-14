@@ -135,6 +135,7 @@ public class AudioManager : Singleton<AudioManager>
         else
         {
             Debug.LogWarning($"SoundManager: PlayBGM - {clipName}은 존재하지 않는 오디오 클립입니다.");
+            StopBGM();
         }
     }
 

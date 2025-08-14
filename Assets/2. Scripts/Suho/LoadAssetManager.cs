@@ -15,38 +15,46 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
     // 레이블을 사용해서 에셋번들의 로케이션을 받아오는 메서드
     public void LoadAssetBundle(string labelName)
     {
-        Addressables.LoadResourceLocationsAsync(labelName).Completed +=
-            (handle =>
+        Addressables.LoadResourceLocationsAsync(labelName).Completed += (handle) =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
+                var locations = handle.Result;
+
+                // 로케이션이 없을 경우 바로 종료
+                if (locations == null || locations.Count == 0)
                 {
-                    var locations = handle.Result;
-                    OnLoadAssetsChangeScene(labelName, locations);
+                    Debug.LogWarning($"[LoadAssetBundle] '{labelName}'에 해당하는 오디오 클립이 없습니다.");
+                    return;
                 }
-                else
-                {
-                    Debug.LogError($"로케이션 로드 실패: {labelName}");
-                }
-            });
+
+                OnLoadAssetsChangeScene(labelName, locations);
+            }
+            else
+            {
+                Debug.LogError($"로케이션 로드 실패: {labelName}");
+            }
+        };
     }
-    
-    // 받아온 로케이션을 통해 에셋을 로드해오는 메서드
+
+// 받아온 로케이션을 통해 에셋을 로드해오는 메서드
     public void OnLoadAssetsChangeScene(string labelName, IList<IResourceLocation> locations)
     {
         foreach (var location in locations)
         {
-            // 각 location의 주소를 키로 사용하기 위해 LoadAssetAsync 사용
             var handle = Addressables.LoadAssetAsync<AudioClip>(location);
 
             handle.Completed += (clipHandle) =>
             {
-                if (clipHandle.Status == AsyncOperationStatus.Succeeded)
+                if (clipHandle.Status == AsyncOperationStatus.Succeeded && clipHandle.Result != null)
                 {
                     AudioClip clip = clipHandle.Result;
                     string addressKey = location.PrimaryKey;
 
-                    // 키는 address, 값은 AudioClip
-                    AudioManager.Instance.AudioDictionary.TryAdd(addressKey, clip);
+                    if (!AudioManager.Instance.AudioDictionary.TryAdd(addressKey, clip))
+                    {
+                        Debug.LogWarning($"[OnLoadAssetsChangeScene] 이미 등록된 키: {addressKey}");
+                    }
                 }
                 else
                 {
@@ -57,6 +65,7 @@ public class LoadAssetManager : Singleton<LoadAssetManager>
             loadAudioClipHandles.Add(handle);
         }
     }
+
     
     //비동기 오디오클립 로드 메서드
     public void LoadAudioClipAsync(string assetName,Action<string> onLoaded)
